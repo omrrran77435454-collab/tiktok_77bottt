@@ -1,4 +1,6 @@
+‌🇴‌🇲‌🇷‌🇦‌🇳, [02/08/47 01:16 ص]
 import os
+import time
 import asyncio
 import yt_dlp
 from flask import Flask
@@ -6,21 +8,22 @@ from threading import Thread
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes, CallbackQueryHandler
 
-# --- بيانات الهوية المطلقة ---
+# --- إعدادات السيادة المطلقة ---
 TOKEN = "8090822378:AAH6CIhLzNbHU8T6_F12JP6zl5S7Rzdd388"
 ADMIN_ID = 5559869840
 
-# --- نظام البقاء (Web Server) ---
+# --- نظام البقاء حياً (Render Support) ---
 app = Flask('')
 @app.route('/')
-def home(): return "Shadow Kernel 2026: Online"
+def home(): return "Shadow Bot 2026: Active"
 def run_web(): app.run(host='0.0.0.0', port=8080)
 
-# --- المحرك العكسي للتحميل (Fast-Engine) ---
-def get_video(url, is_audio=False):
+# --- محرك التحميل (الإصدار الاحترافي الصامت) ---
+def download_sync(url, is_audio=False):
+    timestamp = int(time.time())
     opts = {
         'format': 'bestaudio/best' if is_audio else 'best',
-        'outtmpl': 'shd_%(id)s.%(ext)s',
+        'outtmpl': f'shd_{timestamp}.%(ext)s',
         'quiet': True,
         'no_warnings': True,
     }
@@ -31,65 +34,82 @@ def get_video(url, is_audio=False):
         info = ydl.extract_info(url, download=True)
         return ydl.prepare_filename(info)
 
-# --- واجهة المستخدم الذكية ---
+# --- دوال الواجهة (UI) ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    kb = [
-        [InlineKeyboardButton("💎 قناة المطور", url=f"tg://user?id={ADMIN_ID}")],
-        [InlineKeyboardButton("⚙️ المساعدة", callback_data="help")]
-    ]
-    text = "🌀 TikPro Ultra 2026\n\nأرسل رابط تيك توك الآن وسيتم اختراقه وتحميله فوراً."
-    await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(kb), parse_mode="Markdown")
+    user_id = update.effective_user.id
+    
+    # إذا كان المستخدم هو الآدمن، تظهر لوحة التحكم كاملة فوراً
+    if user_id == ADMIN_ID:
+        keyboard = [
+            [InlineKeyboardButton("📊 إحصائيات النظام", callback_data="admin_stats"), InlineKeyboardButton("📢 إذاعة عامة", callback_data="admin_broadcast")],
+            [InlineKeyboardButton("👤 إدارة المستخدمين", callback_data="admin_users")],
+            [InlineKeyboardButton("🛠️ إعدادات البوت", callback_data="admin_settings")],
+            [InlineKeyboardButton("🌐 فتح الموقع", url="https://render.com")]
+        ]
+        text = "⚙️ مرحباً سيدي المطور (الآدمن)\n\nلقد تم تفعيل لوحة التحكم المركزية لعام 2026. كل شيء تحت سيطرتك."
+        await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
+    else:
+        # واجهة المستخدم العادي الجذابة
+        keyboard = [[InlineKeyboardButton("👨‍💻 المطور", url=f"tg://user?id={ADMIN_ID}")]]
+        text = "🌀 TikPro Downloader 2026\n\nأرسل رابط تيك توك الآن لتحميله بأعلى جودة متوفرة."
+        await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
-async def process_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_url(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = update.message.text
     if "tiktok.com" in url:
-        kb = [
-            [InlineKeyboardButton("🎬 تحميل الفيديو", callback_data=f"v|{url}")],
-            [InlineKeyboardButton("🎵 تحميل الصوت", callback_data=f"a|{url}")]
+        btns = [
+            [InlineKeyboardButton("🎬 تحميل فيديو HD", callback_data=f"v|{url}")],
+            [InlineKeyboardButton("🎵 تحميل صوت MP3", callback_data=f"a|{url}")],
+            [InlineKeyboardButton("❌ إلغاء", callback_data="cancel")]
         ]
-        await update.message.reply_text("✨ تم تحليل الرابط، اختر الصيغة:", reply_markup=InlineKeyboardMarkup(kb))
+        await update.message.reply_text("💎 تم رصد الهدف! اختر الصيغة:", reply_markup=InlineKeyboardMarkup(btns))
     else:
-        await update.message.reply_text("⚠️ الرابط غير مدعوم في بروتوكولنا.")
+        await update.message.reply_text("⚠️ الرابط المرسل غير مدعوم حالياً.")
 
-async def action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     
-    if query.data == "help":
-        await query.edit_message_text("أرسل الرابط مباشرة، وسأقوم بالباقي. البوت يدعم التحميل بدون علامة مائية.")
+    if query.data == "cancel":
+        await query.edit_message_text("🗑️ تم إلغاء العملية بنجاح.")
+        return
+    elif query.data.startswith("admin_"):
+        await query.message.reply_text(f"🛠️ ميزة [{query.data}] قيد البرمجة في التحديث القادم سيدي.")
         return
 
     mode, url = query.data.split('|')
-    await query.edit_message_text("⏳ جاري سحب البيانات من الهاوية...")
+    msg = await query.edit_message_text("⚡ جاري الاختراق والتحميل... يرجى الانتظار.")
     
     try:
-        path = await asyncio.to_thread(get_video, url, mode == 'a')
-        with open(path, 'rb') as f:
-            if mode == 'v':
-                await context.bot.send_video(chat_id=query.message.chat_id, video=f, caption="✅ تم الاختراق بنجاح.")
+        # حل مشكلة الـ Event Loop نهائياً باستخدام run_in_executor
+        loop = asyncio.get_running_loop()
+        file_path = await loop.run_in_executor(None, download_sync, url, mode == 'a')
+        
+        with open(file_path, 'rb') as f:
+
+‌🇴‌🇲‌🇷‌🇦‌🇳, [02/08/47 01:16 ص]
+if mode == 'v':
+                await context.bot.send_video(chat_id=query.message.chat_id, video=f, caption="🔥 تم التحميل بواسطة TikPro 2026")
             else:
-                await context.bot.send_audio(chat_id=query.message.chat_id, audio=f, caption="🎵 ملف الصوت جاهز.")
-        os.remove(path)
+                await context.bot.send_audio(chat_id=query.message.chat_id, audio=f, caption="🎶 صوت الفيديو المستخرج")
+        
+        if os.path.exists(file_path): os.remove(file_path)
+        await msg.delete()
     except Exception as e:
-        await context.bot.send_message(chat_id=query.message.chat_id, text=f"❌ خطأ: {str(e)}")
+        await context.bot.send_message(chat_id=query.message.chat_id, text=f"❌ فشل النظام: {str(e)}")
 
-# --- الإدارة (Admin Only) ---
-async def admin_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_user.id == ADMIN_ID:
-        await update.message.reply_text(f"مرحباً سيدي الآدمن. البوت يعمل بكامل طاقته.")
-
-# --- تشغيل النواة المركزية ---
+# --- النواة المركزية (The Expert Main) ---
 if __name__ == '__main__':
-    # تشغيل خادم الويب لتجنب إيقاف Render
-    Thread(target=run_web).start()
+    # تشغيل خادم الويب
+    Thread(target=run_web, daemon=True).start()
     
-    # بناء التطبيق مع تصحيح كافة الدوال
-    application = ApplicationBuilder().token(TOKEN).build()
+    # بناء التطبيق
+    bot_app = ApplicationBuilder().token(TOKEN).build()
     
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("admin", admin_cmd))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, process_link))
-    application.add_handler(CallbackQueryHandler(action_handler))
+    # ربط المعالجات
+    bot_app.add_handler(CommandHandler("start", start))
+    bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_url))
+    bot_app.add_handler(CallbackQueryHandler(button_callback))
     
-    print("Shadow Bot 2026 is Alive and Unleashed!")
-    application.run_polling()
+    print(">>> SHADOW SYSTEM 2026: DEPLOYED SUCCESSFULLY <<<")
+    bot_app.run_polling()
