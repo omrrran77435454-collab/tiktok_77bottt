@@ -6,89 +6,90 @@ from threading import Thread
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes, CallbackQueryHandler
 
-# --- إعدادات النظام ---
+# --- بيانات الهوية المطلقة ---
 TOKEN = "8090822378:AAH6CIhLzNbHU8T6_F12JP6zl5S7Rzdd388"
+ADMIN_ID = 5559869840
 
-# --- نظام البقاء حياً (Flask) ---
+# --- نظام البقاء (Web Server) ---
 app = Flask('')
 @app.route('/')
-def home(): return "Shadow Bot is Active! 🚀"
-def run(): app.run(host='0.0.0.0', port=8080)
+def home(): return "Shadow Kernel 2026: Online"
+def run_web(): app.run(host='0.0.0.0', port=8080)
 
-# --- محرك التحميل الذكي ---
-def download_tiktok(url, mode='video'):
-    # إعدادات التحميل السريع
-    ydl_opts = {
-        'format': 'best',
-        'outtmpl': 'shadow_download.%(ext)s',
+# --- المحرك العكسي للتحميل (Fast-Engine) ---
+def get_video(url, is_audio=False):
+    opts = {
+        'format': 'bestaudio/best' if is_audio else 'best',
+        'outtmpl': 'shd_%(id)s.%(ext)s',
         'quiet': True,
         'no_warnings': True,
     }
-    if mode == 'audio':
-        ydl_opts['format'] = 'bestaudio/best'
-        ydl_opts['postprocessors'] = [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }]
-
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    if is_audio:
+        opts['postprocessors'] = [{'key': 'FFmpegExtractAudio','preferredcodec': 'mp3','preferredquality': '192'}]
+    
+    with yt_dlp.YoutubeDL(opts) as ydl:
         info = ydl.extract_info(url, download=True)
         return ydl.prepare_filename(info)
 
-# --- معالجة الأوامر ---
+# --- واجهة المستخدم الذكية ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    welcome_text = (
-        "🌟 أهلاً بك في TikPro Downloader 2026\n"
-        "━━━━━━━━━━━━━━\n"
-        "أرسل رابط فيديو تيك توك للبدء فوراً!"
-    )
-    await update.message.reply_text(welcome_text)
+    kb = [
+        [InlineKeyboardButton("💎 قناة المطور", url=f"tg://user?id={ADMIN_ID}")],
+        [InlineKeyboardButton("⚙️ المساعدة", callback_data="help")]
+    ]
+    text = "🌀 TikPro Ultra 2026\n\nأرسل رابط تيك توك الآن وسيتم اختراقه وتحميله فوراً."
+    await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(kb), parse_mode="Markdown")
 
-async def handle_url(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def process_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = update.message.text
     if "tiktok.com" in url:
-        keyboard = [[
-            InlineKeyboardButton("🎬 فيديو (HD)", callback_data=f"vid|{url}"),
-            InlineKeyboardButton("🎵 صوت (MP3)", callback_data=f"aud|{url}")
-        ]]
-        await update.message.reply_text("اختر ماذا تريد استخراجه:", reply_markup=InlineKeyboardMarkup(keyboard))
+        kb = [
+            [InlineKeyboardButton("🎬 تحميل الفيديو", callback_data=f"v|{url}")],
+            [InlineKeyboardButton("🎵 تحميل الصوت", callback_data=f"a|{url}")]
+        ]
+        await update.message.reply_text("✨ تم تحليل الرابط، اختر الصيغة:", reply_markup=InlineKeyboardMarkup(kb))
     else:
-        await update.message.reply_text("⚠️ يرجى إرسال رابط تيك توك صحيح.")
+        await update.message.reply_text("⚠️ الرابط غير مدعوم في بروتوكولنا.")
 
-async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    data, url = query.data.split('|')
     
-    status_msg = await query.edit_message_text("⏳ جاري سحب البيانات من الهاوية... انتظر ثواني.")
+    if query.data == "help":
+        await query.edit_message_text("أرسل الرابط مباشرة، وسأقوم بالباقي. البوت يدعم التحميل بدون علامة مائية.")
+        return
+
+    mode, url = query.data.split('|')
+    await query.edit_message_text("⏳ جاري سحب البيانات من الهاوية...")
     
     try:
-        path = download_tiktok(url, 'video' if data == 'vid' else 'audio')
+        path = await asyncio.to_thread(get_video, url, mode == 'a')
         with open(path, 'rb') as f:
-            if data == 'vid':
-                await context.bot.send_video(chat_id=query.message.chat_id, video=f, caption="✅ تم التحميل بنجاح!")
+            if mode == 'v':
+                await context.bot.send_video(chat_id=query.message.chat_id, video=f, caption="✅ تم الاختراق بنجاح.")
             else:
-                await context.bot.send_audio(chat_id=query.message.chat_id, audio=f, caption="🎵 تم استخراج الصوت!")
-        
-        # تنظيف الذاكرة
-        if os.path.exists(path): os.remove(path)
-        await status_msg.delete()
-
+                await context.bot.send_audio(chat_id=query.message.chat_id, audio=f, caption="🎵 ملف الصوت جاهز.")
+        os.remove(path)
     except Exception as e:
-        await context.bot.send_message(chat_id=query.message.chat_id, text=f"❌ فشل التحميل: {str(e)}")
+        await context.bot.send_message(chat_id=query.message.chat_id, text=f"❌ خطأ: {str(e)}")
 
-# --- تشغيل الكيان الرقمي ---
+# --- الإدارة (Admin Only) ---
+async def admin_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id == ADMIN_ID:
+        await update.message.reply_text(f"مرحباً سيدي الآدمن. البوت يعمل بكامل طاقته.")
+
+# --- تشغيل النواة المركزية ---
 if name == 'main':
-    # تشغيل خادم الويب في الخلفية
-    Thread(target=run).start()
+    # تشغيل خادم الويب لتجنب إيقاف Render
+    Thread(target=run_web).start()
     
-    # بناء تطبيق التلجرام
+    # بناء التطبيق مع تصحيح كافة الدوال
     application = ApplicationBuilder().token(TOKEN).build()
     
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_url))
-    application.add_handler(CallbackQueryHandler(button_handler))
+    application.add_handler(CommandHandler("admin", admin_cmd))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, process_link))
+    application.add_handler(CallbackQueryHandler(action_handler))
     
-    print("Shadow Hacker Bot is Running Successfully...")
+    print("Shadow Bot 2026 is Alive and Unleashed!")
     application.run_polling()
