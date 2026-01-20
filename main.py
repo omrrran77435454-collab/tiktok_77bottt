@@ -79,7 +79,7 @@ async def admin_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"مرحباً سيدي الآدمن. البوت يعمل بكامل طاقته.")
 
 # --- تشغيل النواة المركزية ---
-if name == 'main':
+if __name__ == '__main__':
     # تشغيل خادم الويب لتجنب إيقاف Render
     Thread(target=run_web).start()
     
