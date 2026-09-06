@@ -1,0 +1,1560 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>60 برومبت احترافي لـ Grok</title><style>/* ============================================================
+   Arabic AI Product Library — shared print theme
+   A4 portrait · RTL · mobile-first reading
+   ============================================================ */
+
+@font-face { font-family: "PlexAr"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 500;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-500.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 600;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-600.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-700.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-700.ttf") format("truetype"); }
+
+:root {
+  --ink:      #17140F;
+  --ink-2:    #3A342C;
+  --muted:    #6E665A;
+  --faint:    #9A9184;
+  --rule:     #E6E0D6;
+  --rule-2:   #D6CEC0;
+  --paper:    #FFFFFF;
+  --soft:     #FBF8F3;
+  --soft-2:   #F5F0E7;
+  --accent:   #4A5568;
+  --accent-d: #2A3242;
+  --accent-w: #8894A6;
+}
+
+/* ---------- page setup ---------- */
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 16mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: "PlexAr"; font-size: 8.5pt; color: var(--faint);
+    margin-bottom: 5mm;
+  }
+  @bottom-left {
+    content: "PromptsArabic · t.me/PromptsArabic";
+    font-family: "PlexMono"; font-size: 6.8pt; color: #B9B1A4;
+    letter-spacing: .02em; margin-bottom: 5mm; direction: ltr;
+  }
+  @bottom-center {
+    content: string(chaptertitle);
+    font-family: "PlexAr"; font-size: 7.6pt; color: #BCB4A7;
+    margin-bottom: 5mm;
+  }
+}
+@page cover  { margin: 0; @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+@page plain  { @bottom-center{content:none} }
+@page :first { @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+
+html { direction: rtl; }
+body {
+  font-family: "PlexAr", sans-serif;
+  font-size: 11.7pt;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  margin: 0;
+  text-align: right;
+  -weasy-hyphens: none;
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover; break-after: page;
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  background: var(--accent-d); color: #fff;
+}
+.cover .field {
+  position: absolute; inset: 0;
+  background: linear-gradient(152deg, var(--accent-d) 0%, var(--accent) 52%, var(--accent-w) 100%);
+}
+.cover .glow {
+  position: absolute; width: 250mm; height: 250mm; right: -70mm; top: -85mm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 62%);
+}
+.cover .grid-lines { position: absolute; inset: 0; }
+.cover .grid-lines i {
+  position: absolute; top: 0; bottom: 0; width: .3mm; background: rgba(255,255,255,.09);
+}
+.cover .arc { position: absolute; border-radius: 50%; border: .5mm solid rgba(255,255,255,.15); }
+
+.cover .topbar {
+  position: absolute; right: 18mm; left: 18mm; top: 20mm;
+  border-bottom: .3mm solid rgba(255,255,255,.28); padding-bottom: 5mm;
+}
+.cover .kicker {
+  font-size: 10pt; font-weight: 600; color: rgba(255,255,255,.92);
+  letter-spacing: .01em; display: inline-block;
+}
+.cover .topbar .mark {
+  float: left; font-family: "PlexMono"; direction: ltr;
+  font-size: 8.4pt; font-weight: 700; letter-spacing: .18em;
+  color: rgba(255,255,255,.72);
+}
+
+.cover .plate { position: absolute; right: 18mm; left: 18mm; top: 74mm; }
+.cover h1 {
+  font-size: 40pt; font-weight: 700; line-height: 1.3;
+  margin: 0 0 7mm 0; color: #fff; letter-spacing: -.012em;
+}
+.cover .rule { width: 22mm; height: 1.2mm; background: rgba(255,255,255,.85);
+  border-radius: 1mm; margin-bottom: 7mm; }
+.cover .sub {
+  font-size: 12.2pt; font-weight: 400; line-height: 1.78;
+  color: rgba(255,255,255,.93); margin: 0; max-width: 162mm;
+}
+.cover .strip { position: absolute; right: 18mm; left: 18mm; bottom: 86mm; }
+.cover .strip .row {
+  border-top: .25mm solid rgba(255,255,255,.22);
+  padding: 2.6mm 0 2.6mm 0; font-size: 9.2pt; color: rgba(255,255,255,.80);
+}
+.cover .strip .row b { font-family: "PlexMono"; direction: ltr; font-weight: 700;
+  font-size: 7.6pt; color: rgba(255,255,255,.55); float: left; padding-top: .8mm;
+  letter-spacing: .1em; }
+
+.cover .promise {
+  position: absolute; right: 18mm; left: 18mm; bottom: 62mm; font-size: 0;
+}
+.cover .promise span {
+  display: inline-block; font-size: 9.4pt; font-weight: 500; color: #fff;
+  border: .3mm solid rgba(255,255,255,.45); border-radius: 2mm;
+  padding: 2mm 4.5mm; background: rgba(255,255,255,.12);
+  margin: 0 0 2.5mm 3mm;
+}
+.cover .baseline {
+  position: absolute; right: 18mm; left: 18mm; bottom: 44mm;
+  border-top: .3mm solid rgba(255,255,255,.28);
+}
+.cover .platform {
+  position: absolute; right: 18mm; bottom: 24mm;
+  font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 15pt; font-weight: 700; color: #fff; letter-spacing: .1em;
+}
+.cover .rights {
+  position: absolute; left: 18mm; bottom: 24mm; text-align: left;
+  font-size: 8.6pt; color: rgba(255,255,255,.86); line-height: 1.55;
+}
+.cover .rights b { font-weight: 600; display: block; }
+.cover .rights span { font-family: "PlexMono"; direction: ltr; font-size: 7.8pt;
+  color: rgba(255,255,255,.72); }
+
+/* ---------- front matter ---------- */
+.frontpage { page: plain; break-after: page; }
+.frontpage h3 { margin: 6mm 0 2mm 0; }
+.frontpage p.lead { margin-bottom: 5mm; font-size: 11.8pt; line-height: 1.85; }
+.frontpage ul.b { margin-bottom: 2mm; }
+.frontpage ul.b > li { margin-bottom: 1.7mm; }
+.fm-title { font-size: 19pt; font-weight: 700; margin: 0 0 8mm 0; color: var(--ink); }
+.fm-rule { height: 1.1mm; width: 26mm; background: var(--accent); margin-bottom: 9mm; border-radius: 1mm; }
+
+.rights-block {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  padding: 9mm 8mm; background: var(--soft); margin: 8mm 0;
+}
+.rights-block .owner { font-size: 15pt; font-weight: 700; margin: 0 0 3mm 0; }
+.rights-block p { margin: 0 0 3mm 0; font-size: 10.6pt; color: var(--ink-2); }
+.rights-block a.tg {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 11pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+.meta-table { width: 100%; border-collapse: collapse; margin-top: 6mm; }
+.meta-table td { padding: 2.6mm 0; border-bottom: .25mm solid var(--rule); font-size: 10.2pt; vertical-align: top; }
+.meta-table td:first-child { width: 44mm; color: var(--muted); font-weight: 500; }
+
+/* ---------- table of contents ---------- */
+.toc { page: plain; break-after: page; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  text-decoration: none; color: var(--ink);
+  display: flex; align-items: baseline; gap: 2.5mm;
+}
+.toc .t { flex: 0 1 auto; }
+.toc .dots {
+  flex: 1 1 auto; min-width: 6mm; align-self: flex-end;
+  border-bottom: .2mm dotted var(--rule-2); transform: translateY(-1.2mm);
+}
+.toc a::after {
+  content: target-counter(attr(href), page);
+  font-family: "PlexMono"; font-size: 8.6pt; color: var(--faint);
+  font-weight: 400; direction: ltr; flex: 0 0 auto;
+}
+.toc .l1 a {
+  font-size: 11.4pt; font-weight: 600;
+  padding: 3mm 0 3mm 0; border-bottom: .25mm solid var(--rule);
+}
+.toc .l1 a::after { color: var(--accent-d); font-weight: 700; font-size: 9pt; }
+.toc .l2 a {
+  font-size: 10pt; font-weight: 400; color: var(--ink-2);
+  padding: 1.8mm 6.5mm 1.8mm 0;
+}
+.toc .l1 .t::before {
+  content: ""; display: inline-block; width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--accent); margin-left: 3.5mm; vertical-align: middle;
+}
+
+/* ---------- headings ---------- */
+h1.chapter {
+  string-set: chaptertitle content();
+  break-before: page;
+  font-size: 23pt; font-weight: 700; line-height: 1.38;
+  margin: 0 0 3mm 0; padding-bottom: 4mm; color: var(--ink);
+  border-bottom: 1mm solid var(--accent);
+}
+h1.chapter .num {
+  display: block; font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 9.5pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .12em; margin-bottom: 3mm;
+}
+h2 {
+  font-size: 15pt; font-weight: 700; line-height: 1.55;
+  margin: 11mm 0 3.5mm 0; color: var(--ink);
+  break-after: avoid; break-inside: avoid;
+}
+h3 {
+  font-size: 12.2pt; font-weight: 600; line-height: 1.6;
+  margin: 7.5mm 0 2.5mm 0; color: var(--ink-2);
+  break-after: avoid; break-inside: avoid;
+}
+h2 + p, h3 + p { margin-top: 0; }
+
+p { margin: 0 0 3.6mm 0; orphans: 2; widows: 2; }
+p.lead { font-size: 12.4pt; color: var(--ink-2); line-height: 1.9; margin-bottom: 6mm; }
+strong { font-weight: 600; }
+
+/* ---------- lists ---------- */
+ul.b, ol.n { margin: 0 0 4.5mm 0; padding: 0 6mm 0 0; }
+ul.b { list-style: none; padding-right: 0; }
+ul.b > li {
+  position: relative; padding-right: 6.5mm; margin-bottom: 2.4mm;
+  orphans: 2; widows: 2;
+}
+ul.b > li::before {
+  content: ""; position: absolute; right: 1.6mm; top: 2.6mm;
+  width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--accent);
+}
+ol.n { padding-right: 7mm; }
+ol.n > li { margin-bottom: 2.4mm; padding-right: 1.5mm; }
+ol.n > li::marker { color: var(--accent-d); font-weight: 600; }
+
+/* ---------- code ---------- */
+code.inline {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 9.2pt; background: var(--soft-2); color: var(--ink);
+  padding: .5mm 1.4mm; border-radius: 1mm; border: .2mm solid var(--rule);
+}
+pre.code {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate; text-align: left;
+  font-size: 9.2pt; line-height: 1.62; color: #F3EFE8; background: #211D18;
+  padding: 4.5mm 5mm; border-radius: 2.5mm; margin: 0 0 5mm 0;
+  white-space: pre-wrap; word-break: break-word;
+  break-inside: avoid;
+}
+pre.code .cm { color: #A79C8C; }
+.codewrap { margin-bottom: 5mm; break-inside: avoid; }
+.codewrap .caption {
+  font-size: 8.6pt; color: var(--muted); margin-bottom: 1.6mm; font-weight: 500;
+}
+.codewrap pre.code { margin-bottom: 0; }
+
+/* ---------- callouts ---------- */
+.callout {
+  border-right: 1.1mm solid var(--accent);
+  background: var(--soft); border-radius: 0 2.5mm 2.5mm 0;
+  padding: 4.5mm 5mm 3mm 5mm; margin: 0 0 5mm 0;
+  break-inside: avoid;
+}
+.callout .t { font-weight: 700; font-size: 10.4pt; margin-bottom: 1.8mm; }
+.callout p:last-child { margin-bottom: 1.5mm; }
+.callout.warn { border-right-color: #B4472F; background: #FDF4F1; }
+.callout.warn .t { color: #91361F; }
+.callout.tip  { border-right-color: #2F7D62; background: #F1F8F4; }
+.callout.tip .t { color: #1F5B46; }
+
+/* ---------- tables ---------- */
+table.data {
+  width: 100%; border-collapse: collapse; margin: 0 0 5mm 0;
+  font-size: 10pt; break-inside: avoid; direction: rtl;
+}
+table.data th {
+  background: var(--soft-2); font-weight: 600; text-align: right;
+  padding: 2.8mm 3mm; border-bottom: .4mm solid var(--rule-2); color: var(--ink);
+}
+table.data td {
+  padding: 2.6mm 3mm; border-bottom: .25mm solid var(--rule);
+  vertical-align: top; text-align: right; color: var(--ink-2);
+}
+table.data tr:nth-child(even) td { background: #FCFAF6; }
+
+/* ---------- prompt card ---------- */
+.pcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  margin: 0 0 5mm 0; overflow: hidden;
+}
+.pcard > .head {
+  background: var(--soft-2); padding: 3mm 4.5mm 2.6mm 4.5mm;
+  border-bottom: .25mm solid var(--rule-2);
+  break-after: avoid;
+}
+.pcard .pn {
+  font-family: "PlexMono"; direction: ltr; font-size: 8.4pt; font-weight: 700;
+  color: #FFFFFF; background: var(--accent-d); border-radius: 1.5mm;
+  padding: .8mm 2.4mm; letter-spacing: .06em; display: inline-block;
+  margin-left: 3mm; vertical-align: 1mm;
+}
+.pcard .pt { font-size: 13pt; font-weight: 700; display: inline; }
+.pcard .cat {
+  display: block; font-size: 8.4pt; color: var(--muted); margin-top: 1.4mm; font-weight: 500;
+}
+.pcard > .body { padding: 3.4mm 4.5mm .5mm 4.5mm; }
+.pcard .row { margin-bottom: 2.4mm; }
+.pcard .row > .k {
+  font-size: 9pt; font-weight: 700; color: var(--accent-d);
+  margin-bottom: .8mm;
+}
+.pcard .row > .v { font-size: 10.4pt; color: var(--ink-2); line-height: 1.68; }
+.pcard .row ul.b { margin-bottom: 0; }
+.pcard .row ul.b > li { font-size: 10.2pt; margin-bottom: .9mm; }
+
+.promptbox {
+  background: var(--soft); border: .3mm dashed var(--rule-2);
+  border-radius: 2.5mm; padding: 3.4mm 4mm; margin: 0 0 3mm 0;
+  break-inside: avoid;
+}
+.promptbox .lbl {
+  font-size: 8.4pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .01em; margin-bottom: 1.8mm;
+  padding-bottom: 1.2mm; border-bottom: .25mm solid var(--rule-2);
+}
+.promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox.filebox .lbl { font-family: "PlexMono"; direction: ltr; text-align: left;
+  font-size: 8pt; letter-spacing: .02em; }
+.promptbox .txt {
+  font-size: 10.2pt; line-height: 1.66; color: var(--ink); white-space: pre-wrap;
+}
+
+/* ---------- misc blocks ---------- */
+.divider { height: .25mm; background: var(--rule); margin: 8mm 0; border: 0; }
+.spacer { height: 4mm; }
+.sectionlead {
+  background: var(--soft); border-radius: 3mm; padding: 5mm 6mm; margin: 0 0 7mm 0;
+}
+.sectionlead p { margin: 0; font-size: 10.8pt; color: var(--ink-2); }
+
+.steps { counter-reset: st; margin: 0 0 5mm 0; padding: 0; list-style: none; }
+.steps > li {
+  counter-increment: st; position: relative; padding-right: 11mm;
+  margin-bottom: 4mm; break-inside: avoid;
+}
+.steps > li::before {
+  content: counter(st); position: absolute; right: 0; top: .4mm;
+  width: 7.5mm; height: 7.5mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-family: "PlexMono"; font-size: 8.6pt; font-weight: 700;
+  text-align: center; line-height: 7.5mm;
+}
+.steps > li .sh { font-weight: 600; display: block; margin-bottom: .8mm; }
+
+.kv { width: 100%; border-collapse: collapse; margin: 0 0 5mm 0; font-size: 10pt; }
+.kv td { padding: 2.4mm 0; border-bottom: .25mm solid var(--rule); vertical-align: top; }
+.kv td:first-child { width: 40mm; color: var(--muted); font-weight: 500; padding-left: 4mm; }
+
+/* ---------- closing page ---------- */
+.endpage { break-before: page; }
+.endcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm; background: var(--soft);
+  padding: 8mm; margin-top: 6mm; text-align: center;
+}
+.endcard .h { font-size: 15pt; font-weight: 700; margin-bottom: 3mm; }
+.endcard p { font-size: 10.6pt; color: var(--ink-2); }
+.endcard a {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 12pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+
+/* ---------- chapter opener index ---------- */
+.chindex { margin: 0 0 6mm 0; }
+.chindex .row {
+  display: flex; align-items: baseline; gap: 3mm;
+  border-bottom: .25mm solid var(--rule); padding: 2.2mm 0;
+  font-size: 10.4pt;
+}
+.chindex .row b {
+  font-family: "PlexMono"; direction: ltr; font-size: 8pt; font-weight: 700;
+  color: #fff; background: var(--accent-d); border-radius: 1.4mm;
+  padding: .7mm 2mm; flex: 0 0 auto;
+}
+.chindex .row span { flex: 1 1 auto; }
+</style></head><body><section class="cover">
+  <div class="field"></div>
+  <div class="glow"></div>
+  <div class="grid-lines"><i style="right:30mm"></i><i style="right:66mm"></i><i style="right:102mm"></i><i style="right:138mm"></i><i style="right:174mm"></i></div>
+  <div class="arc" style="width:196mm;height:196mm;right:-56mm;top:-64mm"></div>
+  <div class="arc" style="width:128mm;height:128mm;left:-46mm;bottom:-40mm"></div>
+  <div class="topbar">
+    <span class="mark">PROMPTS ARABIC</span>
+    <span class="kicker">مكتبة برومبتات بالعربية</span>
+  </div>
+  <div class="plate">
+    <h1>60 برومبت احترافي لـ Grok</h1>
+    <div class="rule"></div>
+    <p class="sub">مبنية على نقاط قوته: الرصد اللحظي وتحليل النقاش والتحقق من المصادر والصور والفيديو والصوت والعمل التقني</p>
+  </div>
+  <div class="strip"><div class="row"><b>01</b>الرصد اللحظي وتحليل النقاش</div><div class="row"><b>02</b>التحقق والبحث العميق والسوق</div><div class="row"><b>03</b>الصور والفيديو والصوت</div><div class="row"><b>04</b>العمل التقني والأتمتة والتعلم</div></div>
+  <div class="promise"><span>60 برومبت</span><span>12 مجالا</span><span>محدث في سبتمبر 2026</span></div>
+  <div class="baseline"></div>
+  <div class="platform">GROK</div>
+  <div class="rights"><b>برومبتات عربية</b><span>t.me/PromptsArabic</span></div>
+</section>
+<section class="frontpage">
+  <div class="fm-title">حقوق النشر</div><div class="fm-rule"></div>
+  <div class="rights-block">
+    <p class="owner">برومبتات عربية</p>
+    <p>جميع الحقوق محفوظة لقناة <strong>برومبتات عربية</strong>.</p>
+    <p>هذا المنتج مخصص للاستخدام الشخصي للمشتري. لا يجوز إعادة نشره أو بيعه
+       أو توزيعه أو اقتباس أجزاء منه لأغراض تجارية دون إذن كتابي من المالك.</p>
+    <p>القناة الرسمية: <a class="tg" href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+  <table class="meta-table">
+    <tr><td>اسم المنتج</td><td>60 برومبت احترافي لـ Grok</td></tr>
+    <tr><td>الإصدار</td><td>الإصدار الأول</td></tr>
+    <tr><td>اللغة</td><td>العربية</td></tr>
+    <tr><td>المقاس</td><td>A4 عمودي — مهيأ للقراءة على الهاتف</td></tr>
+    <tr><td>تمت مراجعة معلومات وميزات هذا الدليل حتى تاريخ</td><td>6 سبتمبر 2026</td></tr>
+    <tr><td>مصادر التحقق</td><td>x.ai و docs.x.ai — صفحات المنتج والتوثيق الرسمية</td></tr>
+  </table>
+  <div class="callout"><div class="t">ملاحظة مهمة عن تاريخ المحتوى</div>
+    <p>منصات الذكاء الاصطناعي تتغير بسرعة. كل ميزة مذكورة هنا تم التحقق منها من
+       المصدر الرسمي بتاريخ 6 سبتمبر 2026. إذا مر وقت طويل على هذا التاريخ،
+       راجع الصفحة الرسمية للميزة قبل الاعتماد عليها في عمل حساس.</p>
+  </div>
+</section><section class="frontpage">
+  <div class="fm-title">عن هذا الدليل</div><div class="fm-rule"></div>
+  <p class="lead">ستون برومبتا مبنية على ما يميز Grok وحده: الوصول إلى المعلومة الحية، وتحليل ما يقال، والبحث العميق في المواضيع المتعارضة، والتوليد البصري، والصوت، والعمل التقني. لا يوجد هنا برومبت منقول من مكتبة أداة أخرى، ولا برومبتان يؤديان الوظيفة نفسها. وفي كل برومبت يعتمد على معلومة حية ستجد شرطا صريحا يفصل ما ورد في مصدر عما استنتج، لأن هذه هي الحدود الحقيقية للأداة.</p>
+  <h3>لمن هذا الدليل</h3><ul class="b"><li>من يتابع مجالا سريع التغير ويحتاج المعلومة الحية</li><li>صناع المحتوى الذين يعملون على الأحداث الجارية</li><li>الباحثون عن التحقق وتتبع المصادر</li><li>من يستخدم التوليد البصري في عمله</li><li>المطورون في البحث التقني ومتابعة التغييرات</li></ul>
+  <h3>ماذا ستتعلم</h3><ul class="b"><li>ستون برومبتا موزعة على اثني عشر مجالا، كل واحد بوظيفة مستقلة</li><li>كيف تسأل عن معلومة حية بأفق زمني ومصدر ونوع مصدر</li><li>كيف تفصل ما يقال عما ثبت، وهو أهم مهارة مع هذه الأداة</li><li>كيف تكتب وصفا بصريا يعطي ما في ذهنك لا شيئا عاما</li><li>كيف تبني بروتوكول تحقق شخصيا قبل النشر</li></ul>
+</section>
+<section class="frontpage">
+  <div class="fm-title">قبل أن تبدأ</div><div class="fm-rule"></div>
+  <h3>المتطلبات</h3><ul class="b"><li>حساب على Grok — بعض البرومبتات يفترض قدرات قد تختلف بحسب خطتك ومنصتك</li><li>موضوع حقيقي تتابعه لتجربة فصول الرصد والتحليل</li><li>الاستعداد لفتح المصادر والتحقق منها بنفسك</li></ul>
+  <h3>كيف تستخدم هذا الدليل</h3><ul class="b"><li>افتح الفصل الذي يخص مهمتك اليوم، ولا تقرأ المكتبة من أولها لآخرها</li><li>حدد الأفق الزمني في كل برومبت يعتمد على معلومة حية</li><li>عبئ كل متغير بمحتوى محدد، ولا تترك متغيرا فارغا</li><li>افتح مصدرا واحدا على الأقل من كل مخرج قبل استخدامه</li><li>احتفظ بالنسخة التي عدلتها — هي أثمن من النسخة الأصلية</li></ul>
+  <div class="callout tip"><div class="t">طريقة القراءة الموصى بها</div>
+    <p>لا تقرأ الدليل كله دفعة واحدة. اقرأ فصلا واحدا، ثم نفّذ تمرينه على مهمة حقيقية
+       من عملك، ثم انتقل. أربعة فصول مطبَّقة أفضل من أربعة عشر فصلا مقروءا.</p></div>
+</section>
+<section class="toc"><div class="fm-title">الفهرس</div><div class="fm-rule"></div><ul><li class="l1"><a href="#ch1"><span class="t">كيف تستخدم هذه المكتبة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s1"><span class="t">بنية كل بطاقة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s3"><span class="t">ثلاث قواعد تتكرر في كل برومبت</span><span class="dots"></span></a></li><li class="l1"><a href="#ch2"><span class="t">الرصد اللحظي</span><span class="dots"></span></a></li><li class="l1"><a href="#ch3"><span class="t">تحليل النقاش</span><span class="dots"></span></a></li><li class="l1"><a href="#ch4"><span class="t">التحقق وتتبع المصادر</span><span class="dots"></span></a></li><li class="l1"><a href="#ch5"><span class="t">البحث العميق للقرارات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch6"><span class="t">المنافسون والسوق</span><span class="dots"></span></a></li><li class="l1"><a href="#ch7"><span class="t">المحتوى من اللحظة</span><span class="dots"></span></a></li><li class="l1"><a href="#ch8"><span class="t">الصور</span><span class="dots"></span></a></li><li class="l1"><a href="#ch9"><span class="t">الفيديو</span><span class="dots"></span></a></li><li class="l1"><a href="#ch10"><span class="t">الصوت</span><span class="dots"></span></a></li><li class="l1"><a href="#ch11"><span class="t">العمل التقني</span><span class="dots"></span></a></li><li class="l1"><a href="#ch12"><span class="t">الأتمتة والزملاء الرقميين</span><span class="dots"></span></a></li><li class="l1"><a href="#ch13"><span class="t">التعلم والتحليل الشخصي</span><span class="dots"></span></a></li></ul></section>
+<h1 class="chapter" id="ch1"><span class="num">المقدمة</span>كيف تستخدم هذه المكتبة</h1><p class="lead">هذه المكتبة مبنية على ما يميز Grok تحديدا: الوصول إلى ما يقال الآن على الويب وعلى منصة X، والبحث العميق، والتوليد البصري، والصوت، وأدوات العمل التقني. ولهذا لن تجد فيها برومبتات عامة تصلح لأي أداة.</p>
+<h2 id="ch1-s1">بنية كل بطاقة</h2>
+<table class="kv"><tr><td>متى تستخدمه</td><td>الموقف الذي يصلح له.</td></tr><tr><td>ماذا ستحصل عليه</td><td>شكل المخرج المتوقع.</td></tr><tr><td>جهز هذه المعلومات</td><td>ما يجب أن يكون جاهزا قبل الإرسال.</td></tr><tr><td>البرومبت الجاهز</td><td>النص القابل للنسخ، وما بين قوسين تستبدله بمحتواك.</td></tr><tr><td>مثال استخدام</td><td>حالة واقعية واحدة.</td></tr><tr><td>النتيجة المتوقعة</td><td>ما تراه بعد الإرسال.</td></tr><tr><td>ملاحظة تحسين</td><td>إضافة اختيارية عند بعض البرومبتات.</td></tr></table>
+<h2 id="ch1-s3">ثلاث قواعد تتكرر في كل برومبت</h2>
+<ol class="steps"><li><span class="sh">حدد الأفق الزمني</span>«خلال آخر ثلاثين يوما» أو «منذ التاريخ الفلاني». بلا أفق زمني يختلط القديم بالحديث.</li><li><span class="sh">اطلب المصدر ونوعه</span>لا يكفي «اذكر المصدر». اطلب: رسمي أم إعلامي أم حساب فرد، وبأي تاريخ.</li><li><span class="sh">افصل الواقعة عن الاستنتاج</span>ستجد هذا الشرط في أغلب برومبتات هذه المكتبة، وهو أهم ما فيها.</li></ol>
+<div class="callout warn"><div class="t">القاعدة الحاكمة</div><p>أقوى ما في هذه الأداة هو وصولها إلى ما يقال الآن. وهذه القوة نفسها هي مصدر خطرها: ما يقال الآن ليس بالضرورة صحيحا، وانتشار الادعاء ليس دليلا عليه. افتح المصدر الأصلي بنفسك قبل أي نشر أو قرار. البرومبت رقم 60 مخصص لبناء بروتوكول تحقق شخصي لك.</p></div>
+<div class="callout note"><div class="t">ملاحظة عن توفر الميزات</div><p>بعض ما تفترضه هذه البرومبتات — البحث العميق، والتوليد البصري، والصوت، وأدوات البناء — يختلف توفره بحسب خطتك ومنصتك، وبعضه في بيتا أو في طرح تدريجي. إذا لم تجد قدرة يفترضها برومبت، افتح صفحتها الرسمية للتأكد.</p></div>
+<h1 class="chapter" id="ch2"><span class="num">CHAPTER 01</span>الرصد اللحظي</h1><div class="sectionlead"><p>خمسة برومبتات تستفيد من الوصول إلى المعلومة الحية: رصد الإشارات المبكرة، والمتابعة بلا تكرار، ورصد ردود الفعل، وتتبع موضوع اختفى، وبناء قائمة مراقبة.</p></div><div class="chindex"><div class="row"><b>01</b><span>رصد إشارة مبكرة لتغير</span></div><div class="row"><b>02</b><span>متابعة موضوع بلا تكرار</span></div><div class="row"><b>03</b><span>رصد رد فعل على إعلان</span></div><div class="row"><b>04</b><span>تتبع مصير موضوع اختفى</span></div><div class="row"><b>05</b><span>بناء قائمة مراقبة لمجال</span></div></div><div class="pcard"><div class="head"><span class="pn">01</span><span class="pt">رصد إشارة مبكرة لتغير</span><span class="cat">الرصد اللحظي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تريد أن تعرف أن شيئا يتغير قبل أن يصبح خبرا.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">إشارات مبكرة مصنفة بقوتها، لا أخبارا منشورة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>ما تعتبره إشارة</li><li>الأفق الزمني</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابحث عن إشارات مبكرة على تغير قادم في
+[الموضوع]
+
+الأفق الزمني:
+[الفترة]
+ما أعتبره إشارة:
+[تعريف الإشارة]
+
+المطلوب:
+أولا. إشارات مبكرة رصدتها، مرتبة من الأقوى، مع مصدر وتاريخ لكل واحدة
+ثانيا. لكل إشارة: هل هي حدث واحد أم نمط متكرر
+ثالثا. ما الذي يجب أن يحدث بعدها ليتأكد التغير
+رابعا. إشارة مضادة: ما يدل على أن شيئا لن يتغير
+خامسا. متى أعيد الرصد لأتأكد
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">رصد تغير في سياسة منصة تعتمد عليها في عملك.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">إشارات مصنفة بقوتها، مع ما يؤكدها وما ينفيها وموعد إعادة الرصد.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">بند «الإشارة المضادة» يمنعك من بناء قرار على نمط لا وجود له.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">02</span><span class="pt">متابعة موضوع بلا تكرار</span><span class="cat">الرصد اللحظي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عند متابعة موضوع دوريا وتريد الجديد فقط لا إعادة ما قرأته.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تقريرا يحتوي ما لم تعرفه بعد فقط.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>ما تعرفه بالفعل</li><li>الفترة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تابع [الموضوع] وأعطني الجديد فقط.
+
+ما أعرفه بالفعل:
+[المعرفة الحالية]
+الفترة:
+[الفترة]
+
+المطلوب:
+أولا. ما هو جديد فعلا ولم يرد في معرفتي أعلاه
+ثانيا. ما يناقض شيئا في معرفتي، مع الدليل
+ثالثا. ما يؤكد شيئا كنت غير متأكد منه
+رابعا. ما زال معلقا ولم يحسم
+
+القواعد:
+لا تعد شرح ما ذكرته في معرفتي الحالية
+لكل بند: المصدر ونوعه وتاريخه
+إذا لم يجد شيء، قل ذلك صراحة</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">متابعة أسبوعية لموضوع تكتب عنه.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">أربعة أقسام خالية من التكرار.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">03</span><span class="pt">رصد رد فعل على إعلان</span><span class="cat">الرصد اللحظي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">بعد إعلان أو إطلاق، لمعرفة كيف استقبل فعلا لا كيف قدم.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">صورة عن ردود الفعل مصنفة، مع فصل الحماس عن النقد الجوهري.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الإعلان</li><li>منذ متى</li><li>ما يهمك معرفته</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ارصد ردود الفعل على
+[الإعلان]
+
+منذ:
+[التاريخ]
+ما يهمني:
+[محل الاهتمام]
+
+المطلوب:
+أولا. المواقف الرئيسية من الإعلان، مع حجم كل موقف تقريبا
+ثانيا. أقوى نقد جوهري، لا الانطباعات العامة
+ثالثا. أقوى دفاع
+رابعا. سوء فهم شائع للإعلان، وما الصحيح
+خامسا. سؤال يطرحه كثيرون ولم تجب عنه الجهة المعلنة
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">بعد إطلاق ميزة في أداة تستخدمها.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">خمسة أقسام تفصل النقد الجوهري عن الضجيج.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">04</span><span class="pt">تتبع مصير موضوع اختفى</span><span class="cat">الرصد اللحظي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما يختفي موضوع من التداول ولا تعرف هل حسم أم نسي.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تتبعا لما آل إليه الموضوع، مع سبب اختفائه.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>آخر ما تعرفه</li><li>متى اختفى</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تتبع ما آل إليه
+[الموضوع]
+
+آخر ما أعرفه:
+[آخر معلومة]
+اختفى من التداول تقريبا في:
+[التاريخ]
+
+المطلوب:
+أولا. ما حدث بعد آخر ما أعرفه، بالترتيب الزمني
+ثانيا. هل حسم الموضوع، أم توقف، أم ما زال جاريا بهدوء
+ثالثا. إن حسم: كيف، ومتى، وبأي مصدر
+رابعا. إن لم يحسم: ما الذي أوقفه
+خامسا. من هي الجهة التي يجب متابعتها لمعرفة النتيجة
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قضية أو مشروع أو منتج توقف الحديث عنه فجأة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تتبع زمني ينتهي بمصير الموضوع أو بمن تتابعه.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">05</span><span class="pt">بناء قائمة مراقبة لمجال</span><span class="cat">الرصد اللحظي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">في بداية متابعة مجال، لتحدد ماذا تراقب بدل متابعة كل شيء.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">قائمة مؤشرات محددة تراقبها بدل قائمة حسابات تتابعها.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المجال</li><li>قرارك المرتبط</li><li>وقتك الأسبوعي</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابن لي قائمة مراقبة لـ
+[المجال]
+
+القرار الذي أراقب من أجله:
+[القرار]
+وقتي الأسبوعي للمتابعة:
+[الوقت]
+
+المطلوب:
+أولا. خمسة مؤشرات محددة تدل على تغير حقيقي في هذا المجال
+ثانيا. لكل مؤشر: أين يظهر أولا، وكم مرة أراجعه
+ثالثا. ما هو ضجيج يبدو مؤشرا وليس كذلك
+رابعا. عتبة التنبيه: ما القيمة أو الحدث الذي يستدعي انتباهي
+خامسا. جدول متابعة يناسب وقتي المتاح
+
+القاعدة: مؤشر لا يغير قراري لا يستحق المراقبة. احذفه.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">بداية متابعة سوق أدوات تفكر في دخوله.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">خمسة مؤشرات بعتبات تنبيه وجدول يناسب وقتك.</div></div></div></div>
+<h1 class="chapter" id="ch3"><span class="num">CHAPTER 02</span>تحليل النقاش</h1><div class="sectionlead"><p>خمسة برومبتات لفهم ما يقال: خريطة المواقف، وأسئلة الجمهور الحقيقية، وقياس تحول الرأي، وكشف الانتشار المصطنع، وتلخيص نقاش إلى موقف قابل للنشر.</p></div><div class="chindex"><div class="row"><b>06</b><span>خريطة مواقف في نقاش مستقطب</span></div><div class="row"><b>07</b><span>استخراج أسئلة الجمهور الحقيقية</span></div><div class="row"><b>08</b><span>قياس تحول موقف عبر الزمن</span></div><div class="row"><b>09</b><span>كشف حملة منظمة أو انتشار مصطنع</span></div><div class="row"><b>10</b><span>تلخيص نقاش طويل إلى موقف قابل للنشر</span></div></div><div class="pcard"><div class="head"><span class="pn">06</span><span class="pt">خريطة مواقف في نقاش مستقطب</span><span class="cat">تحليل النقاش</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما ينقسم النقاش إلى معسكرات وتريد فهم البنية لا الانحياز.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">خريطة للمواقف بمنطق كل واحد، بلا ترجيح.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>المواقف التي رأيتها</li><li>ما يهمك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ارسم خريطة المواقف في النقاش حول
+[الموضوع]
+
+لكل موقف:
+أولا. ما يقوله بالضبط، بصياغته هو لا بصياغة خصومه
+ثانيا. الافتراض غير المعلن الذي يقوم عليه
+ثالثا. أقوى حجة له
+رابعا. أضعف نقطة فيه
+خامسا. من يتبناه غالبا، ولماذا يهمه
+
+ثم:
+أين يتفق الجميع فعلا رغم ظهور الخلاف
+هل الخلاف حقيقي أم في تعريف مصطلح
+موقف غائب عن النقاش ويستحق الطرح
+
+لا ترجح موقفا. اعرض البنية فقط.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">نقاش تقني مستقطب حول تقنية أو منهجية.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">خريطة مواقف بمنطق كل واحد، ونقاط الاتفاق الخفية.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">بند «هل الخلاف في تعريف مصطلح» يحل نسبة كبيرة من النقاشات.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">07</span><span class="pt">استخراج أسئلة الجمهور الحقيقية</span><span class="cat">تحليل النقاش</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل إنتاج محتوى، لمعرفة ما يسأل عنه الناس فعلا لا ما تظنه.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">أسئلة حقيقية مرتبة بالتكرار، بصياغة سائليها.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>الجمهور</li><li>أين يتحدثون</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابحث عن الأسئلة التي يطرحها الناس فعلا حول
+[الموضوع]
+
+الجمهور الذي يهمني:
+[الجمهور]
+
+المطلوب:
+أولا. الأسئلة مرتبة بالتكرار، بصياغة سائليها لا بصياغتك
+ثانيا. الأسئلة التي تتكرر ولا تجد إجابة واضحة
+ثالثا. الأسئلة التي تدل على سوء فهم شائع
+رابعا. سؤال لا يطرحه أحد وكان يجب أن يطرح
+خامسا. الفرق بين ما يسأله المبتدئون وما يسأله المتقدمون
+
+القواعد:
+انقل الصياغة الحقيقية لا صياغة محسنة
+لا تخترع سؤالا لم تجده
+اذكر تقديرا لحجم تكرار كل سؤال</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل إعداد مادة تعليمية عن أداة أو مفهوم.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">أسئلة حقيقية بصياغة أصحابها، مرتبة بالتكرار.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">08</span><span class="pt">قياس تحول موقف عبر الزمن</span><span class="cat">تحليل النقاش</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تشعر أن الرأي السائد في موضوع تغير وتريد التأكد.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">مقارنة بين الموقف السائد في فترتين، مع سبب التحول.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>الفترتان</li><li>ما تظنه تغير</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">قارن الموقف السائد من [الموضوع] بين فترتين.
+
+الفترة الأولى:
+[الفترة الأولى]
+الفترة الثانية:
+[الفترة الثانية]
+
+المطلوب:
+أولا. الموقف السائد في كل فترة، بأمثلة من كل واحدة
+ثانيا. هل تغير فعلا أم تغير من يتحدث فقط
+ثالثا. الحدث أو المعلومة التي سبقت التحول
+رابعا. من غير موقفه علنا، ومن ثبت
+خامسا. هل التحول مستقر أم ما زال متأرجحا
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">تحول الرأي في مجتمع تقني تجاه أداة أو ممارسة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">مقارنة بين فترتين بأمثلة، مع سبب التحول.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">09</span><span class="pt">كشف حملة منظمة أو انتشار مصطنع</span><span class="cat">تحليل النقاش</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما ينتشر موضوع بسرعة غير طبيعية وتشك في طبيعة الانتشار.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">مؤشرات على طبيعة الانتشار، بلا اتهام بلا دليل.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>ما أثار شكك</li><li>الفترة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">افحص طبيعة انتشار
+[الموضوع]
+
+ما أثار شكي:
+[سبب الشك]
+الفترة:
+[الفترة]
+
+افحص:
+أولا. متى بدأ الانتشار بالضبط، ومن أين
+ثانيا. هل الصياغات متطابقة أم متنوعة
+ثالثا. هل الانتشار متدرج أم مفاجئ
+رابعا. طبيعة الحسابات: قديمة أم حديثة، متنوعة الاهتمامات أم أحادية
+خامسا. هل يوجد حدث حقيقي يفسر الانتشار
+
+ثم حكم محافظ:
+ما الذي تدل عليه المؤشرات فعلا
+ما الذي لا تستطيع الجزم به
+
+القواعد:
+لا تتهم جهة أو شخصا بلا دليل مباشر
+ميز بين انتشار سريع طبيعي وانتشار منظم
+إذا كانت المؤشرات غير حاسمة، قل ذلك</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">موضوع انتشر فجأة بصياغات متشابهة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">مؤشرات موصوفة وحكم محافظ، بلا اتهامات.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">الحكم المحافظ هنا ليس تهربا — الاتهام الخاطئ أسوأ من عدم الحسم.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">10</span><span class="pt">تلخيص نقاش طويل إلى موقف قابل للنشر</span><span class="cat">تحليل النقاش</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">بعد متابعة نقاش ممتد وتريد نشر موقف مبني عليه.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">خلاصة تصلح للنشر، مع ما يجب التحفظ عليه.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>النقاش</li><li>موقفك المبدئي</li><li>جمهورك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">لخص النقاش حول [الموضوع] في صيغة أستطيع نشرها.
+
+موقفي المبدئي:
+[موقفي]
+جمهوري:
+[الجمهور]
+
+المطلوب:
+أولا. خلاصة النقاش في خمس نقاط محايدة
+ثانيا. ما هو مثبت وما هو محل خلاف، بوضوح
+ثالثا. أين يصمد موقفي المبدئي وأين لا يصمد
+رابعا. أقوى اعتراض سيواجهني إن نشرت موقفي
+خامسا. ما يجب أن أتحفظ عليه صراحة عند النشر
+سادسا. صياغة مقترحة لموقفي، تعترف بحدودها
+
+القواعد:
+لا تجاملني في تقييم موقفي
+لا تنشر ما لا يمكن إسناده</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل نشر رأي في موضوع تقني متنازع عليه.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">خلاصة قابلة للنشر مع تحفظات صريحة وصياغة مقترحة.</div></div></div></div>
+<h1 class="chapter" id="ch4"><span class="num">CHAPTER 03</span>التحقق وتتبع المصادر</h1><div class="sectionlead"><p>خمسة برومبتات تحمي مصداقيتك: تتبع ادعاء إلى مصدره، وفحص اقتباس، والتحقق من مادة بصرية، ومقارنة التغطية، وفحص رقم قبل الاستشهاد.</p></div><div class="chindex"><div class="row"><b>11</b><span>تتبع ادعاء إلى مصدره الأول</span></div><div class="row"><b>12</b><span>فحص اقتباس منسوب إلى شخص</span></div><div class="row"><b>13</b><span>التحقق من صورة أو مقطع</span></div><div class="row"><b>14</b><span>مقارنة تغطية حدث بين مصادر</span></div><div class="row"><b>15</b><span>فحص رقم قبل الاستشهاد به</span></div></div><div class="pcard"><div class="head"><span class="pn">11</span><span class="pt">تتبع ادعاء إلى مصدره الأول</span><span class="cat">التحقق وتتبع المصادر</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما ينتشر ادعاء وتريد معرفة من قاله أولا وبأي صياغة.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">سلسلة نقل من المصدر الأول إلى الصيغة المتداولة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الادعاء</li><li>أين رأيته</li><li>ما يهمك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تتبع هذا الادعاء إلى مصدره الأول:
+[الادعاء]
+
+أين رأيته:
+[المصدر الذي وصلك منه]
+
+المطلوب:
+أولا. أقدم ظهور تستطيع الوصول إليه، بتاريخه ومصدره
+ثانيا. الصياغة الأصلية حرفيا
+ثالثا. كيف تغيرت الصياغة عبر النقل، خطوة خطوة
+رابعا. أين دخل التحريف أو المبالغة، وفي أي نقل
+خامسا. هل المصدر الأول جهة رسمية أم فرد أم مجهول
+سادسا. هل صدر نفي أو تصحيح لاحق
+
+القواعد:
+لا تعتبر أقدم ما وجدته هو الأصل بالضرورة، وقل إن كان بحثك غير حاسم
+إذا لم تصل إلى مصدر أول، قل ذلك صراحة</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">رقم أو اقتباس منتشر تريد الاستشهاد به.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">سلسلة نقل تظهر أين دخل التحريف، إن دخل.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">12</span><span class="pt">فحص اقتباس منسوب إلى شخص</span><span class="cat">التحقق وتتبع المصادر</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل نقل اقتباس منسوب إلى شخصية معروفة.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">حكما على صحة النسبة، مع الصياغة الأصلية إن وجدت.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الاقتباس</li><li>المنسوب إليه</li><li>أين رأيته</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تحقق من هذا الاقتباس:
+[الاقتباس]
+
+المنسوب إليه:
+[الشخص]
+أين رأيته:
+[المصدر]
+
+المطلوب:
+أولا. هل قاله فعلا: نعم، أو لا، أو محرف، أو لا يمكن التحقق
+ثانيا. إن قاله: أين ومتى وبأي صياغة حرفية
+ثالثا. السياق الذي قيل فيه، وهل يغير المعنى
+رابعا. إن كان محرفا: ما الفرق بين الأصل والمتداول
+خامسا. إن كان منسوبا خطأ: من قاله فعلا إن أمكن
+
+القواعد:
+لا تحكم بالصحة لأن الاقتباس يبدو متسقا مع الشخص
+غياب الدليل على القول ليس دليلا على النفي — فرق بين الحالتين</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">اقتباس منسوب إلى مسؤول في شركة تقنية.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">حكم من خمسة أقسام مع الصياغة الأصلية وسياقها.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">13</span><span class="pt">التحقق من صورة أو مقطع</span><span class="cat">التحقق وتتبع المصادر</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل مشاركة صورة أو مقطع ينسب إلى حدث معين.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">فحصا لمصدر المادة وسياقها وتاريخها.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الصورة أو وصفها</li><li>ما يقال إنها تظهره</li><li>أين رأيتها</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تحقق من هذه المادة البصرية.
+
+ما يقال إنها تظهره:
+[الادعاء]
+أين رأيتها:
+[المصدر]
+
+المطلوب:
+أولا. هل ظهرت هذه المادة سابقا في سياق مختلف
+ثانيا. أقدم ظهور تستطيع الوصول إليه بتاريخه
+ثالثا. هل السياق المذكور يطابق ما تدل عليه المادة
+رابعا. مؤشرات على التعديل أو التوليد إن وجدت
+خامسا. هل صدر نفي أو تصحيح
+
+القواعد:
+اعتمد على البحث لا على تحليل بصري وحده
+إذا لم تستطع التحقق، قل ذلك ولا تخمن
+لا تحكم بأن مادة مولدة لمجرد جودتها العالية</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">صورة منتشرة تنسب إلى حدث حديث.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">فحص سياق وتاريخ مع حكم صريح أو إقرار بعدم القدرة على التحقق.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">أكثر التضليل البصري ليس تزييفا، بل مادة حقيقية في سياق خاطئ.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">14</span><span class="pt">مقارنة تغطية حدث بين مصادر</span><span class="cat">التحقق وتتبع المصادر</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تقرأ عن حدث في مصدر واحد وتريد صورة أوسع.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">مقارنة تظهر ما تتفق عليه المصادر وما ينفرد به كل واحد.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الحدث</li><li>المصدر الذي قرأته</li><li>ما يهمك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">قارن تغطية [الحدث] بين مصادر مختلفة.
+
+المصدر الذي قرأته:
+[المصدر]
+
+المطلوب:
+أولا. الوقائع التي تتفق عليها كل المصادر
+ثانيا. ما ينفرد به كل مصدر، ومن أين حصل عليه
+ثالثا. اختلافات في الأرقام أو التوقيت، مع ذكر كل رواية
+رابعا. ما تركز عليه بعض المصادر وتتجاهله أخرى
+خامسا. ما لا يعرفه أحد بعد
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">حدث تقني قرأت عنه في مصدر واحد.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">صورة أوسع تفصل المتفق عليه عن المنفرد به.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">15</span><span class="pt">فحص رقم قبل الاستشهاد به</span><span class="cat">التحقق وتتبع المصادر</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل استخدام إحصائية في مادة تنشرها.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تتبعا للرقم إلى مصدره الأولي، مع منهجية قياسه.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الرقم</li><li>أين رأيته</li><li>كيف ستستخدمه</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تحقق من هذا الرقم:
+[الرقم]
+
+أين رأيته:
+[المصدر]
+سأستخدمه في:
+[الاستخدام]
+
+المطلوب:
+أولا. المصدر الأولي للرقم، لا الناقل عنه
+ثانيا. تاريخ الرقم، لا تاريخ المقال الذي نقله
+ثالثا. ماذا يقيس بالضبط، وما نطاقه الجغرافي والزمني
+رابعا. المنهجية: حجم العينة، وطريقة الجمع
+خامسا. هل يوجد رقم أحدث من المصدر نفسه
+سادسا. أخطاء شائعة في نقل هذا الرقم تحديدا
+
+إذا لم تصل إلى المصدر الأولي، قل ذلك ولا تعتمد الرقم.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">إحصائية عن سوق أو استخدام تقنية تريد ذكرها.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تتبع للرقم بمنهجيته، أو إقرار بعدم إمكانية التحقق.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">«تاريخ الرقم لا تاريخ المقال» يمسك أكثر أخطاء الاستشهاد شيوعا.</div></div></div></div>
+<h1 class="chapter" id="ch5"><span class="num">CHAPTER 04</span>البحث العميق للقرارات</h1><div class="sectionlead"><p>خمسة برومبتات لقرارات مبنية على بحث: تقييم أداة، ومسح سوق، واستطلاع حاجة، وتقصي سمعة جهة، ومقارنة خيارين بمعلومات حديثة.</p></div><div class="chindex"><div class="row"><b>16</b><span>تقييم أداة قبل الاعتماد عليها</span></div><div class="row"><b>17</b><span>مسح سوق قبل دخوله</span></div><div class="row"><b>18</b><span>استطلاع رأي غير رسمي حول فكرة</span></div><div class="row"><b>19</b><span>تقصي سمعة جهة قبل التعامل معها</span></div><div class="row"><b>20</b><span>مقارنة خيارين بمعلومات السوق الحالية</span></div></div><div class="pcard"><div class="head"><span class="pn">16</span><span class="pt">تقييم أداة قبل الاعتماد عليها</span><span class="cat">البحث العميق للقرارات</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل بناء عملك على أداة أو خدمة خارجية.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تقييما يشمل استمرارية الأداة لا ميزاتها فقط.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الأداة</li><li>ما ستعتمد عليها فيه</li><li>بدائلك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">قيم [الأداة] قبل أن أبني عليها
+[الاستخدام]
+
+المطلوب:
+أولا. من يقف وراءها، ومنذ متى، وما وضعها الحالي
+ثانيا. تاريخ تغييرات التسعير أو الشروط
+ثالثا. أي انقطاع خدمة أو حادث أمني موثق
+ثالثا. ما يقوله المستخدمون الفعليون، لا الصفحة التسويقية
+رابعا. صعوبة الخروج منها لاحقا: هل بياناتي قابلة للتصدير
+خامسا. البدائل المباشرة، وما يميز كلا منها
+سادسا. إشارات تحذيرية إن وجدت
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل اعتماد خدمة استضافة أو أداة إدارة لمشروعك.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تقييم يشمل الاستمرارية وسهولة الخروج لا الميزات فقط.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">بند «صعوبة الخروج» أهم من قائمة الميزات لأي أداة ستبني عليها.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">17</span><span class="pt">مسح سوق قبل دخوله</span><span class="cat">البحث العميق للقرارات</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل إطلاق منتج أو خدمة في مجال جديد عليك.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">صورة عن السوق: من فيه، وما الفجوات، وما مستوى الإشباع.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المجال</li><li>ما تنوي تقديمه</li><li>جمهورك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">امسح سوق [المجال] قبل أن أدخله.
+
+ما أنوي تقديمه:
+[العرض]
+جمهوري المستهدف:
+[الجمهور]
+
+المطلوب:
+أولا. من يقدم شيئا مشابها الآن، وبأي صيغة
+ثانيا. مستوى الإشباع: هل السوق مزدحم أم فيه فراغ
+ثالثا. ما يشتكي منه الجمهور من العروض الحالية
+رابعا. فجوة حقيقية غير مغطاة
+خامسا. لماذا لم يملأ أحد هذه الفجوة — وهذا أهم سؤال
+سادسا. ما الذي يجعل دخولي صعبا
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل إطلاق سلسلة محتوى مدفوع في مجال ما.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">مسح سوق ينتهي بسبب بقاء الفجوة فارغة.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">سؤال «لماذا لم يملأ أحد هذه الفجوة» يوفر عليك اكتشاف السبب بالتجربة.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">18</span><span class="pt">استطلاع رأي غير رسمي حول فكرة</span><span class="cat">البحث العميق للقرارات</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل استثمار وقت في فكرة، لمعرفة إن كان أحد يحتاجها.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">أدلة على وجود الحاجة أو غيابها، من كلام الناس لا من تقديرك.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الفكرة</li><li>الجمهور</li><li>الحاجة المفترضة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابحث عن أدلة على وجود حاجة لهذه الفكرة:
+[الفكرة]
+
+الجمهور:
+[الجمهور]
+الحاجة التي أفترضها:
+[الحاجة]
+
+المطلوب:
+أولا. هل يعبر الناس عن هذه الحاجة فعلا، وبأي كلمات
+ثانيا. كيف يحلونها اليوم بدون فكرتي
+ثالثا. هل يدفعون مقابل حلها حاليا
+رابعا. من عرض حلا مشابها وفشل، ولماذا
+خامسا. دليل يناقض افتراضي
+
+القواعد:
+لا تجاملني. إن لم تجد دليلا على الحاجة، قل ذلك صراحة
+ميز بين شكوى عابرة وبين حاجة يدفع الناس لحلها</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">فكرة منتج رقمي قبل البدء في إنتاجه.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">أدلة على الحاجة أو غيابها، مع من فشل قبلك ولماذا.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">19</span><span class="pt">تقصي سمعة جهة قبل التعامل معها</span><span class="cat">البحث العميق للقرارات</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل التعاقد مع شركة أو عميل أو مورد لا تعرفه.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">صورة عن سجل الجهة من مصادر مستقلة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الجهة</li><li>طبيعة التعامل</li><li>ما يقلقك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تقص سمعة [الجهة] قبل أن أتعامل معها.
+
+طبيعة التعامل المزمع:
+[التعامل]
+ما يقلقني:
+[المخاوف]
+
+المطلوب:
+أولا. معلومات أساسية: منذ متى، وحجمها، ونشاطها الحالي
+ثانيا. تجارب من تعاملوا معها، إيجابية وسلبية
+ثالثا. أي نزاع أو شكوى متكررة موثقة
+رابعا. هل هناك نمط في الشكاوى أم حالات فردية
+خامسا. ما لم أجد عنه معلومة، وهو بذاته إشارة
+
+القواعد:
+ميز بين شكوى موثقة وبين رأي فردي
+لا تعتمد على مصادر ترويجية للجهة نفسها
+إذا كانت المعلومات شحيحة، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل التعاقد مع عميل جديد أو شراء خدمة بمبلغ كبير.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">صورة عن السجل مع تمييز النمط عن الحالة الفردية.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">20</span><span class="pt">مقارنة خيارين بمعلومات السوق الحالية</span><span class="cat">البحث العميق للقرارات</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عند الاختيار بين خيارين تتوفر عنهما معلومات حديثة متغيرة.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">مقارنة مبنية على الوضع الحالي لا على سمعة قديمة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الخيارين</li><li>معاييرك</li><li>متى تقرر</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">قارن بين [الخيار الأول] و [الخيار الثاني] بمعلومات حديثة.
+
+معاييري بالترتيب:
+[المعايير]
+سأقرر خلال:
+[المدة]
+
+المطلوب:
+أولا. جدول مقارنة على معاييري، بمعلومات مؤرخة
+ثانيا. ما تغير في كل خيار خلال آخر اثني عشر شهرا
+ثالثا. سمعة قديمة لم تعد دقيقة لأي من الخيارين
+رابعا. ما يقوله من انتقل من أحدهما إلى الآخر
+خامسا. ما لا تكفي المعلومات المتاحة للحكم عليه
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">الاختيار بين خدمتين أو تقنيتين تتطوران بسرعة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">مقارنة بمعلومات مؤرخة تكشف السمعة التي لم تعد دقيقة.</div></div></div></div>
+<h1 class="chapter" id="ch6"><span class="num">CHAPTER 05</span>المنافسون والسوق</h1><div class="sectionlead"><p>خمسة برومبتات لقراءة السوق: رصد تحرك منافس، وتحليل التسعير، ورصد فرصة من شكوى، وتحليل سبب نجاح، وقياس الاهتمام.</p></div><div class="chindex"><div class="row"><b>21</b><span>رصد تحرك منافس</span></div><div class="row"><b>22</b><span>تحليل تسعير السوق</span></div><div class="row"><b>23</b><span>رصد فرصة من شكوى متكررة</span></div><div class="row"><b>24</b><span>تحليل سبب نجاح منافس</span></div><div class="row"><b>25</b><span>قياس اهتمام السوق بموضوع</span></div></div><div class="pcard"><div class="head"><span class="pn">21</span><span class="pt">رصد تحرك منافس</span><span class="cat">المنافسون والسوق</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">لمتابعة ما يفعله منافس دون تخمين نواياه.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">قائمة بتحركات موثقة، مع ما تدل عليه.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المنافس</li><li>الفترة</li><li>ما يهمك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ارصد تحركات [المنافس] خلال
+[الفترة]
+
+ما يهمني:
+[محل الاهتمام]
+
+المطلوب:
+أولا. ما أعلنه أو أطلقه فعلا، بتاريخه ومصدره
+ثانيا. تغييرات في تسعيره أو عرضه
+ثالثا. تغير في خطابه أو جمهوره المستهدف
+رابعا. ما توقفوا عن فعله
+خامسا. ما تدل عليه هذه التحركات مجتمعة، كاستنتاج مميز عن الوقائع
+
+القواعد:
+لا تنسب نية لجهة بلا تصريح
+ميز بوضوح بين الواقعة والاستنتاج
+لا تعتمد على شائعات</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">متابعة منافس في مجال المحتوى أو المنتجات الرقمية.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تحركات موثقة مفصولة عن الاستنتاج.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">22</span><span class="pt">تحليل تسعير السوق</span><span class="cat">المنافسون والسوق</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل تسعير منتجك، لمعرفة النطاق الفعلي لا المتوقع.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">نطاق أسعار حقيقي مع ما يبرر كل مستوى.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>نوع المنتج</li><li>السوق</li><li>ما تقدمه</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">حلل تسعير [نوع المنتج] في
+[السوق]
+
+ما أقدمه:
+[العرض]
+
+المطلوب:
+أولا. نطاق الأسعار الفعلي، من الأدنى إلى الأعلى، بأمثلة
+ثانيا. ما الذي يبرر السعر الأعلى في هذا السوق
+ثالثا. ما الذي يقدمه الأرخص، وماذا ينقصه
+رابعا. نماذج التسعير المستخدمة: مرة واحدة، أم اشتراك، أم مستويات
+خامسا. أين يقع عرضي في هذا النطاق، ولماذا
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل تسعير دليل رقمي أو خدمة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">نطاق أسعار بأمثلة، وموضع عرضك فيه بسببه.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">23</span><span class="pt">رصد فرصة من شكوى متكررة</span><span class="cat">المنافسون والسوق</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تبحث عن فكرة منتج مبنية على ألم حقيقي.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">شكاوى متكررة موثقة، مصنفة بحجمها وقابليتها للحل.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المجال</li><li>جمهورك</li><li>قدراتك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابحث عن شكاوى متكررة في [المجال] تصلح أساسا لمنتج.
+
+جمهوري:
+[الجمهور]
+ما أستطيع تقديمه:
+[القدرات]
+
+المطلوب:
+أولا. الشكاوى المتكررة، مرتبة بتكرارها، بصياغة أصحابها
+ثانيا. لكل شكوى: هل هي مشكلة حقيقية أم توقع غير واقعي
+ثالثا. من حاول حلها وفشل، ولماذا
+رابعا. أي شكوى أستطيع حلها بقدراتي المذكورة
+خامسا. شكوى يبدو حلها سهلا وهو ليس كذلك
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">البحث عن فكرة منتج رقمي في مجال تعرفه.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">شكاوى مصنفة بقابلية الحل مع تحذير من الفخاخ.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">24</span><span class="pt">تحليل سبب نجاح منافس</span><span class="cat">المنافسون والسوق</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما ينجح غيرك وتريد فهم الآلية لا تقليد الشكل.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تحليلا للآليات القابلة للاستعارة والعوامل غير القابلة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المنافس</li><li>مظهر النجاح</li><li>وضعك أنت</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">حلل سبب نجاح
+[المنافس]
+
+ما أراه من نجاحه:
+[مظهر النجاح]
+وضعي أنا:
+[وضعي]
+
+المطلوب:
+أولا. ما فعله فعلا، بترتيب زمني موثق
+ثانيا. ما الذي سبق النجاح مباشرة
+ثالثا. عوامل قابلة للاستعارة: ما يمكنني فعله أنا
+رابعا. عوامل غير قابلة للاستعارة: توقيت، أو شبكة علاقات، أو مورد لا أملكه
+خامسا. ما نجح بالصدفة وليس بسبب قرار
+سادسا. ما الذي لو قلدته لأضرني بدل أن ينفعني
+
+القواعد:
+لا تفترض أن ترتيب الأحداث يعني سببية
+ميز بين ما هو معلن وما هو استنتاج</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">منافس نمت قناته بسرعة وتريد فهم السبب.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تحليل يفصل القابل للاستعارة عن غيره.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">بند «ما نجح بالصدفة» يمنعك من بناء استراتيجية على حظ غيرك.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">25</span><span class="pt">قياس اهتمام السوق بموضوع</span><span class="cat">المنافسون والسوق</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل إنتاج محتوى أو منتج حول موضوع، لقياس الاهتمام لا افتراضه.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">مؤشرات على حجم الاهتمام واتجاهه، مع حدودها.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>الجمهور</li><li>الفترة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">قس مستوى الاهتمام بـ
+[الموضوع]
+
+الجمهور:
+[الجمهور]
+الفترة:
+[الفترة]
+
+المطلوب:
+أولا. مؤشرات على حجم الاهتمام: ما الذي تراه ويدل عليه
+ثانيا. الاتجاه: متزايد أم متناقص أم مستقر
+ثالثا. هل الاهتمام موسمي أم مرتبط بحدث
+رابعا. من يهتم بالضبط: الشريحة لا العدد
+خامسا. مواضيع مجاورة يزيد الاهتمام بها أكثر
+
+القواعد:
+كن صريحا في حدود هذه المؤشرات: ما لا تستطيع قياسه بدقة قل إنك لا تستطيع
+لا تحول انطباعا إلى رقم</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل بناء سلسلة محتوى حول موضوع.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">مؤشرات موصوفة باتجاهها، مع إقرار صريح بحدود القياس.</div></div></div></div>
+<h1 class="chapter" id="ch7"><span class="num">CHAPTER 06</span>المحتوى من اللحظة</h1><div class="sectionlead"><p>خمسة برومبتات لصناعة محتوى مرتبط بالوقت: التعليق على حدث بلا تسرع، والزاوية في موضوع مشبع، وسلسلة متابعة، وأفكار من أسئلة حقيقية، وقياس الصدى.</p></div><div class="chindex"><div class="row"><b>26</b><span>تحويل حدث جار إلى محتوى بلا تسرع</span></div><div class="row"><b>27</b><span>استخراج زاوية من موضوع مشبع</span></div><div class="row"><b>28</b><span>بناء سلسلة متابعة لحدث ممتد</span></div><div class="row"><b>29</b><span>توليد أفكار محتوى من أسئلة حقيقية</span></div><div class="row"><b>30</b><span>قياس صدى محتوى نشرته</span></div></div><div class="pcard"><div class="head"><span class="pn">26</span><span class="pt">تحويل حدث جار إلى محتوى بلا تسرع</span><span class="cat">المحتوى من اللحظة</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما يقع حدث في مجالك وتريد التعليق دون أن تنشر خطأ.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">زوايا محتوى مبنية على ما ثبت، مع ما يجب انتظاره.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الحدث</li><li>جمهورك</li><li>زاويتك المبدئية</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">وقع هذا الحدث في مجالي:
+[الحدث]
+
+جمهوري:
+[الجمهور]
+زاويتي المبدئية:
+[الزاوية]
+
+المطلوب:
+أولا. ما هو مؤكد حتى الآن، بمصادره
+ثانيا. ما هو متداول ولم يؤكد بعد
+ثالثا. ثلاث زوايا محتوى مبنية على المؤكد فقط
+رابعا. زاوية تحتاج انتظار تأكيد، ومتى يتوقع
+خامسا. الخطأ الذي سيقع فيه من ينشر الآن بسرعة
+
+القواعد:
+لا تبن زاوية على معلومة غير مؤكدة
+اذكر صراحة ما يجب التحفظ عليه في كل زاوية</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">إعلان أو حادثة في مجال أدوات الذكاء الاصطناعي.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">زوايا مبنية على المؤكد، وتحذير من الخطأ المتوقع.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">أسرع طريقة لخسارة الثقة هي أن تكون أول من نشر الخطأ.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">27</span><span class="pt">استخراج زاوية من موضوع مشبع</span><span class="cat">المحتوى من اللحظة</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما يكتب الجميع عن موضوع وتريد إضافة حقيقية.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">زاوية غير مطروقة، أو حكما بأن الموضوع لا يستحق.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>ما كتب عنه</li><li>ما تعرفه أنت</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">الموضوع مشبع:
+[الموضوع]
+
+ما رأيته مكتوبا عنه:
+[المكتوب]
+ما أعرفه أنا ولم أره مكتوبا:
+[معرفتي]
+
+المطلوب:
+أولا. الزوايا المطروقة فعلا، مختصرة
+ثانيا. ما لم يطرق بعد
+ثالثا. هل معرفتي الخاصة تشكل زاوية حقيقية
+رابعا. سؤال يطرحه الجمهور ولم يجب عنه أحد
+خامسا. زاوية معاكسة للسائد ولها سند
+
+ثم حكم صريح:
+هل يستحق الموضوع إضافة مني، أم أن كل ما يمكن قوله قيل
+لا تجاملني. الكتابة في موضوع مشبع بلا إضافة تضر بمصداقيتي.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">موضوع تقني كتب عنه الجميع خلال أسبوع.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">زوايا غير مطروقة أو حكم صريح بعدم الجدوى.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">28</span><span class="pt">بناء سلسلة متابعة لحدث ممتد</span><span class="cat">المحتوى من اللحظة</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما يمتد حدث على أسابيع وتريد تغطيته بلا تكرار.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">خطة سلسلة بمحطات مرتبطة بتطورات متوقعة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الحدث</li><li>التطورات المتوقعة</li><li>جمهورك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">هذا حدث ممتد أريد تغطيته:
+[الحدث]
+
+جمهوري:
+[الجمهور]
+
+المطلوب:
+أولا. الوضع الحالي، وما هو محسوم وما هو منتظر
+ثانيا. التطورات المتوقعة، ومتى تقريبا
+ثالثا. خطة سلسلة: قطعة لكل محطة، ولكل قطعة زاوية مختلفة
+رابعا. ما أنشره الآن وما أؤجله حتى يتضح
+خامسا. علامة تخبرني أن الحدث انتهى ويجب التوقف عن التغطية
+
+القواعد:
+لا تفترض تطورا بلا مؤشر عليه
+اجعل كل قطعة مفهومة لمن لم يقرأ ما قبلها</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">نزاع أو تحول ممتد في مجالك.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">خطة سلسلة بمحطات، ومعيار توقف.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">29</span><span class="pt">توليد أفكار محتوى من أسئلة حقيقية</span><span class="cat">المحتوى من اللحظة</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تجف الأفكار وتريد أفكارا من الطلب لا من الخيال.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">أفكارا مشتقة من أسئلة حقيقية يطرحها الناس.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>مجالك</li><li>جمهورك</li><li>ما أنتجته سابقا</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ولد أفكار محتوى من أسئلة حقيقية في
+[المجال]
+
+جمهوري:
+[الجمهور]
+ما أنتجته سابقا:
+[الإنتاج السابق]
+
+المطلوب:
+أولا. الأسئلة المتكررة التي لم أغطها بعد
+ثانيا. لكل سؤال: فكرة محتوى، والشكل المناسب لها
+ثالثا. سؤال يدل على سوء فهم شائع، ومحتوى يصححه
+رابعا. سؤال متقدم يطرحه قلة، ويستحق محتوى متخصصا
+خامسا. أسئلة يطرحها جمهور ليس جمهوري، وتجاهلها أفضل
+
+القواعد:
+كل فكرة مبنية على سؤال حقيقي وجدته، لا على تخمين
+لا تكرر موضوعا أنتجته سابقا</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">بداية شهر بلا أفكار محتوى واضحة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">أفكار مشتقة من طلب حقيقي، مع ما تتجاهله.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">30</span><span class="pt">قياس صدى محتوى نشرته</span><span class="cat">المحتوى من اللحظة</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">بعد النشر بأيام، لمعرفة كيف استقبل خارج أرقام المنصة.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">صورة عن الصدى الحقيقي: من نقله، وبأي صياغة، وماذا أضاف.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المحتوى</li><li>متى نشر</li><li>ما تريد معرفته</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ارصد صدى ما نشرته:
+[المحتوى]
+
+تاريخ النشر:
+[التاريخ]
+
+المطلوب:
+أولا. هل نقل أو أعيد نشره، وأين
+ثانيا. بأي صياغة نقل، وهل تغير المعنى
+ثالثا. ما الذي علق عليه الناس أكثر
+رابعا. اعتراض أو تصحيح ورد عليه
+خامسا. سؤال طرحه القراء ولم يجب عنه المحتوى
+سادسا. ما الذي يدل على أن جزءا منه لم يكن واضحا
+
+القواعد:
+ميز بين نقل أمين ونقل محرف
+اذكر إن لم يكن هناك صدى يذكر، ولا تبالغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">بعد نشر دليل أو مقال بأسبوع.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">صورة عن الصدى الحقيقي وما يحتاج توضيحا في محتواك القادم.</div></div></div></div>
+<h1 class="chapter" id="ch8"><span class="num">CHAPTER 07</span>الصور</h1><div class="sectionlead"><p>خمسة برومبتات للتوليد البصري: الوصف بستة أبعاد، وتكرار أسلوب، وتصحيح صورة لم تنجح، والبناء على مرجع، وصور المقارنة.</p></div><div class="chindex"><div class="row"><b>31</b><span>وصف بصري بستة أبعاد</span></div><div class="row"><b>32</b><span>تكرار أسلوب صورة على موضوع جديد</span></div><div class="row"><b>33</b><span>تصحيح صورة مولدة لم تنجح</span></div><div class="row"><b>34</b><span>صورة مبنية على مرجع بصري</span></div><div class="row"><b>35</b><span>توليد صور لمقارنة بصرية</span></div></div><div class="pcard"><div class="head"><span class="pn">31</span><span class="pt">وصف بصري بستة أبعاد</span><span class="cat">الصور</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">كلما أردت صورة مولدة تشبه ما في ذهنك لا شيئا عاما.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">وصفا يحدد التكوين والإضاءة واللون والعمق والزاوية والمزاج.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>الاستخدام</li><li>النسبة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">صف هذا المشهد:
+[الموضوع]
+
+التكوين:
+[موضع العنصر في الإطار وكم يشغل]
+الإضاءة:
+[المصدر والاتجاه والقسوة]
+الألوان:
+[اللوحة ودرجة التشبع]
+العمق:
+[حدة الخلفية]
+الزاوية والمسافة:
+[الزاوية]
+المزاج:
+[كلمتان]
+
+النسبة:
+[نسبة العرض إلى الارتفاع]
+الاستخدام:
+[الاستخدام]
+
+تجنب: نصا داخل الصورة، وشعارات، وأيدي غير طبيعية، ووجوها مشوهة.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">صورة غلاف لمادة تنشرها.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">صورة مضبوطة على ستة أبعاد بدل نتيجة عشوائية.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">الوصف من سطر يعطي نتيجة عامة. الأبعاد الستة هي الفرق كله.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">32</span><span class="pt">تكرار أسلوب صورة على موضوع جديد</span><span class="cat">الصور</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما ترضى عن أسلوب صورة وتريد سلسلة بالأسلوب نفسه.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">وصفا يفصل الأسلوب عن المحتوى ليتكرر بثبات.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الصورة المرجعية</li><li>الموضوع الجديد</li><li>عدد الصور</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">أريد سلسلة صور بأسلوب واحد.
+
+الصورة المرجعية:
+[الوصف أو الصورة]
+الموضوع الجديد:
+[الموضوع]
+العدد:
+[العدد]
+
+المطلوب:
+أولا. استخرج عناصر الأسلوب من المرجع: الإضاءة، واللوحة اللونية، والعمق، والزاوية
+ثانيا. اكتب وصفا ثابتا للأسلوب أعيد استخدامه في كل صورة
+ثالثا. لكل صورة: الوصف الكامل بدمج الأسلوب الثابت مع محتواها
+رابعا. ما الذي قد يختلف بين الصور رغم الوصف الموحد، وكيف أقلله
+
+القاعدة: الأسلوب ثابت والمحتوى متغير. لا تخلط بينهما.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">سلسلة أغلفة لمنتجات من عائلة واحدة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">وصف أسلوب ثابت وأوصاف محتوى متغيرة.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">33</span><span class="pt">تصحيح صورة مولدة لم تنجح</span><span class="cat">الصور</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تخرج الصورة قريبة من المطلوب وليست هي.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تشخيصا لسبب الفشل، وتعديلا محددا في الوصف.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الوصف الذي استخدمته</li><li>ما خرج</li><li>الفرق عن المطلوب</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">الصورة لم تخرج كما أريد.
+
+الوصف الذي استخدمته:
+[الوصف]
+ما خرج:
+[الناتج]
+الفرق عن المطلوب:
+[الفرق]
+
+المطلوب:
+أولا. أي جزء من وصفي هو سبب الاختلاف
+ثانيا. هل المشكلة في نقص وصف أم في تعارض داخل الوصف
+ثالثا. أي بعد من الأبعاد الستة تركته غير محدد
+رابعا. الوصف المعدل، مع تمييز ما غيرته
+خامسا. ما الذي لا يمكن ضبطه بالوصف وحده
+
+غير أقل عدد ممكن من العناصر حتى نعرف أيها كان السبب.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">صورة خرجت بإضاءة أو تكوين مختلف عن المقصود.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تشخيص للسبب ووصف معدل بتغيير واحد محدد.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">غير عنصرا واحدا في كل محاولة، وإلا لن تعرف ما الذي أصلح النتيجة.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">34</span><span class="pt">صورة مبنية على مرجع بصري</span><span class="cat">الصور</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تملك صورة تريد البناء عليها لا الانطلاق من الصفر.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">توجيها يستخدم المرجع في ما يجيده ويترك الباقي.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الصورة المرجعية</li><li>ما تريد الاحتفاظ به</li><li>ما تريد تغييره</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">استخدم هذه الصورة كمرجع:
+[الصورة]
+
+ما أريد الاحتفاظ به من المرجع:
+[الثوابت]
+ما أريد تغييره:
+[المتغيرات]
+
+المطلوب:
+أولا. ما الذي يمكن الاحتفاظ به فعلا من المرجع، وما لا يمكن
+ثانيا. الوصف الذي يحقق ما أريد، مع تحديد دور المرجع فيه
+ثالثا. ما الذي قد يتسرب من المرجع رغم أنني لا أريده
+رابعا. بديل إن لم ينجح استخدام المرجع
+
+قاعدة: لا تنتج صورة تنتحل هوية شخص حقيقي أو علامة تجارية.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">صورة أعجبك تكوينها وتريد محتوى مختلفا بالتكوين نفسه.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">توجيه يحدد ما يؤخذ من المرجع وما يترك.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">35</span><span class="pt">توليد صور لمقارنة بصرية</span><span class="cat">الصور</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تحتاج صورتين أو أكثر تختلفان في متغير واحد فقط.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">أوصافا متطابقة تختلف في عنصر واحد، ليصح التشبيه.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المشهد الأساسي</li><li>المتغير الوحيد</li><li>عدد الصور</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">أريد [العدد] صور تختلف في متغير واحد فقط.
+
+المشهد الأساسي:
+[المشهد]
+المتغير الوحيد:
+[المتغير]
+
+المطلوب:
+أولا. وصف أساسي ثابت يشمل كل شيء عدا المتغير
+ثانيا. الأوصاف الكاملة، واحدة لكل قيمة من قيم المتغير
+ثالثا. ما الذي قد يختلف بينها رغم أنني لا أريده، وكيف أقلله
+رابعا. كيف أعرض المقارنة بشكل عادل
+
+القاعدة: كل ما عدا المتغير يجب أن يكون متطابقا حرفيا في الأوصاف.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">صور توضح فرق أسلوب أو حالة في مادة تعليمية.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">أوصاف متطابقة عدا متغير واحد، وطريقة عرض عادلة.</div></div></div></div>
+<h1 class="chapter" id="ch9"><span class="num">CHAPTER 08</span>الفيديو</h1><div class="sectionlead"><p>خمسة برومبتات للفيديو: من صورة إلى حركة، وسيناريو من نص، وسلسلة بهوية واحدة، وتحويل بيانات إلى مشهد، ومراجعة قبل النشر.</p></div><div class="chindex"><div class="row"><b>36</b><span>من صورة ثابتة إلى مقطع متحرك</span></div><div class="row"><b>37</b><span>سيناريو مقطع قصير من نص موجود</span></div><div class="row"><b>38</b><span>سلسلة مقاطع بهوية بصرية واحدة</span></div><div class="row"><b>39</b><span>تحويل بيانات إلى مشهد بصري</span></div><div class="row"><b>40</b><span>تصميم الطبقة الصوتية لمشهد مولد</span></div></div><div class="pcard"><div class="head"><span class="pn">36</span><span class="pt">من صورة ثابتة إلى مقطع متحرك</span><span class="cat">الفيديو</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما ترضى عن صورة وتريد تحريكها بدل توليد مشهد من الصفر.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">توجيه حركة محددا يحافظ على التكوين الذي رضيت عنه.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الصورة</li><li>الحركة المطلوبة</li><li>المدة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">حرك هذه الصورة:
+[الصورة]
+
+الحركة المطلوبة:
+[الحركة]
+المدة:
+[المدة]
+
+المطلوب:
+أولا. ما الذي يجب أن يتحرك وما الذي يجب أن يبقى ثابتا
+ثانيا. اتجاه الحركة وسرعتها
+ثالثا. حركة الكاميرا إن وجدت، منفصلة عن حركة العناصر
+رابعا. ما الذي قد يتشوه أثناء التحريك في هذه الصورة تحديدا
+خامسا. الوصف النهائي للتحريك
+
+قاعدة: الحركة البسيطة الواحدة تنجح أكثر من عدة حركات متزامنة.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">صورة غلاف تريد تحويلها إلى مقطع قصير.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">توجيه حركة محدد مع تحذير من مواضع التشوه.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">التحويل من صورة راض عنها أنجح بكثير من توليد مشهد متحرك من الصفر.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">37</span><span class="pt">سيناريو مقطع قصير من نص موجود</span><span class="cat">الفيديو</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تملك مادة مكتوبة وتريد تحويلها إلى مقطع لا قراءتها.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">سيناريو بمشاهد وتوقيت، مبني على المادة لا مكرر لها.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>النص</li><li>المدة</li><li>المنصة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">حول هذا النص إلى سيناريو مقطع قصير.
+
+النص:
+[النص]
+المدة:
+[المدة]
+المنصة:
+[المنصة]
+
+المطلوب:
+أولا. الفكرة الواحدة التي يحملها المقطع، لا كل ما في النص
+ثانيا. أول ثلاث ثوان: ما يقال وما يعرض، ولماذا يوقف التمرير
+ثالثا. جدول: الزمن | ما يقال | ما يعرض | وصف بصري للمشهد
+رابعا. الخاتمة ودعوة واحدة لإجراء واحد
+خامسا. ما حذفته من النص ولماذا
+
+القواعد:
+لا تحول النص كله، اختر فكرة واحدة
+الوصف البصري لكل مشهد يجب أن يكون قابلا للتوليد أو التصوير</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">فقرة من دليل تريد تحويلها إلى مقطع ترويجي.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">جدول سيناريو بمشاهد قابلة للإنتاج.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">38</span><span class="pt">سلسلة مقاطع بهوية بصرية واحدة</span><span class="cat">الفيديو</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عند إنتاج عدة مقاطع تريدها أن تبدو من مصدر واحد.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">دليل هوية بصرية للمقاطع، وأوصافا تلتزم به.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع العام</li><li>عدد المقاطع</li><li>الهوية المطلوبة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">أريد سلسلة [العدد] مقاطع بهوية بصرية واحدة.
+
+الموضوع العام:
+[الموضوع]
+الهوية التي أريدها:
+[الهوية]
+
+المطلوب:
+أولا. دليل هوية: الألوان، والإضاءة، ونوع الحركة، وإيقاع القطع
+ثانيا. عناصر ثابتة تتكرر في كل مقطع
+ثالثا. لكل مقطع: موضوعه، ووصفه البصري ملتزما بالدليل
+رابعا. ما الذي يميز كل مقطع عن الآخر رغم الهوية الواحدة
+خامسا. ما الذي سيكسر الهوية إن أهملته
+
+القاعدة: التنوع في المحتوى والثبات في الشكل.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">سلسلة مقاطع تعريفية بمنتجاتك الرقمية.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">دليل هوية وأوصاف ملتزمة به لكل مقطع.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">39</span><span class="pt">تحويل بيانات إلى مشهد بصري</span><span class="cat">الفيديو</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تريد عرض رقم أو مقارنة بصريا بدل عرضها نصا.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">فكرة بصرية تعبر عن البيانات بلا تضليل.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>البيانات</li><li>الرسالة</li><li>المدة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">حول هذه البيانات إلى مشهد بصري:
+[البيانات]
+
+الرسالة التي أريد إيصالها:
+[الرسالة]
+المدة:
+[المدة]
+
+المطلوب:
+أولا. هل تدعم البيانات هذه الرسالة فعلا — أجب بصراحة قبل أي تصميم
+ثانيا. الفكرة البصرية: كيف تمثل الأرقام
+ثالثا. تسلسل ظهور العناصر
+رابعا. ما الذي قد يجعل التمثيل مضللا، وكيف أتجنبه
+خامسا. النص المصاحب
+
+القاعدة: لا تضخم فرقا صغيرا بصريا. إن كانت الرسالة لا تدعمها البيانات، قل ذلك.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">نتيجة مقارنة تريد عرضها في مقطع قصير.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">فكرة بصرية أمينة، أو تحذير بأن البيانات لا تدعم الرسالة.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">40</span><span class="pt">تصميم الطبقة الصوتية لمشهد مولد</span><span class="cat">الفيديو</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما يولد النموذج صوتا مع الصورة وتريد الصوت مقصودا لا عشوائيا.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">وصفا للصوت مرتبطا بكل مشهد: ما يسمع ومتى ومن أي اتجاه.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>وصف المشهد</li><li>الإحساس المطلوب</li><li>المدة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">صمم الطبقة الصوتية لهذا المشهد.
+
+وصف المشهد:
+[الوصف]
+الإحساس الذي أريده:
+[الإحساس]
+المدة:
+[المدة]
+
+المطلوب:
+أولا. صوت الخلفية: ما مصدره داخل المشهد، لا مجرد نوع موسيقى
+ثانيا. الأصوات المرتبطة بحدث مرئي، وتوقيت كل صوت بالثانية
+ثالثا. الكلام إن وجد: من يتكلم، ونبرته، وجملته الواحدة
+رابعا. اللحظات التي يكون فيها الصمت أقوى من الصوت
+خامسا. الوصف النهائي مكتوبا بصيغة واحدة تجمع الصورة والصوت
+
+القواعد:
+كل صوت يجب أن يكون له مصدر مرئي أو مبرر
+لا تصف الموسيقى بمشاعر فقط، صف إيقاعها وكثافتها
+إذا كان المشهد لا يحتمل كلاما، قل ذلك ولا تضف حوارا</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">مشهد قصير تريد أن يخرج بصوت متماسك لا بموسيقى عامة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">وصف موحد للصورة والصوت مع توقيت كل عنصر صوتي.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">الصوت المرتبط بحدث مرئي يبدو مقصودا، والصوت المضاف لاحقا يبدو ملصقا.</div></div></div></div>
+<h1 class="chapter" id="ch10"><span class="num">CHAPTER 09</span>الصوت</h1><div class="sectionlead"><p>خمسة برومبتات للمحادثة الصوتية: التدرب على شرح، والتفكير بصوت عال، والمراجعة أثناء التنقل، وتحويل تسجيل إلى نص، والتدرب على لغة.</p></div><div class="chindex"><div class="row"><b>41</b><span>تدريب على شرح شفهي</span></div><div class="row"><b>42</b><span>التفكير بصوت عال في مشكلة</span></div><div class="row"><b>43</b><span>مراجعة مادة أثناء التنقل</span></div><div class="row"><b>44</b><span>تحويل تسجيل إلى مادة مكتوبة</span></div><div class="row"><b>45</b><span>تدريب على محادثة بلغة أجنبية</span></div></div><div class="pcard"><div class="head"><span class="pn">41</span><span class="pt">تدريب على شرح شفهي</span><span class="cat">الصوت</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل عرض تقديمي أو مناقشة، للتدرب على الشرح لا على الحفظ.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">جلسة تدريب صوتية بملاحظات على شرحك.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>الجمهور</li><li>المدة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">سأشرح لك [الموضوع] صوتيا كأنني أقدمه لـ
+[الجمهور]
+
+المدة المتاحة:
+[المدة]
+
+بعد شرحي، قيم:
+أولا. هل التسلسل منطقي لمن يسمعه أول مرة
+ثانيا. أين تسرعت وأين أطلت
+ثالثا. مصطلح استخدمته بلا تعريف
+ثالثا. جملة غامضة أو غير مكتملة
+رابعا. ما الذي سيسأله الجمهور ولم يجب عنه شرحي
+خامسا. لازمة لفظية تكررت عندي
+
+ثم اطرح علي سؤالا واحدا كما سيطرحه الجمهور، وانتظر إجابتي.
+كن صريحا. المجاملة هنا تضرني في العرض الحقيقي.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل مناقشة مشروع تخرج أو عرض تقديمي.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">ملاحظات على شرحك الشفهي، ثم سؤال تدريبي.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">تسجيل شرحك ثم سماعه بنفسك يكشف نصف الملاحظات قبل أن تسأل.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">42</span><span class="pt">التفكير بصوت عال في مشكلة</span><span class="cat">الصوت</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تكون المشكلة غامضة والكتابة بطيئة على تفكيرك.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">محاورة توضح تفكيرك بالأسئلة لا بالإجابات.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المشكلة</li><li>ما جربته</li><li>ما يحيرك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">سأفكر بصوت عال في مشكلة، وأريدك أن تحاورني لا أن تحلها.
+
+المشكلة:
+[المشكلة]
+ما جربته:
+[المحاولات]
+ما يحيرني:
+[الحيرة]
+
+دورك:
+اطرح سؤالا واحدا يوضح تفكيري، ثم انتظر
+لا تقترح حلا قبل أن أصل إليه
+إذا ناقضت نفسي، أشر إلى ذلك
+إذا افترضت شيئا بلا أساس، اسألني عن أساسه
+كل خمسة أسئلة: لخص ما وصلنا إليه في ثلاثة أسطر
+
+توقف عندما أقول إنني وصلت، ثم اعرض علي ما أغفلته.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قرار أو مشكلة تصميمية غامضة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">محاورة سقراطية تنتهي بملخص وما أغفلته.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">43</span><span class="pt">مراجعة مادة أثناء التنقل</span><span class="cat">الصوت</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما يكون وقتك في الطريق ولا تستطيع القراءة.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">جلسة مراجعة صوتية قصيرة بأسئلة وأجوبة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المادة</li><li>المدة المتاحة</li><li>مستواك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">راجع معي [المادة] صوتيا خلال
+[المدة]
+
+مستواي:
+[المستوى]
+
+الطريقة:
+اطرح سؤالا، وانتظر إجابتي الصوتية، ثم صحح باختصار
+ابدأ بالأساسيات ثم تدرج
+لا تشرح شرحا طويلا — جملتان كحد أقصى لكل تصحيح
+ركز على ما أخطئ فيه لا على ما أجيده
+
+في نهاية المدة:
+ما نسبة ما أتقنته
+ما النقطة الواحدة التي أراجعها مكتوبة لاحقا
+
+لا تعطني معلومات جديدة. راجع ما أعرفه فقط.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">مراجعة قبل امتحان أثناء الطريق.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">جلسة أسئلة قصيرة تنتهي بنقطة مراجعة واحدة.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">44</span><span class="pt">تحويل تسجيل إلى مادة مكتوبة</span><span class="cat">الصوت</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">بعد اجتماع أو تسجيل فكرة صوتية، لتحويلها إلى نص منظم.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">نصا منظما يفصل الأفكار عن الحشو الشفهي.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>التسجيل أو نصه</li><li>الغرض</li><li>الجمهور</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">هذا تسجيل أو نصه. حوله إلى مادة مكتوبة.
+
+الغرض من النص:
+[الغرض]
+الجمهور:
+[الجمهور]
+
+المطلوب:
+أولا. الأفكار الرئيسية، مرتبة منطقيا لا بترتيب ورودها
+ثانيا. ما قيل عرضا وله قيمة، وكان سيضيع
+ثالثا. ما قيل ولا قيمة له، محذوفا
+رابعا. جمل غير مكتملة، مع اقتراح إكمالها للمراجعة
+خامسا. تناقض بين ما قلته في أول التسجيل وآخره
+
+القواعد:
+احتفظ بصياغتي حيث تكون واضحة
+لا تضف فكرة لم ترد في التسجيل
+ميز بوضوح أي إضافة اضطررت إليها للربط</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">تسجيل صوتي لأفكار مشروع أو اجتماع.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">نص منظم مع تمييز ما أضيف للربط.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">45</span><span class="pt">تدريب على محادثة بلغة أجنبية</span><span class="cat">الصوت</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عند تعلم لغة، للتدرب على المحادثة لا على المفردات.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">محادثة موجهة بتصحيح فوري ومركز.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>اللغة</li><li>مستواك</li><li>الموقف</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تدرب معي على محادثة بـ
+[اللغة]
+
+مستواي:
+[المستوى]
+الموقف:
+[الموقف]
+
+الطريقة:
+تحدث معي في هذا الموقف، جملة أو جملتين في كل مرة
+صحح خطأ واحدا فقط في كل رد، الأهم
+لا تقاطع تدفق المحادثة بشروح طويلة
+إذا تعثرت في كلمة، أعطني إياها ثم أكمل
+اضبط سرعتك ومفرداتك على مستواي
+
+بعد عشر تبادلات:
+أكثر ثلاثة أخطاء تكررت عندي
+تركيب واحد أتدرب عليه قبل الجلسة القادمة</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">التدرب على محادثة مهنية بالإنجليزية.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">محادثة بتصحيح مركز، تنتهي بثلاثة أخطاء متكررة.</div></div></div></div>
+<h1 class="chapter" id="ch11"><span class="num">CHAPTER 10</span>العمل التقني</h1><div class="sectionlead"><p>خمسة برومبتات تجمع البحث بالبرمجة: فحص حالة مكتبة، والبحث عن حل نادر، ومتابعة التغييرات الكاسرة، وتقييم نمط معماري، وتحضير سؤال تقني.</p></div><div class="chindex"><div class="row"><b>46</b><span>فحص حالة مكتبة قبل استخدامها</span></div><div class="row"><b>47</b><span>بحث عن حل لمشكلة تقنية نادرة</span></div><div class="row"><b>48</b><span>متابعة تغييرات كاسرة في تقنية تستخدمها</span></div><div class="row"><b>49</b><span>تقييم نمط معماري بتجارب الآخرين</span></div><div class="row"><b>50</b><span>تحضير سؤال تقني قبل طرحه على مجتمع</span></div></div><div class="pcard"><div class="head"><span class="pn">46</span><span class="pt">فحص حالة مكتبة قبل استخدامها</span><span class="cat">العمل التقني</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل إضافة اعتمادية إلى مشروعك.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">حكما على صيانة المكتبة ومخاطرها لا على ميزاتها.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المكتبة</li><li>ما ستستخدمها فيه</li><li>بدائلها</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">افحص حالة [المكتبة] قبل أن أضيفها لمشروعي.
+
+سأستخدمها في:
+[الاستخدام]
+
+المطلوب:
+أولا. متى كان آخر إصدار، وما وتيرة الإصدارات
+ثانيا. هل هناك مشكلات مفتوحة قديمة بلا رد
+ثالثا. عدد المصانين ونشاطهم
+رابعا. أي تحذير أمني معروف
+خامسا. هل تغيرت واجهتها بشكل كاسر مؤخرا
+سادسا. بدائل مباشرة، وحالة كل واحدة
+سابعا. صعوبة استبدالها لاحقا إن توقفت صيانتها
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل إضافة حزمة إلى مشروع ستطوره لأشهر.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">حكم على استمرارية المكتبة لا على ميزاتها.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">47</span><span class="pt">بحث عن حل لمشكلة تقنية نادرة</span><span class="cat">العمل التقني</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما لا تعطي رسالة الخطأ نتائج مفيدة في البحث العادي.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">حلولا مجربة من نقاشات حقيقية، مع تقييم كل واحد.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>رسالة الخطأ</li><li>البيئة</li><li>ما جربته</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابحث عن حل لهذه المشكلة التقنية.
+
+رسالة الخطأ:
+[رسالة الخطأ]
+البيئة:
+[البيئة والإصدارات]
+ما جربته:
+[المحاولات]
+
+المطلوب:
+أولا. هل واجه أحد هذه المشكلة، وأين نوقشت
+ثانيا. الحلول المقترحة، مرتبة بعدد من أكدوا نجاحها
+ثالثا. لكل حل: هل يعالج السبب أم يخفي العرض
+رابعا. هل الحل مرتبط بإصدار معين، وهل يناسب إصداري
+خامسا. حل بدا ناجحا وسبب مشكلة أخرى لاحقا
+سادسا. إن لم تجد حلا موثوقا، ما أقرب مشكلة مشابهة
+
+القواعد:
+ميز بين حل مؤكد وحل مقترح بلا تأكيد
+انتبه لتاريخ النقاش: الحل القديم قد لا يناسب إصدارك</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">خطأ نادر في بيئة نشر معينة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">حلول مرتبة بالموثوقية مع تحذير من الحلول السطحية.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">بند «حل بدا ناجحا وسبب مشكلة لاحقا» يوفر عليك اكتشاف ذلك بنفسك.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">48</span><span class="pt">متابعة تغييرات كاسرة في تقنية تستخدمها</span><span class="cat">العمل التقني</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">دوريا، لتعرف ما سيكسر مشروعك قبل أن يكسره.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">قائمة تغييرات كاسرة قادمة أو حديثة تخص إصدارك.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>التقنية والإصدار</li><li>ما تستخدمه منها</li><li>الفترة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">تابع التغييرات الكاسرة في
+[التقنية]
+
+إصداري الحالي:
+[الإصدار]
+ما أستخدمه منها:
+[الاستخدام]
+
+المطلوب:
+أولا. تغييرات كاسرة صدرت منذ إصداري
+ثانيا. تغييرات معلنة قادمة، ومتى
+ثالثا. ما يخص استخدامي تحديدا من هذه التغييرات
+رابعا. ميزات أعلن عن إهمالها، ومتى تحذف
+خامسا. ما البديل لكل ميزة مهملة
+سادسا. هل يوجد سبب عاجل للترقية أم يمكن التأجيل
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">مراجعة ربع سنوية لمشروع يعتمد على إطار عمل.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">قائمة تغييرات تخص إصدارك مع حكم على عجلة الترقية.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">49</span><span class="pt">تقييم نمط معماري بتجارب الآخرين</span><span class="cat">العمل التقني</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل تبني نمط معماري في مشروعك، لمعرفة كلفته الحقيقية.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تجارب حقيقية مع النمط: أين نجح وأين ندم أصحابه.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>النمط</li><li>حجم مشروعك</li><li>ما تتوقعه منه</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">قيم نمط [النمط المعماري] لمشروعي.
+
+حجم مشروعي:
+[الحجم]
+ما أتوقعه منه:
+[التوقع]
+
+المطلوب:
+أولا. ما المشكلة التي وجد هذا النمط لحلها أصلا
+ثانيا. تجارب فرق تبنته: أين نجح
+ثالثا. تجارب فرق ندمت عليه: لماذا
+رابعا. الحجم الذي يبدأ عنده هذا النمط في الجدوى
+خامسا. الكلفة الخفية: ما الذي يصعب بعد تبنيه
+سادسا. هل حجم مشروعي يبرره، بصراحة
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">قبل تقسيم مشروع إلى خدمات أو تبني نمط معقد.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تقييم بتجارب حقيقية وحكم صريح على ملاءمته لحجمك.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">50</span><span class="pt">تحضير سؤال تقني قبل طرحه على مجتمع</span><span class="cat">العمل التقني</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">قبل طرح سؤال في منتدى أو مجتمع تقني.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">سؤالا مكتملا يزيد فرصة الإجابة، بعد التأكد أنه لم يطرح.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>مشكلتك</li><li>ما جربته</li><li>بيئتك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">أريد طرح سؤال تقني. جهزه معي أولا.
+
+مشكلتي:
+[المشكلة]
+ما جربته:
+[المحاولات]
+بيئتي:
+[البيئة]
+
+المطلوب:
+أولا. ابحث: هل طرح هذا السؤال من قبل، وأين
+ثانيا. إن طرح: هل الإجابة تنطبق على حالتي
+ثالثا. إن لم يطرح: ما الذي ينقص سؤالي ليكون قابلا للإجابة
+رابعا. أصغر مثال يعيد إنتاج المشكلة
+خامسا. صيغة السؤال النهائية: العنوان، والسياق، وما جربته، والمتوقع مقابل الفعلي
+سادسا. ما الذي سيسأل عنه المجيبون أولا، وأضفه مسبقا
+
+القاعدة: السؤال الذي يمكن الإجابة عنه بلا استفسار إضافي يحصل على إجابة أسرع.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">مشكلة تقنية لم تجد لها حلا بعد ساعات.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">سؤال مكتمل، أو إجابة موجودة سلفا توفر عليك طرحه.</div></div></div></div>
+<h1 class="chapter" id="ch12"><span class="num">CHAPTER 11</span>الأتمتة والزملاء الرقميين</h1><div class="sectionlead"><p>خمسة برومبتات للعمل الذي يجري بلا حضورك: تصميم روتين، وتسليم مهمة، وتقسيم على وكلاء متوازيين، ومراجعة أتمتة، وقائمة تحقق آلية.</p></div><div class="chindex"><div class="row"><b>51</b><span>تصميم روتين متابعة دوري</span></div><div class="row"><b>52</b><span>تسليم مهمة متكررة لزميل رقمي</span></div><div class="row"><b>53</b><span>تقسيم مهمة على وكلاء متوازيين</span></div><div class="row"><b>54</b><span>مراجعة عمل نظام آلي بشكل دوري</span></div><div class="row"><b>55</b><span>بناء قائمة تحقق آلية لعمل متكرر</span></div></div><div class="pcard"><div class="head"><span class="pn">51</span><span class="pt">تصميم روتين متابعة دوري</span><span class="cat">الأتمتة والزملاء الرقميين</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تريد متابعة تتكرر بلا أن تتذكرها كل مرة.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">روتينا محددا بمحفز ومخرج ومعيار توقف.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>ما تريد متابعته</li><li>التكرار</li><li>ما ستفعله بالنتيجة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">صمم روتين متابعة دوريا.
+
+ما أتابعه:
+[الموضوع]
+التكرار:
+[التكرار]
+ما سأفعله بالنتيجة:
+[الإجراء]
+
+المطلوب:
+أولا. المحفز: متى يعمل الروتين بالضبط
+ثانيا. ما الذي يفعله في كل تشغيل، خطوة خطوة
+ثالثا. شكل المخرج، وحده الأقصى
+رابعا. متى يقول إنه لا جديد بدل توليد محتوى
+خامسا. معيار إيقاف الروتين: متى لم يعد مفيدا
+سادسا. ما الذي قد يجعله ينتج ضجيجا، وكيف أمنعه
+
+القاعدة: روتين ينتج شيئا لا أقرؤه يجب أن يتوقف.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">متابعة تغييرات في خدمة تعتمد عليها.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">روتين محدد بمحفز ومخرج ومعيار إيقاف.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">52</span><span class="pt">تسليم مهمة متكررة لزميل رقمي</span><span class="cat">الأتمتة والزملاء الرقميين</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تصبح مهمة متكررة وواضحة بما يكفي لتسليمها.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تكليفا مكتوبا كما تكتبه لموظف جديد، بحدود وصلاحيات.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المهمة</li><li>ما تحتاجه من صلاحيات</li><li>معيار النجاح</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">أريد تسليم هذه المهمة المتكررة.
+
+المهمة:
+[المهمة]
+التكرار:
+[التكرار]
+معيار النجاح:
+[المعيار]
+
+اكتب التكليف كما أكتبه لموظف جديد:
+أولا. الهدف من المهمة، لا خطواتها فقط
+ثانيا. الخطوات بالترتيب، كل خطوة بناتج واضح
+ثالثا. ما الصلاحيات أو الوصول الذي تحتاجه، وأقل قدر يكفي
+رابعا. ما لا يفعله أبدا
+خامسا. متى يتوقف ويسألني
+سادسا. ما يسلمه لي في نهاية كل تشغيل
+سابعا. كيف أراجع عمله بسرعة
+
+القاعدة: لا تطلب صلاحية أوسع مما تحتاجه المهمة فعلا.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">تجميع تقرير دوري من مصادر ثابتة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تكليف بحدود وصلاحيات دنيا وطريقة مراجعة.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">«أقل صلاحية تكفي» قاعدة أمنية قبل أن تكون قاعدة تنظيمية.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">53</span><span class="pt">تقسيم مهمة على وكلاء متوازيين</span><span class="cat">الأتمتة والزملاء الرقميين</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تكون المهمة كبيرة وقابلة للتقسيم إلى أجزاء مستقلة.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تقسيما يحدد ما يمكن توازيه وما لا يمكن.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>المهمة</li><li>المخرج النهائي</li><li>الوقت</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">المهمة:
+[المهمة]
+المخرج النهائي:
+[المخرج]
+الوقت المتاح:
+[الوقت]
+
+قسمها على وكلاء متوازيين، ولا تنفذ الآن.
+
+المطلوب:
+أولا. الأجزاء المستقلة فعلا: ما لا يحتاج نتيجة جزء آخر
+ثانيا. الأجزاء المتسلسلة التي لا يمكن توازيها، ولماذا
+ثالثا. لكل جزء: تكليفه المستقل، ومخرجه، ومعيار قبوله
+رابعا. كيف تدمج المخرجات، ومن يتحقق من الاتساق بينها
+خامسا. ما الذي سيتعارض بين المخرجات على الأرجح
+سادسا. الجزء الذي إن فشل أوقف كل شيء
+
+القاعدة: التوازي يسرع المهام المستقلة ويفسد المهام المتسلسلة.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">مسح عشرين مصدرا وتلخيص كل واحد قبل الدمج.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">خطة توازي تحدد ما يقسم وما يبقى متسلسلا.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">54</span><span class="pt">مراجعة عمل نظام آلي بشكل دوري</span><span class="cat">الأتمتة والزملاء الرقميين</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">بعد تشغيل أتمتة لفترة، للتأكد أنها ما زالت تعمل كما أردت.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">مراجعة تكشف الانحراف الصامت في الأتمتة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الأتمتة</li><li>مدة التشغيل</li><li>المخرجات الأخيرة</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">راجع هذه الأتمتة بعد فترة تشغيل.
+
+ما تفعله:
+[الأتمتة]
+منذ متى تعمل:
+[المدة]
+عينة من مخرجاتها:
+[المخرجات]
+
+المطلوب:
+أولا. هل ما زالت تحقق الهدف الذي أنشئت له
+ثانيا. هل تغيرت جودة مخرجاتها مع الوقت
+ثالثا. هل تنتج شيئا لم أعد أقرؤه
+رابعا. هل تغير شيء في مصادرها يجعل مخرجاتها أقل دقة
+خامسا. هل يمكن تبسيطها أو دمجها مع أتمتة أخرى
+سادسا. هل يجب إيقافها
+
+كن صريحا: الأتمتة التي لا تراجع تتحول إلى ضجيج بلا أن يلاحظ أحد.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">روتين متابعة يعمل منذ ثلاثة أشهر.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">مراجعة تنتهي بقرار: تستمر، أو تعدل، أو تتوقف.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">55</span><span class="pt">بناء قائمة تحقق آلية لعمل متكرر</span><span class="cat">الأتمتة والزملاء الرقميين</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما يتكرر خطأ في عمل تنجزه دوريا.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">قائمة تحقق مبنية على أخطائك أنت لا على قائمة عامة.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>العمل المتكرر</li><li>الأخطاء التي وقعت</li><li>من ينفذه</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابن قائمة تحقق لهذا العمل المتكرر.
+
+العمل:
+[العمل]
+الأخطاء التي وقعت فيه سابقا:
+[الأخطاء]
+من ينفذه:
+[المنفذ]
+
+المطلوب:
+أولا. بند تحقق لكل خطأ وقع فعلا، صياغته تمنع تكراره
+ثانيا. ترتيب البنود بحيث يمنع المبكر منها أخطاء المتأخر
+ثالثا. أي بند يمكن التحقق منه آليا، وكيف
+رابعا. أي بند يحتاج حكما بشريا
+خامسا. ما الذي يجعل القائمة تتجاهل مع الوقت، وكيف أمنع ذلك
+
+القواعد:
+لا تضف بندا لخطأ لم يقع، فالقائمة الطويلة تتجاهل
+كل بند يجب أن يكون قابلا للإجابة بنعم أو لا</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">عملية نشر أو تسليم تكررت فيها أخطاء.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">قائمة تحقق قصيرة مبنية على أخطاء حقيقية.</div></div></div></div>
+<h1 class="chapter" id="ch13"><span class="num">CHAPTER 12</span>التعلم والتحليل الشخصي</h1><div class="sectionlead"><p>خمسة برومبتات لتطويرك أنت: مسار تعلم من مصادر حية، وتحديث معرفة قديمة، وتحليل قرار سابق، وكشف فجوة المتابعة، وبروتوكول تحقق قبل النشر.</p></div><div class="chindex"><div class="row"><b>56</b><span>بناء مسار تعلم من مصادر حديثة</span></div><div class="row"><b>57</b><span>تحديث معرفة قديمة في مجالك</span></div><div class="row"><b>58</b><span>تحليل قرار سابق بمعلومات اليوم</span></div><div class="row"><b>59</b><span>كشف فجوة بين ما تتابعه وما تحتاجه</span></div><div class="row"><b>60</b><span>بناء نظام تحقق شخصي قبل النشر</span></div></div><div class="pcard"><div class="head"><span class="pn">56</span><span class="pt">بناء مسار تعلم من مصادر حديثة</span><span class="cat">التعلم والتحليل الشخصي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عند تعلم موضوع سريع التغير حيث الكتب متأخرة عنه.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">مسار تعلم من مصادر حية مرتبة، مع تحذير من القديم.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>الموضوع</li><li>مستواك</li><li>وقتك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابن مسار تعلم لـ [الموضوع] من مصادر حديثة.
+
+مستواي:
+[المستوى]
+وقتي الأسبوعي:
+[الوقت]
+
+المطلوب:
+أولا. ما الذي يجب تعلمه أولا، وسبب هذا الترتيب
+ثانيا. لكل مرحلة: مصدر حديث محدد، بتاريخه
+ثالثا. مصادر شائعة لكنها قديمة وستضللك، وما هو القديم فيها
+رابعا. ما الذي يتغير بسرعة في هذا الموضوع فيجب متابعته لا تعلمه مرة
+خامسا. ما هو ثابت ولن يتغير، فيستحق تعلما عميقا
+سادسا. كيف أتحقق أنني أتقنت كل مرحلة
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">تعلم مجال تقني يتغير كل بضعة أشهر.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">مسار بمصادر مؤرخة، مع فصل الثابت عن المتغير.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">الفصل بين «ما يتعلم مرة» و«ما يتابع دائما» يوفر عليك إعادة التعلم.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">57</span><span class="pt">تحديث معرفة قديمة في مجالك</span><span class="cat">التعلم والتحليل الشخصي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تعلمت شيئا قبل سنوات وتشك أن بعضه لم يعد صحيحا.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">قائمة بما بطل من معرفتك، وما حل محله.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>ما تعرفه</li><li>متى تعلمته</li><li>مجالك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">راجع معرفتي في [المجال] وحدد ما بطل منها.
+
+ما أعرفه وأطبقه:
+[المعرفة]
+متى تعلمته:
+[التاريخ]
+
+المطلوب:
+أولا. ما زال صحيحا
+ثانيا. ما لم يعد صحيحا، ومتى تغير، وما البديل
+ثالثا. ما كان أفضل ممارسة وأصبح ممارسة سيئة
+رابعا. ما تغير اسمه فقط دون أن تتغير طبيعته
+خامسا. مفهوم جديد ظهر ولم يكن موجودا حين تعلمت
+
+القواعد:
+اذكر لكل معلومة مصدرها ونوعه وتاريخه
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم تجد ما يستحق، قل ذلك ولا تملأ الفراغ</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">ممارسات برمجية تعلمتها في بداية دراستك.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">قائمة تحديث دقيقة بما بطل وما حل محله.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">58</span><span class="pt">تحليل قرار سابق بمعلومات اليوم</span><span class="cat">التعلم والتحليل الشخصي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">بعد مرور وقت على قرار، للتعلم منه لا لجلد الذات.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">تحليلا يفصل جودة القرار عن جودة نتيجته.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>القرار</li><li>سياقه وقتها</li><li>نتيجته</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">حلل قرارا اتخذته سابقا.
+
+القرار:
+[القرار]
+السياق وقتها:
+[السياق]
+ما كنت أعرفه وقتها:
+[المعرفة وقتها]
+النتيجة:
+[النتيجة]
+
+المطلوب:
+أولا. بمعلومات ذلك الوقت، هل كان القرار معقولا
+ثانيا. هل كانت هناك معلومة متاحة وقتها ولم أستخدمها
+ثالثا. هل النتيجة السيئة بسبب القرار أم بسبب ما لا يمكن توقعه
+رابعا. هل النتيجة الجيدة بسبب القرار أم بالصدفة
+خامسا. ما القاعدة التي أستخرجها لقرارات مشابهة
+
+القاعدة الحاسمة: القرار الجيد قد يعطي نتيجة سيئة، والعكس صحيح.
+قيم القرار لا النتيجة.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">اختيار تقني أو مهني اتخذته قبل سنة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">تحليل يفصل جودة القرار عن حظ النتيجة، وقاعدة مستخرجة.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">59</span><span class="pt">كشف فجوة بين ما تتابعه وما تحتاجه</span><span class="cat">التعلم والتحليل الشخصي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">عندما تشعر أنك تتابع كثيرا وتستفيد قليلا.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">مقارنة بين ما تستهلكه وما يخدم أهدافك فعلا.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>ما تتابعه</li><li>أهدافك</li><li>وقتك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">قارن بين ما أتابعه وما أحتاجه فعلا.
+
+ما أتابعه حاليا:
+[ما تتابعه]
+أهدافي:
+[الأهداف]
+وقتي للمتابعة:
+[الوقت]
+
+المطلوب:
+أولا. أي مما أتابعه يخدم هدفا من أهدافي، وكيف
+ثانيا. ما أتابعه بلا علاقة بأهدافي، وسبب متابعتي له غالبا
+ثالثا. هدف من أهدافي لا أتابع شيئا يخدمه
+رابعا. ما أتابعه ويكرر بعضه بعضا
+خامسا. قائمة متابعة مقترحة تناسب وقتي وأهدافي
+سادسا. ما الذي سأخسره فعلا إن توقفت عن متابعة الباقي
+
+كن صارما. المتابعة بلا هدف استهلاك لا تعلم.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">مراجعة ما تتابعه بعد شعور بالإرهاق المعلوماتي.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">قائمة متابعة مقلصة مرتبطة بأهدافك.</div></div></div></div>
+<div class="pcard"><div class="head"><span class="pn">60</span><span class="pt">بناء نظام تحقق شخصي قبل النشر</span><span class="cat">التعلم والتحليل الشخصي</span></div><div class="body"><div class="row"><div class="k">متى تستخدمه</div><div class="v">بعد أن تنشر خطأ مرة، حتى لا تتكرر.</div></div><div class="row"><div class="k">ماذا ستحصل عليه</div><div class="v">بروتوكول تحقق شخصيا مبنيا على أخطائك أنت.</div></div><div class="row"><div class="k">جهّز هذه المعلومات</div><div class="v"><ul class="b"><li>ما نشرته وكان خاطئا</li><li>نوع المحتوى</li><li>جمهورك</li></ul></div></div><div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابن لي بروتوكول تحقق شخصيا.
+
+أخطاء نشرتها سابقا:
+[الأخطاء]
+نوع محتواي:
+[نوع المحتوى]
+جمهوري:
+[الجمهور]
+
+المطلوب:
+أولا. تصنيف أخطائي: هل هي في المصدر، أم في الفهم، أم في التسرع
+ثانيا. بروتوكول تحقق يمنع كل نوع منها
+ثالثا. أي خطوة أستطيع أتمتتها أو تحويلها إلى عادة
+رابعا. الحد الأدنى من التحقق الذي لا أنشر بدونه أبدا
+خامسا. ماذا أفعل إذا نشرت خطأ رغم ذلك: كيف أصحح، وبأي سرعة
+سادسا. ما الذي يجعلني أتخطى البروتوكول، وكيف أمنع ذلك
+
+اجعل البروتوكول قصيرا. الطويل لا يطبق.</div></div><div class="row"><div class="k">مثال استخدام</div><div class="v">بعد نشر معلومة اتضح لاحقا أنها غير دقيقة.</div></div><div class="row"><div class="k">النتيجة المتوقعة</div><div class="v">بروتوكول قصير مبني على أخطائك، وخطة تصحيح.</div></div><div class="row"><div class="k">ملاحظة تحسين</div><div class="v">خطة التصحيح جزء من البروتوكول، لأن الخطأ سيقع مهما احتطت.</div></div></div></div>
+<section class="endpage">
+  <h1 class="chapter"><span class="num">THE END</span>الخلاصة والخطوة التالية</h1>
+  <p class="lead">كل ما في هذه المكتبة يعود إلى مهارة واحدة: أن تفصل بين ما يقال وما ثبت. من يتقنها يحول أقوى ميزة في هذه الأداة إلى ميزة حقيقية، ومن لا يتقنها يحولها إلى مصدر أخطاء منشورة باسمه.</p>
+<h2>خطة الأيام السبعة القادمة</h2>
+<ol class="steps"><li><span class="sh">اليوم الأول</span>طبق برومبت رقم 5 وابن قائمة مراقبة لمجالك.</li><li><span class="sh">اليوم الثاني</span>جرب برومبتا من فصل التحقق على معلومة تنوي نشرها.</li><li><span class="sh">اليوم الثالث</span>طبق برومبت خريطة المواقف على نقاش تتابعه.</li><li><span class="sh">اليوم الرابع</span>ولد صورة بالأبعاد الستة بدل وصف من سطر.</li><li><span class="sh">اليوم الخامس</span>صمم روتين متابعة واحدا من الفصل الحادي عشر.</li><li><span class="sh">اليومان السادس والسابع</span>طبق برومبت رقم 60 وابن بروتوكول التحقق الخاص بك.</li></ol>
+<h2>بقية السلسلة</h2>
+<ul class="b"><li>Grok من الصفر إلى الاحتراف — الأساس الذي بنيت عليه هذه المكتبة.</li><li>60 برومبت احترافي لـ Claude، و 60 برومبت احترافي لـ ChatGPT — مكتبتان بوظائف مختلفة.</li><li>ChatGPT أم Claude أم Grok — دليل اختيار الأداة لكل مهمة.</li></ul>
+<div class="callout note"><div class="t">تنبيه عن التاريخ</div><p>أسماء القدرات المذكورة تم التحقق منها من المصادر الرسمية بتاريخ 6 سبتمبر 2026، وبعضها في بيتا أو في طرح تدريجي. البرومبتات نفسها لا ترتبط بإصدار، لكن أسماء الميزات قد تتغير.</p></div>
+  <div class="endcard">
+    <div class="h">برومبتات عربية</div>
+    <p>هذا المنتج من إنتاج قناة برومبتات عربية.<br>لمتابعة الأدلة والبرومبتات الجديدة:</p>
+    <p><a href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+</section></body></html>

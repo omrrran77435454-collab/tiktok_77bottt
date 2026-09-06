@@ -1,0 +1,712 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>Grok من الصفر إلى الاحتراف</title><style>/* ============================================================
+   Arabic AI Product Library — shared print theme
+   A4 portrait · RTL · mobile-first reading
+   ============================================================ */
+
+@font-face { font-family: "PlexAr"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 500;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-500.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 600;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-600.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-700.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-700.ttf") format("truetype"); }
+
+:root {
+  --ink:      #17140F;
+  --ink-2:    #3A342C;
+  --muted:    #6E665A;
+  --faint:    #9A9184;
+  --rule:     #E6E0D6;
+  --rule-2:   #D6CEC0;
+  --paper:    #FFFFFF;
+  --soft:     #FBF8F3;
+  --soft-2:   #F5F0E7;
+  --accent:   #3E4A5C;
+  --accent-d: #232C38;
+  --accent-w: #7A8798;
+}
+
+/* ---------- page setup ---------- */
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 16mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: "PlexAr"; font-size: 8.5pt; color: var(--faint);
+    margin-bottom: 5mm;
+  }
+  @bottom-left {
+    content: "PromptsArabic · t.me/PromptsArabic";
+    font-family: "PlexMono"; font-size: 6.8pt; color: #B9B1A4;
+    letter-spacing: .02em; margin-bottom: 5mm; direction: ltr;
+  }
+  @bottom-center {
+    content: string(chaptertitle);
+    font-family: "PlexAr"; font-size: 7.6pt; color: #BCB4A7;
+    margin-bottom: 5mm;
+  }
+}
+@page cover  { margin: 0; @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+@page plain  { @bottom-center{content:none} }
+@page :first { @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+
+html { direction: rtl; }
+body {
+  font-family: "PlexAr", sans-serif;
+  font-size: 11.7pt;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  margin: 0;
+  text-align: right;
+  -weasy-hyphens: none;
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover; break-after: page;
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  background: var(--accent-d); color: #fff;
+}
+.cover .field {
+  position: absolute; inset: 0;
+  background: linear-gradient(152deg, var(--accent-d) 0%, var(--accent) 52%, var(--accent-w) 100%);
+}
+.cover .glow {
+  position: absolute; width: 250mm; height: 250mm; right: -70mm; top: -85mm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 62%);
+}
+.cover .grid-lines { position: absolute; inset: 0; }
+.cover .grid-lines i {
+  position: absolute; top: 0; bottom: 0; width: .3mm; background: rgba(255,255,255,.09);
+}
+.cover .arc { position: absolute; border-radius: 50%; border: .5mm solid rgba(255,255,255,.15); }
+
+.cover .topbar {
+  position: absolute; right: 18mm; left: 18mm; top: 20mm;
+  border-bottom: .3mm solid rgba(255,255,255,.28); padding-bottom: 5mm;
+}
+.cover .kicker {
+  font-size: 10pt; font-weight: 600; color: rgba(255,255,255,.92);
+  letter-spacing: .01em; display: inline-block;
+}
+.cover .topbar .mark {
+  float: left; font-family: "PlexMono"; direction: ltr;
+  font-size: 8.4pt; font-weight: 700; letter-spacing: .18em;
+  color: rgba(255,255,255,.72);
+}
+
+.cover .plate { position: absolute; right: 18mm; left: 18mm; top: 74mm; }
+.cover h1 {
+  font-size: 40pt; font-weight: 700; line-height: 1.3;
+  margin: 0 0 7mm 0; color: #fff; letter-spacing: -.012em;
+}
+.cover .rule { width: 22mm; height: 1.2mm; background: rgba(255,255,255,.85);
+  border-radius: 1mm; margin-bottom: 7mm; }
+.cover .sub {
+  font-size: 12.2pt; font-weight: 400; line-height: 1.78;
+  color: rgba(255,255,255,.93); margin: 0; max-width: 162mm;
+}
+.cover .strip { position: absolute; right: 18mm; left: 18mm; bottom: 86mm; }
+.cover .strip .row {
+  border-top: .25mm solid rgba(255,255,255,.22);
+  padding: 2.6mm 0 2.6mm 0; font-size: 9.2pt; color: rgba(255,255,255,.80);
+}
+.cover .strip .row b { font-family: "PlexMono"; direction: ltr; font-weight: 700;
+  font-size: 7.6pt; color: rgba(255,255,255,.55); float: left; padding-top: .8mm;
+  letter-spacing: .1em; }
+
+.cover .promise {
+  position: absolute; right: 18mm; left: 18mm; bottom: 62mm; font-size: 0;
+}
+.cover .promise span {
+  display: inline-block; font-size: 9.4pt; font-weight: 500; color: #fff;
+  border: .3mm solid rgba(255,255,255,.45); border-radius: 2mm;
+  padding: 2mm 4.5mm; background: rgba(255,255,255,.12);
+  margin: 0 0 2.5mm 3mm;
+}
+.cover .baseline {
+  position: absolute; right: 18mm; left: 18mm; bottom: 44mm;
+  border-top: .3mm solid rgba(255,255,255,.28);
+}
+.cover .platform {
+  position: absolute; right: 18mm; bottom: 24mm;
+  font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 15pt; font-weight: 700; color: #fff; letter-spacing: .1em;
+}
+.cover .rights {
+  position: absolute; left: 18mm; bottom: 24mm; text-align: left;
+  font-size: 8.6pt; color: rgba(255,255,255,.86); line-height: 1.55;
+}
+.cover .rights b { font-weight: 600; display: block; }
+.cover .rights span { font-family: "PlexMono"; direction: ltr; font-size: 7.8pt;
+  color: rgba(255,255,255,.72); }
+
+/* ---------- front matter ---------- */
+.frontpage { page: plain; break-after: page; }
+.frontpage h3 { margin: 6mm 0 2mm 0; }
+.frontpage p.lead { margin-bottom: 5mm; font-size: 11.8pt; line-height: 1.85; }
+.frontpage ul.b { margin-bottom: 2mm; }
+.frontpage ul.b > li { margin-bottom: 1.7mm; }
+.fm-title { font-size: 19pt; font-weight: 700; margin: 0 0 8mm 0; color: var(--ink); }
+.fm-rule { height: 1.1mm; width: 26mm; background: var(--accent); margin-bottom: 9mm; border-radius: 1mm; }
+
+.rights-block {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  padding: 9mm 8mm; background: var(--soft); margin: 8mm 0;
+}
+.rights-block .owner { font-size: 15pt; font-weight: 700; margin: 0 0 3mm 0; }
+.rights-block p { margin: 0 0 3mm 0; font-size: 10.6pt; color: var(--ink-2); }
+.rights-block a.tg {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 11pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+.meta-table { width: 100%; border-collapse: collapse; margin-top: 6mm; }
+.meta-table td { padding: 2.6mm 0; border-bottom: .25mm solid var(--rule); font-size: 10.2pt; vertical-align: top; }
+.meta-table td:first-child { width: 44mm; color: var(--muted); font-weight: 500; }
+
+/* ---------- table of contents ---------- */
+.toc { page: plain; break-after: page; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  text-decoration: none; color: var(--ink);
+  display: flex; align-items: baseline; gap: 2.5mm;
+}
+.toc .t { flex: 0 1 auto; }
+.toc .dots {
+  flex: 1 1 auto; min-width: 6mm; align-self: flex-end;
+  border-bottom: .2mm dotted var(--rule-2); transform: translateY(-1.2mm);
+}
+.toc a::after {
+  content: target-counter(attr(href), page);
+  font-family: "PlexMono"; font-size: 8.6pt; color: var(--faint);
+  font-weight: 400; direction: ltr; flex: 0 0 auto;
+}
+.toc .l1 a {
+  font-size: 11.4pt; font-weight: 600;
+  padding: 3mm 0 3mm 0; border-bottom: .25mm solid var(--rule);
+}
+.toc .l1 a::after { color: var(--accent-d); font-weight: 700; font-size: 9pt; }
+.toc .l2 a {
+  font-size: 10pt; font-weight: 400; color: var(--ink-2);
+  padding: 1.8mm 6.5mm 1.8mm 0;
+}
+.toc .l1 .t::before {
+  content: ""; display: inline-block; width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--accent); margin-left: 3.5mm; vertical-align: middle;
+}
+
+/* ---------- headings ---------- */
+h1.chapter {
+  string-set: chaptertitle content();
+  break-before: page;
+  font-size: 23pt; font-weight: 700; line-height: 1.38;
+  margin: 0 0 3mm 0; padding-bottom: 4mm; color: var(--ink);
+  border-bottom: 1mm solid var(--accent);
+}
+h1.chapter .num {
+  display: block; font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 9.5pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .12em; margin-bottom: 3mm;
+}
+h2 {
+  font-size: 15pt; font-weight: 700; line-height: 1.55;
+  margin: 11mm 0 3.5mm 0; color: var(--ink);
+  break-after: avoid; break-inside: avoid;
+}
+h3 {
+  font-size: 12.2pt; font-weight: 600; line-height: 1.6;
+  margin: 7.5mm 0 2.5mm 0; color: var(--ink-2);
+  break-after: avoid; break-inside: avoid;
+}
+h2 + p, h3 + p { margin-top: 0; }
+
+p { margin: 0 0 3.6mm 0; orphans: 2; widows: 2; }
+p.lead { font-size: 12.4pt; color: var(--ink-2); line-height: 1.9; margin-bottom: 6mm; }
+strong { font-weight: 600; }
+
+/* ---------- lists ---------- */
+ul.b, ol.n { margin: 0 0 4.5mm 0; padding: 0 6mm 0 0; }
+ul.b { list-style: none; padding-right: 0; }
+ul.b > li {
+  position: relative; padding-right: 6.5mm; margin-bottom: 2.4mm;
+  orphans: 2; widows: 2;
+}
+ul.b > li::before {
+  content: ""; position: absolute; right: 1.6mm; top: 2.6mm;
+  width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--accent);
+}
+ol.n { padding-right: 7mm; }
+ol.n > li { margin-bottom: 2.4mm; padding-right: 1.5mm; }
+ol.n > li::marker { color: var(--accent-d); font-weight: 600; }
+
+/* ---------- code ---------- */
+code.inline {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 9.2pt; background: var(--soft-2); color: var(--ink);
+  padding: .5mm 1.4mm; border-radius: 1mm; border: .2mm solid var(--rule);
+}
+pre.code {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate; text-align: left;
+  font-size: 9.2pt; line-height: 1.62; color: #F3EFE8; background: #211D18;
+  padding: 4.5mm 5mm; border-radius: 2.5mm; margin: 0 0 5mm 0;
+  white-space: pre-wrap; word-break: break-word;
+  break-inside: avoid;
+}
+pre.code .cm { color: #A79C8C; }
+.codewrap { margin-bottom: 5mm; break-inside: avoid; }
+.codewrap .caption {
+  font-size: 8.6pt; color: var(--muted); margin-bottom: 1.6mm; font-weight: 500;
+}
+.codewrap pre.code { margin-bottom: 0; }
+
+/* ---------- callouts ---------- */
+.callout {
+  border-right: 1.1mm solid var(--accent);
+  background: var(--soft); border-radius: 0 2.5mm 2.5mm 0;
+  padding: 4.5mm 5mm 3mm 5mm; margin: 0 0 5mm 0;
+  break-inside: avoid;
+}
+.callout .t { font-weight: 700; font-size: 10.4pt; margin-bottom: 1.8mm; }
+.callout p:last-child { margin-bottom: 1.5mm; }
+.callout.warn { border-right-color: #B4472F; background: #FDF4F1; }
+.callout.warn .t { color: #91361F; }
+.callout.tip  { border-right-color: #2F7D62; background: #F1F8F4; }
+.callout.tip .t { color: #1F5B46; }
+
+/* ---------- tables ---------- */
+table.data {
+  width: 100%; border-collapse: collapse; margin: 0 0 5mm 0;
+  font-size: 10pt; break-inside: avoid; direction: rtl;
+}
+table.data th {
+  background: var(--soft-2); font-weight: 600; text-align: right;
+  padding: 2.8mm 3mm; border-bottom: .4mm solid var(--rule-2); color: var(--ink);
+}
+table.data td {
+  padding: 2.6mm 3mm; border-bottom: .25mm solid var(--rule);
+  vertical-align: top; text-align: right; color: var(--ink-2);
+}
+table.data tr:nth-child(even) td { background: #FCFAF6; }
+
+/* ---------- prompt card ---------- */
+.pcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  margin: 0 0 5mm 0; overflow: hidden;
+}
+.pcard > .head {
+  background: var(--soft-2); padding: 3mm 4.5mm 2.6mm 4.5mm;
+  border-bottom: .25mm solid var(--rule-2);
+  break-after: avoid;
+}
+.pcard .pn {
+  font-family: "PlexMono"; direction: ltr; font-size: 8.4pt; font-weight: 700;
+  color: #FFFFFF; background: var(--accent-d); border-radius: 1.5mm;
+  padding: .8mm 2.4mm; letter-spacing: .06em; display: inline-block;
+  margin-left: 3mm; vertical-align: 1mm;
+}
+.pcard .pt { font-size: 13pt; font-weight: 700; display: inline; }
+.pcard .cat {
+  display: block; font-size: 8.4pt; color: var(--muted); margin-top: 1.4mm; font-weight: 500;
+}
+.pcard > .body { padding: 3.4mm 4.5mm .5mm 4.5mm; }
+.pcard .row { margin-bottom: 2.4mm; }
+.pcard .row > .k {
+  font-size: 9pt; font-weight: 700; color: var(--accent-d);
+  margin-bottom: .8mm;
+}
+.pcard .row > .v { font-size: 10.4pt; color: var(--ink-2); line-height: 1.68; }
+.pcard .row ul.b { margin-bottom: 0; }
+.pcard .row ul.b > li { font-size: 10.2pt; margin-bottom: .9mm; }
+
+.promptbox {
+  background: var(--soft); border: .3mm dashed var(--rule-2);
+  border-radius: 2.5mm; padding: 3.4mm 4mm; margin: 0 0 3mm 0;
+  break-inside: avoid;
+}
+.promptbox .lbl {
+  font-size: 8.4pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .01em; margin-bottom: 1.8mm;
+  padding-bottom: 1.2mm; border-bottom: .25mm solid var(--rule-2);
+}
+.promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox.filebox .lbl { font-family: "PlexMono"; direction: ltr; text-align: left;
+  font-size: 8pt; letter-spacing: .02em; }
+.promptbox .txt {
+  font-size: 10.2pt; line-height: 1.66; color: var(--ink); white-space: pre-wrap;
+}
+
+/* ---------- misc blocks ---------- */
+.divider { height: .25mm; background: var(--rule); margin: 8mm 0; border: 0; }
+.spacer { height: 4mm; }
+.sectionlead {
+  background: var(--soft); border-radius: 3mm; padding: 5mm 6mm; margin: 0 0 7mm 0;
+}
+.sectionlead p { margin: 0; font-size: 10.8pt; color: var(--ink-2); }
+
+.steps { counter-reset: st; margin: 0 0 5mm 0; padding: 0; list-style: none; }
+.steps > li {
+  counter-increment: st; position: relative; padding-right: 11mm;
+  margin-bottom: 4mm; break-inside: avoid;
+}
+.steps > li::before {
+  content: counter(st); position: absolute; right: 0; top: .4mm;
+  width: 7.5mm; height: 7.5mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-family: "PlexMono"; font-size: 8.6pt; font-weight: 700;
+  text-align: center; line-height: 7.5mm;
+}
+.steps > li .sh { font-weight: 600; display: block; margin-bottom: .8mm; }
+
+.kv { width: 100%; border-collapse: collapse; margin: 0 0 5mm 0; font-size: 10pt; }
+.kv td { padding: 2.4mm 0; border-bottom: .25mm solid var(--rule); vertical-align: top; }
+.kv td:first-child { width: 40mm; color: var(--muted); font-weight: 500; padding-left: 4mm; }
+
+/* ---------- closing page ---------- */
+.endpage { break-before: page; }
+.endcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm; background: var(--soft);
+  padding: 8mm; margin-top: 6mm; text-align: center;
+}
+.endcard .h { font-size: 15pt; font-weight: 700; margin-bottom: 3mm; }
+.endcard p { font-size: 10.6pt; color: var(--ink-2); }
+.endcard a {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 12pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+
+/* ---------- chapter opener index ---------- */
+.chindex { margin: 0 0 6mm 0; }
+.chindex .row {
+  display: flex; align-items: baseline; gap: 3mm;
+  border-bottom: .25mm solid var(--rule); padding: 2.2mm 0;
+  font-size: 10.4pt;
+}
+.chindex .row b {
+  font-family: "PlexMono"; direction: ltr; font-size: 8pt; font-weight: 700;
+  color: #fff; background: var(--accent-d); border-radius: 1.4mm;
+  padding: .7mm 2mm; flex: 0 0 auto;
+}
+.chindex .row span { flex: 1 1 auto; }
+</style></head><body><section class="cover">
+  <div class="field"></div>
+  <div class="glow"></div>
+  <div class="grid-lines"><i style="right:30mm"></i><i style="right:66mm"></i><i style="right:102mm"></i><i style="right:138mm"></i><i style="right:174mm"></i></div>
+  <div class="arc" style="width:196mm;height:196mm;right:-56mm;top:-64mm"></div>
+  <div class="arc" style="width:128mm;height:128mm;left:-46mm;bottom:-40mm"></div>
+  <div class="topbar">
+    <span class="mark">PROMPTS ARABIC</span>
+    <span class="kicker">دليل عملي بالعربية</span>
+  </div>
+  <div class="plate">
+    <h1>Grok من الصفر إلى الاحتراف</h1>
+    <div class="rule"></div>
+    <p class="sub">النموذج الحالي وأوضاع التفكير والبحث العميق والبحث اللحظي والصوت والصور والفيديو و Build و Bot ومساحات العمل</p>
+  </div>
+  <div class="strip"><div class="row"><b>01</b>النموذج الحالي وأوضاع العمل</div><div class="row"><b>02</b>البحث اللحظي وتحليل النقاش</div><div class="row"><b>03</b>الصوت والصور والفيديو</div><div class="row"><b>04</b>Build و Bot ومساحات العمل والخطط</div></div>
+  <div class="promise"><span>14 فصلا</span><span>أمثلة تطبيقية</span><span>محدث في سبتمبر 2026</span></div>
+  <div class="baseline"></div>
+  <div class="platform">GROK</div>
+  <div class="rights"><b>برومبتات عربية</b><span>t.me/PromptsArabic</span></div>
+</section>
+<section class="frontpage">
+  <div class="fm-title">حقوق النشر</div><div class="fm-rule"></div>
+  <div class="rights-block">
+    <p class="owner">برومبتات عربية</p>
+    <p>جميع الحقوق محفوظة لقناة <strong>برومبتات عربية</strong>.</p>
+    <p>هذا المنتج مخصص للاستخدام الشخصي للمشتري. لا يجوز إعادة نشره أو بيعه
+       أو توزيعه أو اقتباس أجزاء منه لأغراض تجارية دون إذن كتابي من المالك.</p>
+    <p>القناة الرسمية: <a class="tg" href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+  <table class="meta-table">
+    <tr><td>اسم المنتج</td><td>Grok من الصفر إلى الاحتراف</td></tr>
+    <tr><td>الإصدار</td><td>الإصدار الأول</td></tr>
+    <tr><td>اللغة</td><td>العربية</td></tr>
+    <tr><td>المقاس</td><td>A4 عمودي — مهيأ للقراءة على الهاتف</td></tr>
+    <tr><td>تمت مراجعة معلومات وميزات هذا الدليل حتى تاريخ</td><td>6 سبتمبر 2026</td></tr>
+    <tr><td>مصادر التحقق</td><td>x.ai و docs.x.ai — صفحات المنتج والتوثيق وملاحظات الإصدار الرسمية</td></tr>
+  </table>
+  <div class="callout"><div class="t">ملاحظة مهمة عن تاريخ المحتوى</div>
+    <p>منصات الذكاء الاصطناعي تتغير بسرعة. كل ميزة مذكورة هنا تم التحقق منها من
+       المصدر الرسمي بتاريخ 6 سبتمبر 2026. إذا مر وقت طويل على هذا التاريخ،
+       راجع الصفحة الرسمية للميزة قبل الاعتماد عليها في عمل حساس.</p>
+  </div>
+</section><section class="frontpage">
+  <div class="fm-title">عن هذا الدليل</div><div class="fm-rule"></div>
+  <p class="lead">أكثر ما يكتب عن Grok بالعربية قديم أو ناقص، ويصفه كأنه روبوت محادثة داخل منصة واحدة. الواقع مختلف: عائلة نماذج، وأوضاع عمل، وبحث لحظي، وتوليد صور وفيديو، وصوت، ووكيل برمجة، وزملاء عمل رقميون، ومساحات عمل للفرق. هذا الدليل يشرح ما هو موجود فعلا وقت مراجعته، ويحدد بصراحة ما لم نتحقق منه.</p>
+  <h3>لمن هذا الدليل</h3><ul class="b"><li>من يستخدم Grok ولا يعرف الفرق بين أوضاعه ولا متى يبدلها</li><li>صناع المحتوى الذين يتابعون النقاش اللحظي</li><li>الباحثون عن المعلومة الحديثة وتحليل الاتجاهات</li><li>المطورون الذين يريدون معرفة ما يقدمه في العمل التقني</li><li>من يقارن بين أدوات الذكاء الاصطناعي قبل الاشتراك</li></ul>
+  <h3>ماذا ستتعلم</h3><ul class="b"><li>النموذج الحالي وحدوده الحقيقية: نافذة السياق وتاريخ المعرفة</li><li>أوضاع العمل: التفكير والبحث العميق، ومتى يستحق كل واحد</li><li>البحث اللحظي وتحليل النقاش، وأين يتفوق وأين يضلل</li><li>الصوت والصور والفيديو: ما هو متاح وبأي حدود</li><li>Grok Build و Grok Bot ومساحات العمل</li><li>الخطط ونظام الاستهلاك الأسبوعي</li><li>كيف تكتب طلبا يستفيد من نقاط قوة Grok تحديدا</li></ul>
+</section>
+<section class="frontpage">
+  <div class="fm-title">قبل أن تبدأ</div><div class="fm-rule"></div>
+  <h3>المتطلبات</h3><ul class="b"><li>حساب على Grok — بعض الميزات تتطلب خطة مدفوعة</li><li>متصفح حديث، أو تطبيق Grok على iOS أو Android</li><li>موضوع حقيقي تتابعه لتجربة فصول البحث اللحظي</li><li>الاستعداد للتحقق من كل معلومة قبل نشرها</li></ul>
+  <h3>كيف تستخدم هذا الدليل</h3><ul class="b"><li>اقرأ الفصل ثم طبقه على موضوع حقيقي قبل الانتقال</li><li>بعض الميزات تختلف بحسب خطتك ومنصتك — إذا لم تجد ميزة، راجع صفحتها الرسمية</li><li>لا تنشر معلومة من البحث اللحظي قبل فتح مصدرها</li><li>الفصل الأخير ورقة مراجعة — ارجع إليها بعد أسبوع</li></ul>
+  <div class="callout tip"><div class="t">طريقة القراءة الموصى بها</div>
+    <p>لا تقرأ الدليل كله دفعة واحدة. اقرأ فصلا واحدا، ثم نفّذ تمرينه على مهمة حقيقية
+       من عملك، ثم انتقل. أربعة فصول مطبَّقة أفضل من أربعة عشر فصلا مقروءا.</p></div>
+</section>
+<section class="toc"><div class="fm-title">الفهرس</div><div class="fm-rule"></div><ul><li class="l1"><a href="#ch1"><span class="t">ما هو Grok اليوم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s1"><span class="t">أول تصحيح: اسم الشركة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s3"><span class="t">ما الذي يتكون منه المنتج</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s5"><span class="t">ما الذي يجيده فعلا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s7"><span class="t">أين لا يكون الخيار الأفضل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch2"><span class="t">النموذج الحالي وحدوده</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s2"><span class="t">Grok 4.6</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s5"><span class="t">Grok 4.5</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s7"><span class="t">نماذج متقاعدة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s9"><span class="t">ماذا تعني نافذة 500 ألف رمز عمليا</span><span class="dots"></span></a></li><li class="l1"><a href="#ch3"><span class="t">أوضاع العمل: التفكير والبحث العميق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s1"><span class="t">Think</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s3"><span class="t">DeepSearch</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s5"><span class="t">متى تستخدم كل وضع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s7"><span class="t">برومبت يستفيد من DeepSearch</span><span class="dots"></span></a></li><li class="l1"><a href="#ch4"><span class="t">البحث اللحظي وتحليل النقاش</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s1"><span class="t">ما هو متاح</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s3"><span class="t">الفرق بين ثلاثة أسئلة تبدو متشابهة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s6"><span class="t">برومبت تحليل نقاش</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s8"><span class="t">برومبت رصد تغير</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s10"><span class="t">بروتوكول التحقق قبل النشر</span><span class="dots"></span></a></li><li class="l1"><a href="#ch5"><span class="t">الصور والفيديو: Grok Imagine</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s1"><span class="t">ما هو متاح</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s3"><span class="t">كيف تكتب وصفا بصريا جيدا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s8"><span class="t">الفيديو</span><span class="dots"></span></a></li><li class="l1"><a href="#ch6"><span class="t">الصوت</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s1"><span class="t">ما هو متاح</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s3"><span class="t">أين يفيد الصوت فعلا</span><span class="dots"></span></a></li><li class="l1"><a href="#ch7"><span class="t">Grok Build: وكيل البرمجة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s1"><span class="t">ما هو</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s3"><span class="t">أوضاع التشغيل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s6"><span class="t">سير العمل المتوازي</span><span class="dots"></span></a></li><li class="l1"><a href="#ch8"><span class="t">Grok Bot ومساحات العمل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s0"><span class="t">Grok Bot</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s2"><span class="t">مساحات العمل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch9"><span class="t">الخطط ونظام الاستهلاك</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s1"><span class="t">الحصة الأسبوعية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s4"><span class="t">الخطط</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s7"><span class="t">ملاحظة عن اختلاف المنصات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch10"><span class="t">كيف تكتب طلبا يستفيد من Grok</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s1"><span class="t">ثلاث قواعد خاصة بهذه الأداة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s3"><span class="t">قالب عام</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s5"><span class="t">أخطاء شائعة في استخدامه</span><span class="dots"></span></a></li><li class="l1"><a href="#ch11"><span class="t">استخدامات عملية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s0"><span class="t">متابعة مجال</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s2"><span class="t">بحث سريع قبل قرار</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s4"><span class="t">أفكار محتوى من نقاش حقيقي</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s6"><span class="t">شرح كود أو خطأ</span><span class="dots"></span></a></li><li class="l1"><a href="#ch12"><span class="t">الحدود والمسؤولية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s1"><span class="t">حدود يجب معرفتها</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s3"><span class="t">مسؤوليتك عند النشر</span><span class="dots"></span></a></li><li class="l1"><a href="#ch13"><span class="t">ورقة المراجعة السريعة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s0"><span class="t">أي وضع لأي مهمة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s2"><span class="t">قواعد ثابتة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s4"><span class="t">قالب مختصر لأي طلب</span><span class="dots"></span></a></li></ul></section>
+<h1 class="chapter" id="ch1"><span class="num">الفصل الأول</span>ما هو Grok اليوم</h1><p class="lead">الوصف الشائع لـ Grok بأنه روبوت محادثة داخل منصة تواصل لم يعد دقيقا. المنتج اليوم عائلة أوسع، ومعرفة حدودها يوفر عليك توقعات لن تتحقق.</p>
+<h2 id="ch1-s1">أول تصحيح: اسم الشركة</h2>
+<p>المصادر الرسمية تعرف الشركة اليوم باسم <strong>SpaceXAI</strong>، ويظهر ذلك في عنوان الموقع الرسمي نفسه: صانعو Grok، روبوت المحادثة الذكي. التوثيق على docs.x.ai والموقع على x.ai. إذا قرأت مادة تسمي الشركة باسمها القديم فقط، فهي على الأرجح لم تحدث.</p>
+<h2 id="ch1-s3">ما الذي يتكون منه المنتج</h2>
+<table class="data"><thead><tr><th>المكون</th><th>ما هو</th></tr></thead><tbody><tr><td>تطبيق Grok</td><td>المحادثة والبحث والصوت والصور، على الويب و iOS و Android</td></tr><tr><td>أوضاع العمل</td><td>Think و DeepSearch داخل المحادثة</td></tr><tr><td>Grok Imagine</td><td>توليد الصور والفيديو</td></tr><tr><td>Grok Voice</td><td>المحادثة الصوتية ونماذج الصوت</td></tr><tr><td>Grok Build</td><td>وكيل برمجة، وهو في مرحلة بيتا</td></tr><tr><td>Grok Bot</td><td>زملاء عمل رقميون يعملون على حاسوب سحابي دائم</td></tr><tr><td>مساحات العمل</td><td>مساحة شخصية ومساحة فريق ضمن Grok Business</td></tr></tbody></table>
+<h2 id="ch1-s5">ما الذي يجيده فعلا</h2>
+<ul class="b"><li><strong>المعلومة الحديثة</strong>: البحث اللحظي على الويب وعلى منصة X.</li><li><strong>تحليل النقاش</strong>: قراءة ما يقال حول موضوع، لا ما هو صحيح فيه فقط.</li><li><strong>التوليد البصري</strong>: صور وفيديو من نص أو من صورة مرجعية.</li><li><strong>الصوت</strong>: محادثة صوتية بنماذج مخصصة.</li><li><strong>البرمجة</strong>: عبر Grok Build، وهو ما زال بيتا وقت المراجعة.</li></ul>
+<h2 id="ch1-s7">أين لا يكون الخيار الأفضل</h2>
+<div class="callout warn"><div class="t">قاعدة قبل كل شيء</div><p>قوة Grok في الوصول إلى ما يقال الآن. وهذه القوة نفسها هي مصدر خطره: ما يقال الآن ليس بالضرورة صحيحا. عامل مخرجاته عن الأحداث الجارية كمؤشر على النقاش لا كإثبات للواقعة، وافتح المصدر الأصلي قبل أي نشر أو قرار.</p></div>
+<p>وكما في أي أداة ذكاء اصطناعي: ليس بديلا عن مختص في المسائل القانونية والطبية والمالية، ولا تضع فيه بيانات لا تريد أن تخرج من جهازك.</p>
+<h1 class="chapter" id="ch2"><span class="num">الفصل الثاني</span>النموذج الحالي وحدوده</h1><p class="lead">معرفة حدود النموذج ليست تفصيلا تقنيا. هي التي تحدد ما تطلبه وما لا تطلبه.</p>
+<div class="sectionlead"><p>الأرقام في هذا الفصل مأخوذة من التوثيق الرسمي بتاريخ التحقق المذكور في صفحة المعلومات. النماذج تتغير، فراجع صفحة النماذج الرسمية قبل الاعتماد على رقم.</p></div>
+<h2 id="ch2-s2">Grok 4.6</h2>
+<table class="data"><thead><tr><th>الخاصية</th><th>القيمة</th></tr></thead><tbody><tr><td>الوصف الرسمي</td><td>النموذج الطليعي للبرمجة والمهام الوكيلة والعمل المعرفي</td></tr><tr><td>نافذة السياق</td><td>500 ألف رمز</td></tr><tr><td>المدخلات</td><td>نص وصور</td></tr><tr><td>المخرجات</td><td>نص فقط</td></tr><tr><td>حد المخرجات</td><td>بلا حد لطول النص</td></tr><tr><td>تاريخ المعرفة</td><td>الأول من فبراير 2026</td></tr></tbody></table>
+<div class="callout note"><div class="t">لماذا يهم تاريخ المعرفة</div><p>تاريخ المعرفة هو آخر ما تدرب عليه النموذج. أي شيء بعده لا يعرفه إلا عبر البحث اللحظي. فإذا سألته عن حدث بعد ذلك التاريخ ولم تفعل البحث، فأنت تطلب منه التخمين. هذه هي أكثر نقطة يساء فهمها في استخدام أي نموذج.</p></div>
+<h2 id="ch2-s5">Grok 4.5</h2>
+<p>الإصدار السابق، ويصفه الإعلان الرسمي بأنه أذكى نماذجهم للبرمجة والمهام الوكيلة والعمل المعرفي، وأنه درب بالتعاون مع Cursor. ما زال متاحا، لكن الطليعي الحالي هو 4.6.</p>
+<h2 id="ch2-s7">نماذج متقاعدة</h2>
+<p>التوثيق يفرد صفحة لتقاعد نماذج بتاريخ 15 مايو 2026. إذا وجدت مادة تشرح نموذجا لم يعد مدرجا في صفحة النماذج الرسمية، فهي قديمة.</p>
+<h2 id="ch2-s9">ماذا تعني نافذة 500 ألف رمز عمليا</h2>
+<ul class="b"><li>تستطيع وضع مستند طويل جدا أو عدة مستندات في محادثة واحدة.</li><li>لكن الحشو لا يعني الجودة: كلما زاد ما لا علاقة له بسؤالك، قلت دقة الإجابة.</li><li>القاعدة العملية: ضع ما يخدم السؤال، واحذف الباقي، ولا تعتمد على سعة النافذة كبديل عن الانتقاء.</li></ul>
+<h1 class="chapter" id="ch3"><span class="num">الفصل الثالث</span>أوضاع العمل: التفكير والبحث العميق</h1><p class="lead">الوضع الافتراضي يجيب بسرعة. والأوضاع الأخرى تشتري لك عمقا مقابل وقت. معرفة متى تدفع هذا الثمن هي المهارة.</p>
+<h2 id="ch3-s1">Think</h2>
+<p>وضع يعطي النموذج مساحة للتفكير قبل الإجابة. يناسب المسائل التي فيها خطوات متعددة أو قيود متشابكة أو حساب. ولا يناسب سؤالا بسيطا: ستدفع وقتا بلا مقابل.</p>
+<h2 id="ch3-s3">DeepSearch</h2>
+<p>التوثيق الرسمي يصفه بأنه وكيل سريع مصمم لتجميع المعلومات الأساسية، والاستدلال حول الحقائق والآراء المتعارضة، واستخلاص الوضوح من التعقيد. أي أنه ليس بحثا أسرع، بل بحث يتعامل مع التعارض بين المصادر بدل تجاهله.</p>
+<h2 id="ch3-s5">متى تستخدم كل وضع</h2>
+<table class="data"><thead><tr><th>الحالة</th><th>الوضع المناسب</th></tr></thead><tbody><tr><td>سؤال معلوماتي مباشر</td><td>الوضع الافتراضي</td></tr><tr><td>مسألة متعددة الخطوات أو فيها قيود</td><td>Think</td></tr><tr><td>موضوع تتضارب فيه المصادر</td><td>DeepSearch</td></tr><tr><td>حدث جار تريد صورة شاملة عنه</td><td>DeepSearch</td></tr><tr><td>إعادة صياغة أو ترجمة قصيرة</td><td>الوضع الافتراضي</td></tr></tbody></table>
+<h2 id="ch3-s7">برومبت يستفيد من DeepSearch</h2>
+<div class="promptbox standalone"><div class="lbl">استدع الوضع صراحة وحدد ما تريده منه</div><div class="txt">استخدم البحث العميق في:
+[الموضوع]
+
+المطلوب:
+أولا. الوضع الحالي في خمس نقاط، مع مصدر لكل نقطة
+ثانيا. نقاط الاتفاق بين المصادر
+ثالثا. نقاط الخلاف، ومن يقول ماذا، ولماذا اختلفوا
+رابعا. ما هو مؤكد وما هو ادعاء غير محسوم
+خامسا. ما لم أجد له مصدرا موثوقا
+
+القواعد:
+ميز بوضوح بين ما ورد في مصدر وما استنتجته أنت
+إذا كان مصدر غير رسمي أو مجهول، قل ذلك
+لا تذكر رقما بلا تاريخ ومصدر
+لا تحسم خلافا قائما لمجرد أن طرفا أكثر تكرارا</div></div>
+<div class="callout tip"><div class="t">قاعدة الوضع</div><p>لا تشغل الوضع الأثقل افتراضيا. ابدأ بالوضع الافتراضي، وإذا كانت الإجابة سطحية أو متعارضة مع نفسها، أعد السؤال بالوضع الأعمق. هكذا تدفع الوقت حيث يستحق فقط.</p></div>
+<h1 class="chapter" id="ch4"><span class="num">الفصل الرابع</span>البحث اللحظي وتحليل النقاش</h1><p class="lead">هذه هي الميزة التي يبنى عليها اختيار Grok غالبا: الوصول إلى ما يقال الآن، على الويب وعلى منصة X.</p>
+<h2 id="ch4-s1">ما هو متاح</h2>
+<p>الصفحة الرسمية للمنتج تذكر البحث اللحظي ضمن قدرات Grok على الويب و iOS و Android، إلى جانب المحادثة الصوتية وتوليد الصور والفيديو والمساعدة البرمجية والاستدلال المتقدم. والبحث في منشورات المنصة يعطيه زاوية لا تعطيها أدوات تعتمد على فهرسة الويب وحدها.</p>
+<h2 id="ch4-s3">الفرق بين ثلاثة أسئلة تبدو متشابهة</h2>
+<table class="data"><thead><tr><th>السؤال</th><th>ما تحصل عليه فعلا</th></tr></thead><tbody><tr><td>ما هي حقيقة كذا</td><td>إجابة قد تخلط بين ما هو ثابت وما هو متداول</td></tr><tr><td>ماذا يقال عن كذا الآن</td><td>صورة عن النقاش، وهذا ما يجيده فعلا</td></tr><tr><td>ما الدليل على كذا</td><td>طلب صريح للمصدر، وهو ما يجب أن تسأله دائما</td></tr></tbody></table>
+<div class="callout warn"><div class="t">الخطأ الأخطر في استخدام البحث اللحظي</div><p>أن تعامل انتشار معلومة كدليل على صحتها. المنشور المتداول آلاف المرات قد يكون خطأ متداولا آلاف المرات. اطلب دائما المصدر الأصلي، وميز بين «هذا ما يقوله الناس» و«هذا ما ثبت».</p></div>
+<h2 id="ch4-s6">برومبت تحليل نقاش</h2>
+<div class="promptbox standalone"><div class="lbl">افصل النقاش عن الحقيقة</div><div class="txt">حلل النقاش الدائر حول:
+[الموضوع]
+
+المطلوب:
+أولا. ما الذي يقال، مقسما إلى المواقف الرئيسية، مع حجم كل موقف تقريبا
+ثانيا. أقوى حجة لكل موقف
+ثالثا. ما هو مبني على واقعة موثقة، وما هو مبني على تفسير أو انطباع
+رابعا. من بدأ هذا النقاش ومتى، إن أمكن تتبعه
+خامسا. معلومة تتكرر بكثرة وليس لها مصدر أولي
+سادسا. ما الذي لا يناقش رغم أهميته
+
+القواعد:
+انتشار الادعاء ليس دليلا على صحته، ولا تعامله كذلك
+لا تنسب موقفا إلى شخص أو جهة بلا مصدر
+ميز بين حساب رسمي وحساب مجهول</div></div>
+<h2 id="ch4-s8">برومبت رصد تغير</h2>
+<div class="promptbox standalone"><div class="lbl">ما الذي تغير منذ تاريخ معين</div><div class="txt">ابحث عن ما تغير في [الموضوع] منذ
+[التاريخ]
+
+أعطني:
+أولا. ما هو جديد فعلا، مع تاريخ ومصدر لكل بند
+ثانيا. ما تغير عن معلومة كانت صحيحة قبل ذلك التاريخ
+ثالثا. ما يبدو جديدا وهو إعادة تدوير لخبر قديم
+رابعا. ما زال محل انتظار ولم يحسم بعد
+
+القواعد:
+تجاهل ما هو أقدم من التاريخ المذكور
+لكل بند: التاريخ، والمصدر، وهل المصدر رسمي أم لا
+إذا لم يتغير شيء يستحق، قل ذلك ولا تملأ القائمة</div></div>
+<h2 id="ch4-s10">بروتوكول التحقق قبل النشر</h2>
+<ol class="n"><li>افتح المصدر الأصلي، لا المصدر الذي نقل عنه.</li><li>تحقق من تاريخ المعلومة لا تاريخ المنشور الذي نقلها.</li><li>ابحث عن نفي أو تصحيح لاحق للخبر.</li><li>إذا كان الرقم مهما، ابحث عنه في مصدره الأولي.</li><li>إن لم تجد مصدرا أوليا، لا تنشر — أو انشره موصوفا بأنه غير مؤكد.</li></ol>
+<h1 class="chapter" id="ch5"><span class="num">الفصل الخامس</span>الصور والفيديو: Grok Imagine</h1><p class="lead">التوليد البصري أحد أوضح نقاط قوة المنتج، وله حدود يجب معرفتها قبل الاعتماد عليه.</p>
+<h2 id="ch5-s1">ما هو متاح</h2>
+<p>الإعلانات الرسمية تذكر أن نموذج الفيديو <code class="inline">grok-imagine-video-1.5</code> يدعم التحويل من نص إلى فيديو، ومن صورة إلى فيديو، ومن مرجع إلى فيديو، بدقة 1080p أصلية لمساري النص إلى فيديو والصورة إلى فيديو. كما تذكر أن توليد الصور وتحريرها يقبلان نسبتي عرض إضافيتين: 21:9 السينمائية العريضة و 5:2 للافتات العريضة.</p>
+<h2 id="ch5-s3">كيف تكتب وصفا بصريا جيدا</h2>
+<p>الوصف الضعيف يذكر الموضوع فقط. الوصف الجيد يحدد ستة أبعاد، وكل واحد منها يغير النتيجة تغييرا حقيقيا:</p>
+<table class="data"><thead><tr><th>البعد</th><th>ماذا تحدد</th><th>مثال</th></tr></thead><tbody><tr><td>الموضوع</td><td>ما هو العنصر الرئيسي</td><td>مطور يعمل على لابتوب</td></tr><tr><td>التكوين</td><td>أين هو في الإطار وكم يشغل</td><td>من الجانب، يشغل ثلث الإطار الأيمن</td></tr><tr><td>الإضاءة</td><td>مصدرها واتجاهها وقسوتها</td><td>ضوء نافذة جانبي ناعم</td></tr><tr><td>الألوان</td><td>اللوحة ودرجة التشبع</td><td>ألوان دافئة خافتة التشبع</td></tr><tr><td>العمق</td><td>حدة الخلفية</td><td>خلفية ضبابية بعمق ضحل</td></tr><tr><td>المزاج</td><td>الانطباع العام</td><td>هادئ ومركز</td></tr></tbody></table>
+<div class="promptbox standalone"><div class="lbl">قالب وصف بصري</div><div class="txt">صف هذا المشهد:
+[الموضوع الرئيسي]
+
+التكوين:
+[موضعه في الإطار وكم يشغل]
+الإضاءة:
+[المصدر والاتجاه والقسوة]
+الألوان:
+[اللوحة ودرجة التشبع]
+العمق:
+[حدة الخلفية]
+الزاوية والمسافة:
+[الزاوية]
+المزاج:
+[كلمتان]
+
+تجنب: نص داخل الصورة، وشعارات، وأيدي غير طبيعية، ووجوه مشوهة.
+النسبة:
+[نسبة العرض إلى الارتفاع]</div></div>
+<div class="callout warn"><div class="t">قبل استخدام صورة مولدة</div><p>افحص التفاصيل التي تفشل عادة: الأيدي والأصابع، والنصوص داخل الصورة، والانعكاسات، والوجوه في الخلفية.</p><p>لا تولد شعار علامة تجارية ولا وجه شخص حقيقي وتستخدمه كأنه صورة حقيقية.</p><p>إذا كنت ستنشر الصورة في سياق قد يظن أنه واقعي، أشر إلى أنها مولدة.</p><p>راجع شروط استخدام المنصة بخصوص حقوق الصور المولدة قبل استخدامها تجاريا.</p></div>
+<h2 id="ch5-s8">الفيديو</h2>
+<ul class="b"><li><strong>من نص إلى فيديو</strong>: تصف المشهد بالكامل، وأنت تتحكم في كل شيء وتخاطر بكل شيء.</li><li><strong>من صورة إلى فيديو</strong>: تبدأ من صورة راض عنها فتضمن التكوين وتحرك ما فيه.</li><li><strong>من مرجع إلى فيديو</strong>: تعطي مرجعا يوجه الأسلوب أو العنصر.</li></ul>
+<div class="callout tip"><div class="t">أفضل مسار عمليا</div><p>ولد صورة ثابتة أولا حتى ترضى عن التكوين والإضاءة تماما، ثم حولها إلى فيديو. التحكم في صورة واحدة أسهل بكثير من التحكم في مشهد متحرك من الصفر.</p></div>
+<h1 class="chapter" id="ch6"><span class="num">الفصل السادس</span>الصوت</h1><p class="lead">الصوت في Grok ليس ميزة واحدة بل عدة أشياء، بعضها للمستخدم وبعضها للمطور.</p>
+<h2 id="ch6-s1">ما هو متاح</h2>
+<ul class="b"><li><strong>المحادثة الصوتية</strong> ضمن قدرات التطبيق على الويب و iOS و Android.</li><li><strong>Grok Voice Think Fast 2.0</strong>: نموذج صوت وصفه الإعلان الرسمي بأنه جيل جديد بذكاء أعلى ودقة نسخ أفضل وقدرة محادثة محسنة، مع مكاسب في الاستدلال الصوتي وموثوقية استخدام الأدوات.</li><li><strong>واجهة وكيل صوتي برمجية</strong>: لبناء وكلاء يتحدثون عشرات اللغات ويستدعون الأدوات ويبحثون في بيانات لحظية، بمتوسط زمن حتى أول صوت أقل من ثانية.</li><li><strong>منشئ وكيل صوتي بلا كود</strong>: يوفر الاتصال الهاتفي واسترجاع المعرفة والأدوات وضوابط الأمان والمراقبة.</li><li><strong>استنساخ الصوت</strong>: من مقطع صوتي قصير، ويستخدم عبر واجهتي تحويل النص إلى كلام والكلام إلى كلام.</li></ul>
+<h2 id="ch6-s3">أين يفيد الصوت فعلا</h2>
+<table class="data"><thead><tr><th>الحالة</th><th>لماذا الصوت أفضل</th></tr></thead><tbody><tr><td>التفكير بصوت عال في مشكلة</td><td>الكلام أسرع من الكتابة، والمقاطعة الطبيعية تفيد</td></tr><tr><td>المراجعة أثناء المشي أو القيادة</td><td>لا تحتاج شاشة</td></tr><tr><td>تدريب على شرح أو عرض</td><td>تسمع نفسك وتتلقى ملاحظات فورية</td></tr><tr><td>تعلم النطق أو المحادثة بلغة</td><td>تفاعل صوتي مباشر</td></tr></tbody></table>
+<div class="callout warn"><div class="t">استنساخ الصوت مسؤولية</div><p>استنساخ صوت شخص واستخدامه دون إذنه الصريح مشكلة أخلاقية وقانونية بغض النظر عن سهولة التنفيذ. استنسخ صوتك أنت، أو صوتا لديك إذن مكتوب باستخدامه، ولا تنتج مقاطع تنسب إلى شخص لم يقلها.</p></div>
+<h1 class="chapter" id="ch7"><span class="num">الفصل السابع</span>Grok Build: وكيل البرمجة</h1><p class="lead">أداة موجهة للمطورين، وهي في مرحلة بيتا وقت مراجعة هذا الدليل — وهذا يغير كيف تتعامل معها.</p>
+<h2 id="ch7-s1">ما هو</h2>
+<p>التوثيق يصف Grok Build بأنه وكيل برمجة، ويذكر أنه متاح في بيتا، ويمكن استخدامه عبر واجهة نصية تفاعلية في الطرفية، أو عبر سكربتات بلا واجهة، أو ببناء تطبيقات عبر بروتوكول عميل الوكيل.</p>
+<h2 id="ch7-s3">أوضاع التشغيل</h2>
+<table class="data"><thead><tr><th>الوضع</th><th>ما يفعله</th></tr></thead><tbody><tr><td>Plan</td><td>سير عمل يبدأ بالتخطيط قبل التنفيذ</td></tr><tr><td>Auto</td><td>يستخدم مصنفا للموافقة تلقائيا على الأدوات الآمنة</td></tr><tr><td>Always-approve</td><td>يتخطى طلبات الإذن لاستدعاءات الأدوات</td></tr></tbody></table>
+<div class="callout warn"><div class="t">الوضع الثالث ليس اختصارا للراحة</div><p>أي وضع يتخطى طلبات الإذن يعني أن الأداة تنفذ دون أن تسألك. لا تشغله على جهازك الشخصي ولا على مستودع فيه أسرار أو صلاحيات نشر. إن احتجته، شغله داخل بيئة معزولة لا تملك فيها الأداة ما يمكن أن تخسره.</p></div>
+<h2 id="ch7-s6">سير العمل المتوازي</h2>
+<p>ملاحظات الإصدار تذكر أن Grok Build يستطيع كتابة وتشغيل سير عمل: سكربتات تنسيق توزع مهمة على مئات الوكلاء المتوازيين، وتتحقق من النتائج، وتبلغ في تشغيل خلفي واحد. هذه قدرة قوية ومناسبة للمهام القابلة للتقسيم، وغير مناسبة للمهام التي يعتمد كل جزء فيها على ما قبله.</p>
+<div class="callout note"><div class="t">ماذا تعني بيتا عمليا</div><p>أن السلوك والواجهة قد يتغيران، وأن ما يعمل اليوم قد يحتاج تعديلا بعد تحديث. لا تبن عليها سير عمل إنتاجيا حرجا قبل أن تستقر، وراجع صفحة التغييرات قبل الاعتماد على سلوك بعينه.</p></div>
+<h1 class="chapter" id="ch8"><span class="num">الفصل الثامن</span>Grok Bot ومساحات العمل</h1><h2 id="ch8-s0">Grok Bot</h2>
+<p>الإعلان الرسمي يصف Grok Bot بأنه زملاء ذكاء اصطناعي دائمون يعملون على حاسوب سحابي دائم، مع المراسلة والموافقات والموصلات والروتينات. الفكرة تختلف عن المحادثة: الزميل الرقمي يبقى، وله سياقه، ويعمل بين طلباتك لا أثناءها فقط. وقد أعلنت المصادر الرسمية توسيع إتاحته ليشمل خططا أكثر.</p>
+<h2 id="ch8-s2">مساحات العمل</h2>
+<p>توثيق Grok Business يذكر مساحات عمل مخصصة للاستخدام الشخصي وللفرق، مع ضوابط خصوصية ومشاركة، وإمكانية التبديل بينها للوصول إلى ميزات الفريق وضمان أن محادثاتك محمية بشروط خطة الأعمال. وهناك مساحة شخصية للاستخدام الفردي ومساحة فريق للعمل التعاوني، والثانية تتطلب ترخيصا نشطا.</p>
+<table class="data"><thead><tr><th>المساحة</th><th>لمن</th><th>متى تستخدمها</th></tr></thead><tbody><tr><td>المساحة الشخصية</td><td>أنت وحدك</td><td>عملك الخاص وتجاربك</td></tr><tr><td>مساحة الفريق</td><td>الفريق بترخيص نشط</td><td>العمل المشترك والمحادثات التي تخص المؤسسة</td></tr></tbody></table>
+<div class="callout tip"><div class="t">افصل الشخصي عن المؤسسي</div><p>إذا كنت تعمل ضمن مؤسسة لها مساحة فريق، فلا تناقش عمل المؤسسة في مساحتك الشخصية. الفصل ليس تنظيميا فقط، بل يحدد أي شروط خصوصية تنطبق على المحادثة.</p></div>
+<h1 class="chapter" id="ch9"><span class="num">الفصل التاسع</span>الخطط ونظام الاستهلاك</h1><p class="lead">فهم نظام الاستهلاك ليس موضوعا ماليا فقط، بل يحدد كيف توزع عملك خلال الأسبوع.</p>
+<h2 id="ch9-s1">الحصة الأسبوعية</h2>
+<p>التوثيق يذكر نظاما بدأ طرحه في يونيو 2026 للمستخدمين المدفوعين: حصة استهلاك أسبوعية واحدة مشتركة تنفقها كما تشاء عبر أي منتج من منتجات Grok، بدل حدود يومية منفصلة. وتعاد الحصة كل أسبوع وفق جدول يظهر في تبويب الاستهلاك داخل الإعدادات.</p>
+<div class="callout tip"><div class="t">ماذا يعني هذا لطريقة عملك</div><p>الحصة الأسبوعية المشتركة تعني أن العمل الثقيل يمكن تجميعه في يوم واحد بدل توزيعه قسرا على الأيام. خطط أسبوعك: اجعل المهام الثقيلة في أوائل الأسبوع حتى يبقى لديك هامش إن احتجت.</p><p>وراقب تبويب الاستهلاك بدل التخمين — هو المكان الذي يخبرك بموعد إعادة الضبط.</p></div>
+<h2 id="ch9-s4">الخطط</h2>
+<table class="data"><thead><tr><th>الخطة</th><th>ما هو موثق عنها</th></tr></thead><tbody><tr><td>الخطة المجانية</td><td>استخدام محدود</td></tr><tr><td>SuperGrok</td><td>ترفع حدودك وتفتح المزيد عبر كل المنتجات، وتسحب من حصة أسبوعية واحدة</td></tr><tr><td>SuperGrok Heavy</td><td>أداء أقوى، ويتاح حين يكون لدى مؤسستك ترخيص مرقى</td></tr><tr><td>Grok Business</td><td>مساحات عمل للفرق بضوابط خصوصية ومشاركة</td></tr></tbody></table>
+<div class="callout warn"><div class="t">ما لم نتحقق منه</div><p>الأسعار الدقيقة لكل خطة، ومصفوفة الميزات الكاملة لكل خطة، لم يتحقق منهما في هذا الدليل وهما يتغيران. إذا كنت ستشترك من أجل ميزة بعينها، افتح صفحة الأسعار الرسمية وتأكد من إدراجها في الخطة قبل الدفع.</p></div>
+<h2 id="ch9-s7">ملاحظة عن اختلاف المنصات</h2>
+<p>بعض الميزات ليست موحدة عبر المنصات. مثال موثق: <strong>Companions</strong> متاحة على تطبيق iOS فقط، ولا توجد خطط لجلبها إلى الويب أو Android. لا تفترض أن ما تراه على منصة موجود على غيرها.</p>
+<h1 class="chapter" id="ch10"><span class="num">الفصل العاشر</span>كيف تكتب طلبا يستفيد من Grok</h1><p class="lead">الطلب العام يهدر أهم ما يميز هذه الأداة. الطلب الجيد يستدعي الوصف المناسب ويطلب المصدر ويحدد ما لا يقبل.</p>
+<h2 id="ch10-s1">ثلاث قواعد خاصة بهذه الأداة</h2>
+<ol class="steps"><li><span class="sh">حدد الأفق الزمني</span>«خلال آخر ثلاثين يوما» أو «منذ التاريخ الفلاني». بلا أفق زمني قد تخلط بين قديم وحديث.</li><li><span class="sh">اطلب المصدر ونوعه</span>لا يكفي «اذكر المصدر». اطلب: هل المصدر رسمي أم إعلامي أم حساب فرد.</li><li><span class="sh">افصل الادعاء عن الدليل</span>اطلب صراحة تمييز ما ورد في مصدر عما استنتج، وما هو محسوم عما هو محل خلاف.</li></ol>
+<h2 id="ch10-s3">قالب عام</h2>
+<div class="promptbox standalone"><div class="lbl">قالب طلب مبني على نقاط قوة Grok</div><div class="txt">الموضوع:
+[الموضوع]
+الأفق الزمني:
+[الفترة]
+الهدف من المعلومة:
+[الهدف]
+
+المطلوب:
+أولا. الوضع الحالي في [عدد] نقاط
+ثانيا. لكل نقطة: المصدر، ونوعه، وتاريخه
+ثالثا. ما هو محسوم وما هو محل خلاف
+رابعا. ما لم أجد له مصدرا موثوقا
+
+القواعد:
+لا تذكر معلومة بلا مصدر
+ميز بين ما ورد في مصدر وما استنتجته أنت
+انتشار الادعاء ليس دليلا على صحته
+إذا لم يتغير شيء في الفترة المحددة، قل ذلك ولا تملأ الفراغ</div></div>
+<h2 id="ch10-s5">أخطاء شائعة في استخدامه</h2>
+<table class="data"><thead><tr><th>الخطأ</th><th>الإصلاح</th></tr></thead><tbody><tr><td>السؤال عن حدث حديث بلا تفعيل البحث</td><td>فعل البحث اللحظي أو حدد الأفق الزمني</td></tr><tr><td>اعتبار الانتشار دليلا</td><td>اطلب المصدر الأولي دائما</td></tr><tr><td>استخدام الوضع الأثقل لكل شيء</td><td>ابدأ بالافتراضي وارتق عند الحاجة</td></tr><tr><td>نشر مخرج بلا تحقق</td><td>افتح المصدر بنفسك قبل النشر</td></tr><tr><td>وصف بصري من كلمتين</td><td>استخدم الأبعاد الستة في فصل الصور</td></tr><tr><td>افتراض توفر ميزة على كل المنصات</td><td>تحقق: بعض الميزات على منصة واحدة فقط</td></tr></tbody></table>
+<h1 class="chapter" id="ch11"><span class="num">الفصل الحادي عشر</span>استخدامات عملية</h1><h2 id="ch11-s0">متابعة مجال</h2>
+<div class="promptbox standalone"><div class="lbl">ملخص أسبوعي لمجال</div><div class="txt">أعطني ملخصا لما جد في [المجال] خلال آخر سبعة أيام.
+
+المخرج:
+خمس نقاط فقط، الأهم أولا
+لكل نقطة: ماذا حدث، ولماذا يهم، والمصدر ونوعه
+سطر واحد: ما الذي يستدعي إجراء مني
+
+القواعد:
+لا تدرج شيئا أقدم من سبعة أيام
+لا تدرج شيئا لمجرد ملء العدد
+إذا لم يجد شيء يستحق، قل ذلك صراحة</div></div>
+<h2 id="ch11-s2">بحث سريع قبل قرار</h2>
+<div class="promptbox standalone"><div class="lbl">تحقق سريع من أداة أو خدمة</div><div class="txt">أفكر في استخدام [الأداة] لأجل
+[الغرض]
+
+ابحث وأعطني:
+أولا. ما هي، ومن يقف وراءها، ومنذ متى
+ثانيا. ما يقوله المستخدمون الفعليون، لا الصفحة التسويقية
+ثالثا. المشكلات المتكررة في تجارب المستخدمين
+رابعا. بدائل مباشرة لها
+خامسا. أي إشارة تحذيرية: تغير في التسعير، أو انقطاع خدمة، أو مخاوف خصوصية
+
+القواعد:
+ميز بين رأي مستخدم وبين مادة تسويقية
+إذا كانت الشكاوى قديمة وعولجت، قل ذلك</div></div>
+<h2 id="ch11-s4">أفكار محتوى من نقاش حقيقي</h2>
+<div class="promptbox standalone"><div class="lbl">زوايا محتوى من نقاش قائم</div><div class="txt">راقب النقاش حول [الموضوع] واستخرج زوايا محتوى.
+
+المطلوب:
+أولا. الأسئلة التي يكررها الناس ولا يجدون لها إجابة واضحة
+ثانيا. المفاهيم التي يخلط بينها في النقاش
+ثالثا. المعلومات الخاطئة المتداولة والتي تستحق تصحيحا
+رابعا. زاوية لا يتناولها أحد رغم أهميتها
+
+لكل زاوية: من يهتم بها، وما الذي يخرج به القارئ.
+لا تقترح زاوية تحتاج معلومة لا أملكها.</div></div>
+<h2 id="ch11-s6">شرح كود أو خطأ</h2>
+<div class="promptbox standalone"><div class="lbl">فهم كود مع بحث عن سياقه</div><div class="txt">اشرح لي هذا الكود، وابحث عن سياقه إن احتجت.
+
+اللغة:
+[لغة البرمجة]
+الكود:
+[الكود]
+ما أحتاج فعله به:
+[الهدف]
+
+المطلوب:
+أولا. ماذا يفعل، في ثلاث جمل
+ثانيا. الأسطر غير الواضحة فقط
+ثالثا. إن كان يستخدم مكتبة أو واجهة خارجية، ابحث عن حالتها الحالية: هل ما زالت مصانة، وهل تغيرت واجهتها
+رابعا. الحالات التي سيفشل فيها
+
+لا تعد كتابة الكود. اشرح الموجود.</div></div>
+<h1 class="chapter" id="ch12"><span class="num">الفصل الثاني عشر</span>الحدود والمسؤولية</h1><p class="lead">كل أداة قوية لها حدود، والوعي بها جزء من إتقانها لا انتقاص منها.</p>
+<h2 id="ch12-s1">حدود يجب معرفتها</h2>
+<ul class="b"><li><strong>تاريخ المعرفة</strong>: ما بعد الأول من فبراير 2026 لا يعرفه النموذج إلا عبر البحث.</li><li><strong>البحث اللحظي يعكس ما يقال</strong>: وهذا ليس دائما ما هو صحيح.</li><li><strong>اختلاف المنصات</strong>: بعض الميزات على منصة واحدة فقط.</li><li><strong>بيتا</strong>: Grok Build في بيتا، وسلوكه قابل للتغيير.</li><li><strong>الطرح التدريجي</strong>: قد تذكر ميزة رسميا ولا تصلك بعد.</li></ul>
+<h2 id="ch12-s3">مسؤوليتك عند النشر</h2>
+<ol class="n"><li>افتح المصدر الأصلي قبل نشر أي معلومة.</li><li>لا تنسب قولا إلى شخص أو جهة بلا مصدر موثق.</li><li>إذا نشرت صورة أو مقطعا مولدا في سياق قد يظن واقعيا، أشر إلى أنه مولد.</li><li>لا تستنسخ صوت أحد ولا تولد صورة تنتحل شخصية.</li><li>صحح علنا إذا نشرت خطأ، بالسرعة نفسها التي نشرت بها.</li></ol>
+<div class="callout warn"><div class="t">الخصوصية</div><p>لا تضع في المحادثة بيانات لا تريد أن تخرج من جهازك. وإذا كنت تعمل ضمن مؤسسة لها مساحة فريق، فناقش عمل المؤسسة داخلها لا في مساحتك الشخصية، لأن شروط الخصوصية تختلف بينهما.</p></div>
+<h1 class="chapter" id="ch13"><span class="num">المرجع</span>ورقة المراجعة السريعة</h1><h2 id="ch13-s0">أي وضع لأي مهمة</h2>
+<table class="data"><thead><tr><th>أريد أن…</th><th>استخدم</th></tr></thead><tbody><tr><td>أسأل سؤالا مباشرا</td><td>الوضع الافتراضي</td></tr><tr><td>أحل مسألة متعددة الخطوات</td><td>Think</td></tr><tr><td>أفهم موضوعا تتضارب فيه المصادر</td><td>DeepSearch</td></tr><tr><td>أعرف ماذا يقال الآن</td><td>البحث اللحظي مع طلب المصادر</td></tr><tr><td>أولد صورة أو فيديو</td><td>Grok Imagine بوصف الأبعاد الستة</td></tr><tr><td>أتحدث بدل الكتابة</td><td>المحادثة الصوتية</td></tr><tr><td>أعمل على كود</td><td>Grok Build، وهو بيتا</td></tr><tr><td>أعمل مع فريق</td><td>مساحة الفريق في Grok Business</td></tr></tbody></table>
+<h2 id="ch13-s2">قواعد ثابتة</h2>
+<ul class="b"><li>حدد الأفق الزمني في كل سؤال عن معلومة تتغير.</li><li>اطلب المصدر ونوعه، لا المصدر فقط.</li><li>الانتشار ليس دليلا.</li><li>افتح المصدر الأصلي قبل النشر.</li><li>لا تفترض توفر ميزة على كل المنصات.</li><li>ابدأ بالوضع الافتراضي وارتق عند الحاجة.</li></ul>
+<h2 id="ch13-s4">قالب مختصر لأي طلب</h2>
+<div class="promptbox standalone"><div class="lbl">قالب</div><div class="txt">الموضوع:
+[الموضوع]
+الأفق الزمني:
+[الفترة]
+الهدف:
+[الهدف]
+المخرج:
+[الشكل]
+
+اذكر مصدر كل معلومة ونوعه وتاريخه.
+ميز بين ما ورد في مصدر وما استنتجته.
+إذا لم تجد شيئا يستحق، قل ذلك ولا تملأ الفراغ.</div></div>
+<section class="endpage">
+  <h1 class="chapter"><span class="num">THE END</span>الخلاصة والخطوة التالية</h1>
+  <p class="lead">أهم ما في هذا الدليل ليس قائمة الميزات، بل عادة واحدة: أن تفصل دائما بين ما يقال وما ثبت. هذه العادة هي التي تحول أقوى ميزة في هذه الأداة من مخاطرة إلى ميزة حقيقية.</p>
+<h2>ماذا تفعل غدا</h2>
+<ol class="n"><li>اختر موضوعا تتابعه، وشغل عليه برومبت الملخص الأسبوعي.</li><li>افتح مصدرين من الناتج وتحقق منهما بنفسك.</li><li>جرب البحث العميق على موضوع تتضارب فيه المصادر.</li><li>ولد صورة بالأبعاد الستة بدل وصف من سطر.</li></ol>
+<h2>بقية السلسلة</h2>
+<ul class="b"><li>60 برومبت احترافي لـ Grok — مكتبة مبنية على نقاط قوته تحديدا.</li><li>ChatGPT أم Claude أم Grok — دليل اختيار الأداة لكل مهمة.</li><li>دليل Claude العملي، و ChatGPT من الصفر إلى الاحتراف.</li></ul>
+<div class="callout note"><div class="t">تنبيه عن التاريخ</div><p>تمت مراجعة كل ميزة ورقم في هذا الدليل من المصادر الرسمية على x.ai و docs.x.ai بتاريخ 6 سبتمبر 2026. المنتج يتحرك بسرعة وبعض مكوناته في بيتا أو في طرح تدريجي: إذا وجدت اختلافا بين ما هنا وما تراه، فالمصدر الرسمي هو المرجع.</p></div>
+  <div class="endcard">
+    <div class="h">برومبتات عربية</div>
+    <p>هذا المنتج من إنتاج قناة برومبتات عربية.<br>لمتابعة الأدلة والبرومبتات الجديدة:</p>
+    <p><a href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+</section></body></html>

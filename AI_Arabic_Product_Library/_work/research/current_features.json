@@ -882,6 +882,109 @@
       "details": "A May 15, 2026 model retirement is documented in the migration docs.",
       "official_source": "https://docs.x.ai/developers/migration/may-15-retirement",
       "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "xAI / SpaceXAI",
+      "product": "Grok",
+      "feature_name": "Think and DeepSearch modes",
+      "feature_status": "Stable",
+      "availability": "Grok apps",
+      "plans": "Not fully verified",
+      "platforms": [
+        "Web",
+        "iOS",
+        "Android"
+      ],
+      "details": "Grok includes Think and DeepSearch modes. DeepSearch is described as a fast agent that synthesises key information, reasons about conflicting facts and opinions, and distils clarity from complexity.",
+      "official_source": "https://x.ai/news/grok-3",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "xAI / SpaceXAI",
+      "product": "Grok",
+      "feature_name": "Consumer capability set",
+      "feature_status": "Stable",
+      "availability": "Grok apps",
+      "plans": "Not fully verified",
+      "platforms": [
+        "Web",
+        "iOS",
+        "Android"
+      ],
+      "details": "Voice chat, image and video generation, real-time search, coding help and advanced reasoning, on web, iOS and Android.",
+      "official_source": "https://x.ai/grok",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "xAI / SpaceXAI",
+      "product": "Grok",
+      "feature_name": "Companions",
+      "feature_status": "iOS only",
+      "availability": "Grok iOS app",
+      "plans": "Not fully verified",
+      "platforms": [
+        "iOS"
+      ],
+      "details": "Companions are available on the iOS app only, and there are no plans to bring them to the web or Android.",
+      "official_source": "https://docs.x.ai/grok/faq",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "xAI / SpaceXAI",
+      "product": "Grok",
+      "feature_name": "Weekly usage pool",
+      "feature_status": "Rolled out June 2026",
+      "availability": "Paid plans",
+      "plans": "Paid users",
+      "platforms": [
+        "All"
+      ],
+      "details": "A simpler, more flexible system for paid users: one shared weekly usage pool spendable across any Grok product instead of separate daily limits. The limit resets every week on a schedule shown in the Usage tab in Settings.",
+      "official_source": "https://docs.x.ai/grok/faq",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "xAI / SpaceXAI",
+      "product": "Grok",
+      "feature_name": "SuperGrok and SuperGrok Heavy",
+      "feature_status": "Current plans",
+      "availability": "Grok",
+      "plans": "SuperGrok; SuperGrok Heavy where the organisation has an upgraded licence",
+      "platforms": [
+        "All"
+      ],
+      "details": "Paid SuperGrok plans raise limits and unlock more across every product, drawing from a single weekly usage allowance. SuperGrok Heavy is available where an organisation has an upgraded licence.",
+      "official_source": "https://x.ai/pricing",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "xAI / SpaceXAI",
+      "product": "Grok",
+      "feature_name": "Workspaces (Personal and Team)",
+      "feature_status": "Grok Business",
+      "availability": "Grok Business",
+      "plans": "Team workspace requires an active licence",
+      "platforms": [
+        "Web"
+      ],
+      "details": "Grok Business provides dedicated workspaces for personal and team use with enhanced privacy and sharing controls. A Personal Workspace for individual use and a Team Workspace for collaborative work, accessible only with an active licence.",
+      "official_source": "https://docs.x.ai/docs/grok-business/grok-user-guide",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "xAI / SpaceXAI",
+      "product": "Grok",
+      "feature_name": "Grok Build modes and workflows",
+      "feature_status": "Beta",
+      "availability": "Developer tooling",
+      "plans": "Not fully verified",
+      "platforms": [
+        "CLI",
+        "API"
+      ],
+      "details": "Grok Build is a coding agent offering Plan mode for planning-first workflows, Auto mode which uses a classifier to auto-approve safe tools, and Always-approve mode which skips permission prompts for tool calls. It can also write and run workflows: orchestration scripts that fan a task out across hundreds of parallel agents, verify results and report back in one background run.",
+      "official_source": "https://docs.x.ai/build/modes-and-commands",
+      "verified_at": "2026-09-06"
     }
   ],
   "toolchain_versions": [

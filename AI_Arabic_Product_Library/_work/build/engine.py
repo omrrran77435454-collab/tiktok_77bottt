@@ -160,6 +160,14 @@ def validate(blocks, where=""):
                     "%s: version token %r ends in a Latin letter after digits; in an "
                     "RTL run that letter is reordered to the front. Write the number "
                     "plainly instead." % (where, m.group(0)))
+        if k in ("promptbox", "filebox", "prompt"):
+            body = b[1]["text"] if k == "prompt" else b[2]
+            first = next((l for l in prompt_text(body).split("\n") if l.strip()), "")
+            if re.fullmatch(r"\s*\[[^\]]+\]\s*", first):
+                raise ValueError(
+                    "%s: a copyable block starts with a bare variable line (%s). A lone "
+                    "variable with no Arabic line before it loses a bracket on copy. Put "
+                    "an Arabic lead-in on the line above it." % (where, first.strip()))
         if k == "prompt":
             need = ("n", "title", "category", "when", "gives", "text", "example", "output")
             missing = [x for x in need if not b[1].get(x)]
