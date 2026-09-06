@@ -1,0 +1,91 @@
+{
+ "product": "ابن تطبيقك الأول مع Claude Code",
+ "id": "06_build_apps",
+ "pdf": {
+  "pdf": "Build_Apps_With_Claude_Code_Arabic_Final.pdf",
+  "pages": 36,
+  "issues": [],
+  "checks": {
+   "fonts": [
+    "CRZFJS+PlexAr-Semi-Bold",
+    "FNPUCG+PlexAr-Medium",
+    "HIRYNU+PlexAr-Bold",
+    "NETSUB+PlexMono",
+    "TFCPFR+PlexAr",
+    "UWGIWA+DejaVu-Sans-Bold",
+    "WDHEQY+PlexMono-Bold"
+   ],
+   "fonts_not_embedded": [],
+   "empty_pages": [],
+   "overflow_blocks": [],
+   "presentation_form_pages": [],
+   "pages_without_text": [],
+   "internal_links": 264,
+   "external_links": 2,
+   "telegram_link_annotations": [
+    [
+     2,
+     "https://t.me/PromptsArabic"
+    ],
+    [
+     36,
+     "https://t.me/PromptsArabic"
+    ]
+   ],
+   "broken_internal_links": [],
+   "owner_mentions": 5,
+   "tg_text_mentions": 38,
+   "search_hits": {
+    "برومبتات عربية": 57,
+    "t.me/PromptsArabic": 38
+   },
+   "canonical_arabic_words": 1254,
+   "extract_missing_words_count": 0,
+   "extract_missing_words": [],
+   "search_sample_size": 126,
+   "search_unfindable": [],
+   "variables_with_digits": [],
+   "variables": [
+    "[اسم المشروع]",
+    "[البديل الحالي]",
+    "[الفكرة]",
+    "[المدة]",
+    "[المستخدم]",
+    "[الوقت الأسبوعي]",
+    "[معرف الحزمة]"
+   ],
+   "variables_broken": [],
+   "pages_rendered": 36
+  }
+ },
+ "docx": {
+  "docx": "Build_Apps_With_Claude_Code_Arabic_Final.docx",
+  "issues": [],
+  "checks": {
+   "paragraphs": 610,
+   "tables": 7,
+   "styles_used": [
+    "APL Body",
+    "APL Bullet",
+    "APL Callout",
+    "APL Caption",
+    "APL Code",
+    "APL H1",
+    "APL H2",
+    "APL H3",
+    "APL Lead",
+    "APL Prompt",
+    "APL PromptLbl",
+    "APL Subtitle",
+    "APL Title",
+    "Normal"
+   ],
+   "paragraphs_with_bidi": 574,
+   "sections_rtl": true,
+   "owner_mentions": 5,
+   "tg_mentions": 3,
+   "rendered_pages": 36
+  }
+ },
+ "prompt_numbers": []
+}

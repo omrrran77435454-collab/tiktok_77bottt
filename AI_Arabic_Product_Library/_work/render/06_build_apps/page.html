@@ -1,0 +1,840 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>ابن تطبيقك الأول مع Claude Code</title><style>/* ============================================================
+   Arabic AI Product Library — shared print theme
+   A4 portrait · RTL · mobile-first reading
+   ============================================================ */
+
+@font-face { font-family: "PlexAr"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 500;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-500.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 600;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-600.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-700.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-700.ttf") format("truetype"); }
+
+:root {
+  --ink:      #17140F;
+  --ink-2:    #3A342C;
+  --muted:    #6E665A;
+  --faint:    #9A9184;
+  --rule:     #E6E0D6;
+  --rule-2:   #D6CEC0;
+  --paper:    #FFFFFF;
+  --soft:     #FBF8F3;
+  --soft-2:   #F5F0E7;
+  --accent:   #6B4E9E;
+  --accent-d: #432F6B;
+  --accent-w: #9A7FC4;
+}
+
+/* ---------- page setup ---------- */
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 16mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: "PlexAr"; font-size: 8.5pt; color: var(--faint);
+    margin-bottom: 5mm;
+  }
+  @bottom-left {
+    content: "PromptsArabic · t.me/PromptsArabic";
+    font-family: "PlexMono"; font-size: 6.8pt; color: #B9B1A4;
+    letter-spacing: .02em; margin-bottom: 5mm; direction: ltr;
+  }
+  @bottom-center {
+    content: string(chaptertitle);
+    font-family: "PlexAr"; font-size: 7.6pt; color: #BCB4A7;
+    margin-bottom: 5mm;
+  }
+}
+@page cover  { margin: 0; @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+@page plain  { @bottom-center{content:none} }
+@page :first { @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+
+html { direction: rtl; }
+body {
+  font-family: "PlexAr", sans-serif;
+  font-size: 11.7pt;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  margin: 0;
+  text-align: right;
+  -weasy-hyphens: none;
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover; break-after: page;
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  background: var(--accent-d); color: #fff;
+}
+.cover .field {
+  position: absolute; inset: 0;
+  background: linear-gradient(152deg, var(--accent-d) 0%, var(--accent) 52%, var(--accent-w) 100%);
+}
+.cover .glow {
+  position: absolute; width: 250mm; height: 250mm; right: -70mm; top: -85mm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 62%);
+}
+.cover .grid-lines { position: absolute; inset: 0; }
+.cover .grid-lines i {
+  position: absolute; top: 0; bottom: 0; width: .3mm; background: rgba(255,255,255,.09);
+}
+.cover .arc { position: absolute; border-radius: 50%; border: .5mm solid rgba(255,255,255,.15); }
+
+.cover .topbar {
+  position: absolute; right: 18mm; left: 18mm; top: 20mm;
+  border-bottom: .3mm solid rgba(255,255,255,.28); padding-bottom: 5mm;
+}
+.cover .kicker {
+  font-size: 10pt; font-weight: 600; color: rgba(255,255,255,.92);
+  letter-spacing: .01em; display: inline-block;
+}
+.cover .topbar .mark {
+  float: left; font-family: "PlexMono"; direction: ltr;
+  font-size: 8.4pt; font-weight: 700; letter-spacing: .18em;
+  color: rgba(255,255,255,.72);
+}
+
+.cover .plate { position: absolute; right: 18mm; left: 18mm; top: 74mm; }
+.cover h1 {
+  font-size: 40pt; font-weight: 700; line-height: 1.3;
+  margin: 0 0 7mm 0; color: #fff; letter-spacing: -.012em;
+}
+.cover .rule { width: 22mm; height: 1.2mm; background: rgba(255,255,255,.85);
+  border-radius: 1mm; margin-bottom: 7mm; }
+.cover .sub {
+  font-size: 12.2pt; font-weight: 400; line-height: 1.78;
+  color: rgba(255,255,255,.93); margin: 0; max-width: 162mm;
+}
+.cover .strip { position: absolute; right: 18mm; left: 18mm; bottom: 86mm; }
+.cover .strip .row {
+  border-top: .25mm solid rgba(255,255,255,.22);
+  padding: 2.6mm 0 2.6mm 0; font-size: 9.2pt; color: rgba(255,255,255,.80);
+}
+.cover .strip .row b { font-family: "PlexMono"; direction: ltr; font-weight: 700;
+  font-size: 7.6pt; color: rgba(255,255,255,.55); float: left; padding-top: .8mm;
+  letter-spacing: .1em; }
+
+.cover .promise {
+  position: absolute; right: 18mm; left: 18mm; bottom: 62mm; font-size: 0;
+}
+.cover .promise span {
+  display: inline-block; font-size: 9.4pt; font-weight: 500; color: #fff;
+  border: .3mm solid rgba(255,255,255,.45); border-radius: 2mm;
+  padding: 2mm 4.5mm; background: rgba(255,255,255,.12);
+  margin: 0 0 2.5mm 3mm;
+}
+.cover .baseline {
+  position: absolute; right: 18mm; left: 18mm; bottom: 44mm;
+  border-top: .3mm solid rgba(255,255,255,.28);
+}
+.cover .platform {
+  position: absolute; right: 18mm; bottom: 24mm;
+  font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 15pt; font-weight: 700; color: #fff; letter-spacing: .1em;
+}
+.cover .rights {
+  position: absolute; left: 18mm; bottom: 24mm; text-align: left;
+  font-size: 8.6pt; color: rgba(255,255,255,.86); line-height: 1.55;
+}
+.cover .rights b { font-weight: 600; display: block; }
+.cover .rights span { font-family: "PlexMono"; direction: ltr; font-size: 7.8pt;
+  color: rgba(255,255,255,.72); }
+
+/* ---------- front matter ---------- */
+.frontpage { page: plain; break-after: page; }
+.frontpage h3 { margin: 6mm 0 2mm 0; }
+.frontpage p.lead { margin-bottom: 5mm; font-size: 11.8pt; line-height: 1.85; }
+.frontpage ul.b { margin-bottom: 2mm; }
+.frontpage ul.b > li { margin-bottom: 1.7mm; }
+.fm-title { font-size: 19pt; font-weight: 700; margin: 0 0 8mm 0; color: var(--ink); }
+.fm-rule { height: 1.1mm; width: 26mm; background: var(--accent); margin-bottom: 9mm; border-radius: 1mm; }
+
+.rights-block {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  padding: 9mm 8mm; background: var(--soft); margin: 8mm 0;
+}
+.rights-block .owner { font-size: 15pt; font-weight: 700; margin: 0 0 3mm 0; }
+.rights-block p { margin: 0 0 3mm 0; font-size: 10.6pt; color: var(--ink-2); }
+.rights-block a.tg {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 11pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+.meta-table { width: 100%; border-collapse: collapse; margin-top: 6mm; }
+.meta-table td { padding: 2.6mm 0; border-bottom: .25mm solid var(--rule); font-size: 10.2pt; vertical-align: top; }
+.meta-table td:first-child { width: 44mm; color: var(--muted); font-weight: 500; }
+
+/* ---------- table of contents ---------- */
+.toc { page: plain; break-after: page; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  text-decoration: none; color: var(--ink);
+  display: flex; align-items: baseline; gap: 2.5mm;
+}
+.toc .t { flex: 0 1 auto; }
+.toc .dots {
+  flex: 1 1 auto; min-width: 6mm; align-self: flex-end;
+  border-bottom: .2mm dotted var(--rule-2); transform: translateY(-1.2mm);
+}
+.toc a::after {
+  content: target-counter(attr(href), page);
+  font-family: "PlexMono"; font-size: 8.6pt; color: var(--faint);
+  font-weight: 400; direction: ltr; flex: 0 0 auto;
+}
+.toc .l1 a {
+  font-size: 11.4pt; font-weight: 600;
+  padding: 3mm 0 3mm 0; border-bottom: .25mm solid var(--rule);
+}
+.toc .l1 a::after { color: var(--accent-d); font-weight: 700; font-size: 9pt; }
+.toc .l2 a {
+  font-size: 10pt; font-weight: 400; color: var(--ink-2);
+  padding: 1.8mm 6.5mm 1.8mm 0;
+}
+.toc .l1 .t::before {
+  content: ""; display: inline-block; width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--accent); margin-left: 3.5mm; vertical-align: middle;
+}
+
+/* ---------- headings ---------- */
+h1.chapter {
+  string-set: chaptertitle content();
+  break-before: page;
+  font-size: 23pt; font-weight: 700; line-height: 1.38;
+  margin: 0 0 3mm 0; padding-bottom: 4mm; color: var(--ink);
+  border-bottom: 1mm solid var(--accent);
+}
+h1.chapter .num {
+  display: block; font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 9.5pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .12em; margin-bottom: 3mm;
+}
+h2 {
+  font-size: 15pt; font-weight: 700; line-height: 1.55;
+  margin: 11mm 0 3.5mm 0; color: var(--ink);
+  break-after: avoid; break-inside: avoid;
+}
+h3 {
+  font-size: 12.2pt; font-weight: 600; line-height: 1.6;
+  margin: 7.5mm 0 2.5mm 0; color: var(--ink-2);
+  break-after: avoid; break-inside: avoid;
+}
+h2 + p, h3 + p { margin-top: 0; }
+
+p { margin: 0 0 3.6mm 0; orphans: 2; widows: 2; }
+p.lead { font-size: 12.4pt; color: var(--ink-2); line-height: 1.9; margin-bottom: 6mm; }
+strong { font-weight: 600; }
+
+/* ---------- lists ---------- */
+ul.b, ol.n { margin: 0 0 4.5mm 0; padding: 0 6mm 0 0; }
+ul.b { list-style: none; padding-right: 0; }
+ul.b > li {
+  position: relative; padding-right: 6.5mm; margin-bottom: 2.4mm;
+  orphans: 2; widows: 2;
+}
+ul.b > li::before {
+  content: ""; position: absolute; right: 1.6mm; top: 2.6mm;
+  width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--accent);
+}
+ol.n { padding-right: 7mm; }
+ol.n > li { margin-bottom: 2.4mm; padding-right: 1.5mm; }
+ol.n > li::marker { color: var(--accent-d); font-weight: 600; }
+
+/* ---------- code ---------- */
+code.inline {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 9.2pt; background: var(--soft-2); color: var(--ink);
+  padding: .5mm 1.4mm; border-radius: 1mm; border: .2mm solid var(--rule);
+}
+pre.code {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate; text-align: left;
+  font-size: 9.2pt; line-height: 1.62; color: #F3EFE8; background: #211D18;
+  padding: 4.5mm 5mm; border-radius: 2.5mm; margin: 0 0 5mm 0;
+  white-space: pre-wrap; word-break: break-word;
+  break-inside: avoid;
+}
+pre.code .cm { color: #A79C8C; }
+.codewrap { margin-bottom: 5mm; break-inside: avoid; }
+.codewrap .caption {
+  font-size: 8.6pt; color: var(--muted); margin-bottom: 1.6mm; font-weight: 500;
+}
+.codewrap pre.code { margin-bottom: 0; }
+
+/* ---------- callouts ---------- */
+.callout {
+  border-right: 1.1mm solid var(--accent);
+  background: var(--soft); border-radius: 0 2.5mm 2.5mm 0;
+  padding: 4.5mm 5mm 3mm 5mm; margin: 0 0 5mm 0;
+  break-inside: avoid;
+}
+.callout .t { font-weight: 700; font-size: 10.4pt; margin-bottom: 1.8mm; }
+.callout p:last-child { margin-bottom: 1.5mm; }
+.callout.warn { border-right-color: #B4472F; background: #FDF4F1; }
+.callout.warn .t { color: #91361F; }
+.callout.tip  { border-right-color: #2F7D62; background: #F1F8F4; }
+.callout.tip .t { color: #1F5B46; }
+
+/* ---------- tables ---------- */
+table.data {
+  width: 100%; border-collapse: collapse; margin: 0 0 5mm 0;
+  font-size: 10pt; break-inside: avoid; direction: rtl;
+}
+table.data th {
+  background: var(--soft-2); font-weight: 600; text-align: right;
+  padding: 2.8mm 3mm; border-bottom: .4mm solid var(--rule-2); color: var(--ink);
+}
+table.data td {
+  padding: 2.6mm 3mm; border-bottom: .25mm solid var(--rule);
+  vertical-align: top; text-align: right; color: var(--ink-2);
+}
+table.data tr:nth-child(even) td { background: #FCFAF6; }
+
+/* ---------- prompt card ---------- */
+.pcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  margin: 0 0 5mm 0; overflow: hidden;
+}
+.pcard > .head {
+  background: var(--soft-2); padding: 3mm 4.5mm 2.6mm 4.5mm;
+  border-bottom: .25mm solid var(--rule-2);
+  break-after: avoid;
+}
+.pcard .pn {
+  font-family: "PlexMono"; direction: ltr; font-size: 8.4pt; font-weight: 700;
+  color: #FFFFFF; background: var(--accent-d); border-radius: 1.5mm;
+  padding: .8mm 2.4mm; letter-spacing: .06em; display: inline-block;
+  margin-left: 3mm; vertical-align: 1mm;
+}
+.pcard .pt { font-size: 13pt; font-weight: 700; display: inline; }
+.pcard .cat {
+  display: block; font-size: 8.4pt; color: var(--muted); margin-top: 1.4mm; font-weight: 500;
+}
+.pcard > .body { padding: 3.4mm 4.5mm .5mm 4.5mm; }
+.pcard .row { margin-bottom: 2.4mm; }
+.pcard .row > .k {
+  font-size: 9pt; font-weight: 700; color: var(--accent-d);
+  margin-bottom: .8mm;
+}
+.pcard .row > .v { font-size: 10.4pt; color: var(--ink-2); line-height: 1.68; }
+.pcard .row ul.b { margin-bottom: 0; }
+.pcard .row ul.b > li { font-size: 10.2pt; margin-bottom: .9mm; }
+
+.promptbox {
+  background: var(--soft); border: .3mm dashed var(--rule-2);
+  border-radius: 2.5mm; padding: 3.4mm 4mm; margin: 0 0 3mm 0;
+  break-inside: avoid;
+}
+.promptbox .lbl {
+  font-size: 8.4pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .01em; margin-bottom: 1.8mm;
+  padding-bottom: 1.2mm; border-bottom: .25mm solid var(--rule-2);
+}
+.promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox.filebox .lbl { font-family: "PlexMono"; direction: ltr; text-align: left;
+  font-size: 8pt; letter-spacing: .02em; }
+.promptbox .txt {
+  font-size: 10.2pt; line-height: 1.66; color: var(--ink); white-space: pre-wrap;
+}
+
+/* ---------- misc blocks ---------- */
+.divider { height: .25mm; background: var(--rule); margin: 8mm 0; border: 0; }
+.spacer { height: 4mm; }
+.sectionlead {
+  background: var(--soft); border-radius: 3mm; padding: 5mm 6mm; margin: 0 0 7mm 0;
+}
+.sectionlead p { margin: 0; font-size: 10.8pt; color: var(--ink-2); }
+
+.steps { counter-reset: st; margin: 0 0 5mm 0; padding: 0; list-style: none; }
+.steps > li {
+  counter-increment: st; position: relative; padding-right: 11mm;
+  margin-bottom: 4mm; break-inside: avoid;
+}
+.steps > li::before {
+  content: counter(st); position: absolute; right: 0; top: .4mm;
+  width: 7.5mm; height: 7.5mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-family: "PlexMono"; font-size: 8.6pt; font-weight: 700;
+  text-align: center; line-height: 7.5mm;
+}
+.steps > li .sh { font-weight: 600; display: block; margin-bottom: .8mm; }
+
+.kv { width: 100%; border-collapse: collapse; margin: 0 0 5mm 0; font-size: 10pt; }
+.kv td { padding: 2.4mm 0; border-bottom: .25mm solid var(--rule); vertical-align: top; }
+.kv td:first-child { width: 40mm; color: var(--muted); font-weight: 500; padding-left: 4mm; }
+
+/* ---------- closing page ---------- */
+.endpage { break-before: page; }
+.endcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm; background: var(--soft);
+  padding: 8mm; margin-top: 6mm; text-align: center;
+}
+.endcard .h { font-size: 15pt; font-weight: 700; margin-bottom: 3mm; }
+.endcard p { font-size: 10.6pt; color: var(--ink-2); }
+.endcard a {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 12pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+
+/* ---------- chapter opener index ---------- */
+.chindex { margin: 0 0 6mm 0; }
+.chindex .row {
+  display: flex; align-items: baseline; gap: 3mm;
+  border-bottom: .25mm solid var(--rule); padding: 2.2mm 0;
+  font-size: 10.4pt;
+}
+.chindex .row b {
+  font-family: "PlexMono"; direction: ltr; font-size: 8pt; font-weight: 700;
+  color: #fff; background: var(--accent-d); border-radius: 1.4mm;
+  padding: .7mm 2mm; flex: 0 0 auto;
+}
+.chindex .row span { flex: 1 1 auto; }
+</style></head><body><section class="cover">
+  <div class="field"></div>
+  <div class="glow"></div>
+  <div class="grid-lines"><i style="right:30mm"></i><i style="right:66mm"></i><i style="right:102mm"></i><i style="right:138mm"></i><i style="right:174mm"></i></div>
+  <div class="arc" style="width:196mm;height:196mm;right:-56mm;top:-64mm"></div>
+  <div class="arc" style="width:128mm;height:128mm;left:-46mm;bottom:-40mm"></div>
+  <div class="topbar">
+    <span class="mark">PROMPTS ARABIC</span>
+    <span class="kicker">مشروع تطبيق بالعربية</span>
+  </div>
+  <div class="plate">
+    <h1>ابن تطبيقك الأول مع Claude Code</h1>
+    <div class="rule"></div>
+    <p class="sub">تطبيق هاتف عربي حقيقي من الفكرة إلى ملف التثبيت: الواجهة والحالة والتخزين والواجهات والأذونات والاختبارات والبناء</p>
+  </div>
+  <div class="strip"><div class="row"><b>01</b>الفكرة والمتطلبات وقصص المستخدم</div><div class="row"><b>02</b>مقارنة أطر التطبيقات واختيار واحد</div><div class="row"><b>03</b>الواجهة والحالة والتخزين والواجهات</div><div class="row"><b>04</b>الأذونات والأمان والاختبارات والبناء</div></div>
+  <div class="promise"><span>تطبيق كامل</span><span>10 مراحل</span><span>محدث في سبتمبر 2026</span></div>
+  <div class="baseline"></div>
+  <div class="platform">CLAUDE CODE</div>
+  <div class="rights"><b>برومبتات عربية</b><span>t.me/PromptsArabic</span></div>
+</section>
+<section class="frontpage">
+  <div class="fm-title">حقوق النشر</div><div class="fm-rule"></div>
+  <div class="rights-block">
+    <p class="owner">برومبتات عربية</p>
+    <p>جميع الحقوق محفوظة لقناة <strong>برومبتات عربية</strong>.</p>
+    <p>هذا المنتج مخصص للاستخدام الشخصي للمشتري. لا يجوز إعادة نشره أو بيعه
+       أو توزيعه أو اقتباس أجزاء منه لأغراض تجارية دون إذن كتابي من المالك.</p>
+    <p>القناة الرسمية: <a class="tg" href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+  <table class="meta-table">
+    <tr><td>اسم المنتج</td><td>ابن تطبيقك الأول مع Claude Code</td></tr>
+    <tr><td>الإصدار</td><td>الإصدار الأول</td></tr>
+    <tr><td>اللغة</td><td>العربية</td></tr>
+    <tr><td>المقاس</td><td>A4 عمودي — مهيأ للقراءة على الهاتف</td></tr>
+    <tr><td>تمت مراجعة معلومات وميزات هذا الدليل حتى تاريخ</td><td>6 سبتمبر 2026</td></tr>
+    <tr><td>مصادر التحقق</td><td>docs.flutter.dev و reactnative.dev و learn.microsoft.com/dotnet و code.claude.com/docs</td></tr>
+  </table>
+  <div class="callout"><div class="t">ملاحظة مهمة عن تاريخ المحتوى</div>
+    <p>منصات الذكاء الاصطناعي تتغير بسرعة. كل ميزة مذكورة هنا تم التحقق منها من
+       المصدر الرسمي بتاريخ 6 سبتمبر 2026. إذا مر وقت طويل على هذا التاريخ،
+       راجع الصفحة الرسمية للميزة قبل الاعتماد عليها في عمل حساس.</p>
+  </div>
+</section><section class="frontpage">
+  <div class="fm-title">عن هذا الدليل</div><div class="fm-rule"></div>
+  <p class="lead">تطبيق الهاتف ليس موقعا بشاشة أصغر. له دورة حياة مختلفة، وتخزين محلي، وأذونات، وبناء ينتهي بملف تثبيت. هذا الدليل يبني معك تطبيق متابعة مصروفات عربيا كاملا على عشر مراحل، ولكل مرحلة برومبت فعلي وملفات متوقعة واختبار يدوي ومعيار انتقال. ويبدأ قبل ذلك بمقارنة أطر العمل، فتعرف لماذا اخترنا ما اخترناه ومتى يكون غيره أنسب.</p>
+  <h3>لمن هذا الدليل</h3><ul class="b"><li>من يعرف أساسيات البرمجة ولم يبن تطبيق هاتف من قبل</li><li>طلاب يحتاجون تطبيقا حقيقيا لمشروع تخرج</li><li>مطورو ويب ينتقلون إلى تطبيقات الهاتف</li><li>من يريد تطبيقا عربيا صحيح الاتجاه لا تطبيقا مترجما</li></ul>
+  <h3>ماذا ستتعلم</h3><ul class="b"><li>مقارنة عملية بين Flutter و React Native و .NET MAUI، وقرار مبني على معايير</li><li>بناء واجهة عربية RTL صحيحة على مستوى التطبيق لا على مستوى النص</li><li>إدارة الحالة بطريقة لا تتحول إلى فوضى بعد ثلاث شاشات</li><li>التخزين المحلي عبر طبقة مستودع تسمح بتغيير المصدر لاحقا</li><li>استدعاء واجهة خارجية مع معالجة كل حالات الفشل</li><li>الأذونات على أندرويد ومتى تطلب وكيف تتعامل مع الرفض</li><li>الاختبارات والأمان وبناء ملف تثبيت جاهز للنشر</li></ul>
+</section>
+<section class="frontpage">
+  <div class="fm-title">قبل أن تبدأ</div><div class="fm-rule"></div>
+  <h3>المتطلبات</h3><ul class="b"><li>جهاز يستطيع تشغيل محاكي أندرويد، أو هاتف أندرويد وكابل</li><li>Claude Code مثبت ويعمل</li><li>معرفة أساسية بالبرمجة الكائنية</li><li>مساحة قرص كافية — أدوات تطوير الهاتف كبيرة</li><li>صبر في مرحلة الإعداد: هي أطول مرحلة وأقلها متعة</li></ul>
+  <h3>كيف تستخدم هذا الدليل</h3><ul class="b"><li>لا تتخط مرحلة الإعداد ولا تستعجلها. أكثر ما يوقف المبتدئين هو بيئة نصف جاهزة</li><li>أرسل برومبت كل مرحلة كما هو بعد تعبئة المتغيرات</li><li>اختبر على جهاز حقيقي لا على المحاكي وحده، خصوصا الأذونات والأداء</li><li>بعد كل مرحلة: راجع الفروق ثم اختبر ثم commit</li><li>احتفظ بملف القرارات وحدثه بعد كل مرحلة</li></ul>
+  <div class="callout tip"><div class="t">طريقة القراءة الموصى بها</div>
+    <p>لا تقرأ الدليل كله دفعة واحدة. اقرأ فصلا واحدا، ثم نفّذ تمرينه على مهمة حقيقية
+       من عملك، ثم انتقل. أربعة فصول مطبَّقة أفضل من أربعة عشر فصلا مقروءا.</p></div>
+</section>
+<section class="toc"><div class="fm-title">الفهرس</div><div class="fm-rule"></div><ul><li class="l1"><a href="#ch1"><span class="t">الفكرة والنطاق وقصص المستخدم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s1"><span class="t">التطبيق الذي سنبنيه</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s3"><span class="t">قصص المستخدم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s5"><span class="t">خارج النطاق صراحة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s8"><span class="t">برومبت تحديد النطاق</span><span class="dots"></span></a></li><li class="l1"><a href="#ch2"><span class="t">مقارنة الأطر واختيار واحد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s1"><span class="t">المرشحون وحالتهم وقت المراجعة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s4"><span class="t">المقارنة على معايير مشروعنا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s6"><span class="t">القرار</span><span class="dots"></span></a></li><li class="l1"><a href="#ch3"><span class="t">البيئة وإعداد المشروع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s12"><span class="t">ضبط الاتجاه العربي على مستوى التطبيق</span><span class="dots"></span></a></li><li class="l1"><a href="#ch4"><span class="t">الشاشات والتنقل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch5"><span class="t">إدارة الحالة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s1"><span class="t">ثلاث طبقات لا تختلط</span><span class="dots"></span></a></li><li class="l1"><a href="#ch6"><span class="t">التخزين المحلي الدائم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s12"><span class="t">شكل واجهة المستودع</span><span class="dots"></span></a></li><li class="l1"><a href="#ch7"><span class="t">النماذج والتحقق ومعالجة الأخطاء</span><span class="dots"></span></a></li><li class="l1"><a href="#ch8"><span class="t">الأذونات والتذكير اليومي</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s1"><span class="t">قواعد طلب الإذن</span><span class="dots"></span></a></li><li class="l1"><a href="#ch9"><span class="t">الواجهة الخارجية والاختبارات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s0"><span class="t">استدعاء واجهة خارجية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s4"><span class="t">الاختبارات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch10"><span class="t">الأداء وتجربة الاستخدام</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s1"><span class="t">الأداء</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s4"><span class="t">تجربة الاستخدام</span><span class="dots"></span></a></li><li class="l1"><a href="#ch11"><span class="t">الأمان والبناء وقائمة الإصدار</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s0"><span class="t">الأمان قبل البناء</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s3"><span class="t">البناء</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s6"><span class="t">التوقيع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s8"><span class="t">قائمة تحقق الإصدار</span><span class="dots"></span></a></li><li class="l1"><a href="#ch12"><span class="t">ورقة المراجعة السريعة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s0"><span class="t">المراحل ومعايير الانتقال</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s2"><span class="t">أوامر ستستخدمها يوميا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s4"><span class="t">دورة العمل في كل مرحلة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s6"><span class="t">أخطاء شائعة في أول تطبيق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s8"><span class="t">ما تضعه في CLAUDE.md لهذا المشروع</span><span class="dots"></span></a></li></ul></section>
+<h1 class="chapter" id="ch1"><span class="num">المرحلة صفر</span>الفكرة والنطاق وقصص المستخدم</h1><p class="lead">التطبيق الأول يفشل غالبا لأنه واسع لا لأنه صعب. هذه المرحلة تضيقه حتى يصبح قابلا للإنهاء.</p>
+<h2 id="ch1-s1">التطبيق الذي سنبنيه</h2>
+<p><strong>مصروفي</strong>: تطبيق يسجل فيه المستخدم مصروفاته اليومية، ويصنفها، ويرى ملخصا شهريا لكل تصنيف، ويستقبل تذكيرا يوميا. اخترناه لأنه يمر بكل ما يحتاجه أي تطبيق حقيقي: نموذج إدخال، وقائمة، وتصفية، وتخزين محلي دائم، وحساب وعرض، وإذن نظام، وبناء ونشر — بلا تعقيد يشتت.</p>
+<h2 id="ch1-s3">قصص المستخدم</h2>
+<ol class="n"><li>كمستخدم أريد تسجيل مصروف بسرعة حتى لا أنسى تسجيله.</li><li>كمستخدم أريد تصنيف كل مصروف حتى أعرف أين يذهب مالي.</li><li>كمستخدم أريد رؤية ملخص الشهر حتى أقارن تصنيفاتي.</li><li>كمستخدم أريد أن تبقى بياناتي بعد إغلاق التطبيق حتى لا أعيد الإدخال.</li><li>كمستخدم أريد تذكيرا يوميا حتى أبني عادة التسجيل.</li></ol>
+<h2 id="ch1-s5">خارج النطاق صراحة</h2>
+<table class="data"><thead><tr><th>المستبعد</th><th>سبب الاستبعاد</th></tr></thead><tbody><tr><td>حسابات ومزامنة سحابية</td><td>تضيف خادما ومصادقة إلى تطبيق أول</td></tr><tr><td>ربط بحسابات بنكية</td><td>تعقيد قانوني وأمني لا يناسب مشروعا تعليميا</td></tr><tr><td>رسوم بيانية متقدمة</td><td>الملخص الرقمي يكفي للقيمة الأساسية</td></tr><tr><td>دعم iOS في هذا الدليل</td><td>بناء iOS يتطلب جهاز macOS وحساب مطور</td></tr><tr><td>تعدد العملات</td><td>يضاعف منطق الحساب دون قيمة في النسخة الأولى</td></tr></tbody></table>
+<div class="callout note"><div class="t">لماذا أندرويد فقط</div><p>الأطر التي سنقارنها تدعم iOS، لكن بناء ملف iOS يتطلب جهاز macOS وحساب مطور مدفوع. اخترنا مسار أندرويد حتى يستطيع كل قارئ إنهاء المشروع فعلا. الكود نفسه سيعمل على iOS عند توفر الأدوات.</p></div>
+<h2 id="ch1-s8">برومبت تحديد النطاق</h2>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا قبل إنشاء أي مشروع</div><div class="txt">سنبني تطبيق هاتف. لا تكتب أي كود في هذه المرحلة.
+
+الفكرة:
+[الفكرة]
+المستخدم المستهدف:
+[المستخدم]
+ما يفعله اليوم بدون التطبيق:
+[البديل الحالي]
+المدة المتاحة:
+[المدة]
+وقتي الأسبوعي:
+[الوقت الأسبوعي]
+المنصة المستهدفة: أندرويد
+
+أنشئ REQUIREMENTS.md يحتوي:
+
+أولا. المشكلة في ثلاث جمل
+ثانيا. قصص المستخدم الأساسية، خمس على الأكثر
+ثالثا. الشاشات المطلوبة، وما يفعله المستخدم في كل شاشة
+رابعا. البيانات: ما الحقول التي نخزنها، ونوع كل حقل، وأيها إلزامي
+خامسا. داخل النطاق، وخارج النطاق مع سبب كل استبعاد
+سادسا. معايير القبول: متى نعتبر التطبيق منتهيا
+سابعا. ما الذي يحتاج إذن نظام، ولماذا
+
+قواعد:
+التطبيق عربي واتجاهه من اليمين إلى اليسار.
+إذا كانت الفكرة أوسع من مدتي، قل ذلك واقترح تضييقها.
+لا تفترض معلومة عني، اسأل.</div></div>
+<h1 class="chapter" id="ch2"><span class="num">المرحلة الأولى</span>مقارنة الأطر واختيار واحد</h1><p class="lead">ثلاثة خيارات جادة، ولكل واحد حالة يكون فيها الأفضل. القرار الصحيح هو الذي تعرف سببه، لا الذي يختاره الأكثر.</p>
+<h2 id="ch2-s1">المرشحون وحالتهم وقت المراجعة</h2>
+<table class="data"><thead><tr><th>الإطار</th><th>اللغة</th><th>الحالة وقت المراجعة</th></tr></thead><tbody><tr><td>Flutter</td><td>Dart</td><td>الإصدار المستقر 3.47</td></tr><tr><td>React Native</td><td>JavaScript أو TypeScript</td><td>الإصدار 0.85 شحن ضمن حزمة Expo SDK 56 في مايو 2026، والإصدارات شهرية</td></tr><tr><td>.NET MAUI</td><td>C#</td><td>على .NET 10 وهو إصدار مدعوم طويل الأمد في الدعم النشط</td></tr></tbody></table>
+<div class="callout warn"><div class="t">تحقق قبل أن تبدأ</div><p>دورة إصدار React Native شهرية، وأطر التطبيقات تتحرك بسرعة. الأرقام أعلاه تم التحقق منها بتاريخ 6 سبتمبر 2026. افتح صفحة الإصدارات الرسمية للإطار الذي تختاره وتأكد من أحدث إصدار مستقر قبل أن تبدأ.</p></div>
+<h2 id="ch2-s4">المقارنة على معايير مشروعنا</h2>
+<table class="data"><thead><tr><th>المعيار</th><th>Flutter</th><th>React Native</th><th>.NET MAUI</th></tr></thead><tbody><tr><td>سهولة التعلم من الصفر</td><td>متوسطة: لغة جديدة</td><td>عالية لمن يعرف JavaScript</td><td>عالية لمن يعرف C#</td></tr><tr><td>كل شيء في لغة واحدة</td><td>نعم</td><td>نعم</td><td>نعم</td></tr><tr><td>الحاجة إلى كود أصلي للأساسيات</td><td>قليلة</td><td>متوسطة</td><td>قليلة</td></tr><tr><td>سهولة بناء ملف أندرويد</td><td>عالية</td><td>متوسطة</td><td>متوسطة</td></tr><tr><td>أدوات تشخيص البيئة</td><td>ممتازة</td><td>متوسطة</td><td>جيدة</td></tr><tr><td>دعم RTL جاهز</td><td>نعم</td><td>نعم</td><td>نعم</td></tr><tr><td>حجم الأمثلة العربية</td><td>كبير</td><td>كبير</td><td>أصغر</td></tr><tr><td>ملاءمة العمل مع أداة وكيلة</td><td>عالية: مشروع بلغة واحدة وبنية واضحة</td><td>متوسطة: إعدادات أكثر</td><td>عالية</td></tr></tbody></table>
+<h2 id="ch2-s6">القرار</h2>
+<p>نختار <strong>Flutter</strong> لهذا الدليل، لثلاثة أسباب تخص القارئ المبتدئ:</p>
+<ol class="n"><li>بيئة التطوير تشخص بأمر واحد، وهذه أكبر عقبة أمام المبتدئ في تطوير الهاتف.</li><li>بناء ملف أندرويد خطوة واحدة تقريبا، بلا سلسلة أدوات متفرقة.</li><li>المشروع بلغة واحدة وبنية ملفات واضحة، فتقرؤه أنت وتقرؤه الأداة الوكيلة بسهولة.</li></ol>
+<p>ومتى يكون غيره أنسب؟</p>
+<ul class="b"><li><strong>React Native</strong> إذا كنت مطور ويب بالفعل وتريد إعادة استخدام معرفتك بـ JavaScript وحزمها.</li><li><strong>.NET MAUI</strong> إذا كان فريقك يعمل بـ C# ولديكم خادم .NET تريدون مشاركة نماذج البيانات معه. وهذا يخص قارئ نظم المعلومات الذي يبني الخلفية بـ ASP.NET Core.</li></ul>
+<div class="callout note"><div class="t">القرار الذي يهم أكثر من الإطار</div><p>أيا كان الإطار الذي تختاره، افصل منطق التطبيق عن الواجهة. الكود الذي يحسب ويخزن ويتحقق يجب ألا يعرف شيئا عن الشاشة. هذا القرار هو الذي يحدد إن كان تطبيقك قابلا للاختبار وللنقل، لا اسم الإطار.</p></div>
+<h1 class="chapter" id="ch3"><span class="num">المرحلة الثانية</span>البيئة وإعداد المشروع</h1><p class="lead">أطول مرحلة وأقلها متعة. أنجزها كاملة الآن ولن تعود إليها.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>بيئة تطوير تعمل، ومشروع Flutter يفتح على محاكي أو جهاز، ومستودع Git، وملف CLAUDE.md يعرف فيه Claude Code أوامر مشروعك.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">جهز مشروع Flutter جديدا للتطبيق.
+
+المطلوب:
+أولا. تحقق أولا من بيئتي وأخبرني بما ينقصها قبل أي إنشاء
+ثانيا. أنشئ مشروعا باسم [اسم المشروع] بمعرف حزمة
+[معرف الحزمة]
+ثالثا. اضبط اللغة العربية والاتجاه من اليمين إلى اليسار على مستوى التطبيق كله
+رابعا. أنشئ بنية مجلدات: طبقة نماذج، وطبقة بيانات، وطبقة منطق، وطبقة واجهة
+خامسا. أنشئ .gitignore مناسبا لمشروع Flutter
+سادسا. أنشئ CLAUDE.md فيه أوامر التشغيل والاختبار والفحص والبناء، وقرار أن التطبيق عربي RTL
+
+قواعد:
+استخدم أحدث إصدار مستقر من الإطار، ولا تستخدم قناة beta أو dev.
+اعرض الخطة قبل التنفيذ وانتظر موافقتي.
+لا تضف حزمة خارجية في هذه المرحلة إلا إذا كانت ضرورية، واذكر سبب كل حزمة.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li>ملف إعدادات الحزم والاعتماديات</li><li>نقطة الدخول الرئيسية للتطبيق</li><li>بنية المجلدات: models و data و logic و ui</li><li><code class="inline">.gitignore</code> و <code class="inline">CLAUDE.md</code></li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>شغل أمر تشخيص البيئة وتأكد أنه بلا أخطاء حمراء.</li><li>شغل التطبيق على محاكي وتأكد أنه يفتح.</li><li>شغله على جهاز حقيقي عبر الكابل وتأكد أنه يفتح أيضا.</li><li>غير نصا وتأكد أن إعادة التحميل السريعة تعمل.</li><li>شغل <code class="inline">git status</code> وتأكد أن مجلدات البناء غير مدرجة.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>تخطي تشخيص البيئة والمضي رغم وجود تحذيرات — ستعود لاحقا في أسوأ وقت.</li><li>معرف حزمة مؤقت مثل com.example، وتغييره بعد النشر مستحيل عمليا.</li><li>إضافة عشر حزم في اليوم الأول قبل أن تعرف أيها تحتاج فعلا.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>التطبيق يفتح على جهاز حقيقي، والاتجاه من اليمين لليسار، والمستودع نظيف.</p></div>
+<h2 id="ch3-s12">ضبط الاتجاه العربي على مستوى التطبيق</h2>
+<div class="codewrap"><div class="caption">lib/main.dart — الجزء الحاسم</div><pre class="code">import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+void main() =&gt; runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      locale: const Locale('ar'),
+      supportedLocales: const [Locale('ar'), Locale('en')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      home: const HomeScreen(),
+    );
+  }
+}</pre></div>
+<div class="callout warn"><div class="t">الاتجاه ليس محاذاة نص</div><p>ضبط اللغة على مستوى التطبيق يقلب التخطيط كله: الحشوات والهوامش وترتيب العناصر واتجاه أيقونات الرجوع. أما محاذاة النص إلى اليمين في كل شاشة على حدة فهي إصلاح شكلي يترك بقية الواجهة معكوسة. واستخدم الحشوات الموجهة بالبداية والنهاية بدل اليسار واليمين.</p></div>
+<h1 class="chapter" id="ch4"><span class="num">المرحلة الثالثة</span>الشاشات والتنقل</h1><p class="lead">الهيكل الظاهر أولا: شاشات حقيقية وتنقل يعمل، ببيانات وهمية.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>ثلاث شاشات: القائمة، وإضافة مصروف، والملخص؛ مع تنقل يعمل وحالاتها الأربع.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">ابن شاشات التطبيق ببيانات وهمية.
+
+الشاشات:
+شاشة القائمة: قائمة المصروفات مرتبة من الأحدث، وزر إضافة عائم
+شاشة الإضافة: نموذج إدخال مصروف
+شاشة الملخص: إجمالي الشهر وإجمالي كل تصنيف
+
+لكل شاشة اعرض الحالات الأربع:
+تحميل، وفارغة، وخطأ، وطبيعية
+
+التنقل:
+تنقل واضح بين الشاشات، مع زر رجوع يعمل بشكل صحيح في واجهة من اليمين لليسار
+الحفاظ على حالة الشاشة عند الرجوع إليها
+
+قواعد:
+استخدم بيانات وهمية ثابتة الآن، وسنبدل المصدر في المرحلة التالية.
+لا منطق حساب داخل شيفرة الواجهة.
+كل نص ظاهر بالعربية.
+اعرض الخطة قبل التنفيذ.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">lib/ui/screens/</code> — ثلاث شاشات</li><li><code class="inline">lib/ui/widgets/</code> — بطاقة مصروف، وحالة فارغة، وحالة خطأ، ومؤشر تحميل</li><li><code class="inline">lib/models/expense.dart</code></li><li><code class="inline">lib/data/mock_data.dart</code></li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>تنقل بين الشاشات الثلاث ذهابا وإيابا.</li><li>تأكد أن سهم الرجوع يشير في الاتجاه الصحيح للواجهة العربية.</li><li>أفرغ البيانات الوهمية وتأكد من ظهور الحالة الفارغة لا شاشة بيضاء.</li><li>دور الجهاز وتأكد أن التخطيط لا ينكسر.</li><li>جرب على شاشة صغيرة وشاشة كبيرة.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>منطق الحساب داخل شيفرة الواجهة، فيصبح غير قابل للاختبار.</li><li>بناء الحالة الطبيعية فقط، فتظهر شاشة بيضاء عند أول قائمة فارغة.</li><li>نصوص إنجليزية مؤقتة تبقى إلى النشر.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>الشاشات الثلاث تعمل بحالاتها الأربع، والتنقل صحيح في الاتجاه العربي.</p></div>
+<h1 class="chapter" id="ch5"><span class="num">المرحلة الرابعة</span>إدارة الحالة</h1><p class="lead">إدارة الحالة هي المكان الذي يتحول فيه التطبيق البسيط إلى فوضى. القاعدة: مصدر واحد للحقيقة، والواجهة تعرضه ولا تملكه.</p>
+<h2 id="ch5-s1">ثلاث طبقات لا تختلط</h2>
+<table class="data"><thead><tr><th>الطبقة</th><th>مسؤوليتها</th><th>ما لا تعرفه</th></tr></thead><tbody><tr><td>الواجهة</td><td>عرض الحالة والاستجابة للمس</td><td>من أين جاءت البيانات</td></tr><tr><td>المنطق</td><td>الحساب والتحقق وقواعد العمل</td><td>شكل الشاشة</td></tr><tr><td>البيانات</td><td>القراءة والكتابة من المصدر</td><td>لماذا طلبت البيانات</td></tr></tbody></table>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>طبقة حالة واحدة تملك قائمة المصروفات وتوفر عمليات الإضافة والحذف والتصفية والحساب، وواجهة تستمع إليها فقط.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">أضف إدارة حالة للتطبيق.
+
+المطلوب:
+مصدر واحد للحقيقة يملك قائمة المصروفات
+عمليات: إضافة، وحذف، وتصفية بالتصنيف، وتصفية بالشهر
+قيم محسوبة: إجمالي الشهر، وإجمالي كل تصنيف
+حالة التحميل وحالة الخطأ ضمن الحالة نفسها لا منفصلة في كل شاشة
+
+قواعد:
+استخدم حلا مناسبا لحجم هذا التطبيق، ولا تدخل إطار إدارة حالة ثقيلا بلا حاجة.
+اشرح لي سبب اختيارك قبل التنفيذ.
+منطق الحساب في طبقة المنطق لا في الواجهة، وقابل للاختبار بلا واجهة.
+الواجهة تستمع للحالة ولا تعدلها إلا عبر العمليات المعرفة.
+
+اعرض التصميم قبل التنفيذ وانتظر موافقتي.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">lib/logic/expenses_state.dart</code></li><li><code class="inline">lib/logic/summary.dart</code> — دوال الحساب الصافية</li><li>تعديل الشاشات الثلاث لتستمع للحالة</li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>أضف مصروفا من شاشة الإضافة وتأكد أنه يظهر في القائمة فورا.</li><li>احذف مصروفا وتأكد أن الملخص يتحدث فورا.</li><li>صف بتصنيف وتأكد أن الملخص يعكس التصفية أو لا يعكسها حسب ما قررت.</li><li>ابحث في شيفرة الشاشات عن أي عملية حسابية — يجب ألا توجد.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>نسخة من البيانات في كل شاشة، فتتناقض الشاشات.</li><li>حساب الإجمالي داخل بناء الواجهة، فيعاد حسابه في كل إطار.</li><li>إدخال إطار إدارة حالة ضخم لتطبيق بثلاث شاشات.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>تستطيع اختبار كل دوال الحساب بلا تشغيل واجهة.</p></div>
+<h1 class="chapter" id="ch6"><span class="num">المرحلة الخامسة</span>التخزين المحلي الدائم</h1><p class="lead">التطبيق الذي يفقد بياناته عند الإغلاق ليس تطبيقا. هذه المرحلة تجعله حقيقيا.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>مستودع بيانات بواجهة واضحة، وتنفيذ يحفظ في تخزين محلي دائم، مع ترحيل البيانات الوهمية إليه.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">أضف تخزينا محليا دائما.
+
+صمم أولا واجهة مستودع فيها:
+جلب كل المصروفات
+جلب مصروفات شهر معين
+إضافة مصروف
+حذف مصروف بمعرفه
+
+ثم نفذ هذه الواجهة بتخزين محلي دائم.
+
+قواعد:
+طبقة المنطق تتعامل مع الواجهة فقط ولا تعرف نوع التخزين.
+اختر حزمة تخزين مستقرة ومصانة، وتحقق من إصدارها قبل الإضافة، واشرح لي سبب اختيارها.
+عالج حالة أول تشغيل حيث لا توجد بيانات.
+عالج حالة تلف البيانات المخزنة بلا إسقاط التطبيق.
+لا تخزن أي بيانات حساسة في تخزين غير مشفر.
+
+اعرض تصميم الواجهة قبل التنفيذ.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">lib/data/expense_repository.dart</code> — الواجهة المجردة</li><li><code class="inline">lib/data/local_expense_repository.dart</code> — التنفيذ</li><li>تعديل طبقة الحالة لتستخدم المستودع</li><li>تحديث ملف الاعتماديات</li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>أضف مصروفين، ثم أغلق التطبيق كليا، ثم افتحه: هل بقيا؟</li><li>احذف مصروفا ثم أعد التشغيل: هل بقي محذوفا؟</li><li>امسح بيانات التطبيق من إعدادات النظام ثم افتحه: هل يفتح بلا انهيار؟</li><li>أضف خمسين مصروفا وراقب سرعة فتح القائمة.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>استدعاء التخزين مباشرة من الشاشة، فتفقد فائدة المستودع.</li><li>افتراض أن البيانات المخزنة سليمة دائما.</li><li>عمليات تخزين متزامنة على الخيط الرئيسي، فتتجمد الواجهة.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>البيانات تبقى بعد إغلاق التطبيق، وتغيير نوع التخزين يتم في ملف واحد.</p></div>
+<h2 id="ch6-s12">شكل واجهة المستودع</h2>
+<div class="codewrap"><div class="caption">lib/data/expense_repository.dart</div><pre class="code">abstract class ExpenseRepository {
+  Future&lt;List&lt;Expense&gt;&gt; getAll();
+  Future&lt;List&lt;Expense&gt;&gt; getByMonth(int year, int month);
+  Future&lt;void&gt; add(Expense expense);
+  Future&lt;void&gt; deleteById(String id);
+}</pre></div>
+<h1 class="chapter" id="ch7"><span class="num">المرحلة السادسة</span>النماذج والتحقق ومعالجة الأخطاء</h1><p class="lead">كل مدخل من المستخدم هو فرصة لخطأ. النموذج الجيد يمنع الخطأ ويشرح سببه.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>نموذج إضافة مصروف بتحقق كامل، ورسائل خطأ عربية بجانب كل حقل، ومعالجة أخطاء موحدة على مستوى التطبيق.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">أكمل نموذج إضافة المصروف وتحققه.
+
+الحقول: المبلغ، والتصنيف، والتاريخ، وملاحظة اختيارية.
+
+قواعد التحقق:
+المبلغ رقم موجب أكبر من صفر وأقل من حد أعلى معقول
+المبلغ يقبل الفاصلة العشرية ويرفض الحروف
+التصنيف مختار من قائمة محددة لا نص حر
+التاريخ لا يكون في المستقبل
+الملاحظة لا تتجاوز مئتي حرف
+
+السلوك:
+رسالة خطأ عربية بجانب الحقل المسؤول لا رسالة عامة
+زر الحفظ معطل أثناء الحفظ لمنع الإضافة المزدوجة
+عند النجاح: إغلاق الشاشة ورسالة تأكيد قصيرة
+عند الفشل: رسالة واضحة وإبقاء ما أدخله المستخدم
+
+معالجة الأخطاء:
+معالج موحد يحول أخطاء الطبقات الدنيا إلى رسائل مفهومة
+لا تعرض تفاصيل تقنية للمستخدم، وسجلها بدل ذلك
+
+اعرض قواعد التحقق كدوال قابلة للاختبار بلا واجهة.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">lib/logic/validation.dart</code> — دوال تحقق صافية</li><li>شاشة الإضافة ومكوناتها</li><li><code class="inline">lib/logic/app_error.dart</code> — تمثيل موحد للأخطاء</li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>احفظ نموذجا فارغا وتأكد من ظهور رسائل عربية بجانب كل حقل.</li><li>أدخل مبلغا سالبا، ثم صفرا، ثم نصا، ثم رقما ضخما جدا.</li><li>اختر تاريخا في المستقبل وتأكد من الرفض.</li><li>اضغط حفظ مرتين بسرعة وتأكد من عدم إضافة سجلين.</li><li>أدخل ملاحظة بمئتي حرف وواحد وتأكد من الرفض.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>تحقق داخل شيفرة الواجهة فقط، فلا يمكن اختباره.</li><li>رسالة خطأ واحدة عامة لا تدل على الحقل.</li><li>فقدان ما أدخله المستخدم عند فشل الحفظ.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>كل قواعد التحقق مغطاة باختبارات تعمل بلا واجهة.</p></div>
+<h1 class="chapter" id="ch8"><span class="num">المرحلة السابعة</span>الأذونات والتذكير اليومي</h1><p class="lead">الإذن ليس خانة تعلم. هو عقد مع المستخدم: تطلبه في وقته، وتشرح سببه، وتعمل بشكل معقول إن رفضه.</p>
+<h2 id="ch8-s1">قواعد طلب الإذن</h2>
+<ol class="n"><li>لا تطلب إذنا عند فتح التطبيق أول مرة. اطلبه عند أول استخدام فعلي للميزة.</li><li>اشرح للمستخدم لماذا تحتاجه قبل أن تظهر نافذة النظام.</li><li>إذا رفض، لا تعطل التطبيق كله. عطل الميزة وحدها واترك له طريقة لتفعيلها لاحقا.</li><li>إذا رفض نهائيا، وجهه إلى إعدادات النظام بدل تكرار الطلب.</li></ol>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>تذكير يومي بإشعار محلي، مع طلب إذن الإشعارات في وقته الصحيح، ومسار كامل لحالة الرفض.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">أضف تذكيرا يوميا بإشعار محلي.
+
+السلوك:
+شاشة إعدادات بسيطة يفعل فيها المستخدم التذكير ويختار وقته
+عند التفعيل لأول مرة: اشرح سبب الإذن ثم اطلبه
+عند الرفض: أوقف التذكير، واعرض رسالة تشرح كيف يفعله من إعدادات النظام لاحقا
+عند القبول: جدول إشعارا يوميا في الوقت المختار
+الإشعار بالعربية ونصه واضح
+
+قواعد:
+اطلب الإذن عند تفعيل الميزة لا عند فتح التطبيق
+تعامل مع اختلاف سلوك الأذونات بين إصدارات أندرويد
+تحقق من حالة الإذن عند كل فتح، فقد يسحبه المستخدم من الإعدادات
+اذكر بالضبط ما الأذونات التي ستضاف إلى ملف البيان ولماذا
+
+اعرض الخطة قبل التنفيذ، وأخبرني بأي إذن إضافي يتطلبه الحل قبل إضافته.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">lib/logic/reminder_service.dart</code></li><li>شاشة الإعدادات</li><li>ملف بيان أندرويد — الأذونات</li><li>تحديث ملف الاعتماديات</li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>فعل التذكير وارفض الإذن: هل يبقى التطبيق يعمل ويشرح ما حدث؟</li><li>فعله واقبل الإذن، واضبط الوقت بعد دقيقتين، وانتظر الإشعار.</li><li>اسحب الإذن من إعدادات النظام ثم افتح التطبيق: هل يكتشف ذلك؟</li><li>أعد تشغيل الجهاز وتأكد أن التذكير ما زال مجدولا.</li><li>اختبر على إصدار أندرويد حديث وإصدار أقدم إن أمكن.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>طلب كل الأذونات عند الإقلاع، وهو أسرع سبب لحذف التطبيق.</li><li>افتراض أن الإذن الممنوح يبقى ممنوحا إلى الأبد.</li><li>إضافة إذن لا تحتاجه لأن حزمة ما طلبته — راجع ملف البيان بنفسك.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>التذكير يصل فعلا، ورفض الإذن لا يكسر التطبيق.</p></div>
+<h1 class="chapter" id="ch9"><span class="num">المرحلة الثامنة</span>الواجهة الخارجية والاختبارات</h1><h2 id="ch9-s0">استدعاء واجهة خارجية</h2>
+<p>سنضيف ميزة اختيارية: تحويل الإجمالي إلى عملة أخرى عبر واجهة خارجية. الهدف التعليمي ليس التحويل، بل التعامل مع شبكة تفشل.</p>
+<div class="promptbox standalone"><div class="lbl">برومبت الواجهة الخارجية</div><div class="txt">أضف ميزة تحويل الإجمالي إلى عملة أخرى عبر واجهة خارجية.
+
+المطلوب:
+طبقة خدمة منفصلة تتولى الاستدعاء، ولا تستدعيها الواجهة مباشرة
+مهلة زمنية لكل طلب
+معالجة منفصلة لكل حالة: انقطاع الشبكة، ومهلة منتهية، ورد بحالة خطأ، ورد بصيغة غير متوقعة
+تخزين مؤقت لآخر سعر ناجح، مع عرض وقت آخر تحديث
+إذا فشل الطلب: اعرض آخر سعر محفوظ مع تنبيه أنه قديم، ولا تعرض خطأ فقط
+
+قواعد أمنية:
+إذا كانت الواجهة تتطلب مفتاحا فلا تضعه في الكود ولا في ملف يصل إلى المستودع
+اشرح لي أين يجب أن يوضع المفتاح ولماذا وضعه في التطبيق نفسه ليس آمنا
+
+اعرض التصميم قبل التنفيذ.</div></div>
+<div class="callout warn"><div class="t">حقيقة عن الأسرار في تطبيقات الهاتف</div><p>أي مفتاح تضعه داخل تطبيق مثبت على جهاز المستخدم يمكن استخراجه. تشفيره يزيد الصعوبة ولا يمنع. القاعدة: المفاتيح الحساسة تبقى على خادم تملكه، والتطبيق يستدعي خادمك لا الخدمة مباشرة.</p></div>
+<h2 id="ch9-s4">الاختبارات</h2>
+<div class="promptbox standalone"><div class="lbl">برومبت الاختبارات</div><div class="txt">أضف اختبارات لهذا التطبيق.
+
+الأولوية بهذا الترتيب:
+أولا. دوال الحساب: الإجمالي، وإجمالي كل تصنيف، والتصفية بالشهر
+ثانيا. قواعد التحقق: كل قاعدة وكل حالة حدية
+ثالثا. المستودع: الإضافة والحذف والجلب، بتخزين وهمي في الذاكرة
+رابعا. اختبار واجهة واحد على الأقل: إضافة مصروف تظهر في القائمة
+
+لكل اختبار:
+اسم يصف السلوك المتوقع
+اختبار واحد لسلوك واحد
+بلا اعتماد على شبكة ولا على تخزين حقيقي على القرص
+
+ثم:
+اذكر ما لم تختبره ولماذا
+اذكر أي جزء صعب اختباره وما التغيير في التصميم الذي يسهله
+أضف أمر تشغيل الاختبارات إلى CLAUDE.md</div></div>
+<table class="data"><thead><tr><th>نوع الاختبار</th><th>ما يغطيه</th><th>سرعته</th></tr></thead><tbody><tr><td>اختبار وحدة</td><td>الحساب والتحقق والمنطق</td><td>سريع جدا</td></tr><tr><td>اختبار مكون واجهة</td><td>ظهور العناصر واستجابتها للمس</td><td>متوسط</td></tr><tr><td>اختبار تكامل</td><td>مسار المستخدم كاملا على جهاز</td><td>بطيء</td></tr></tbody></table>
+<div class="callout tip"><div class="t">أين تضع جهدك</div><p>غط المنطق والتحقق باختبارات وحدة كثيرة وسريعة، وأضف اختبار واجهة واحدا أو اثنين لأهم مسار، واترك اختبار التكامل لما قبل الإصدار. الهرم المقلوب الذي يعتمد على اختبارات التكامل وحدها بطيء وهش.</p></div>
+<h1 class="chapter" id="ch10"><span class="num">المرحلة التاسعة</span>الأداء وتجربة الاستخدام</h1><p class="lead">التطبيق البطيء يحذف. والتطبيق الذي لا يشرح نفسه لا يستخدم.</p>
+<h2 id="ch10-s1">الأداء</h2>
+<ul class="b"><li><strong>القوائم الطويلة</strong>: ابن عناصر القائمة عند الحاجة لا كلها دفعة واحدة.</li><li><strong>العمليات الثقيلة</strong>: لا تشغلها على الخيط الرئيسي، وإلا تجمدت الواجهة.</li><li><strong>إعادة البناء</strong>: لا تعد بناء شجرة الواجهة كلها عند تغير قيمة واحدة.</li><li><strong>الصور</strong>: حدد أبعادها ولا تحمل حجما أكبر مما يعرض.</li><li><strong>زمن الإقلاع</strong>: لا تفعل عملا ثقيلا قبل أول إطار.</li></ul>
+<div class="promptbox standalone"><div class="lbl">برومبت مراجعة الأداء</div><div class="txt">راجع أداء هذا التطبيق.
+
+افحص:
+القوائم: هل تبنى عناصرها عند الحاجة أم كلها دفعة واحدة
+إعادة البناء: أي جزء يعاد بناؤه بلا داع عند تغير الحالة
+العمليات المتزامنة الثقيلة على الخيط الرئيسي
+زمن الإقلاع: ما الذي يحدث قبل أول إطار
+استهلاك الذاكرة عند خمسمئة سجل
+
+لكل ملاحظة: الموضع، والأثر المتوقع، والإصلاح المقترح.
+رتب من الأعلى أثرا. لا تعد كتابة الكود، اقترح فقط.</div></div>
+<h2 id="ch10-s4">تجربة الاستخدام</h2>
+<ol class="n"><li>الشاشة الأولى تشرح نفسها بلا جولة تعريفية طويلة.</li><li>أهم إجراء يبعد لمسة واحدة، لا ثلاثا.</li><li>كل عملية تستغرق وقتا لها مؤشر واضح.</li><li>كل خطأ يقول للمستخدم ماذا يفعل، لا ماذا حدث تقنيا.</li><li>الحالة الفارغة تشرح كيف يبدأ لا تكتفي بقول لا يوجد شيء.</li><li>لا حذف بلا تأكيد، ويفضل إتاحة التراجع.</li></ol>
+<div class="callout tip"><div class="t">اختبار الخمس دقائق</div><p>أعط التطبيق لشخص لم يره، واطلب منه تسجيل مصروف ورؤية ملخص الشهر، ثم اصمت تماما وراقب. كل مكان يتردد فيه هو عيب في التصميم لا في فهمه.</p></div>
+<h1 class="chapter" id="ch11"><span class="num">المرحلة العاشرة</span>الأمان والبناء وقائمة الإصدار</h1><h2 id="ch11-s0">الأمان قبل البناء</h2>
+<ul class="b"><li>لا مفتاح ولا رمز داخل الكود أو داخل الملفات التي تبنى مع التطبيق.</li><li>لا تسجل بيانات المستخدم في السجلات في نسخة الإصدار.</li><li>راجع ملف بيان أندرويد: احذف أي إذن لا تحتاجه فعلا.</li><li>لا تخزن بيانات حساسة في تخزين عادي غير مشفر.</li><li>راجع الحزم الخارجية: كم منها تحتاجه فعلا، ومن يصونها.</li></ul>
+<div class="promptbox standalone"><div class="lbl">برومبت المراجعة الأمنية قبل الإصدار</div><div class="txt">راجع هذا التطبيق أمنيا قبل بناء نسخة الإصدار.
+
+افحص:
+أي سر أو مفتاح مكتوب في الكود أو في ملفات الإعداد التي تبنى مع التطبيق
+ملف بيان أندرويد: كل إذن مطلوب، وهل هو ضروري فعلا، ومن أضافه
+السجلات: هل تسجل بيانات مستخدم في نسخة الإصدار
+التخزين المحلي: هل فيه بيانات حساسة بلا حماية
+الحزم الخارجية: أيها غير مصان أو له تحذيرات أمنية معروفة
+الاتصال بالشبكة: هل كله مشفر
+
+لكل ملاحظة: الخطورة، والموضع، وسيناريو الاستغلال، والإصلاح.
+رتب من الأخطر. إذا كان الكود غير كاف للحكم، قل ذلك.</div></div>
+<h2 id="ch11-s3">البناء</h2>
+<div class="codewrap"><div class="caption">التحقق قبل البناء</div><pre class="code">flutter analyze
+flutter test
+flutter build appbundle --release</pre></div>
+<div class="callout note"><div class="t">حزمة التطبيق أم ملف APK</div><p>حزمة التطبيق app bundle هي الصيغة التي يطلبها متجر Play، ويولد المتجر منها ملفات مخصصة لكل جهاز فتصغر نسخة المستخدم. أما ملف APK فمناسب للتوزيع المباشر والاختبار خارج المتجر. ابن الاثنين إن كنت تحتاج المسارين.</p></div>
+<h2 id="ch11-s6">التوقيع</h2>
+<div class="callout warn"><div class="t">مفتاح التوقيع لا يفقد ولا يودع</div><p>مفتاح توقيع التطبيق هو هويته. إذا فقدته لن تستطيع نشر تحديث لتطبيقك على المتجر. احفظ نسخة منه في مكان آمن خارج جهازك.</p><p>وفي الوقت نفسه: لا تودع المفتاح ولا كلمة مروره في المستودع أبدا. ضع بياناته في ملف مستبعد من Git، وأضف ذلك الملف إلى <code class="inline">.gitignore</code> قبل إنشائه.</p></div>
+<h2 id="ch11-s8">قائمة تحقق الإصدار</h2>
+<ol class="n"><li>التحليل الساكن بلا أخطاء، والاختبارات كلها تمر.</li><li>رقم الإصدار ورقم البناء محدثان.</li><li>اسم التطبيق وأيقونته وشاشة البدء نهائية لا افتراضية.</li><li>معرف الحزمة نهائي — لا يمكن تغييره بعد النشر.</li><li>لا نصوص إنجليزية مؤقتة ولا بيانات تجريبية.</li><li>الأذونات في ملف البيان هي ما تحتاجه فقط.</li><li>اختبر على جهازين مختلفين على الأقل بإصداري أندرويد مختلفين.</li><li>سياسة الخصوصية جاهزة إن كان التطبيق يجمع أي بيانات.</li><li>نسخة احتياطية من مفتاح التوقيع في مكان آمن.</li><li>خطة تراجع: ما الذي تفعله إن ظهر عطل حرج بعد النشر.</li></ol>
+<h1 class="chapter" id="ch12"><span class="num">المرجع</span>ورقة المراجعة السريعة</h1><h2 id="ch12-s0">المراحل ومعايير الانتقال</h2>
+<table class="data"><thead><tr><th>المرحلة</th><th>معيار الانتقال</th></tr></thead><tbody><tr><td>صفر — النطاق</td><td>خارج النطاق أطول من داخله، وقصص المستخدم خمس أو أقل</td></tr><tr><td>واحد — الإطار</td><td>قرار مكتوب بسببه، وإصدار مستقر متحقق منه</td></tr><tr><td>اثنان — البيئة</td><td>التطبيق يفتح على جهاز حقيقي، والاتجاه عربي</td></tr><tr><td>ثلاثة — الشاشات</td><td>الشاشات تعمل بحالاتها الأربع، والتنقل صحيح</td></tr><tr><td>أربعة — الحالة</td><td>دوال الحساب قابلة للاختبار بلا واجهة</td></tr><tr><td>خمسة — التخزين</td><td>البيانات تبقى بعد الإغلاق، والمصدر قابل للتبديل</td></tr><tr><td>ستة — النماذج</td><td>كل قواعد التحقق مغطاة باختبارات</td></tr><tr><td>سبعة — الأذونات</td><td>الرفض لا يكسر التطبيق، والتذكير يصل</td></tr><tr><td>ثمانية — الشبكة والاختبارات</td><td>فشل الشبكة يعرض آخر قيمة محفوظة لا شاشة خطأ</td></tr><tr><td>تسعة — الأداء والتجربة</td><td>شخص لم ير التطبيق ينجز المهمة بلا شرح</td></tr><tr><td>عشرة — الإصدار</td><td>قائمة التحقق كاملة، والمفتاح محفوظ خارج المستودع</td></tr></tbody></table>
+<h2 id="ch12-s2">أوامر ستستخدمها يوميا</h2>
+<div class="codewrap"><pre class="code">flutter doctor
+flutter devices
+flutter run
+flutter analyze
+flutter test
+flutter build apk --release
+flutter build appbundle --release</pre></div>
+<h2 id="ch12-s4">دورة العمل في كل مرحلة</h2>
+<div class="codewrap"><pre class="code">git checkout -b phase/NN-name
+claude --permission-mode plan
+# review the plan, approve, then implement
+/diff
+flutter analyze &amp;&amp; flutter test
+git add -A &amp;&amp; git commit
+git switch main &amp;&amp; git merge phase/NN-name</pre></div>
+<h2 id="ch12-s6">أخطاء شائعة في أول تطبيق</h2>
+<ul class="b"><li>البدء بالكود قبل تحديد النطاق وقصص المستخدم.</li><li>منطق الحساب داخل شيفرة الواجهة، فلا يمكن اختباره.</li><li>طلب كل الأذونات عند الإقلاع.</li><li>افتراض أن الشبكة تعمل دائما.</li><li>معرف حزمة افتراضي ينشر ثم يستحيل تغييره.</li><li>مفتاح توقيع في المستودع، أو مفتاح ضائع بلا نسخة احتياطية.</li><li>الاختبار على المحاكي وحده دون جهاز حقيقي.</li></ul>
+<h2 id="ch12-s8">ما تضعه في CLAUDE.md لهذا المشروع</h2>
+<div class="promptbox standalone filebox"><div class="lbl">CLAUDE.md</div><div class="txt"># تطبيق مصروفي
+
+## أوامر
+تشغيل: flutter run
+تحليل: flutter analyze
+اختبارات: flutter test
+بناء إصدار: flutter build appbundle --release
+
+## قرارات
+التطبيق عربي واتجاهه من اليمين إلى اليسار على مستوى التطبيق كله.
+استخدم الحشوات الموجهة بالبداية والنهاية لا باليسار واليمين.
+منطق الحساب والتحقق في طبقة المنطق، ولا يعرف شيئا عن الواجهة.
+الشاشات تتعامل مع المستودع عبر واجهته المجردة فقط.
+لا مفاتيح ولا أسرار داخل التطبيق.
+
+## أعراف
+كل نص ظاهر للمستخدم بالعربية.
+كل دالة حساب لها اختبار وحدة.</div></div>
+<section class="endpage">
+  <h1 class="chapter"><span class="num">THE END</span>الخلاصة والخطوة التالية</h1>
+  <p class="lead">بنيت تطبيقا حقيقيا: بمتطلبات مكتوبة، وإطار اخترته بسبب، وطبقات لا تختلط، وتخزين دائم، وأذونات محترمة، واختبارات، وملف تثبيت موقع. والأهم أنك تعرف لماذا كل قرار.</p>
+<h2>ماذا تبني بعده</h2>
+<ol class="n"><li>أضف تصديرا للبيانات إلى ملف، وستتعلم أذونات التخزين ومشاركة الملفات.</li><li>أضف مزامنة مع خادم، وستتعلم المصادقة وحل التعارضات.</li><li>انشر التطبيق فعلا ولو لدائرة صغيرة، فملاحظات مستخدم واحد حقيقي تساوي عشرة افتراضات.</li><li>أعد بناء الشاشات نفسها بإطار آخر لتعرف ما كان من الإطار وما كان منك.</li></ol>
+<h2>بقية السلسلة</h2>
+<ul class="b"><li>Claude Code من الصفر إلى الاحتراف — لإتقان الأداة نفسها.</li><li>ابن موقعك الأول مع Claude Code — الجانب الآخر من نفس المهارة.</li><li>تعلم البرمجة مع Claude Code — إن شعرت أن الأساسيات ناقصة.</li></ul>
+<div class="callout note"><div class="t">تنبيه عن الإصدارات</div><p>إصدارات Flutter و React Native و .NET المذكورة تم التحقق منها من مصادرها الرسمية بتاريخ 6 سبتمبر 2026. أطر التطبيقات تتحرك بسرعة، ودورة إصدار React Native شهرية. تحقق من أحدث إصدار مستقر قبل أن تبدأ، ولا تبن على قناة beta أو dev.</p></div>
+  <div class="endcard">
+    <div class="h">برومبتات عربية</div>
+    <p>هذا المنتج من إنتاج قناة برومبتات عربية.<br>لمتابعة الأدلة والبرومبتات الجديدة:</p>
+    <p><a href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+</section></body></html>
