@@ -3,7 +3,7 @@
  "id": "01_claude_guide",
  "pdf": {
   "pdf": "Claude_Guide_Arabic_Final.pdf",
-  "pages": 45,
+  "pages": 44,
   "issues": [],
   "checks": {
    "fonts": [
@@ -27,18 +27,18 @@
      "https://t.me/PromptsArabic"
     ],
     [
-     45,
+     44,
      "https://t.me/PromptsArabic"
     ]
    ],
    "broken_internal_links": [],
    "owner_mentions": 5,
-   "tg_text_mentions": 47,
+   "tg_text_mentions": 46,
    "search_hits": {
     "برومبتات عربية": 57,
-    "t.me/PromptsArabic": 47
+    "t.me/PromptsArabic": 46
    },
-   "canonical_arabic_words": 1611,
+   "canonical_arabic_words": 1602,
    "extract_missing_words_count": 0,
    "extract_missing_words": [],
    "search_sample_size": 124,
@@ -71,14 +71,14 @@
     "[متى نعتبره جيدا]"
    ],
    "variables_broken": [],
-   "pages_rendered": 45
+   "pages_rendered": 44
   }
  },
  "docx": {
   "docx": "Claude_Guide_Arabic_Final.docx",
   "issues": [],
   "checks": {
-   "paragraphs": 528,
+   "paragraphs": 548,
    "tables": 12,
    "styles_used": [
     "APL Body",
@@ -95,7 +95,7 @@
     "APL Title",
     "Normal"
    ],
-   "paragraphs_with_bidi": 482,
+   "paragraphs_with_bidi": 502,
    "sections_rtl": true,
    "owner_mentions": 5,
    "tg_mentions": 3,

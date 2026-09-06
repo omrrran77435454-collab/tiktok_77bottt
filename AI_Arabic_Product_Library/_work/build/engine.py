@@ -21,8 +21,18 @@ OWNER    = "برومبتات عربية"
 # ------------------------------------------------------------------ inline
 AR_RANGE = "؀-ۿݐ-ݿࢠ-ࣿﭐ-﷿ﹰ-﻿"
 
+# Combining Arabic marks (harakat + shadda). They are optional in modern Arabic
+# prose, and as zero-width combining glyphs they share the x-position of their
+# base letter in the PDF, which makes extractors order them arbitrarily and
+# breaks copy and search for the word that carries them. Stripped at build time
+# so no product can ship a word that cannot be found.
+TASHKEEL = re.compile("[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]")
+
+def strip_tashkeel(t):
+    return TASHKEEL.sub("", t)
+
 def _esc(t):
-    return html.escape(t, quote=False)
+    return html.escape(strip_tashkeel(t), quote=False)
 
 def inline(t):
     """`code` -> inline code, **bold** -> strong. Everything else escaped."""
@@ -62,9 +72,34 @@ def rtl_tail(t):
             out.append(line)
     return "\n".join(out)
 
+ORDINALS = ["أولا", "ثانيا", "ثالثا", "رابعا", "خامسا", "سادسا", "سابعا",
+            "ثامنا", "تاسعا", "عاشرا", "حادي عشر", "ثاني عشر"]
+_NUM_MARKER = re.compile(r"^([ \t]*)(\d{1,2})[.)]\s+")
+_DASH_MARKER = re.compile(r"^([ \t]*)[-*]\s+")
+
+def prompt_text(t):
+    """Normalise a copyable prompt so every line starts with an Arabic letter.
+
+    A line that begins with a Western digit or an ASCII dash has that leading
+    character relocated to the far end of the line when the PDF text is copied,
+    and it also corrupts a neighbouring line that holds only a variable. Arabic
+    ordinals and a bullet glyph read naturally and copy back exactly."""
+    out = []
+    for line in t.split("\n"):
+        m = _NUM_MARKER.match(line)
+        if m:
+            i = int(m.group(2))
+            if 1 <= i <= len(ORDINALS):
+                line = "%s%s. %s" % (m.group(1), ORDINALS[i - 1], line[m.end():])
+        else:
+            line = _DASH_MARKER.sub(r"\1• ", line)
+        out.append(line)
+    return rtl_tail("\n".join(out))
+
 def plain(t):
-    """Strip inline markup — canonical text used for copy/search QA."""
-    return re.sub(r"`([^`]+)`", r"\1", re.sub(r"\*\*([^*]+)\*\*", r"\1", t))
+    """Strip inline markup and tashkeel — canonical text used for copy/search QA."""
+    return strip_tashkeel(
+        re.sub(r"`([^`]+)`", r"\1", re.sub(r"\*\*([^*]+)\*\*", r"\1", t)))
 
 # ------------------------------------------------------------------ HTML
 def validate(blocks, where=""):
@@ -124,7 +159,7 @@ def _blocks_html(blocks, ids=None):
         elif k == "promptbox":
             lbl = b[1] or "البرومبت الجاهز للنسخ"
             h.append('<div class="promptbox standalone"><div class="lbl">%s</div>'
-                     '<div class="txt">%s</div></div>' % (_esc(lbl), rtl_tail(_esc(b[2]))))
+                     '<div class="txt">%s</div></div>' % (_esc(lbl), prompt_text(_esc(b[2]))))
         elif k == "callout":
             kind, title, paras = b[1], b[2], b[3]
             body = "".join("<p>%s</p>" % inline(p) for p in paras)
@@ -159,7 +194,7 @@ def _prompt_html(p):
         rows.append('<div class="row"><div class="k">جهّز هذه المعلومات</div>'
                     '<div class="v"><ul class="b">%s</ul></div></div>' % li)
     box = ('<div class="promptbox"><div class="lbl">البرومبت الجاهز للنسخ</div>'
-           '<div class="txt">%s</div></div>' % rtl_tail(_esc(p["text"])))
+           '<div class="txt">%s</div></div>' % prompt_text(_esc(p["text"])))
     rows.append(box)
     rows.append('<div class="row"><div class="k">مثال استخدام</div>'
                 '<div class="v">%s</div></div>' % inline(p["example"]))
@@ -283,9 +318,16 @@ def build_html(d):
                 sid = "%s-s%d" % (cid, bi)
                 sids.append(sid); subs.append((sid, plain(b[1])))
         anchors.append(((cid, plain(ch["title"])), subs))
-        body.append('<h1 class="chapter" id="%s"><span class="num">%s</span>%s</h1>%s'
+        prompts = [b[1] for b in ch["blocks"] if b[0] == "prompt"]
+        idx = ""
+        if len(prompts) > 1:
+            idx = ('<div class="chindex">%s</div>' %
+                   "".join('<div class="row"><b>%02d</b><span>%s</span></div>'
+                           % (p["n"], _esc(p["title"])) for p in prompts))
+        body.append('<h1 class="chapter" id="%s"><span class="num">%s</span>%s</h1>%s%s'
                     % (cid, _esc(ch["num"]), _esc(ch["title"]),
-                       _blocks_html(list(ch["blocks"]), list(sids))))
+                       _blocks_html(list(ch["blocks"][:1]), None) if ch["blocks"][0][0] == "sectionlead" else "",
+                       idx + _blocks_html(list(ch["blocks"][1:] if ch["blocks"][0][0] == "sectionlead" else ch["blocks"]), list(sids))))
 
     parts = [_cover_html(d), _front_html(d), _toc_html(d, anchors),
              "\n".join(body), _end_html(d)]
@@ -424,7 +466,7 @@ def border(pPr, side, sz, color):
         anchor.addprevious(b)
 
 def add_text(p, text, *, bold=False, size=None, color=None, mono=False, rtl_par=True):
-    for seg, is_rtl in split_runs(text):
+    for seg, is_rtl in split_runs(strip_tashkeel(text)):
         r = p.add_run(seg)
         r.bold = bold
         if size: r.font.size = Pt(size)
@@ -590,7 +632,7 @@ def _docx_blocks(doc, blocks, accent):
                 first = False
         elif k == "promptbox":
             q = _p(doc, "APL PromptLbl", b[1] or "البرومبت الجاهز للنسخ"); keep_with_next(q)
-            for line in b[2].split("\n"):
+            for line in prompt_text(plain(b[2])).split("\n"):
                 p = _p(doc, "APL Prompt", line if line.strip() else " ")
                 keep_lines(p)
                 shade(_pr(p), "FBF8F3")
@@ -653,7 +695,7 @@ def _docx_prompt(doc, pr, ac):
         for x in pr["inputs"]:
             _p(doc, "APL Bullet", "•  " + plain(x))
     q = _p(doc, "APL PromptLbl", "البرومبت الجاهز للنسخ"); keep_with_next(q)
-    for line in pr["text"].split("\n"):
+    for line in prompt_text(plain(pr["text"])).split("\n"):
         p = _p(doc, "APL Prompt", line if line.strip() else " ")
         keep_lines(p)
         pPr = _pr(p); shade(pPr, "FBF8F3")
@@ -774,8 +816,10 @@ def build_docx(d, out_path):
 # ------------------------------------------------------------------ canonical dump
 def dump_canonical(d, path):
     """Flatten every user-visible string, for copy/search verification."""
-    lines = [d["title"], d["subtitle"], d["kicker"], d["about"]]
-    lines += d["promise"] + d["audience"] + d["learn"] + d["requirements"] + d["howto"]
+    lines = [plain(x) for x in
+             [d["title"], d["subtitle"], d["kicker"], d["about"]]
+             + list(d["promise"]) + list(d["audience"]) + list(d["learn"])
+             + list(d["requirements"]) + list(d["howto"])]
     def walk(blocks):
         for b in blocks:
             k = b[0]
@@ -785,9 +829,12 @@ def dump_canonical(d, path):
                 lines.extend(plain(x) for x in b[1])
             elif k == "steps":
                 lines.extend(plain(a) + " " + plain(c) for a, c in b[1])
-            elif k in ("code", "promptbox"):
+            elif k == "code":
                 if b[1]: lines.append(plain(b[1]))
                 lines.append(b[2])
+            elif k == "promptbox":
+                if b[1]: lines.append(plain(b[1]))
+                lines.append(prompt_text(plain(b[2])))
             elif k == "callout":
                 lines.append(plain(b[2])); lines.extend(plain(x) for x in b[3])
             elif k == "table":
@@ -798,7 +845,7 @@ def dump_canonical(d, path):
             elif k == "prompt":
                 p = b[1]
                 lines.extend([plain(p["title"]), plain(p["category"]), plain(p["when"]),
-                              plain(p["gives"]), p["text"], plain(p["example"]),
+                              plain(p["gives"]), prompt_text(plain(p["text"])), plain(p["example"]),
                               plain(p["output"])])
                 lines.extend(plain(x) for x in p.get("inputs", []))
                 if p.get("tip"): lines.append(plain(p["tip"]))

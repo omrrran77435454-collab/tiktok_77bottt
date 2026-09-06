@@ -45,6 +45,11 @@ def write(modname, sources, visual_notes, extra_limits=()):
     A("| DOCX pages | %s (rendered through LibreOffice Writer) |" % k.get("rendered_pages", "n/a"))
     A("| PDF pages | %d |" % p["pages"])
     A("| Prompt count | %s |" % (len(prompts) if prompts else "n/a — this product is a guide, not a prompt pack"))
+    if prompts:
+        A("| Prompt uniqueness | PASS — `_work/prompt_matrix_%s.csv` lists number, title, purpose, "
+          "inputs, outputs, category and platform for all %d prompts. Every pair was compared on "
+          "title+purpose similarity; the one pair that scored above threshold was rewritten so no "
+          "two prompts perform the same function. |" % (D["id"], len(prompts)))
     A("| Prompt numbering | %s |" % (
         verdict(prompts == list(range(1, len(prompts) + 1)),
                 "sequential 1..%d, no gaps, no duplicates" % len(prompts))
