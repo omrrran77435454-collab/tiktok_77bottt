@@ -1,0 +1,90 @@
+{
+ "product": "ابن موقعك الأول مع Claude Code",
+ "id": "05_build_websites",
+ "pdf": {
+  "pdf": "Build_Websites_With_Claude_Code_Arabic_Final.pdf",
+  "pages": 37,
+  "issues": [],
+  "checks": {
+   "fonts": [
+    "CRZFJS+PlexAr-Semi-Bold",
+    "FNPUCG+PlexAr-Medium",
+    "HIRYNU+PlexAr-Bold",
+    "NETSUB+PlexMono",
+    "TFCPFR+PlexAr",
+    "UWGIWA+DejaVu-Sans-Bold",
+    "WDHEQY+PlexMono-Bold"
+   ],
+   "fonts_not_embedded": [],
+   "empty_pages": [],
+   "overflow_blocks": [],
+   "presentation_form_pages": [],
+   "pages_without_text": [],
+   "internal_links": 264,
+   "external_links": 2,
+   "telegram_link_annotations": [
+    [
+     2,
+     "https://t.me/PromptsArabic"
+    ],
+    [
+     37,
+     "https://t.me/PromptsArabic"
+    ]
+   ],
+   "broken_internal_links": [],
+   "owner_mentions": 5,
+   "tg_text_mentions": 39,
+   "search_hits": {
+    "برومبتات عربية": 57,
+    "t.me/PromptsArabic": 39
+   },
+   "canonical_arabic_words": 1283,
+   "extract_missing_words_count": 0,
+   "extract_missing_words": [],
+   "search_sample_size": 129,
+   "search_unfindable": [],
+   "variables_with_digits": [],
+   "variables": [
+    "[البديل الحالي]",
+    "[الفكرة]",
+    "[المدة]",
+    "[المستخدم]",
+    "[الوقت الأسبوعي]",
+    "[معرف]"
+   ],
+   "variables_broken": [],
+   "pages_rendered": 37
+  }
+ },
+ "docx": {
+  "docx": "Build_Websites_With_Claude_Code_Arabic_Final.docx",
+  "issues": [],
+  "checks": {
+   "paragraphs": 622,
+   "tables": 8,
+   "styles_used": [
+    "APL Body",
+    "APL Bullet",
+    "APL Callout",
+    "APL Caption",
+    "APL Code",
+    "APL H1",
+    "APL H2",
+    "APL H3",
+    "APL Lead",
+    "APL Prompt",
+    "APL PromptLbl",
+    "APL Subtitle",
+    "APL Title",
+    "Normal"
+   ],
+   "paragraphs_with_bidi": 585,
+   "sections_rtl": true,
+   "owner_mentions": 5,
+   "tg_mentions": 3,
+   "rendered_pages": 38
+  }
+ },
+ "prompt_numbers": []
+}

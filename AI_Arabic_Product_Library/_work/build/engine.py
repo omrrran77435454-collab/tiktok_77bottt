@@ -102,6 +102,29 @@ def plain(t):
         re.sub(r"`([^`]+)`", r"\1", re.sub(r"\*\*([^*]+)\*\*", r"\1", t)))
 
 # ------------------------------------------------------------------ HTML
+def _texts_of(b):
+    """Every user-visible string in a block, for content lints."""
+    k = b[0]
+    if k in ("h2", "h3", "p", "lead", "sectionlead"):
+        return [b[1]]
+    if k in ("ul", "ol"):
+        return list(b[1])
+    if k == "steps":
+        return [x for pair in b[1] for x in pair]
+    if k == "callout":
+        return [b[2]] + list(b[3])
+    if k == "table":
+        return list(b[1]) + [c for row in b[2] for c in row]
+    if k == "kv":
+        return [x for pair in b[1] for x in pair]
+    if k in ("code", "promptbox", "filebox"):
+        return [b[1] or ""]
+    if k == "prompt":
+        p = b[1]
+        return [p.get(x, "") for x in ("title", "category", "when", "gives",
+                                       "example", "output", "tip")] + list(p.get("inputs", []))
+    return []
+
 def validate(blocks, where=""):
     """Fail loudly on malformed content instead of rendering it letter by letter."""
     for b in blocks:
@@ -130,6 +153,13 @@ def validate(blocks, where=""):
                 raise ValueError(
                     "%s: Arabic text inside an LTR code block (%s...). Put the "
                     "explanation in the caption, or use a promptbox." % (where, bad[:3]))
+        for t in _texts_of(b):
+            m = re.search(r"\d+(?:\.\d+)*\.[A-Za-z]\b", t)
+            if m and re.search(r"[ء-ي]", t):
+                raise ValueError(
+                    "%s: version token %r ends in a Latin letter after digits; in an "
+                    "RTL run that letter is reordered to the front. Write the number "
+                    "plainly instead." % (where, m.group(0)))
         if k == "prompt":
             need = ("n", "title", "category", "when", "gives", "text", "example", "output")
             missing = [x for x in need if not b[1].get(x)]

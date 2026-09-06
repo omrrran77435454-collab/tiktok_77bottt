@@ -1,0 +1,864 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>ابن موقعك الأول مع Claude Code</title><style>/* ============================================================
+   Arabic AI Product Library — shared print theme
+   A4 portrait · RTL · mobile-first reading
+   ============================================================ */
+
+@font-face { font-family: "PlexAr"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 500;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-500.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 600;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-600.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-700.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-700.ttf") format("truetype"); }
+
+:root {
+  --ink:      #17140F;
+  --ink-2:    #3A342C;
+  --muted:    #6E665A;
+  --faint:    #9A9184;
+  --rule:     #E6E0D6;
+  --rule-2:   #D6CEC0;
+  --paper:    #FFFFFF;
+  --soft:     #FBF8F3;
+  --soft-2:   #F5F0E7;
+  --accent:   #2F6E8F;
+  --accent-d: #1B4560;
+  --accent-w: #5FA0BE;
+}
+
+/* ---------- page setup ---------- */
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 16mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: "PlexAr"; font-size: 8.5pt; color: var(--faint);
+    margin-bottom: 5mm;
+  }
+  @bottom-left {
+    content: "PromptsArabic · t.me/PromptsArabic";
+    font-family: "PlexMono"; font-size: 6.8pt; color: #B9B1A4;
+    letter-spacing: .02em; margin-bottom: 5mm; direction: ltr;
+  }
+  @bottom-center {
+    content: string(chaptertitle);
+    font-family: "PlexAr"; font-size: 7.6pt; color: #BCB4A7;
+    margin-bottom: 5mm;
+  }
+}
+@page cover  { margin: 0; @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+@page plain  { @bottom-center{content:none} }
+@page :first { @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+
+html { direction: rtl; }
+body {
+  font-family: "PlexAr", sans-serif;
+  font-size: 11.7pt;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  margin: 0;
+  text-align: right;
+  -weasy-hyphens: none;
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover; break-after: page;
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  background: var(--accent-d); color: #fff;
+}
+.cover .field {
+  position: absolute; inset: 0;
+  background: linear-gradient(152deg, var(--accent-d) 0%, var(--accent) 52%, var(--accent-w) 100%);
+}
+.cover .glow {
+  position: absolute; width: 250mm; height: 250mm; right: -70mm; top: -85mm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 62%);
+}
+.cover .grid-lines { position: absolute; inset: 0; }
+.cover .grid-lines i {
+  position: absolute; top: 0; bottom: 0; width: .3mm; background: rgba(255,255,255,.09);
+}
+.cover .arc { position: absolute; border-radius: 50%; border: .5mm solid rgba(255,255,255,.15); }
+
+.cover .topbar {
+  position: absolute; right: 18mm; left: 18mm; top: 20mm;
+  border-bottom: .3mm solid rgba(255,255,255,.28); padding-bottom: 5mm;
+}
+.cover .kicker {
+  font-size: 10pt; font-weight: 600; color: rgba(255,255,255,.92);
+  letter-spacing: .01em; display: inline-block;
+}
+.cover .topbar .mark {
+  float: left; font-family: "PlexMono"; direction: ltr;
+  font-size: 8.4pt; font-weight: 700; letter-spacing: .18em;
+  color: rgba(255,255,255,.72);
+}
+
+.cover .plate { position: absolute; right: 18mm; left: 18mm; top: 74mm; }
+.cover h1 {
+  font-size: 40pt; font-weight: 700; line-height: 1.3;
+  margin: 0 0 7mm 0; color: #fff; letter-spacing: -.012em;
+}
+.cover .rule { width: 22mm; height: 1.2mm; background: rgba(255,255,255,.85);
+  border-radius: 1mm; margin-bottom: 7mm; }
+.cover .sub {
+  font-size: 12.2pt; font-weight: 400; line-height: 1.78;
+  color: rgba(255,255,255,.93); margin: 0; max-width: 162mm;
+}
+.cover .strip { position: absolute; right: 18mm; left: 18mm; bottom: 86mm; }
+.cover .strip .row {
+  border-top: .25mm solid rgba(255,255,255,.22);
+  padding: 2.6mm 0 2.6mm 0; font-size: 9.2pt; color: rgba(255,255,255,.80);
+}
+.cover .strip .row b { font-family: "PlexMono"; direction: ltr; font-weight: 700;
+  font-size: 7.6pt; color: rgba(255,255,255,.55); float: left; padding-top: .8mm;
+  letter-spacing: .1em; }
+
+.cover .promise {
+  position: absolute; right: 18mm; left: 18mm; bottom: 62mm; font-size: 0;
+}
+.cover .promise span {
+  display: inline-block; font-size: 9.4pt; font-weight: 500; color: #fff;
+  border: .3mm solid rgba(255,255,255,.45); border-radius: 2mm;
+  padding: 2mm 4.5mm; background: rgba(255,255,255,.12);
+  margin: 0 0 2.5mm 3mm;
+}
+.cover .baseline {
+  position: absolute; right: 18mm; left: 18mm; bottom: 44mm;
+  border-top: .3mm solid rgba(255,255,255,.28);
+}
+.cover .platform {
+  position: absolute; right: 18mm; bottom: 24mm;
+  font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 15pt; font-weight: 700; color: #fff; letter-spacing: .1em;
+}
+.cover .rights {
+  position: absolute; left: 18mm; bottom: 24mm; text-align: left;
+  font-size: 8.6pt; color: rgba(255,255,255,.86); line-height: 1.55;
+}
+.cover .rights b { font-weight: 600; display: block; }
+.cover .rights span { font-family: "PlexMono"; direction: ltr; font-size: 7.8pt;
+  color: rgba(255,255,255,.72); }
+
+/* ---------- front matter ---------- */
+.frontpage { page: plain; break-after: page; }
+.frontpage h3 { margin: 6mm 0 2mm 0; }
+.frontpage p.lead { margin-bottom: 5mm; font-size: 11.8pt; line-height: 1.85; }
+.frontpage ul.b { margin-bottom: 2mm; }
+.frontpage ul.b > li { margin-bottom: 1.7mm; }
+.fm-title { font-size: 19pt; font-weight: 700; margin: 0 0 8mm 0; color: var(--ink); }
+.fm-rule { height: 1.1mm; width: 26mm; background: var(--accent); margin-bottom: 9mm; border-radius: 1mm; }
+
+.rights-block {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  padding: 9mm 8mm; background: var(--soft); margin: 8mm 0;
+}
+.rights-block .owner { font-size: 15pt; font-weight: 700; margin: 0 0 3mm 0; }
+.rights-block p { margin: 0 0 3mm 0; font-size: 10.6pt; color: var(--ink-2); }
+.rights-block a.tg {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 11pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+.meta-table { width: 100%; border-collapse: collapse; margin-top: 6mm; }
+.meta-table td { padding: 2.6mm 0; border-bottom: .25mm solid var(--rule); font-size: 10.2pt; vertical-align: top; }
+.meta-table td:first-child { width: 44mm; color: var(--muted); font-weight: 500; }
+
+/* ---------- table of contents ---------- */
+.toc { page: plain; break-after: page; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  text-decoration: none; color: var(--ink);
+  display: flex; align-items: baseline; gap: 2.5mm;
+}
+.toc .t { flex: 0 1 auto; }
+.toc .dots {
+  flex: 1 1 auto; min-width: 6mm; align-self: flex-end;
+  border-bottom: .2mm dotted var(--rule-2); transform: translateY(-1.2mm);
+}
+.toc a::after {
+  content: target-counter(attr(href), page);
+  font-family: "PlexMono"; font-size: 8.6pt; color: var(--faint);
+  font-weight: 400; direction: ltr; flex: 0 0 auto;
+}
+.toc .l1 a {
+  font-size: 11.4pt; font-weight: 600;
+  padding: 3mm 0 3mm 0; border-bottom: .25mm solid var(--rule);
+}
+.toc .l1 a::after { color: var(--accent-d); font-weight: 700; font-size: 9pt; }
+.toc .l2 a {
+  font-size: 10pt; font-weight: 400; color: var(--ink-2);
+  padding: 1.8mm 6.5mm 1.8mm 0;
+}
+.toc .l1 .t::before {
+  content: ""; display: inline-block; width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--accent); margin-left: 3.5mm; vertical-align: middle;
+}
+
+/* ---------- headings ---------- */
+h1.chapter {
+  string-set: chaptertitle content();
+  break-before: page;
+  font-size: 23pt; font-weight: 700; line-height: 1.38;
+  margin: 0 0 3mm 0; padding-bottom: 4mm; color: var(--ink);
+  border-bottom: 1mm solid var(--accent);
+}
+h1.chapter .num {
+  display: block; font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 9.5pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .12em; margin-bottom: 3mm;
+}
+h2 {
+  font-size: 15pt; font-weight: 700; line-height: 1.55;
+  margin: 11mm 0 3.5mm 0; color: var(--ink);
+  break-after: avoid; break-inside: avoid;
+}
+h3 {
+  font-size: 12.2pt; font-weight: 600; line-height: 1.6;
+  margin: 7.5mm 0 2.5mm 0; color: var(--ink-2);
+  break-after: avoid; break-inside: avoid;
+}
+h2 + p, h3 + p { margin-top: 0; }
+
+p { margin: 0 0 3.6mm 0; orphans: 2; widows: 2; }
+p.lead { font-size: 12.4pt; color: var(--ink-2); line-height: 1.9; margin-bottom: 6mm; }
+strong { font-weight: 600; }
+
+/* ---------- lists ---------- */
+ul.b, ol.n { margin: 0 0 4.5mm 0; padding: 0 6mm 0 0; }
+ul.b { list-style: none; padding-right: 0; }
+ul.b > li {
+  position: relative; padding-right: 6.5mm; margin-bottom: 2.4mm;
+  orphans: 2; widows: 2;
+}
+ul.b > li::before {
+  content: ""; position: absolute; right: 1.6mm; top: 2.6mm;
+  width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--accent);
+}
+ol.n { padding-right: 7mm; }
+ol.n > li { margin-bottom: 2.4mm; padding-right: 1.5mm; }
+ol.n > li::marker { color: var(--accent-d); font-weight: 600; }
+
+/* ---------- code ---------- */
+code.inline {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 9.2pt; background: var(--soft-2); color: var(--ink);
+  padding: .5mm 1.4mm; border-radius: 1mm; border: .2mm solid var(--rule);
+}
+pre.code {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate; text-align: left;
+  font-size: 9.2pt; line-height: 1.62; color: #F3EFE8; background: #211D18;
+  padding: 4.5mm 5mm; border-radius: 2.5mm; margin: 0 0 5mm 0;
+  white-space: pre-wrap; word-break: break-word;
+  break-inside: avoid;
+}
+pre.code .cm { color: #A79C8C; }
+.codewrap { margin-bottom: 5mm; break-inside: avoid; }
+.codewrap .caption {
+  font-size: 8.6pt; color: var(--muted); margin-bottom: 1.6mm; font-weight: 500;
+}
+.codewrap pre.code { margin-bottom: 0; }
+
+/* ---------- callouts ---------- */
+.callout {
+  border-right: 1.1mm solid var(--accent);
+  background: var(--soft); border-radius: 0 2.5mm 2.5mm 0;
+  padding: 4.5mm 5mm 3mm 5mm; margin: 0 0 5mm 0;
+  break-inside: avoid;
+}
+.callout .t { font-weight: 700; font-size: 10.4pt; margin-bottom: 1.8mm; }
+.callout p:last-child { margin-bottom: 1.5mm; }
+.callout.warn { border-right-color: #B4472F; background: #FDF4F1; }
+.callout.warn .t { color: #91361F; }
+.callout.tip  { border-right-color: #2F7D62; background: #F1F8F4; }
+.callout.tip .t { color: #1F5B46; }
+
+/* ---------- tables ---------- */
+table.data {
+  width: 100%; border-collapse: collapse; margin: 0 0 5mm 0;
+  font-size: 10pt; break-inside: avoid; direction: rtl;
+}
+table.data th {
+  background: var(--soft-2); font-weight: 600; text-align: right;
+  padding: 2.8mm 3mm; border-bottom: .4mm solid var(--rule-2); color: var(--ink);
+}
+table.data td {
+  padding: 2.6mm 3mm; border-bottom: .25mm solid var(--rule);
+  vertical-align: top; text-align: right; color: var(--ink-2);
+}
+table.data tr:nth-child(even) td { background: #FCFAF6; }
+
+/* ---------- prompt card ---------- */
+.pcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  margin: 0 0 5mm 0; overflow: hidden;
+}
+.pcard > .head {
+  background: var(--soft-2); padding: 3mm 4.5mm 2.6mm 4.5mm;
+  border-bottom: .25mm solid var(--rule-2);
+  break-after: avoid;
+}
+.pcard .pn {
+  font-family: "PlexMono"; direction: ltr; font-size: 8.4pt; font-weight: 700;
+  color: #FFFFFF; background: var(--accent-d); border-radius: 1.5mm;
+  padding: .8mm 2.4mm; letter-spacing: .06em; display: inline-block;
+  margin-left: 3mm; vertical-align: 1mm;
+}
+.pcard .pt { font-size: 13pt; font-weight: 700; display: inline; }
+.pcard .cat {
+  display: block; font-size: 8.4pt; color: var(--muted); margin-top: 1.4mm; font-weight: 500;
+}
+.pcard > .body { padding: 3.4mm 4.5mm .5mm 4.5mm; }
+.pcard .row { margin-bottom: 2.4mm; }
+.pcard .row > .k {
+  font-size: 9pt; font-weight: 700; color: var(--accent-d);
+  margin-bottom: .8mm;
+}
+.pcard .row > .v { font-size: 10.4pt; color: var(--ink-2); line-height: 1.68; }
+.pcard .row ul.b { margin-bottom: 0; }
+.pcard .row ul.b > li { font-size: 10.2pt; margin-bottom: .9mm; }
+
+.promptbox {
+  background: var(--soft); border: .3mm dashed var(--rule-2);
+  border-radius: 2.5mm; padding: 3.4mm 4mm; margin: 0 0 3mm 0;
+  break-inside: avoid;
+}
+.promptbox .lbl {
+  font-size: 8.4pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .01em; margin-bottom: 1.8mm;
+  padding-bottom: 1.2mm; border-bottom: .25mm solid var(--rule-2);
+}
+.promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox.filebox .lbl { font-family: "PlexMono"; direction: ltr; text-align: left;
+  font-size: 8pt; letter-spacing: .02em; }
+.promptbox .txt {
+  font-size: 10.2pt; line-height: 1.66; color: var(--ink); white-space: pre-wrap;
+}
+
+/* ---------- misc blocks ---------- */
+.divider { height: .25mm; background: var(--rule); margin: 8mm 0; border: 0; }
+.spacer { height: 4mm; }
+.sectionlead {
+  background: var(--soft); border-radius: 3mm; padding: 5mm 6mm; margin: 0 0 7mm 0;
+}
+.sectionlead p { margin: 0; font-size: 10.8pt; color: var(--ink-2); }
+
+.steps { counter-reset: st; margin: 0 0 5mm 0; padding: 0; list-style: none; }
+.steps > li {
+  counter-increment: st; position: relative; padding-right: 11mm;
+  margin-bottom: 4mm; break-inside: avoid;
+}
+.steps > li::before {
+  content: counter(st); position: absolute; right: 0; top: .4mm;
+  width: 7.5mm; height: 7.5mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-family: "PlexMono"; font-size: 8.6pt; font-weight: 700;
+  text-align: center; line-height: 7.5mm;
+}
+.steps > li .sh { font-weight: 600; display: block; margin-bottom: .8mm; }
+
+.kv { width: 100%; border-collapse: collapse; margin: 0 0 5mm 0; font-size: 10pt; }
+.kv td { padding: 2.4mm 0; border-bottom: .25mm solid var(--rule); vertical-align: top; }
+.kv td:first-child { width: 40mm; color: var(--muted); font-weight: 500; padding-left: 4mm; }
+
+/* ---------- closing page ---------- */
+.endpage { break-before: page; }
+.endcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm; background: var(--soft);
+  padding: 8mm; margin-top: 6mm; text-align: center;
+}
+.endcard .h { font-size: 15pt; font-weight: 700; margin-bottom: 3mm; }
+.endcard p { font-size: 10.6pt; color: var(--ink-2); }
+.endcard a {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 12pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+
+/* ---------- chapter opener index ---------- */
+.chindex { margin: 0 0 6mm 0; }
+.chindex .row {
+  display: flex; align-items: baseline; gap: 3mm;
+  border-bottom: .25mm solid var(--rule); padding: 2.2mm 0;
+  font-size: 10.4pt;
+}
+.chindex .row b {
+  font-family: "PlexMono"; direction: ltr; font-size: 8pt; font-weight: 700;
+  color: #fff; background: var(--accent-d); border-radius: 1.4mm;
+  padding: .7mm 2mm; flex: 0 0 auto;
+}
+.chindex .row span { flex: 1 1 auto; }
+</style></head><body><section class="cover">
+  <div class="field"></div>
+  <div class="glow"></div>
+  <div class="grid-lines"><i style="right:30mm"></i><i style="right:66mm"></i><i style="right:102mm"></i><i style="right:138mm"></i><i style="right:174mm"></i></div>
+  <div class="arc" style="width:196mm;height:196mm;right:-56mm;top:-64mm"></div>
+  <div class="arc" style="width:128mm;height:128mm;left:-46mm;bottom:-40mm"></div>
+  <div class="topbar">
+    <span class="mark">PROMPTS ARABIC</span>
+    <span class="kicker">مشروع كامل بالعربية</span>
+  </div>
+  <div class="plate">
+    <h1>ابن موقعك الأول مع Claude Code</h1>
+    <div class="rule"></div>
+    <p class="sub">من الفكرة إلى موقع عربي يعمل فعلا: المتطلبات والبنية والصفحات والبيانات والنماذج والأداء والنشر</p>
+  </div>
+  <div class="strip"><div class="row"><b>01</b>الفكرة والمتطلبات والبنية</div><div class="row"><b>02</b>اختيار Stack مستقر ومقارنته</div><div class="row"><b>03</b>عشر مراحل بناء بأوامر فعلية</div><div class="row"><b>04</b>الأداء والأمان والنشر والصيانة</div></div>
+  <div class="promise"><span>مشروع كامل</span><span>10 مراحل</span><span>محدث في سبتمبر 2026</span></div>
+  <div class="baseline"></div>
+  <div class="platform">CLAUDE CODE</div>
+  <div class="rights"><b>برومبتات عربية</b><span>t.me/PromptsArabic</span></div>
+</section>
+<section class="frontpage">
+  <div class="fm-title">حقوق النشر</div><div class="fm-rule"></div>
+  <div class="rights-block">
+    <p class="owner">برومبتات عربية</p>
+    <p>جميع الحقوق محفوظة لقناة <strong>برومبتات عربية</strong>.</p>
+    <p>هذا المنتج مخصص للاستخدام الشخصي للمشتري. لا يجوز إعادة نشره أو بيعه
+       أو توزيعه أو اقتباس أجزاء منه لأغراض تجارية دون إذن كتابي من المالك.</p>
+    <p>القناة الرسمية: <a class="tg" href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+  <table class="meta-table">
+    <tr><td>اسم المنتج</td><td>ابن موقعك الأول مع Claude Code</td></tr>
+    <tr><td>الإصدار</td><td>الإصدار الأول</td></tr>
+    <tr><td>اللغة</td><td>العربية</td></tr>
+    <tr><td>المقاس</td><td>A4 عمودي — مهيأ للقراءة على الهاتف</td></tr>
+    <tr><td>تمت مراجعة معلومات وميزات هذا الدليل حتى تاريخ</td><td>6 سبتمبر 2026</td></tr>
+    <tr><td>مصادر التحقق</td><td>nextjs.org و react.dev و nodejs.org و code.claude.com/docs</td></tr>
+  </table>
+  <div class="callout"><div class="t">ملاحظة مهمة عن تاريخ المحتوى</div>
+    <p>منصات الذكاء الاصطناعي تتغير بسرعة. كل ميزة مذكورة هنا تم التحقق منها من
+       المصدر الرسمي بتاريخ 6 سبتمبر 2026. إذا مر وقت طويل على هذا التاريخ،
+       راجع الصفحة الرسمية للميزة قبل الاعتماد عليها في عمل حساس.</p>
+  </div>
+</section><section class="frontpage">
+  <div class="fm-title">عن هذا الدليل</div><div class="fm-rule"></div>
+  <p class="lead">معظم أدلة بناء المواقع تعطيك أوامر تنسخها فتحصل على شيء يعمل ولا تعرف لماذا. هذا الدليل يبني معك موقعا عربيا حقيقيا على عشر مراحل، ولكل مرحلة: ما نبنيه، وما نرسله إلى Claude Code حرفيا، وما الملفات المتوقعة، وكيف تختبر بنفسك، وما الأخطاء المحتملة، ومتى تنتقل للمرحلة التالية. المشروع الناتج ليس تمرينا: دليل خدمات محلي بواجهة عربية RTL وبحث ونموذج تواصل، جاهز للنشر.</p>
+  <h3>لمن هذا الدليل</h3><ul class="b"><li>من يعرف أساسيات البرمجة ولم يبن موقعا كاملا من قبل</li><li>طلاب يحتاجون مشروع ويب حقيقيا لا صفحة واحدة</li><li>من بنى مواقع بالنسخ واللصق ويريد فهم القرارات</li><li>من يريد موقعا عربيا صحيح الاتجاه لا موقعا إنجليزيا مترجما</li></ul>
+  <h3>ماذا ستتعلم</h3><ul class="b"><li>كيف تحول فكرة غامضة إلى نطاق محدد وقصص مستخدم قابلة للبناء</li><li>كيف تقارن أطر العمل وتختار واحدا بأسباب لا بشهرة</li><li>بناء موقع بالمراحل مع أوامر فعلية ترسلها إلى Claude Code</li><li>طبقة بيانات نظيفة تسمح لك بتغيير مصدر البيانات لاحقا</li><li>نماذج آمنة بتحقق على الخادم لا على المتصفح فقط</li><li>تصميم متجاوب عربي RTL وإمكانية وصول حقيقية</li><li>أساسيات الأداء و SEO والنشر والصيانة</li></ul>
+</section>
+<section class="frontpage">
+  <div class="fm-title">قبل أن تبدأ</div><div class="fm-rule"></div>
+  <h3>المتطلبات</h3><ul class="b"><li>Node.js — الإصدار المدعوم طويل الأمد وقت مراجعة هذا الدليل هو 24</li><li>Claude Code مثبت ويعمل</li><li>محرر نصوص، ويفضل VS Code</li><li>معرفة أساسية بـ HTML و CSS و JavaScript</li><li>حساب Git ومستودع فارغ</li></ul>
+  <h3>كيف تستخدم هذا الدليل</h3><ul class="b"><li>لا تقفز إلى مرحلة البناء. المرحلتان الأولى والثانية هما ما يحدد جودة المشروع كله</li><li>أرسل برومبت كل مرحلة كما هو بعد تعبئة المتغيرات، ولا تختصره</li><li>بعد كل مرحلة: راجع الفروق ثم اختبر ثم commit، بهذا الترتيب</li><li>إذا انحرف Claude عن المطلوب، ارجع إلى برومبت المرحلة ولا تصحح بطلبات متفرقة</li><li>احتفظ بملف القرارات وحدثه بعد كل مرحلة</li></ul>
+  <div class="callout tip"><div class="t">طريقة القراءة الموصى بها</div>
+    <p>لا تقرأ الدليل كله دفعة واحدة. اقرأ فصلا واحدا، ثم نفّذ تمرينه على مهمة حقيقية
+       من عملك، ثم انتقل. أربعة فصول مطبَّقة أفضل من أربعة عشر فصلا مقروءا.</p></div>
+</section>
+<section class="toc"><div class="fm-title">الفهرس</div><div class="fm-rule"></div><ul><li class="l1"><a href="#ch1"><span class="t">من فكرة غامضة إلى نطاق محدد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s1"><span class="t">المشروع الذي سنبنيه معا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s4"><span class="t">ثلاثة أسئلة قبل أي شيء</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s6"><span class="t">برومبت تحديد النطاق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s8"><span class="t">علامات نطاق سيئ</span><span class="dots"></span></a></li><li class="l1"><a href="#ch2"><span class="t">المخطط الهيكلي وبنية الصفحات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s1"><span class="t">صفحات موقعنا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s3"><span class="t">الحالات التي ينساها المبتدئون</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s6"><span class="t">برومبت المخطط والبنية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s8"><span class="t">شكل البيانات الذي سنستخدمه</span><span class="dots"></span></a></li><li class="l1"><a href="#ch3"><span class="t">اختيار Stack بقرار لا بشهرة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s1"><span class="t">المرشحون</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s4"><span class="t">المقارنة على معايير مشروعنا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s6"><span class="t">القرار وسببه</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s10"><span class="t">الإصدارات التي سنعتمدها</span><span class="dots"></span></a></li><li class="l1"><a href="#ch4"><span class="t">البيئة وإعداد المشروع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s12"><span class="t">ضبط الاتجاه العربي</span><span class="dots"></span></a></li><li class="l1"><a href="#ch5"><span class="t">الصفحات والتوجيه والحالات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch6"><span class="t">البيانات وطبقة الوصول</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s12"><span class="t">لماذا هذه الطبقة تحديدا</span><span class="dots"></span></a></li><li class="l1"><a href="#ch7"><span class="t">النماذج والتحقق</span><span class="dots"></span></a></li><li class="l1"><a href="#ch8"><span class="t">التصميم المتجاوب وإمكانية الوصول</span><span class="dots"></span></a></li><li class="l1"><a href="#ch9"><span class="t">الأداء وأساسيات SEO</span><span class="dots"></span></a></li><li class="l1"><a href="#ch10"><span class="t">الاختبارات والأمان</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s1"><span class="t">الاختبارات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s3"><span class="t">الأمان</span><span class="dots"></span></a></li><li class="l1"><a href="#ch11"><span class="t">البناء والنشر والصيانة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s1"><span class="t">قبل النشر</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s4"><span class="t">برومبت تجهيز النشر</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s6"><span class="t">خيارات النشر</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s9"><span class="t">بعد الإطلاق</span><span class="dots"></span></a></li><li class="l1"><a href="#ch12"><span class="t">ورقة المراجعة السريعة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s0"><span class="t">المراحل العشر ومعايير الانتقال</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s2"><span class="t">دورة العمل في كل مرحلة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s4"><span class="t">أخطاء شائعة في أول موقع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s6"><span class="t">ما تضعه في CLAUDE.md لهذا المشروع</span><span class="dots"></span></a></li></ul></section>
+<h1 class="chapter" id="ch1"><span class="num">المرحلة صفر</span>من فكرة غامضة إلى نطاق محدد</h1><p class="lead">الفكرة الغامضة تنتج مشروعا لا ينتهي. المشروع الذي ينتهي هو الذي عرف بدقة قبل أن يكتب سطر. هذه المرحلة لا كود فيها إطلاقا.</p>
+<h2 id="ch1-s1">المشروع الذي سنبنيه معا</h2>
+<p>سنبني <strong>دليل خدمات محلي</strong>: موقع يعرض مزودي خدمة في مدينة، يستطيع الزائر تصفحهم والبحث فيهم حسب التخصص، ويفتح صفحة لكل مزود، ويرسل طلب تواصل. اخترنا هذه الفكرة لأنها تحتوي كل ما يحتاجه أي موقع حقيقي: قائمة، وتفاصيل، وبحث، ونموذج، وبيانات، ونشر — بلا تعقيد يشتت المبتدئ.</p>
+<div class="callout note"><div class="t">إن كانت لديك فكرتك الخاصة</div><p>استبدلها بفكرتنا وأكمل بالمراحل نفسها. كل برومبت في هذا الدليل مكتوب بمتغيرات، فيصلح لأي موقع من هذا النوع: مطاعم، أو دورات، أو عقارات، أو أطباء، أو أي دليل يعرض عناصر ويسمح بالبحث فيها والتواصل بشأنها.</p></div>
+<h2 id="ch1-s4">ثلاثة أسئلة قبل أي شيء</h2>
+<ol class="steps"><li><span class="sh">من المستخدم بالضبط</span>لا «الجميع». شخص واحد محدد بحاجة محددة.</li><li><span class="sh">ماذا يفعل اليوم بدون موقعك</span>إذا لم تكن هناك طريقة حالية، فالمشكلة قد لا تكون حقيقية.</li><li><span class="sh">ما الشيء الواحد الذي لو لم يفعله الموقع لكان بلا قيمة</span>هذا هو جوهر مشروعك، وكل ما عداه إضافة.</li></ol>
+<h2 id="ch1-s6">برومبت تحديد النطاق</h2>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا في جلسة Claude Code جديدة، قبل إنشاء أي ملف</div><div class="txt">سنبني موقعا. لا تكتب أي كود في هذه المرحلة.
+
+الفكرة:
+[الفكرة]
+المستخدم المستهدف:
+[المستخدم]
+ما يفعله اليوم بدون هذا الموقع:
+[البديل الحالي]
+المدة المتاحة لي:
+[المدة]
+وقتي الأسبوعي:
+[الوقت الأسبوعي]
+
+المطلوب: أنشئ ملف REQUIREMENTS.md يحتوي:
+
+أولا. المشكلة في ثلاث جمل، بلغة المستخدم لا بلغة تقنية
+ثانيا. قصص المستخدم الأساسية، خمس على الأكثر، بصيغة: كمستخدم أريد كذا حتى أستطيع كذا
+ثالثا. داخل النطاق: قائمة محددة لما سيفعله الموقع
+رابعا. خارج النطاق صراحة: قائمة أطول، وكل بند مع سبب استبعاده
+خامسا. معايير القبول: متى نعتبر المشروع منتهيا
+سادسا. الافتراضات التي لو سقطت لتغير المشروع
+سابعا. ثلاثة طلبات إضافية متوقعة لاحقا، والرد المعد لكل منها
+
+قواعد:
+اجعل قسم خارج النطاق مفصلا، فهو الذي يحمي المشروع من التضخم.
+إذا كانت الفكرة أوسع من مدتي المتاحة، قل ذلك واقترح تضييقها.
+لا تفترض معلومة عني. إذا نقصك شيء، اسأل.</div></div>
+<h2 id="ch1-s8">علامات نطاق سيئ</h2>
+<table class="data"><thead><tr><th>العلامة</th><th>لماذا هي خطر</th></tr></thead><tbody><tr><td>قائمة داخل النطاق أطول من قائمة خارجه</td><td>لم تستبعد شيئا فعلا</td></tr><tr><td>قصة مستخدم تبدأ بـ «كمسؤول»</td><td>دخلت لوحة تحكم كاملة إلى مشروعك الأول</td></tr><tr><td>معيار قبول غير قابل للقياس</td><td>لن تعرف متى تتوقف</td></tr><tr><td>أكثر من خمس قصص أساسية</td><td>قسم المشروع إلى إصدارين</td></tr></tbody></table>
+<h1 class="chapter" id="ch2"><span class="num">المرحلة الأولى</span>المخطط الهيكلي وبنية الصفحات</h1><p class="lead">المخطط الهيكلي wireframe ليس تصميما. هو قرار عن ما يظهر وأين وبأي ترتيب، قبل أن تشغلك الألوان.</p>
+<h2 id="ch2-s1">صفحات موقعنا</h2>
+<table class="data"><thead><tr><th>الصفحة</th><th>المسار</th><th>ما تحتويه</th><th>ما لا تحتويه</th></tr></thead><tbody><tr><td>الرئيسية</td><td>/</td><td>عنوان، شريط بحث، شبكة المزودين، ترقيم صفحات</td><td>شرح طويل عن الموقع</td></tr><tr><td>تفاصيل مزود</td><td>/providers/[معرف]</td><td>الاسم، التخصص، الوصف، معلومات التواصل، زر الطلب</td><td>تعليقات وتقييمات</td></tr><tr><td>نتائج البحث</td><td>/search</td><td>الفلاتر، النتائج، حالة لا نتائج</td><td>بحث ذكي أو اقتراحات</td></tr><tr><td>تواصل</td><td>/contact</td><td>نموذج، رسالة نجاح، رسائل خطأ</td><td>خرائط ودردشة</td></tr><tr><td>صفحة 404</td><td>غير موجود</td><td>رسالة واضحة ورابط للرئيسية</td><td>أي شيء آخر</td></tr></tbody></table>
+<h2 id="ch2-s3">الحالات التي ينساها المبتدئون</h2>
+<p>لكل صفحة أربع حالات لا واحدة. تصميم الحالة الطبيعية فقط هو أشهر سبب لموقع يبدو مكسورا عند أول استخدام حقيقي:</p>
+<ul class="b"><li><strong>حالة التحميل</strong>: ماذا يرى المستخدم أثناء جلب البيانات؟</li><li><strong>الحالة الفارغة</strong>: لا نتائج بحث، أو لا مزودين بعد. ماذا يقول الموقع؟</li><li><strong>حالة الخطأ</strong>: فشل الجلب. رسالة مفهومة، لا شاشة بيضاء.</li><li><strong>الحالة الطبيعية</strong>: البيانات موجودة وتعرض.</li></ul>
+<h2 id="ch2-s6">برومبت المخطط والبنية</h2>
+<div class="promptbox standalone"><div class="lbl">لا كود بعد — مخطط فقط</div><div class="txt">بناء على REQUIREMENTS.md، صمم بنية الموقع. لا تكتب كودا بعد.
+
+المطلوب في ملف ARCHITECTURE.md:
+
+أولا. خريطة الصفحات: المسار، والغرض، والبيانات التي تحتاجها كل صفحة
+ثانيا. لكل صفحة: الحالات الأربع — تحميل، فارغة، خطأ، طبيعية — وما يعرض في كل حالة
+ثالثا. المكونات المشتركة بين الصفحات، وأين تستخدم
+رابعا. شكل البيانات: ما الحقول التي يحملها العنصر الواحد، ونوع كل حقل، وأيها إلزامي
+خامسا. مسار المستخدم من الدخول إلى إرسال الطلب، خطوة بخطوة
+سادسا. القرارات المعمارية التي يجب تثبيتها في CLAUDE.md
+
+قواعد:
+الموقع عربي واتجاهه من اليمين إلى اليسار. خذ ذلك في الحسبان في تخطيط كل صفحة.
+لا تقترح ميزة خارج النطاق المتفق عليه.
+إذا كان حقل بيانات غامضا، اسألني عنه بدل افتراضه.</div></div>
+<h2 id="ch2-s8">شكل البيانات الذي سنستخدمه</h2>
+<div class="codewrap"><div class="caption">types/provider.ts</div><pre class="code">export type Provider = {
+  id: string;
+  name: string;
+  category: string;
+  city: string;
+  description: string;
+  phone: string;
+  verified: boolean;
+};</pre></div>
+<div class="callout tip"><div class="t">ابدأ من شكل البيانات</div><p>تحديد شكل العنصر الواحد قبل بناء الصفحات يوفر عليك إعادة كتابة نصف المشروع لاحقا. كل صفحة بعد ذلك تصبح عرضا مختلفا للبنية نفسها.</p></div>
+<h1 class="chapter" id="ch3"><span class="num">المرحلة الثانية</span>اختيار Stack بقرار لا بشهرة</h1><p class="lead">لا يوجد إطار عمل أفضل. يوجد إطار أنسب لحالتك. هذه المقارنة على معايير مشروعنا نحن: مبتدئ، ومشروع حقيقي، ومدة محدودة، وعمل مع أداة وكيلة.</p>
+<h2 id="ch3-s1">المرشحون</h2>
+<table class="data"><thead><tr><th>الخيار</th><th>طبيعته</th><th>الحالة وقت المراجعة</th></tr></thead><tbody><tr><td>Next.js</td><td>إطار React كامل: توجيه وعرض على الخادم وواجهات خلفية</td><td>الإصدار المستقر 16.3، ودعم مدمج مستقر لمصرف React</td></tr><tr><td>React مع Vite</td><td>مكتبة واجهة مع أداة بناء، بلا توجيه ولا خادم</td><td>React المستقر 19.0.4</td></tr><tr><td>Astro</td><td>إطار موجه للمحتوى، يرسل أقل قدر من JavaScript</td><td>إصدارات 6.3 و 6.4 مستقرة في 2026</td></tr><tr><td>SvelteKit</td><td>إطار كامل بلغة Svelte</td><td>المستقر هو الجيل الثاني؛ الجيل الثالث كان مرشح إصدار وقت المراجعة</td></tr></tbody></table>
+<div class="callout warn"><div class="t">قاعدة الإصدارات في هذا الدليل</div><p>لن نبني على إصدار مرشح release candidate ولا على بيتا. مرشح الإصدار قد تتغير واجهته قبل الاستقرار، فتجد نفسك تعيد كتابة كود يعمل. هذا هو سبب استبعاد الجيل الثالث من SvelteKit من مسارنا رغم جودته.</p></div>
+<h2 id="ch3-s4">المقارنة على معايير مشروعنا</h2>
+<table class="data"><thead><tr><th>المعيار</th><th>Next.js</th><th>React مع Vite</th><th>Astro</th></tr></thead><tbody><tr><td>سهولة البدء لمبتدئ</td><td>متوسطة: مفاهيم أكثر</td><td>عالية: أقل مفاهيم</td><td>عالية</td></tr><tr><td>توجيه الصفحات جاهز</td><td>نعم</td><td>لا، تضيفه بنفسك</td><td>نعم</td></tr><tr><td>واجهة خلفية في المشروع نفسه</td><td>نعم</td><td>لا</td><td>جزئيا</td></tr><tr><td>مناسب لموقع محتوى</td><td>نعم</td><td>متوسط</td><td>ممتاز</td></tr><tr><td>مناسب لتطبيق تفاعلي</td><td>ممتاز</td><td>ممتاز</td><td>متوسط</td></tr><tr><td>حجم المجتمع والأمثلة</td><td>كبير جدا</td><td>كبير جدا</td><td>متوسط</td></tr><tr><td>سهولة النشر</td><td>عالية</td><td>عالية</td><td>عالية</td></tr></tbody></table>
+<h2 id="ch3-s6">القرار وسببه</h2>
+<p>نختار <strong>Next.js</strong> لهذا الدليل، لثلاثة أسباب تخص مشروعنا تحديدا:</p>
+<ol class="n"><li>موقعنا يحتاج صفحات وبحثا ونموذجا يكتب بيانات. Next.js يعطي التوجيه والواجهة الخلفية في مشروع واحد، فلا نربط مشروعين ونحن في البداية.</li><li>التوجيه المبني على الملفات يجعل بنية المشروع مقروءة، وهذا يفيدك أنت ويفيد الأداة الوكيلة التي تقرأ مشروعك.</li><li>حجم المجتمع يعني أن أي رسالة خطأ ستجد لها إجابة، وهذا يهم المبتدئ أكثر من أي ميزة تقنية.</li></ol>
+<p>ومتى لا يكون الاختيار الصحيح؟ إذا كان موقعك محتوى ثابتا بلا تفاعل فـ Astro أخف وأنسب. وإذا كنت تبني لوحة تفاعلية بلا صفحات عامة فـ React مع Vite أبسط.</p>
+<h2 id="ch3-s10">الإصدارات التي سنعتمدها</h2>
+<table class="data"><thead><tr><th>الأداة</th><th>الإصدار</th><th>الحالة</th></tr></thead><tbody><tr><td>Node.js</td><td>24 (Krypton)</td><td>مدعوم طويل الأمد نشط وقت المراجعة</td></tr><tr><td>Next.js</td><td>16.3</td><td>مستقر</td></tr><tr><td>React</td><td>19.0.4</td><td>مستقر</td></tr><tr><td>TypeScript</td><td>الإصدار الذي يثبته منشئ المشروع</td><td>مستقر</td></tr></tbody></table>
+<div class="callout note"><div class="t">قبل أن تبدأ التنفيذ</div><p>الإصدارات أعلاه تم التحقق منها من المصادر الرسمية بتاريخ 6 سبتمبر 2026. أطر الويب تتحرك بسرعة: افتح صفحة الإصدارات الرسمية وتأكد من أحدث إصدار مستقر قبل أن تبدأ، ولا تعتمد إصدارا موسوما beta أو rc أو canary.</p></div>
+<h1 class="chapter" id="ch4"><span class="num">المرحلة الثالثة</span>البيئة وإعداد المشروع</h1><p class="lead">المرحلة التي يتخطاها الناس فتكلفهم ساعات لاحقا.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>بيئة تعمل، ومشروع Next.js فارغ، ومستودع Git، وملف CLAUDE.md يعرف فيه Claude Code أوامر مشروعك وأعرافه.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">أنشئ مشروع Next.js جديدا في المجلد الحالي.
+
+المتطلبات:
+استخدم أحدث إصدار مستقر من Next.js. تحقق من الإصدار قبل التثبيت ولا تستخدم beta أو rc.
+TypeScript مفعل.
+موجه التطبيق App Router.
+بنية مجلدات واضحة: app للصفحات، components للمكونات، lib للمنطق، types للأنواع.
+
+بعد الإنشاء:
+أولا. اضبط اللغة العربية والاتجاه من اليمين إلى اليسار على مستوى المستند
+ثانيا. أنشئ ملف .gitignore مناسبا، ويجب أن يستبعد .env و node_modules ومجلد البناء
+ثالثا. أنشئ .env.example فارغ القيم
+رابعا. أنشئ CLAUDE.md يحتوي أوامر التشغيل والاختبار والفحص، وأعراف التسمية، وقرار أن الموقع عربي RTL
+
+اعرض لي الخطة والملفات التي ستنشئها قبل أن تنفذ، وانتظر موافقتي.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">package.json</code> و <code class="inline">tsconfig.json</code> و <code class="inline">next.config</code></li><li><code class="inline">app/layout</code> — وفيه ضبط اللغة والاتجاه</li><li><code class="inline">app/page</code> — الصفحة الرئيسية المؤقتة</li><li><code class="inline">.gitignore</code> و <code class="inline">.env.example</code></li><li><code class="inline">CLAUDE.md</code></li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>شغل خادم التطوير وافتح الموقع في المتصفح.</li><li>افحص عنصر html في أدوات المطور: هل <code class="inline">lang</code> عربية و <code class="inline">dir</code> من اليمين لليسار؟</li><li>شغل <code class="inline">git status</code> وتأكد أن <code class="inline">node_modules</code> و <code class="inline">.env</code> غير مدرجين.</li><li>شغل <code class="inline">/context</code> داخل Claude Code وتأكد أن <code class="inline">CLAUDE.md</code> ظهر تحت Memory files.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>نسيان ضبط الاتجاه في الجذر، فتضطر لإصلاحه في كل مكون لاحقا.</li><li>إنشاء <code class="inline">.gitignore</code> بعد أول commit، فيصل <code class="inline">node_modules</code> إلى المستودع.</li><li>ترك <code class="inline">CLAUDE.md</code> فارغا، فتعيد شرح المشروع في كل جلسة.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>الموقع يفتح في المتصفح، والاتجاه من اليمين لليسار، والمستودع نظيف، و CLAUDE.md محمل.</p></div>
+<h2 id="ch4-s12">ضبط الاتجاه العربي</h2>
+<div class="codewrap"><div class="caption">app/layout.tsx — الجزء الحاسم</div><pre class="code">export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    &lt;html lang="ar" dir="rtl"&gt;
+      &lt;body&gt;{children}&lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</pre></div>
+<div class="callout warn"><div class="t">الاتجاه ليس محاذاة</div><p>ضبط <code class="inline">dir="rtl"</code> على المستند هو الاتجاه الحقيقي: تنقلب معه الهوامش المنطقية وترتيب العناصر واتجاه التمرير. أما <code class="inline">text-align: right</code> وحده فهو محاذاة شكلية تترك بقية التخطيط معكوسا. استخدم الخصائص المنطقية في CSS مثل <code class="inline">margin-inline-start</code> بدل <code class="inline">margin-left</code> حتى يعمل تخطيطك في الاتجاهين.</p></div>
+<h1 class="chapter" id="ch5"><span class="num">المرحلة الرابعة</span>الصفحات والتوجيه والحالات</h1><p class="lead">الآن نبني الهيكل الظاهر: صفحات حقيقية بمسارات حقيقية، وكل صفحة بحالاتها الأربع.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>الصفحات الخمس من المرحلة الأولى، بمحتوى مؤقت، مع تخطيط مشترك وتنقل يعمل، وكل صفحة تعرض حالاتها الأربع.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">ابن صفحات الموقع بناء على ARCHITECTURE.md.
+
+المطلوب:
+الصفحة الرئيسية على المسار الجذر
+صفحة تفاصيل مزود بمسار ديناميكي حسب المعرف
+صفحة بحث
+صفحة تواصل
+صفحة غير موجود
+
+لكل صفحة:
+اعرض الحالات الأربع: تحميل، وفارغة، وخطأ، وطبيعية
+استخدم بيانات وهمية ثابتة الآن، وسنبدل مصدر البيانات في المرحلة التالية
+
+مشترك:
+تخطيط واحد فيه رأس بتنقل وتذييل
+عناوين HTML بترتيب صحيح: عنوان رئيسي واحد لكل صفحة
+كل نص بالعربية، والاتجاه من اليمين إلى اليسار
+
+قواعد:
+لا تستخدم مكتبة واجهة خارجية في هذه المرحلة.
+لا تضف ميزة خارج النطاق.
+اعرض خطة الملفات قبل التنفيذ، وانتظر موافقتي.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">app/page</code> و <code class="inline">app/search/page</code> و <code class="inline">app/contact/page</code> و <code class="inline">app/not-found</code></li><li><code class="inline">app/providers/[id]/page</code></li><li><code class="inline">components/Header</code> و <code class="inline">components/Footer</code> و <code class="inline">components/ProviderCard</code></li><li><code class="inline">components/EmptyState</code> و <code class="inline">components/ErrorState</code> و <code class="inline">components/Loading</code></li><li><code class="inline">lib/mock-data</code></li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>افتح كل مسار يدويا وتأكد أنه يعمل.</li><li>افتح مسار مزود غير موجود وتأكد من ظهور صفحة 404 لا خطأ.</li><li>افحص العناوين: هل يوجد عنوان رئيسي واحد فقط في كل صفحة؟</li><li>صغر نافذة المتصفح إلى عرض هاتف وتأكد أن لا شيء يخرج عن الشاشة أفقيا.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>بناء الحالة الطبيعية فقط، ثم اكتشاف أن الموقع يعرض شاشة بيضاء عند الخطأ.</li><li>أكثر من عنوان رئيسي في الصفحة، وهو خطأ في البنية وفي إمكانية الوصول معا.</li><li>نسخ نصوص إنجليزية مؤقتة تبقى في المشروع حتى النشر.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>كل المسارات تعمل، وكل صفحة تعرض حالاتها الأربع، ولا تمرير أفقي على الهاتف.</p></div>
+<h1 class="chapter" id="ch6"><span class="num">المرحلة الخامسة</span>البيانات وطبقة الوصول</h1><p class="lead">أهم قرار معماري في هذا المشروع: الصفحات لا تعرف من أين تأتي البيانات. تتحدث مع طبقة واحدة، فتستطيع تغيير المصدر لاحقا دون لمس الصفحات.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>وحدة <code class="inline">lib/data</code> تعرف واجهة الوصول للبيانات، ومصدر أولي من ملف JSON مكتوب بأنواع صحيحة، وبحث وفلترة وترقيم صفحات يعمل على هذه الطبقة.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">أنشئ طبقة وصول للبيانات.
+
+الواجهة المطلوبة في lib/data:
+دالة ترجع قائمة المزودين مع دعم البحث والفلترة والترقيم
+دالة ترجع مزودا واحدا بمعرفه، وترجع قيمة فارغة إن لم يوجد
+دالة ترجع قائمة التصنيفات المتاحة
+
+المصدر الآن: ملف JSON فيه عشرون مزودا وهميا ببيانات عربية واقعية.
+
+قواعد التصميم:
+الصفحات لا تقرأ الملف مباشرة أبدا، بل تستدعي هذه الدوال فقط.
+الأنواع معرفة في types ومستخدمة في كل مكان، بلا any.
+البحث لا يفرق بين حالة الأحرف، ويتجاهل المسافات الزائدة.
+البحث يعمل على النص العربي بشكل صحيح.
+إذا لم توجد نتائج، ترجع الدالة قائمة فارغة ولا ترفع خطأ.
+
+ثم اربط الصفحات بهذه الطبقة بدل البيانات الوهمية المباشرة.
+اعرض تصميم الواجهة قبل التنفيذ وانتظر موافقتي.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">types/provider</code></li><li><code class="inline">lib/data</code> — الواجهة والتنفيذ</li><li><code class="inline">data/providers.json</code></li><li>تعديل صفحات الرئيسية والبحث والتفاصيل لتستخدم الطبقة</li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>ابحث عن كلمة موجودة وتأكد من النتائج.</li><li>ابحث عن كلمة غير موجودة وتأكد من ظهور الحالة الفارغة لا خطأ.</li><li>افتح مزودا بمعرف غير موجود وتأكد من صفحة 404.</li><li>ابحث بحروف عربية مع مسافة زائدة في البداية والنهاية.</li><li>ابحث في <code class="inline">app/</code> عن أي قراءة مباشرة لملف JSON — يجب ألا توجد.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>قراءة ملف البيانات داخل مكون صفحة، فتفقد فائدة الطبقة كلها.</li><li>استخدام <code class="inline">any</code> في الأنواع، فتفقد فائدة TypeScript كلها.</li><li>بحث يعمل بالإنجليزية ويفشل مع العربية بسبب تطبيع النص.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>تستطيع تغيير مصدر البيانات في ملف واحد دون تعديل أي صفحة.</p></div>
+<h2 id="ch6-s12">لماذا هذه الطبقة تحديدا</h2>
+<div class="codewrap"><div class="caption">lib/data.ts — شكل الواجهة</div><pre class="code">import type { Provider } from "@/types/provider";
+
+export type ListOptions = {
+  query?: string;
+  category?: string;
+  page?: number;
+  perPage?: number;
+};
+
+export type ListResult = {
+  items: Provider[];
+  total: number;
+  page: number;
+  perPage: number;
+};
+
+export async function listProviders(options: ListOptions): Promise&lt;ListResult&gt; {
+  // implementation reads from the current source
+}
+
+export async function getProvider(id: string): Promise&lt;Provider | null&gt; {
+  // implementation reads from the current source
+}</pre></div>
+<div class="callout tip"><div class="t">الترقية إلى قاعدة بيانات لاحقا</div><p>عندما تكبر بياناتك، تستبدل تنفيذ هاتين الدالتين بقاعدة بيانات دون أن تلمس صفحة واحدة. وإن أردت SQLite، انتبه إلى أن وحدة <code class="inline">node:sqlite</code> المدمجة في Node كانت مصنفة مرشح إصدار وقت مراجعة هذا الدليل، فتحقق من حالتها الحالية أو استخدم مشغلا مستقرا.</p></div>
+<h1 class="chapter" id="ch7"><span class="num">المرحلة السادسة</span>النماذج والتحقق</h1><p class="lead">النموذج هو المكان الوحيد في موقعك الذي يكتب فيه شخص من الخارج بيانات. ولهذا هو أول مكان يجب تأمينه.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>نموذج تواصل يعمل، بتحقق على المتصفح وتحقق مستقل على الخادم، ورسائل خطأ عربية واضحة، وحماية أساسية من الإرسال المتكرر.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">ابن نموذج التواصل.
+
+الحقول: الاسم، والبريد، ورقم الهاتف اختياري، والرسالة، ومعرف المزود إن جاء من صفحته.
+
+التحقق:
+تحقق في المتصفح لتحسين التجربة فقط
+تحقق كامل ومستقل على الخادم، ولا تثق بأي تحقق جاء من المتصفح
+قواعد: الاسم بين حرفين ومئة حرف، البريد بصيغة صحيحة، الرسالة بين عشرة أحرف وألفين
+
+السلوك:
+عند النجاح: رسالة نجاح واضحة وتفريغ النموذج
+عند الفشل: رسالة خطأ بجانب الحقل المسؤول، بالعربية
+أثناء الإرسال: تعطيل زر الإرسال ومنع الإرسال المزدوج
+
+الحفظ: اكتب الطلب في ملف أو تخزين بسيط عبر طبقة البيانات، لا مباشرة من المكون.
+
+قواعد أمنية:
+لا تعرض تفاصيل داخلية في رسالة الخطأ للمستخدم
+عقم المدخلات قبل عرضها في أي مكان
+لا تضع أي سر في كود المتصفح
+
+اعرض الخطة قبل التنفيذ.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li><code class="inline">app/contact/page</code> و مكون النموذج</li><li>معالج إرسال على الخادم</li><li><code class="inline">lib/validation</code> — قواعد التحقق مشتركة بين الطرفين</li><li>تعديل <code class="inline">lib/data</code> لإضافة حفظ الطلب</li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>أرسل النموذج فارغا وتأكد من ظهور رسائل خطأ عربية بجانب كل حقل.</li><li>أرسل بريدا غير صحيح وتأكد من الرفض.</li><li>أرسل نموذجا صحيحا وتأكد من حفظ الطلب فعلا.</li><li>عطل JavaScript في المتصفح وجرب الإرسال: هل ما زال التحقق يعمل على الخادم؟</li><li>اضغط زر الإرسال مرتين بسرعة وتأكد من عدم حفظ طلبين.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>الاكتفاء بتحقق المتصفح — يمكن تجاوزه بالكامل في ثوان.</li><li>رسالة خطأ عامة لا تقول للمستخدم أي حقل المشكلة.</li><li>عرض نص المستخدم كما هو في صفحة أخرى دون تعقيم.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>النموذج يعمل، والتحقق على الخادم يرفض المدخلات السيئة حتى مع تعطيل JavaScript.</p></div>
+<h1 class="chapter" id="ch8"><span class="num">المرحلة السابعة</span>التصميم المتجاوب وإمكانية الوصول</h1><p class="lead">أغلب زوار موقع عربي سيأتون من الهاتف. والتصميم المتجاوب ليس تصغير الشاشة، بل إعادة ترتيب المحتوى بحسب المساحة.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>تخطيط يعمل من عرض 320 بكسل إلى الشاشات الكبيرة، وتباين ألوان كاف، وتنقل بلوحة المفاتيح، وعناصر نموذج موصوفة بشكل صحيح.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">حسن التصميم المتجاوب وإمكانية الوصول.
+
+التجاوب:
+ابدأ من الهاتف ثم وسع، لا العكس
+اختبر عند 320 و 375 و 768 و 1280 بكسل
+لا تمرير أفقي عند أي عرض
+مساحة اللمس لأي زر أو رابط لا تقل عن 44 بكسل
+استخدم الخصائص المنطقية في CSS حتى يعمل التخطيط في الاتجاهين
+
+إمكانية الوصول:
+تباين النص مع الخلفية بنسبة 4.5 إلى 1 على الأقل للنص العادي
+كل صورة لها نص بديل يصف محتواها، والزخرفية نصها البديل فارغ
+كل حقل نموذج مرتبط بعنوان label صريح
+مؤشر تركيز ظاهر عند التنقل بلوحة المفاتيح
+ترتيب العناوين منطقي بلا قفزات
+حالة الخطأ في النموذج معلنة لقارئ الشاشة
+
+قواعد:
+لا تستخدم اللون وحده لنقل معلومة
+لا تلغ مؤشر التركيز الافتراضي دون بديل أوضح منه
+
+اعرض قائمة بما ستغيره قبل أن تنفذ.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li>ملفات الأنماط</li><li>مكونات التنقل والبطاقات والنموذج</li><li><code class="inline">app/layout</code> إن احتاج ضبطا إضافيا</li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>افتح الموقع على هاتف حقيقي لا على محاكي فقط.</li><li>تنقل في الموقع بمفتاح Tab وحده: هل تصل إلى كل عنصر وترى أين أنت؟</li><li>كبر حجم خط المتصفح إلى 200% وتأكد أن التخطيط لا ينكسر.</li><li>شغل فحص إمكانية الوصول في أدوات المطور وأصلح ما يظهر.</li><li>اطلب من شخص لم ير الموقع أن ينجز مهمة البحث والتواصل، وراقب أين يتعثر.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>استخدام <code class="inline">margin-left</code> بدل <code class="inline">margin-inline-start</code>، فينكسر التخطيط في RTL.</li><li>إلغاء مؤشر التركيز لأنه «غير جميل»، فيصبح الموقع غير قابل للاستخدام بلوحة المفاتيح.</li><li>نص رمادي فاتح على أبيض: يبدو أنيقا وغير مقروء.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>لا تمرير أفقي عند 320 بكسل، والتنقل بلوحة المفاتيح يعمل، والتباين مقبول.</p></div>
+<h1 class="chapter" id="ch9"><span class="num">المرحلة الثامنة</span>الأداء وأساسيات SEO</h1><p class="lead">الموقع البطيء يترك قبل أن يقرأ. والموقع الذي لا يوصف بشكل صحيح لا يوجد.</p>
+<h3>ما الذي نبنيه في هذه المرحلة</h3>
+<p>صفحات أسرع وأخف، وبيانات وصفية صحيحة لكل صفحة، وخريطة موقع، وصور محسنة.</p>
+<h3>ما ترسله إلى Claude Code</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا كما هو بعد تعبئة المتغيرات</div><div class="txt">حسن الأداء وأساسيات SEO.
+
+الأداء:
+حسن كل الصور: أبعاد محددة، وصيغة حديثة، وتحميل كسول لما هو خارج الشاشة
+راجع ما يرسل من JavaScript إلى المتصفح، وقلل ما يمكن تقليله
+تأكد أن الخطوط لا تسبب وميض نص غير منسق
+تجنب انزياح التخطيط: احجز مساحة لكل صورة وعنصر يحمل لاحقا
+
+SEO الأساسي:
+عنوان ووصف فريدان لكل صفحة، بالعربية
+بيانات وصفية للمشاركة على الشبكات الاجتماعية
+عنوان رابط قانوني لكل صفحة
+خريطة موقع sitemap وملف robots
+لغة الصفحة معلنة بشكل صحيح
+بيانات منظمة للمزود على صفحة التفاصيل
+
+قواعد:
+لا تحشو كلمات مفتاحية
+لا تعد بشيء في العنوان لا تقدمه الصفحة
+اعرض قائمة بما ستغيره قبل التنفيذ.</div></div>
+<h3>الملفات المتوقع إنشاؤها أو تعديلها</h3>
+<ul class="b"><li>بيانات وصفية في كل صفحة</li><li><code class="inline">app/sitemap</code> و <code class="inline">app/robots</code></li><li>مكون الصورة في البطاقات وصفحة التفاصيل</li></ul>
+<h3>كيف تختبر بنفسك</h3>
+<ol class="n"><li>شغل فحص الأداء في أدوات المطور على وضع الهاتف مع شبكة بطيئة.</li><li>افتح كل صفحة وتحقق أن العنوان والوصف مختلفان ومناسبان.</li><li>شارك رابط صفحة تفاصيل في تطبيق محادثة وانظر شكل المعاينة.</li><li>افتح خريطة الموقع وتأكد أنها تحتوي المسارات الفعلية.</li><li>راقب انزياح التخطيط أثناء تحميل الصفحة.</li></ol>
+<h3>أخطاء محتملة</h3>
+<ul class="b"><li>صور بأحجام أصلية ضخمة تصغر بالعرض فقط.</li><li>عنوان ووصف واحد مكرر على كل الصفحات.</li><li>خريطة موقع تحتوي مسارات غير موجودة.</li></ul>
+<div class="callout tip"><div class="t">معيار الانتقال</div><p>الصفحة الرئيسية تحمل بسرعة مقبولة على شبكة بطيئة، وكل صفحة لها عنوان ووصف فريدان.</p></div>
+<h1 class="chapter" id="ch10"><span class="num">المرحلة التاسعة</span>الاختبارات والأمان</h1><p class="lead">قبل أن ينشر الموقع لأي أحد، هاتان المرحلتان تحددان إن كان جاهزا فعلا.</p>
+<h2 id="ch10-s1">الاختبارات</h2>
+<div class="promptbox standalone"><div class="lbl">برومبت الاختبارات</div><div class="txt">أضف اختبارات لهذا المشروع.
+
+الأولوية بهذا الترتيب:
+أولا. طبقة البيانات: البحث، والفلترة، والترقيم، والمزود غير الموجود، والنتائج الفارغة
+ثانيا. قواعد التحقق: كل قاعدة، وكل حالة حدية، وكل حالة يجب أن ترفض
+ثالثا. تحويل البيانات وأي منطق حسابي
+
+لكل اختبار:
+اسم يصف السلوك المتوقع لا اسم الدالة
+اختبار واحد لسلوك واحد
+لا اعتماد على ترتيب التنفيذ ولا على ملفات حقيقية
+
+ثم:
+اذكر ما لم تختبره ولماذا
+اذكر أي جزء صعب اختباره، وما التغيير في التصميم الذي يسهله
+أضف أمر تشغيل الاختبارات إلى CLAUDE.md
+
+استخدم أداة اختبار مستقرة ومتوافقة مع إعداد المشروع.</div></div>
+<h2 id="ch10-s3">الأمان</h2>
+<ul class="b"><li><strong>الأسرار</strong>: لا مفتاح في الكود. <code class="inline">.env</code> مستبعد من Git. المتغيرات التي تصل للمتصفح لا تحتوي أسرارا.</li><li><strong>المدخلات</strong>: كل مدخل يتحقق منه على الخادم، ويعقم قبل العرض.</li><li><strong>رسائل الخطأ</strong>: مفهومة للمستخدم، وتفاصيلها في السجل لا على الشاشة.</li><li><strong>الاعتماديات</strong>: راجع تحذيرات الأمان في مدير الحزم وحدث ما يلزم.</li><li><strong>الحد من الإساءة</strong>: حد لعدد الطلبات من المصدر نفسه على نقطة إرسال النموذج.</li></ul>
+<div class="promptbox standalone"><div class="lbl">برومبت المراجعة الأمنية</div><div class="txt">راجع هذا المشروع أمنيا قبل النشر.
+
+افحص:
+أي سر أو مفتاح مكتوب في الكود أو في متغير يصل إلى المتصفح
+كل مدخل من المستخدم: هل يتحقق منه على الخادم
+كل مكان يعرض فيه نص من المستخدم: هل يعقم
+رسائل الخطأ الظاهرة: هل تكشف تفاصيل داخلية
+الاعتماديات: هل فيها تحذيرات أمنية معروفة
+نقطة إرسال النموذج: هل يمكن إساءة استخدامها بالإرسال المتكرر
+
+لكل ملاحظة: الخطورة، والموضع، وسيناريو الاستغلال، والإصلاح المقترح.
+رتب من الأخطر.
+إذا كان الكود غير كاف للحكم على نقطة، قل ذلك بدل التخمين.</div></div>
+<div class="callout warn"><div class="t">قاعدة قبل النشر</div><p>شغل <code class="inline">git log -p</code> وابحث عن أي مفتاح أو كلمة مرور مرت في تاريخ المستودع. إذا وجدت واحدا، أبطله وأنشئ غيره — حذفه في commit جديد لا يحذفه من التاريخ.</p></div>
+<h1 class="chapter" id="ch11"><span class="num">المرحلة العاشرة</span>البناء والنشر والصيانة</h1><p class="lead">الموقع الذي يعمل على جهازك ليس موقعا. الموقع هو ما يفتحه شخص آخر من هاتفه.</p>
+<h2 id="ch11-s1">قبل النشر</h2>
+<ol class="n"><li>بناء نظيف من مستودع نظيف، لا من جهازك بحالته الحالية.</li><li>كل الاختبارات تمر، والفحص بلا أخطاء.</li><li>متغيرات البيئة موثقة في <code class="inline">.env.example</code> ومضبوطة في بيئة النشر.</li><li>صفحة 404 وصفحة الخطأ تعملان.</li><li>خطة تراجع: كيف ترجع للإصدار السابق خلال دقائق.</li></ol>
+<div class="codewrap"><div class="caption">أوامر التحقق قبل النشر</div><pre class="code">npm run lint
+npm test
+npm run build
+npm start</pre></div>
+<h2 id="ch11-s4">برومبت تجهيز النشر</h2>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا قبل النشر</div><div class="txt">جهز هذا المشروع للنشر.
+
+المطلوب:
+أولا. تحقق أن البناء ينجح من نسخة نظيفة
+ثانيا. اذكر كل متغير بيئة يحتاجه المشروع، وأين يضبط في بيئة النشر
+ثالثا. راجع ما يصل إلى المتصفح: هل هناك متغير حساس مكشوف
+رابعا. اكتب README فيه: ما هو المشروع، وكيف يشغل محليا، وكيف يبنى، وكيف ينشر
+خامسا. قائمة تحقق قبل كل نشر مستقبلي
+
+لا تنفذ النشر. جهز فقط، وأنا أنشر.</div></div>
+<h2 id="ch11-s6">خيارات النشر</h2>
+<table class="data"><thead><tr><th>الخيار</th><th>متى يناسبك</th></tr></thead><tbody><tr><td>منصة استضافة متكاملة</td><td>أسرع طريق: ربط بالمستودع ونشر تلقائي عند كل دفع</td></tr><tr><td>خادم افتراضي تديره</td><td>عندما تحتاج تحكما كاملا أو قيودا خاصة بالاستضافة</td></tr><tr><td>حاوية</td><td>عندما تريد بيئة متطابقة بين التطوير والإنتاج</td></tr></tbody></table>
+<div class="callout note"><div class="t">للمشروع الأول</div><p>اختر منصة استضافة متكاملة مرتبطة بمستودعك. إدارة خادم بنفسك مهارة مستقلة تستحق التعلم لاحقا، لكنها ستستهلك وقتك الآن في مسائل لا علاقة لها بموقعك.</p></div>
+<h2 id="ch11-s9">بعد الإطلاق</h2>
+<ul class="b"><li>راقب الأخطاء الحقيقية من المستخدمين، لا من جهازك.</li><li>راجع طلبات التواصل الواردة: هي أول مصدر لملاحظات حقيقية.</li><li>حدث الاعتماديات دوريا، وشغل الاختبارات بعد كل تحديث.</li><li>احتفظ بنسخة احتياطية من البيانات، واختبر الاستعادة مرة على الأقل.</li><li>لا تضف ميزة لأنك تستطيع. أضفها لأن مستخدما احتاجها.</li></ul>
+<h1 class="chapter" id="ch12"><span class="num">المرجع</span>ورقة المراجعة السريعة</h1><h2 id="ch12-s0">المراحل العشر ومعايير الانتقال</h2>
+<table class="data"><thead><tr><th>المرحلة</th><th>معيار الانتقال</th></tr></thead><tbody><tr><td>صفر — النطاق</td><td>REQUIREMENTS.md فيه قائمة خارج النطاق أطول من قائمة داخله</td></tr><tr><td>واحد — البنية</td><td>ARCHITECTURE.md يحدد الحالات الأربع لكل صفحة</td></tr><tr><td>اثنان — الـ Stack</td><td>قرار مكتوب بسببه، وإصدارات مستقرة متحقق منها</td></tr><tr><td>ثلاثة — البيئة</td><td>الموقع يفتح، RTL يعمل، المستودع نظيف</td></tr><tr><td>أربعة — الصفحات</td><td>كل المسارات تعمل بحالاتها الأربع</td></tr><tr><td>خمسة — البيانات</td><td>تغيير المصدر يتم في ملف واحد</td></tr><tr><td>ستة — النماذج</td><td>التحقق يعمل على الخادم مع تعطيل JavaScript</td></tr><tr><td>سبعة — التجاوب والوصول</td><td>لا تمرير أفقي عند 320 بكسل، والتنقل بلوحة المفاتيح يعمل</td></tr><tr><td>ثمانية — الأداء و SEO</td><td>عنوان ووصف فريدان لكل صفحة، وتحميل مقبول على شبكة بطيئة</td></tr><tr><td>تسعة — الاختبارات والأمان</td><td>الاختبارات تمر ولا ثغرة حرجة مفتوحة</td></tr><tr><td>عشرة — النشر</td><td>شخص آخر يفتح الموقع من هاتفه وينجز المهمة</td></tr></tbody></table>
+<h2 id="ch12-s2">دورة العمل في كل مرحلة</h2>
+<div class="codewrap"><pre class="code">git checkout -b phase/NN-name
+claude --permission-mode plan
+# review the plan, approve, then implement
+/diff
+npm run lint &amp;&amp; npm test
+git add -A &amp;&amp; git commit
+git switch main &amp;&amp; git merge phase/NN-name</pre></div>
+<h2 id="ch12-s4">أخطاء شائعة في أول موقع</h2>
+<ul class="b"><li>البدء بالكود قبل تحديد النطاق.</li><li>بناء الحالة الطبيعية فقط بلا حالات تحميل وخطأ وفراغ.</li><li>قراءة البيانات مباشرة من الصفحات بلا طبقة وسيطة.</li><li>الاعتماد على تحقق المتصفح وحده.</li><li>استخدام <code class="inline">margin-left</code> بدل الخصائص المنطقية في موقع RTL.</li><li>نشر بلا خطة تراجع.</li><li>إضافة ميزات بعد الإطلاق بلا طلب من مستخدم حقيقي.</li></ul>
+<h2 id="ch12-s6">ما تضعه في CLAUDE.md لهذا المشروع</h2>
+<div class="promptbox standalone filebox"><div class="lbl">CLAUDE.md</div><div class="txt"># دليل الخدمات
+
+## أوامر
+تشغيل: npm run dev
+بناء: npm run build
+اختبارات: npm test
+فحص: npm run lint
+
+## قرارات
+الموقع عربي واتجاهه من اليمين إلى اليسار على مستوى المستند.
+استخدم الخصائص المنطقية في CSS لا left و right.
+الصفحات لا تقرأ مصدر البيانات مباشرة، بل تستدعي lib/data فقط.
+كل تحقق من المدخلات يتكرر على الخادم مهما كان تحقق المتصفح.
+لا any في الأنواع.
+
+## أعراف
+أسماء المكونات بصيغة PascalCase، وأسماء الملفات المساعدة بصيغة kebab-case.
+كل نص ظاهر للمستخدم بالعربية.</div></div>
+<section class="endpage">
+  <h1 class="chapter"><span class="num">THE END</span>الخلاصة والخطوة التالية</h1>
+  <p class="lead">بنيت موقعا حقيقيا: بمتطلبات مكتوبة، وبنية مقررة، وطبقة بيانات نظيفة، ونموذج آمن، وتصميم يعمل على الهاتف، ونشر بخطة تراجع. الأهم أنك تعرف لماذا كل قرار اتخذ.</p>
+<h2>ماذا تبني بعده</h2>
+<ol class="n"><li>أضف لوحة إدارة بسيطة لإضافة المزودين بدل تعديل ملف البيانات يدويا.</li><li>انقل البيانات إلى قاعدة بيانات حقيقية — طبقة <code class="inline">lib/data</code> تجعل ذلك تغييرا في ملف واحد.</li><li>أضف مصادقة إن احتاج مشروعك حسابات، وابدأ بحل جاهز موثوق لا بحل من عندك.</li><li>أعد بناء المشروع نفسه بإطار آخر لتفهم ما الذي كان من الإطار وما كان منك.</li></ol>
+<h2>بقية السلسلة</h2>
+<ul class="b"><li>Claude Code من الصفر إلى الاحتراف — لإتقان الأداة نفسها.</li><li>تعلم البرمجة مع Claude Code — إن شعرت أن الأساسيات ناقصة.</li><li>ابن تطبيقك الأول مع Claude Code — الانتقال من الويب إلى الهاتف.</li></ul>
+<div class="callout note"><div class="t">تنبيه عن الإصدارات</div><p>إصدارات Node.js و Next.js و React المذكورة تم التحقق منها من مصادرها الرسمية بتاريخ 6 سبتمبر 2026. أطر الويب تتغير بسرعة: تحقق من أحدث إصدار مستقر قبل أن تبدأ، ولا تبن على إصدار موسوم beta أو rc أو canary.</p></div>
+  <div class="endcard">
+    <div class="h">برومبتات عربية</div>
+    <p>هذا المنتج من إنتاج قناة برومبتات عربية.<br>لمتابعة الأدلة والبرومبتات الجديدة:</p>
+    <p><a href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+</section></body></html>
