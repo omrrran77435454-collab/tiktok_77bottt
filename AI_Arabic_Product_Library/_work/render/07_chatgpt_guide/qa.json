@@ -1,0 +1,110 @@
+{
+ "product": "ChatGPT من الصفر إلى الاحتراف",
+ "id": "07_chatgpt_guide",
+ "pdf": {
+  "pdf": "ChatGPT_Guide_Arabic_Final.pdf",
+  "pages": 41,
+  "issues": [],
+  "checks": {
+   "fonts": [
+    "CRZFJS+PlexAr-Semi-Bold",
+    "FNPUCG+PlexAr-Medium",
+    "HIRYNU+PlexAr-Bold",
+    "NETSUB+PlexMono",
+    "TFCPFR+PlexAr",
+    "UWGIWA+DejaVu-Sans-Bold",
+    "WDHEQY+PlexMono-Bold"
+   ],
+   "fonts_not_embedded": [],
+   "empty_pages": [],
+   "overflow_blocks": [],
+   "presentation_form_pages": [],
+   "pages_without_text": [],
+   "internal_links": 471,
+   "external_links": 2,
+   "telegram_link_annotations": [
+    [
+     2,
+     "https://t.me/PromptsArabic"
+    ],
+    [
+     41,
+     "https://t.me/PromptsArabic"
+    ]
+   ],
+   "broken_internal_links": [],
+   "owner_mentions": 5,
+   "tg_text_mentions": 43,
+   "search_hits": {
+    "برومبتات عربية": 57,
+    "t.me/PromptsArabic": 43
+   },
+   "canonical_arabic_words": 1373,
+   "extract_missing_words_count": 0,
+   "extract_missing_words": [],
+   "search_sample_size": 125,
+   "search_unfindable": [],
+   "variables_with_digits": [],
+   "variables": [
+    "[البنية المطلوبة]",
+    "[التعديل المطلوب]",
+    "[التكرار]",
+    "[الجزء المطلوب تعديله]",
+    "[الجمهور]",
+    "[الحالات التي تحتاج قراري]",
+    "[الحالة]",
+    "[الشكل]",
+    "[الطول]",
+    "[العدد]",
+    "[القرار]",
+    "[المخرج]",
+    "[المستوى]",
+    "[المشروع]",
+    "[المعايير بترتيب الأهمية]",
+    "[المعلومات]",
+    "[الملفات أو النصوص]",
+    "[المهمة]",
+    "[الموضوع]",
+    "[الهدف]",
+    "[الوقت]",
+    "[دورك]",
+    "[ما الذي يجب أن يخرج به القارئ]",
+    "[ما يجب ألا يفعله]",
+    "[ما يجب تجنبه]",
+    "[متى نعتبره جيدا]",
+    "[نوع النص]"
+   ],
+   "variables_broken": [],
+   "pages_rendered": 41
+  }
+ },
+ "docx": {
+  "docx": "ChatGPT_Guide_Arabic_Final.docx",
+  "issues": [],
+  "checks": {
+   "paragraphs": 480,
+   "tables": 13,
+   "styles_used": [
+    "APL Body",
+    "APL Bullet",
+    "APL Callout",
+    "APL Caption",
+    "APL H1",
+    "APL H2",
+    "APL H3",
+    "APL Lead",
+    "APL Prompt",
+    "APL PromptLbl",
+    "APL Subtitle",
+    "APL Title",
+    "Normal"
+   ],
+   "paragraphs_with_bidi": 436,
+   "sections_rtl": true,
+   "owner_mentions": 5,
+   "tg_mentions": 3,
+   "rendered_pages": 37
+  }
+ },
+ "prompt_numbers": []
+}

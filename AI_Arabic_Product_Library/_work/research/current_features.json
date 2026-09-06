@@ -5,7 +5,6 @@
     "network_limitations": "Direct outbound HTTPS from the build container is restricted to package registries (npm, PyPI, crates.io, proxy.golang.org). All official-source verification was performed through the assistant's web research tools. www.anthropic.com and support.claude.com could not be fetched directly but were reachable through search indexing of their own pages.",
     "rule": "No current-feature claim appears in any product unless it has a record in this file."
   },
-
   "claude_models": [
     {
       "platform": "Anthropic",
@@ -15,7 +14,12 @@
       "model_if_relevant": "claude-fable-5-1",
       "availability": "Claude API, Amazon Bedrock, Google Cloud, Microsoft Foundry, Claude Platform on AWS",
       "plans": "API and platform availability; consumer plan availability varies",
-      "platforms": ["API", "Bedrock", "Google Cloud", "Microsoft Foundry"],
+      "platforms": [
+        "API",
+        "Bedrock",
+        "Google Cloud",
+        "Microsoft Foundry"
+      ],
       "details": "For demanding reasoning and long-horizon agentic work. 1M token context, 128K max output. Adaptive thinking always on. Default effort: high. Reliable knowledge cutoff Jun 2026. Retirement not sooner than September 1, 2027. Pricing $10/MTok in, $50/MTok out.",
       "official_source": "https://platform.claude.com/docs/en/about-claude/models/overview",
       "verified_at": "2026-09-06"
@@ -28,7 +32,12 @@
       "model_if_relevant": "claude-opus-5",
       "availability": "Claude API, Amazon Bedrock, Google Cloud, Microsoft Foundry",
       "plans": "API and platform availability; consumer plan availability varies",
-      "platforms": ["API", "Bedrock", "Google Cloud", "Microsoft Foundry"],
+      "platforms": [
+        "API",
+        "Bedrock",
+        "Google Cloud",
+        "Microsoft Foundry"
+      ],
       "details": "For complex agentic coding and enterprise work. Docs say: 'start with Claude Opus 5 for most workloads.' 1M token context, 128K max output. Adaptive thinking. Default effort: high. Reliable knowledge cutoff May 2026. Retirement not sooner than July 24, 2027. Pricing $5/MTok in, $25/MTok out.",
       "official_source": "https://platform.claude.com/docs/en/about-claude/models/overview",
       "verified_at": "2026-09-06"
@@ -41,7 +50,12 @@
       "model_if_relevant": "claude-sonnet-5",
       "availability": "Claude API, Amazon Bedrock, Google Cloud, Microsoft Foundry, Claude Platform on AWS",
       "plans": "API and platform availability; consumer plan availability varies",
-      "platforms": ["API", "Bedrock", "Google Cloud", "Microsoft Foundry"],
+      "platforms": [
+        "API",
+        "Bedrock",
+        "Google Cloud",
+        "Microsoft Foundry"
+      ],
       "details": "The best combination of speed and intelligence. 1M token context, 128K max output. Adaptive thinking. Reliable knowledge cutoff Jan 2026. Retirement not sooner than June 30, 2027. Pricing $2/MTok in, $10/MTok out.",
       "official_source": "https://platform.claude.com/docs/en/about-claude/models/overview",
       "verified_at": "2026-09-06"
@@ -54,7 +68,12 @@
       "model_if_relevant": "claude-haiku-4-5-20251001",
       "availability": "Claude API, Amazon Bedrock, Google Cloud, Microsoft Foundry, Claude Platform on AWS",
       "plans": "API and platform availability; consumer plan availability varies",
-      "platforms": ["API", "Bedrock", "Google Cloud", "Microsoft Foundry"],
+      "platforms": [
+        "API",
+        "Bedrock",
+        "Google Cloud",
+        "Microsoft Foundry"
+      ],
       "details": "The fastest model with near-frontier intelligence. 200K token context, 64K max output. Extended thinking (manual mode). Effort parameter not supported. Retirement not sooner than October 15, 2026. Pricing $1/MTok in, $5/MTok out.",
       "official_source": "https://platform.claude.com/docs/en/about-claude/models/overview",
       "verified_at": "2026-09-06"
@@ -67,7 +86,9 @@
       "model_if_relevant": "Claude Fable 5, Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Opus 4.5, Claude Sonnet 4.6, Claude Sonnet 4.5",
       "availability": "Claude API",
       "plans": "API",
-      "platforms": ["API"],
+      "platforms": [
+        "API"
+      ],
       "details": "Listed by the docs under 'Legacy models (still available)'.",
       "official_source": "https://platform.claude.com/docs/en/about-claude/models/overview",
       "verified_at": "2026-09-06"
@@ -80,7 +101,9 @@
       "model_if_relevant": "n/a",
       "availability": "n/a",
       "plans": "API",
-      "platforms": ["API"],
+      "platforms": [
+        "API"
+      ],
       "details": "Replaced by adaptive thinking steered by the effort parameter.",
       "official_source": "https://platform.claude.com/docs/en/about-claude/models/overview",
       "verified_at": "2026-09-06"
@@ -93,13 +116,14 @@
       "model_if_relevant": "Fable 5.1, Opus 5, Sonnet 5",
       "availability": "Claude API",
       "plans": "API",
-      "platforms": ["API"],
+      "platforms": [
+        "API"
+      ],
       "details": "1M tokens is roughly 555k words or 2.5M Unicode characters on the current tokenizer (introduced with Claude Opus 4.7).",
       "official_source": "https://platform.claude.com/docs/en/about-claude/models/overview",
       "verified_at": "2026-09-06"
     }
   ],
-
   "claude_app": [
     {
       "platform": "Anthropic",
@@ -108,7 +132,11 @@
       "feature_status": "Stable",
       "availability": "claude.ai and Claude apps",
       "plans": "Paid plans (per help center); project archiving supported",
-      "platforms": ["Web", "Desktop", "Mobile"],
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
       "details": "Projects organize chats and files under a shared objective. Each project has its own memory, kept separate from non-project chats. Projects can be archived to declutter the list.",
       "official_source": "https://support.claude.com/en/articles/9517075-what-are-projects",
       "verified_at": "2026-09-06"
@@ -120,7 +148,11 @@
       "feature_status": "Stable, updated system since August 19, 2026",
       "availability": "claude.ai",
       "plans": "Free, Pro, Max; org sharing on team plans",
-      "platforms": ["Web", "Desktop", "Mobile"],
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
       "details": "Artifacts created on or after August 19, 2026 are saved to your account, can be shared with specific people or everyone in your organization, and open on the web. Before an artifact uses connected apps, Claude shows which connectors and tools it will use and asks permission; individual tools can be turned off per artifact.",
       "official_source": "https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them",
       "verified_at": "2026-09-06"
@@ -132,7 +164,11 @@
       "feature_status": "Stable, on by default",
       "availability": "Web, Claude Desktop, Claude Mobile",
       "plans": "Free, Pro, Max",
-      "platforms": ["Web", "Desktop", "Mobile"],
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
       "details": "Memory is on by default for Free, Pro, and Max plans on the web, Claude Desktop, and Claude Mobile. Memory works across chat and Cowork in the cloud. Everything Claude remembers is listed under Topics in Settings > Memory, where items can be edited or deleted.",
       "official_source": "https://support.claude.com/en/collections/18031719-features-and-capabilities",
       "verified_at": "2026-09-06"
@@ -144,7 +180,9 @@
       "feature_status": "Stable",
       "availability": "Claude Desktop",
       "plans": "Consumer and enterprise; Enterprise plans can enable skill and plugin security scanning",
-      "platforms": ["Desktop"],
+      "platforms": [
+        "Desktop"
+      ],
       "details": "A Customize section in Claude Desktop groups skills, plugins, and connectors in one place. Enterprise plans can turn on skill and plugin security scanning to automatically check third-party skills and plugins for malicious content on upload or edit.",
       "official_source": "https://support.claude.com/en/collections/18031719-features-and-capabilities",
       "verified_at": "2026-09-06"
@@ -156,7 +194,10 @@
       "feature_status": "Shipped (has its own help-center articles for artifacts and projects)",
       "availability": "Claude apps",
       "plans": "Not fully verified in this research pass",
-      "platforms": ["Web", "Desktop"],
+      "platforms": [
+        "Web",
+        "Desktop"
+      ],
       "details": "Cowork has dedicated help articles: 'Use artifacts in Claude Cowork' and 'Organize your tasks with projects in Claude Cowork'. Memory works across chat and Cowork in the cloud. Deeper plan/platform detail was NOT verified, so products must not make plan-specific claims about Cowork.",
       "official_source": "https://support.claude.com/en/articles/14729249-use-artifacts-in-claude-cowork",
       "verified_at": "2026-09-06"
@@ -168,13 +209,14 @@
       "feature_status": "Shipped (announced product)",
       "availability": "Announced by Anthropic as an AI workbench for scientists",
       "plans": "Not verified",
-      "platforms": ["Web"],
+      "platforms": [
+        "Web"
+      ],
       "details": "Mentioned only; not covered in depth in the products because plan/platform detail was not verified.",
       "official_source": "https://www.anthropic.com/news/claude-science-ai-workbench",
       "verified_at": "2026-09-06"
     }
   ],
-
   "claude_prompting": [
     {
       "platform": "Anthropic",
@@ -183,13 +225,14 @@
       "feature_status": "Current official reference",
       "availability": "Docs",
       "plans": "n/a",
-      "platforms": ["Docs"],
+      "platforms": [
+        "Docs"
+      ],
       "details": "Named techniques on the page: Be clear and direct (golden rule: a colleague with minimal context should be able to follow the prompt; give sequential numbered steps when order matters); Add context to improve performance (explain WHY, the model generalizes from the explanation); Use examples effectively (few-shot/multishot; make them relevant, diverse, structured; wrap in <example>/<examples> tags; 3-5 examples for best results); Structure prompts with XML tags (<instructions>, <context>, <input>; consistent descriptive names; nest when hierarchical); Give Claude a role (system prompt); Long context prompting; Model self-knowledge; Communication style and verbosity; Control the format of responses; LaTeX output; Document creation; Migrating away from prefilled responses; Tool usage; Optimize parallel tool calling; Overthinking and excessive thoroughness; Leverage thinking and interleaved thinking; Long-horizon reasoning and state tracking; Balancing autonomy and safety; Research and information gathering; Subagent orchestration; Chain complex prompts; Reduce file creation in agentic coding; Overeagerness; Avoid focusing on passing tests and hardcoding; Minimizing hallucinations in agentic coding; Improved vision capabilities; Frontend design.",
       "official_source": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
       "verified_at": "2026-09-06"
     }
   ],
-
   "claude_code": [
     {
       "platform": "Anthropic",
@@ -198,7 +241,14 @@
       "feature_status": "Stable",
       "availability": "Terminal CLI, VS Code, JetBrains, Desktop app, Web, Mobile, Slack, Chrome",
       "plans": "Most surfaces require a Claude subscription or an Anthropic Console account; Terminal CLI, VS Code and JetBrains also support third-party providers. Desktop app requires a paid subscription.",
-      "platforms": ["Terminal", "VS Code", "JetBrains", "Desktop", "Web", "Mobile"],
+      "platforms": [
+        "Terminal",
+        "VS Code",
+        "JetBrains",
+        "Desktop",
+        "Web",
+        "Mobile"
+      ],
       "details": "Official wording: 'Claude Code is an agentic coding tool that reads your codebase, edits files, runs commands, and integrates with your development tools. Available in your terminal, IDE, desktop app, and browser.' Each surface connects to the same underlying engine, so CLAUDE.md files, settings and MCP servers work across all of them.",
       "official_source": "https://code.claude.com/docs/en/overview",
       "verified_at": "2026-09-06"
@@ -210,7 +260,12 @@
       "feature_status": "Stable",
       "availability": "macOS, Linux, WSL, Windows",
       "plans": "n/a",
-      "platforms": ["macOS", "Linux", "WSL", "Windows"],
+      "platforms": [
+        "macOS",
+        "Linux",
+        "WSL",
+        "Windows"
+      ],
       "details": "Native install (recommended): macOS/Linux/WSL `curl -fsSL https://claude.ai/install.sh | bash`; Windows PowerShell `irm https://claude.ai/install.ps1 | iex`; Windows CMD `curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd`. Homebrew: `brew install --cask claude-code` (stable channel, ~1 week behind) or `claude-code@latest`. WinGet: `winget install Anthropic.ClaudeCode`. Also apt, dnf, apk on Debian/Fedora/RHEL/Alpine. npm package installs the same native binary; upgrade with `npm install -g @anthropic-ai/claude-code@latest` and avoid `npm update -g`. Do NOT use `sudo npm install -g`. Native installs auto-update in the background; Homebrew and WinGet do not. Git for Windows is recommended on native Windows so Claude Code can use the Bash tool; otherwise PowerShell is used as the shell tool.",
       "official_source": "https://code.claude.com/docs/en/overview",
       "verified_at": "2026-09-06"
@@ -222,7 +277,9 @@
       "feature_status": "Still official",
       "availability": "CLI",
       "plans": "n/a",
-      "platforms": ["Terminal"],
+      "platforms": [
+        "Terminal"
+      ],
       "details": "Referenced in current setup docs: on macOS and Linux the native installer manages the launcher at ~/.local/bin/claude as a symlink into ~/.local/share/claude/versions/, and 'claude doctor reports a launcher that the native installer didn't create.'",
       "official_source": "https://code.claude.com/docs/en/setup",
       "verified_at": "2026-09-06"
@@ -234,7 +291,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "CLAUDE.md is a markdown file in the project root that Claude Code reads at the start of every session; used for coding standards, architecture decisions, preferred libraries and review checklists. Claude also builds 'auto memory' as it works, saving learnings across sessions without the user writing anything.",
       "official_source": "https://code.claude.com/docs/en/memory",
       "verified_at": "2026-09-06"
@@ -246,7 +305,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Skills package repeatable workflows a team can share, invoked like /review-pr or /deploy-staging.",
       "official_source": "https://code.claude.com/docs/en/skills",
       "verified_at": "2026-09-06"
@@ -258,7 +319,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Hooks run shell commands before or after Claude Code actions, e.g. auto-formatting after every file edit or running lint before a commit.",
       "official_source": "https://code.claude.com/docs/en/hooks-guide",
       "verified_at": "2026-09-06"
@@ -270,7 +333,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Multiple Claude Code agents can work on different parts of a task simultaneously with a lead agent coordinating, assigning subtasks and merging results. Related docs pages: 'Run agents in parallel', 'Create custom subagents', 'Manage multiple agents with agent view', 'Orchestrate teams of Claude Code sessions', 'Message your other Claude Code sessions', 'Orchestrate subagents at scale with dynamic workflows', 'Run parallel sessions with worktrees'.",
       "official_source": "https://code.claude.com/docs/en/sub-agents",
       "verified_at": "2026-09-06"
@@ -282,7 +347,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Documented page: 'Run parallel sessions with worktrees'.",
       "official_source": "https://code.claude.com/docs/en/worktrees",
       "verified_at": "2026-09-06"
@@ -294,7 +361,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Open standard for connecting AI tools to external data sources. With MCP, Claude Code can read design docs in Google Drive, update tickets in Jira, pull data from Slack, or use custom tooling. Org admins can control MCP server access.",
       "official_source": "https://code.claude.com/docs/en/mcp",
       "verified_at": "2026-09-06"
@@ -306,7 +375,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Docs pages: 'Discover and install prebuilt plugins through marketplaces', 'Create plugins', 'Create and distribute a plugin marketplace', 'Constrain plugin dependency versions'.",
       "official_source": "https://code.claude.com/docs/en/discover-plugins",
       "verified_at": "2026-09-06"
@@ -318,7 +389,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Docs pages: 'Configure permissions', 'Choose a permission mode', 'Configure the sandboxed Bash tool', 'Choose a sandbox environment', 'Configure auto mode'.",
       "official_source": "https://code.claude.com/docs/en/permission-modes",
       "verified_at": "2026-09-06"
@@ -330,7 +403,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Reference page 'Checkpointing'; the Agent SDK has 'Rewind file changes with checkpointing'.",
       "official_source": "https://code.claude.com/docs/en/checkpointing",
       "verified_at": "2026-09-06"
@@ -342,7 +417,9 @@
       "feature_status": "Stable",
       "availability": "All surfaces",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Docs pages: 'Manage sessions', 'Explore the context window', 'How Claude Code uses prompt caching'.",
       "official_source": "https://code.claude.com/docs/en/sessions",
       "verified_at": "2026-09-06"
@@ -354,7 +431,11 @@
       "feature_status": "Stable",
       "availability": "Web, Desktop, CLI",
       "plans": "n/a",
-      "platforms": ["Web", "Desktop", "Terminal"],
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Terminal"
+      ],
       "details": "Routines run in the cloud and keep running when the computer is off; they can also trigger on API calls or GitHub events, and are created from the web, the Desktop app, or `/schedule` in the CLI. Desktop scheduled tasks run on the local machine with access to local files and tools. `/loop` repeats a prompt within a CLI session for quick polling.",
       "official_source": "https://code.claude.com/docs/en/routines",
       "verified_at": "2026-09-06"
@@ -366,7 +447,12 @@
       "feature_status": "Stable (some requiring a claude.ai subscription)",
       "availability": "CLI, Desktop, Web, Mobile",
       "plans": "Teleport requires a claude.ai subscription; the /desktop handoff requires a claude.ai subscription and is available on macOS and x64 Windows.",
-      "platforms": ["Terminal", "Desktop", "Web", "Mobile"],
+      "platforms": [
+        "Terminal",
+        "Desktop",
+        "Web",
+        "Mobile"
+      ],
       "details": "Remote Control continues local sessions from a phone or any browser. Dispatch creates a Desktop session from a phone message. `claude --cloud` moves a task to the web/mobile; `claude --teleport` pulls a web task into the terminal.",
       "official_source": "https://code.claude.com/docs/en/remote-control",
       "verified_at": "2026-09-06"
@@ -378,7 +464,9 @@
       "feature_status": "Stable",
       "availability": "CLI and cloud sessions",
       "plans": "n/a",
-      "platforms": ["All"],
+      "platforms": [
+        "All"
+      ],
       "details": "Push events from Telegram, Discord, iMessage, or custom webhooks into a running session.",
       "official_source": "https://code.claude.com/docs/en/channels",
       "verified_at": "2026-09-06"
@@ -390,7 +478,11 @@
       "feature_status": "Stable",
       "availability": "CI/CD and integrations",
       "plans": "n/a",
-      "platforms": ["CI", "Slack", "Chrome"],
+      "platforms": [
+        "CI",
+        "Slack",
+        "Chrome"
+      ],
       "details": "Automate code review and issue triage with GitHub Actions or GitLab CI/CD; automatic code review on every PR with GitHub Code Review; mention @Claude in Slack to turn a bug report into a pull request; debug live web applications with Chrome.",
       "official_source": "https://code.claude.com/docs/en/github-actions",
       "verified_at": "2026-09-06"
@@ -402,7 +494,10 @@
       "feature_status": "Stable",
       "availability": "CLI / web",
       "plans": "n/a",
-      "platforms": ["Terminal", "Web"],
+      "platforms": [
+        "Terminal",
+        "Web"
+      ],
       "details": "Docs pages: 'Speed up responses with fast mode', 'Escalate hard decisions with the advisor tool', 'Output styles', 'Find bugs with ultrareview' (web).",
       "official_source": "https://code.claude.com/docs/en/fast-mode",
       "verified_at": "2026-09-06"
@@ -414,38 +509,95 @@
       "feature_status": "Stable (TypeScript and Python); TypeScript SDK V2 session API removed",
       "availability": "SDK",
       "plans": "n/a",
-      "platforms": ["SDK"],
+      "platforms": [
+        "SDK"
+      ],
       "details": "Build custom agents powered by Claude Code's tools and capabilities with full control over orchestration, tool access and permissions. Note: docs list 'TypeScript SDK V2 session API (removed)'.",
       "official_source": "https://code.claude.com/docs/en/agent-sdk/overview",
       "verified_at": "2026-09-06"
     }
   ],
-
   "chatgpt": [
     {
       "platform": "OpenAI",
       "product": "ChatGPT",
-      "feature_name": "GPT-5.6 model family",
-      "feature_status": "Current lineup",
-      "model_if_relevant": "GPT-5.6 Sol (flagship), GPT-5.6 Terra (balanced), GPT-5.6 Luna (most cost-efficient), GPT-5.6 Sol Pro",
+      "feature_name": "GPT-6 Astra / GPT-6 Pro",
+      "feature_status": "Rolling out (gradual)",
+      "model_if_relevant": "GPT-6 Astra; surfaced as GPT-6 Pro in ChatGPT",
       "availability": "ChatGPT",
-      "plans": "Free and Go: GPT-5.6 Terra. Plus, Pro, Business, Enterprise: GPT-5.6 Sol at medium and higher effort settings, plus a choice among Sol, Terra and Luna. Pro and Enterprise: GPT-5.6 Sol Pro for highest-quality results on complex tasks.",
-      "platforms": ["Web", "Desktop", "Mobile"],
-      "details": "GPT-5.6 Sol is described by OpenAI as setting a new standard for intelligence and efficiency across coding, knowledge work, cybersecurity and science.",
+      "plans": "Pro $100, Pro $200, Business and Enterprise",
+      "platforms": [
+        "Chat",
+        "ChatGPT Work",
+        "Codex"
+      ],
+      "details": "GPT-6 Pro, powered by GPT-6 Astra, is rolling out in ChatGPT for Pro $100, Pro $200, Business and Enterprise plans. Rollout is gradual and availability can differ between Chat, Work and Codex.",
+      "official_source": "https://help.openai.com/en/articles/20001354-gpt-56-in-chatgpt",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "OpenAI",
+      "product": "ChatGPT",
+      "feature_name": "GPT-5.6 family (Sol, Terra, Luna, Sol Pro)",
+      "feature_status": "Current lineup",
+      "model_if_relevant": "GPT-5.6 Sol / Terra / Luna / Sol Pro",
+      "availability": "ChatGPT",
+      "plans": "Plus, Pro, Business, Enterprise access Sol at medium and higher effort and can choose among Sol, Terra and Luna with an effort level for each. Sol Pro is the highest-capability GPT-5.6 option. GPT-5.6 Luna is becoming the default model for Free and Go users.",
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
+      "details": "The number identifies the generation; Sol, Terra and Luna identify durable capability tiers that can advance on their own cadence. Sol is for frontier reasoning and long-horizon agentic work; Terra is the balanced everyday model; Luna is the fastest and most affordable.",
       "official_source": "https://openai.com/index/gpt-5-6/",
       "verified_at": "2026-09-06"
     },
     {
       "platform": "OpenAI",
       "product": "ChatGPT",
-      "feature_name": "Retired models",
-      "feature_status": "Deprecated / removed",
-      "model_if_relevant": "GPT-5.1 Instant, GPT-5.1 Thinking, GPT-5.1 Pro; GPT-4o and other older ChatGPT models",
-      "availability": "n/a",
-      "plans": "n/a",
-      "platforms": ["ChatGPT"],
-      "details": "As of March 11, 2026, GPT-5.1 models (GPT-5.1 Instant, GPT-5.1 Thinking and GPT-5.1 Pro) are no longer available in ChatGPT. A separate help article covers retiring GPT-4o and other ChatGPT models.",
-      "official_source": "https://help.openai.com/en/articles/20001051-retiring-gpt-4o-and-other-chatgpt-models",
+      "feature_name": "ChatGPT Work and Codex",
+      "feature_status": "Shipped",
+      "availability": "ChatGPT",
+      "plans": "Codex is available with ChatGPT plans; Codex Remote is generally available on all ChatGPT plans",
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
+      "details": "Work is an agent for longer multi-step work and finished deliverables; Codex is dedicated to software development and technical work. Codex Remote lets you start or continue work on a connected Mac or Windows host from the ChatGPT mobile app, review progress and approve actions from the phone.",
+      "official_source": "https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "OpenAI",
+      "product": "ChatGPT",
+      "feature_name": "ChatGPT Voice in Work and Codex",
+      "feature_status": "Shipped",
+      "availability": "ChatGPT desktop app",
+      "plans": "Not fully verified",
+      "platforms": [
+        "macOS",
+        "Windows",
+        "iOS remote access"
+      ],
+      "details": "A live voice interface in Work and Codex in the ChatGPT desktop app: speak, interrupt naturally, start tasks, check progress, ask about agents and coordinate multiple agents in one conversation, using the tools and permissions of the selected experience. Available on macOS and Windows with paired iOS remote access.",
+      "official_source": "https://help.openai.com/en/articles/20001274",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "OpenAI",
+      "product": "ChatGPT",
+      "feature_name": "Study mode",
+      "feature_status": "Stable",
+      "availability": "ChatGPT",
+      "plans": "Available across ChatGPT plans globally",
+      "platforms": [
+        "Web",
+        "iOS",
+        "Android"
+      ],
+      "details": "A learning experience that asks questions, guides thinking, explains step by step and checks understanding. Available across plans globally on web, iOS and Android, and available for all ChatGPT models.",
+      "official_source": "https://help.openai.com/en/articles/11780217-using-study-mode-in-chatgpt",
       "verified_at": "2026-09-06"
     },
     {
@@ -454,9 +606,13 @@
       "feature_name": "Projects",
       "feature_status": "Stable",
       "availability": "ChatGPT",
-      "plans": "Available across ChatGPT plans (exact plan matrix not verified)",
-      "platforms": ["Web", "Desktop", "Mobile"],
-      "details": "Projects let you organize chats, files and context under a shared objective; suited to multi-session workflows, collaboration and long-running research topics.",
+      "plans": "Plan matrix not verified",
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
+      "details": "Projects organise chats, files and context under a shared objective; suited to multi-session workflows, collaboration and long-running research topics.",
       "official_source": "https://help.openai.com/en/articles/10169521-projects-in-chatgpt",
       "verified_at": "2026-09-06"
     },
@@ -466,9 +622,13 @@
       "feature_name": "Deep Research",
       "feature_status": "Stable",
       "availability": "ChatGPT",
-      "plans": "Plan-dependent (exact matrix not verified)",
-      "platforms": ["Web", "Desktop", "Mobile"],
-      "details": "For multi-step research tasks. ChatGPT reads and synthesizes content across multiple online sources and produces cited, structured outputs. Useful for strategy, reports and literature reviews.",
+      "plans": "Plan matrix not verified",
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
+      "details": "For multi-step research tasks: reads and synthesises content across multiple online sources and produces cited, structured outputs.",
       "official_source": "https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview",
       "verified_at": "2026-09-06"
     },
@@ -478,8 +638,12 @@
       "feature_name": "Agent mode",
       "feature_status": "Stable",
       "availability": "ChatGPT",
-      "plans": "Plan-dependent (exact matrix not verified)",
-      "platforms": ["Web", "Desktop", "Mobile"],
+      "plans": "Plan matrix not verified",
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
       "details": "Started from the tools menu or by typing /agent in the composer. You describe the task; the agent executes it and pauses for clarification or confirmation when needed.",
       "official_source": "https://help.openai.com/en/articles/11752874-chatgpt-agent",
       "verified_at": "2026-09-06"
@@ -490,8 +654,11 @@
       "feature_name": "Canvas",
       "feature_status": "Stable",
       "availability": "ChatGPT",
-      "plans": "Plan-dependent (exact matrix not verified)",
-      "platforms": ["Web", "Desktop"],
+      "plans": "Plan matrix not verified",
+      "platforms": [
+        "Web",
+        "Desktop"
+      ],
       "details": "An interactive workspace for co-writing, editing or debugging alongside ChatGPT, with text mark-up, inline suggestions, file upload and code editing in a shared space.",
       "official_source": "https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview",
       "verified_at": "2026-09-06"
@@ -502,9 +669,13 @@
       "feature_name": "Memory",
       "feature_status": "Stable",
       "availability": "ChatGPT",
-      "plans": "Plan-dependent (exact matrix not verified)",
-      "platforms": ["Web", "Desktop", "Mobile"],
-      "details": "When memory is on, ChatGPT can remember useful facts you've shared (name, preferences, goals) to personalize future responses. Memories can be viewed, edited or deleted at any time.",
+      "plans": "Plan matrix not verified",
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
+      "details": "When memory is on, ChatGPT can remember useful facts you have shared to personalise future responses; memories can be viewed, edited or deleted at any time.",
       "official_source": "https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview",
       "verified_at": "2026-09-06"
     },
@@ -514,8 +685,12 @@
       "feature_name": "Apps and connectors",
       "feature_status": "Stable",
       "availability": "ChatGPT",
-      "plans": "Plan-dependent (exact matrix not verified)",
-      "platforms": ["Web", "Desktop", "Mobile"],
+      "plans": "Plan matrix not verified",
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
       "details": "Bring tools and data into ChatGPT to search, reference and work without leaving the conversation.",
       "official_source": "https://help.openai.com/en/articles/11487775-connectors-in-chatgpt",
       "verified_at": "2026-09-06"
@@ -526,14 +701,47 @@
       "feature_name": "Tasks (scheduled tasks)",
       "feature_status": "Stable",
       "availability": "ChatGPT",
-      "plans": "Plan-dependent (exact matrix not verified)",
-      "platforms": ["Web", "Desktop", "Mobile"],
+      "plans": "Plan matrix not verified",
+      "platforms": [
+        "Web",
+        "Desktop",
+        "Mobile"
+      ],
       "details": "Automate recurring work with tasks in ChatGPT.",
       "official_source": "https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview",
       "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "OpenAI",
+      "product": "ChatGPT",
+      "feature_name": "Education plugins for Work and Codex",
+      "feature_status": "Shipped",
+      "availability": "ChatGPT Work and Codex",
+      "plans": "Not fully verified",
+      "platforms": [
+        "Web",
+        "Desktop"
+      ],
+      "details": "Three plugins help students and educators work with their own course materials: College Student (study guides and practice quizzes), College Educator (syllabi and course materials) and K-12 Educator (lesson planning and classroom resources).",
+      "official_source": "https://help.openai.com/en/articles/6825453-chatgpt-release-notes",
+      "verified_at": "2026-09-06"
+    },
+    {
+      "platform": "OpenAI",
+      "product": "ChatGPT",
+      "feature_name": "Retired models and features",
+      "feature_status": "Deprecated / removed",
+      "model_if_relevant": "GPT-5.1 Instant, GPT-5.1 Thinking, GPT-5.1 Pro; GPT-4o and other older ChatGPT models; the official DALL-E GPT",
+      "availability": "n/a",
+      "plans": "n/a",
+      "platforms": [
+        "ChatGPT"
+      ],
+      "details": "As of March 11, 2026 the GPT-5.1 models are no longer available in ChatGPT. A separate help article covers retiring GPT-4o and other ChatGPT models. On August 30, 2026 OpenAI retired the official DALL-E GPT in ChatGPT.",
+      "official_source": "https://help.openai.com/en/articles/20001051-retiring-gpt-4o-and-other-chatgpt-models",
+      "verified_at": "2026-09-06"
     }
   ],
-
   "grok": [
     {
       "platform": "xAI / SpaceXAI",
@@ -542,7 +750,9 @@
       "feature_status": "Current",
       "availability": "n/a",
       "plans": "n/a",
-      "platforms": ["n/a"],
+      "platforms": [
+        "n/a"
+      ],
       "details": "Official sources now brand the company as SpaceXAI ('SpaceXAI — Creators of Grok, the AI Chatbot'), with docs at docs.x.ai and the site at x.ai.",
       "official_source": "https://x.ai/",
       "verified_at": "2026-09-06"
@@ -555,7 +765,11 @@
       "model_if_relevant": "Grok 4.6",
       "availability": "API and Grok products",
       "plans": "Not fully verified per consumer plan",
-      "platforms": ["API", "Web", "Mobile"],
+      "platforms": [
+        "API",
+        "Web",
+        "Mobile"
+      ],
       "details": "Frontier model for coding, agentic tasks and knowledge work. 500k context window, text and image inputs, text-only output, no text output limit. Knowledge cut-off February 1, 2026.",
       "official_source": "https://docs.x.ai/developers/grok-4-6",
       "verified_at": "2026-09-06"
@@ -568,7 +782,11 @@
       "model_if_relevant": "Grok 4.5",
       "availability": "API and Grok products",
       "plans": "Not fully verified",
-      "platforms": ["API", "Web", "Mobile"],
+      "platforms": [
+        "API",
+        "Web",
+        "Mobile"
+      ],
       "details": "Described by xAI as their smartest model for coding, agentic tasks and knowledge work, trained alongside Cursor.",
       "official_source": "https://x.ai/news/grok-4-5",
       "verified_at": "2026-09-06"
@@ -580,7 +798,11 @@
       "feature_status": "Stable",
       "availability": "Grok apps",
       "plans": "Not fully verified",
-      "platforms": ["Web", "Mobile", "X"],
+      "platforms": [
+        "Web",
+        "Mobile",
+        "X"
+      ],
       "details": "Grok can search X for posts and information and the web for current information, e.g. real-time recommendations.",
       "official_source": "https://x.ai/grok",
       "verified_at": "2026-09-06"
@@ -593,7 +815,11 @@
       "model_if_relevant": "grok-imagine-video-1.5",
       "availability": "Grok apps and API",
       "plans": "Not fully verified",
-      "platforms": ["Web", "Mobile", "API"],
+      "platforms": [
+        "Web",
+        "Mobile",
+        "API"
+      ],
       "details": "grok-imagine-video-1.5 supports text-to-video, image-to-video and reference-to-video with native 1080p for T2V and I2V. Image generation and editing accept 21:9 cinematic widescreen and 5:2 wide banner aspect ratios.",
       "official_source": "https://x.ai/news/grok-imagine-api",
       "verified_at": "2026-09-06"
@@ -605,7 +831,11 @@
       "feature_status": "Stable / shipped",
       "availability": "Grok apps and API",
       "plans": "Not fully verified",
-      "platforms": ["Web", "Mobile", "API"],
+      "platforms": [
+        "Web",
+        "Mobile",
+        "API"
+      ],
       "details": "Grok Voice Think Fast 2.0 is a next-generation voice model with improved intelligence, transcription accuracy and conversational ability. The Voice Agent API builds agents that speak dozens of languages, call tools and search real-time data, with average time-to-first-audio under one second. Voice Agent Builder is a no-code platform providing telephony, knowledge retrieval, tools, guardrails, MCPs and observability. Voice cloning from a short audio clip is available across Text-to-Speech and Speech-to-Speech APIs.",
       "official_source": "https://x.ai/news/grok-voice-agent-api",
       "verified_at": "2026-09-06"
@@ -617,7 +847,10 @@
       "feature_status": "Beta",
       "availability": "Developer tooling",
       "plans": "Not fully verified",
-      "platforms": ["CLI", "API"],
+      "platforms": [
+        "CLI",
+        "API"
+      ],
       "details": "Grok Build is available in beta, offering an interactive TUI, headless scripts, or building apps with the Agent Client Protocol.",
       "official_source": "https://x.ai/build/changelog",
       "verified_at": "2026-09-06"
@@ -629,7 +862,9 @@
       "feature_status": "Shipped",
       "availability": "Cloud",
       "plans": "Not fully verified",
-      "platforms": ["Cloud"],
+      "platforms": [
+        "Cloud"
+      ],
       "details": "Durable AI teammates that work on a persistent cloud computer with messaging, approvals, connectors and routines.",
       "official_source": "https://x.ai/news",
       "verified_at": "2026-09-06"
@@ -641,13 +876,14 @@
       "feature_status": "Deprecated",
       "availability": "n/a",
       "plans": "n/a",
-      "platforms": ["API"],
+      "platforms": [
+        "API"
+      ],
       "details": "A May 15, 2026 model retirement is documented in the migration docs.",
       "official_source": "https://docs.x.ai/developers/migration/may-15-retirement",
       "verified_at": "2026-09-06"
     }
   ],
-
   "toolchain_versions": [
     {
       "name": "Node.js",
@@ -698,12 +934,12 @@
       "verified_at": "2026-09-06"
     }
   ],
-
   "not_verified_do_not_claim": [
-    "Exact per-plan feature matrices for ChatGPT (which plan gets Deep Research / Agent mode / Canvas limits).",
+    "Exact per-plan feature matrices for ChatGPT beyond the model access explicitly quoted (which plan gets Deep Research, Agent mode, Canvas, Tasks and their limits).",
     "Exact per-plan feature matrices for Grok consumer tiers.",
-    "Claude consumer plan prices (www.anthropic.com and claude.com/pricing were not reachable for direct verification in this pass).",
+    "Claude consumer plan prices beyond the Pro figure quoted from the help centre (www.anthropic.com and claude.com/pricing were not reachable for direct verification).",
     "Any benchmark or head-to-head test result: no live model tests were run, so Product 11 must be a capability-based comparison only.",
-    "Regional availability details for any platform."
+    "Regional availability details for any platform.",
+    "The state of the GPT-6 Astra rollout on any given day: the help centre states the rollout is gradual and that availability can differ between Chat, Work and Codex."
   ]
 }

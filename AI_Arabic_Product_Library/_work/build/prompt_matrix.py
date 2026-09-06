@@ -42,6 +42,25 @@ def build(modname):
                     near.append((i, j, round(s, 2)))
     if near:
         problems.append("prompt pairs with overlapping function: %s" % near)
+    # cross-product overlap: no prompt may be another product's prompt renamed
+    cross = []
+    for other in sorted(os.listdir(WORK)):
+        if not other.startswith("prompt_matrix_") or other.endswith("_%s.csv" % D["id"]):
+            continue
+        if other == os.path.basename(out):
+            continue
+        with open(os.path.join(WORK, other), encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                for r in rows:
+                    a = r["title"] + " " + r["purpose"]
+                    b = row["title"] + " " + row["purpose"]
+                    if difflib.SequenceMatcher(None, a, b).ratio() > 0.62:
+                        cross.append((r["number"], other.replace("prompt_matrix_", "")
+                                      .replace(".csv", ""), row["number"],
+                                      round(difflib.SequenceMatcher(None, a, b).ratio(), 2)))
+    if cross:
+        problems.append("prompts overlapping another product: %s" % cross)
+
     print("wrote %s | %d prompts | %d categories" %
           (os.path.basename(out), len(rows), len({r["category"] for r in rows})))
     for p in problems:

@@ -1,0 +1,755 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>ChatGPT من الصفر إلى الاحتراف</title><style>/* ============================================================
+   Arabic AI Product Library — shared print theme
+   A4 portrait · RTL · mobile-first reading
+   ============================================================ */
+
+@font-face { font-family: "PlexAr"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 500;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-500.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 600;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-600.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-700.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-700.ttf") format("truetype"); }
+
+:root {
+  --ink:      #17140F;
+  --ink-2:    #3A342C;
+  --muted:    #6E665A;
+  --faint:    #9A9184;
+  --rule:     #E6E0D6;
+  --rule-2:   #D6CEC0;
+  --paper:    #FFFFFF;
+  --soft:     #FBF8F3;
+  --soft-2:   #F5F0E7;
+  --accent:   #1E7A5E;
+  --accent-d: #11533E;
+  --accent-w: #4EA98A;
+}
+
+/* ---------- page setup ---------- */
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 16mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: "PlexAr"; font-size: 8.5pt; color: var(--faint);
+    margin-bottom: 5mm;
+  }
+  @bottom-left {
+    content: "PromptsArabic · t.me/PromptsArabic";
+    font-family: "PlexMono"; font-size: 6.8pt; color: #B9B1A4;
+    letter-spacing: .02em; margin-bottom: 5mm; direction: ltr;
+  }
+  @bottom-center {
+    content: string(chaptertitle);
+    font-family: "PlexAr"; font-size: 7.6pt; color: #BCB4A7;
+    margin-bottom: 5mm;
+  }
+}
+@page cover  { margin: 0; @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+@page plain  { @bottom-center{content:none} }
+@page :first { @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+
+html { direction: rtl; }
+body {
+  font-family: "PlexAr", sans-serif;
+  font-size: 11.7pt;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  margin: 0;
+  text-align: right;
+  -weasy-hyphens: none;
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover; break-after: page;
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  background: var(--accent-d); color: #fff;
+}
+.cover .field {
+  position: absolute; inset: 0;
+  background: linear-gradient(152deg, var(--accent-d) 0%, var(--accent) 52%, var(--accent-w) 100%);
+}
+.cover .glow {
+  position: absolute; width: 250mm; height: 250mm; right: -70mm; top: -85mm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 62%);
+}
+.cover .grid-lines { position: absolute; inset: 0; }
+.cover .grid-lines i {
+  position: absolute; top: 0; bottom: 0; width: .3mm; background: rgba(255,255,255,.09);
+}
+.cover .arc { position: absolute; border-radius: 50%; border: .5mm solid rgba(255,255,255,.15); }
+
+.cover .topbar {
+  position: absolute; right: 18mm; left: 18mm; top: 20mm;
+  border-bottom: .3mm solid rgba(255,255,255,.28); padding-bottom: 5mm;
+}
+.cover .kicker {
+  font-size: 10pt; font-weight: 600; color: rgba(255,255,255,.92);
+  letter-spacing: .01em; display: inline-block;
+}
+.cover .topbar .mark {
+  float: left; font-family: "PlexMono"; direction: ltr;
+  font-size: 8.4pt; font-weight: 700; letter-spacing: .18em;
+  color: rgba(255,255,255,.72);
+}
+
+.cover .plate { position: absolute; right: 18mm; left: 18mm; top: 74mm; }
+.cover h1 {
+  font-size: 40pt; font-weight: 700; line-height: 1.3;
+  margin: 0 0 7mm 0; color: #fff; letter-spacing: -.012em;
+}
+.cover .rule { width: 22mm; height: 1.2mm; background: rgba(255,255,255,.85);
+  border-radius: 1mm; margin-bottom: 7mm; }
+.cover .sub {
+  font-size: 12.2pt; font-weight: 400; line-height: 1.78;
+  color: rgba(255,255,255,.93); margin: 0; max-width: 162mm;
+}
+.cover .strip { position: absolute; right: 18mm; left: 18mm; bottom: 86mm; }
+.cover .strip .row {
+  border-top: .25mm solid rgba(255,255,255,.22);
+  padding: 2.6mm 0 2.6mm 0; font-size: 9.2pt; color: rgba(255,255,255,.80);
+}
+.cover .strip .row b { font-family: "PlexMono"; direction: ltr; font-weight: 700;
+  font-size: 7.6pt; color: rgba(255,255,255,.55); float: left; padding-top: .8mm;
+  letter-spacing: .1em; }
+
+.cover .promise {
+  position: absolute; right: 18mm; left: 18mm; bottom: 62mm; font-size: 0;
+}
+.cover .promise span {
+  display: inline-block; font-size: 9.4pt; font-weight: 500; color: #fff;
+  border: .3mm solid rgba(255,255,255,.45); border-radius: 2mm;
+  padding: 2mm 4.5mm; background: rgba(255,255,255,.12);
+  margin: 0 0 2.5mm 3mm;
+}
+.cover .baseline {
+  position: absolute; right: 18mm; left: 18mm; bottom: 44mm;
+  border-top: .3mm solid rgba(255,255,255,.28);
+}
+.cover .platform {
+  position: absolute; right: 18mm; bottom: 24mm;
+  font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 15pt; font-weight: 700; color: #fff; letter-spacing: .1em;
+}
+.cover .rights {
+  position: absolute; left: 18mm; bottom: 24mm; text-align: left;
+  font-size: 8.6pt; color: rgba(255,255,255,.86); line-height: 1.55;
+}
+.cover .rights b { font-weight: 600; display: block; }
+.cover .rights span { font-family: "PlexMono"; direction: ltr; font-size: 7.8pt;
+  color: rgba(255,255,255,.72); }
+
+/* ---------- front matter ---------- */
+.frontpage { page: plain; break-after: page; }
+.frontpage h3 { margin: 6mm 0 2mm 0; }
+.frontpage p.lead { margin-bottom: 5mm; font-size: 11.8pt; line-height: 1.85; }
+.frontpage ul.b { margin-bottom: 2mm; }
+.frontpage ul.b > li { margin-bottom: 1.7mm; }
+.fm-title { font-size: 19pt; font-weight: 700; margin: 0 0 8mm 0; color: var(--ink); }
+.fm-rule { height: 1.1mm; width: 26mm; background: var(--accent); margin-bottom: 9mm; border-radius: 1mm; }
+
+.rights-block {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  padding: 9mm 8mm; background: var(--soft); margin: 8mm 0;
+}
+.rights-block .owner { font-size: 15pt; font-weight: 700; margin: 0 0 3mm 0; }
+.rights-block p { margin: 0 0 3mm 0; font-size: 10.6pt; color: var(--ink-2); }
+.rights-block a.tg {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 11pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+.meta-table { width: 100%; border-collapse: collapse; margin-top: 6mm; }
+.meta-table td { padding: 2.6mm 0; border-bottom: .25mm solid var(--rule); font-size: 10.2pt; vertical-align: top; }
+.meta-table td:first-child { width: 44mm; color: var(--muted); font-weight: 500; }
+
+/* ---------- table of contents ---------- */
+.toc { page: plain; break-after: page; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  text-decoration: none; color: var(--ink);
+  display: flex; align-items: baseline; gap: 2.5mm;
+}
+.toc .t { flex: 0 1 auto; }
+.toc .dots {
+  flex: 1 1 auto; min-width: 6mm; align-self: flex-end;
+  border-bottom: .2mm dotted var(--rule-2); transform: translateY(-1.2mm);
+}
+.toc a::after {
+  content: target-counter(attr(href), page);
+  font-family: "PlexMono"; font-size: 8.6pt; color: var(--faint);
+  font-weight: 400; direction: ltr; flex: 0 0 auto;
+}
+.toc .l1 a {
+  font-size: 11.4pt; font-weight: 600;
+  padding: 3mm 0 3mm 0; border-bottom: .25mm solid var(--rule);
+}
+.toc .l1 a::after { color: var(--accent-d); font-weight: 700; font-size: 9pt; }
+.toc .l2 a {
+  font-size: 10pt; font-weight: 400; color: var(--ink-2);
+  padding: 1.8mm 6.5mm 1.8mm 0;
+}
+.toc .l1 .t::before {
+  content: ""; display: inline-block; width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--accent); margin-left: 3.5mm; vertical-align: middle;
+}
+
+/* ---------- headings ---------- */
+h1.chapter {
+  string-set: chaptertitle content();
+  break-before: page;
+  font-size: 23pt; font-weight: 700; line-height: 1.38;
+  margin: 0 0 3mm 0; padding-bottom: 4mm; color: var(--ink);
+  border-bottom: 1mm solid var(--accent);
+}
+h1.chapter .num {
+  display: block; font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 9.5pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .12em; margin-bottom: 3mm;
+}
+h2 {
+  font-size: 15pt; font-weight: 700; line-height: 1.55;
+  margin: 11mm 0 3.5mm 0; color: var(--ink);
+  break-after: avoid; break-inside: avoid;
+}
+h3 {
+  font-size: 12.2pt; font-weight: 600; line-height: 1.6;
+  margin: 7.5mm 0 2.5mm 0; color: var(--ink-2);
+  break-after: avoid; break-inside: avoid;
+}
+h2 + p, h3 + p { margin-top: 0; }
+
+p { margin: 0 0 3.6mm 0; orphans: 2; widows: 2; }
+p.lead { font-size: 12.4pt; color: var(--ink-2); line-height: 1.9; margin-bottom: 6mm; }
+strong { font-weight: 600; }
+
+/* ---------- lists ---------- */
+ul.b, ol.n { margin: 0 0 4.5mm 0; padding: 0 6mm 0 0; }
+ul.b { list-style: none; padding-right: 0; }
+ul.b > li {
+  position: relative; padding-right: 6.5mm; margin-bottom: 2.4mm;
+  orphans: 2; widows: 2;
+}
+ul.b > li::before {
+  content: ""; position: absolute; right: 1.6mm; top: 2.6mm;
+  width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--accent);
+}
+ol.n { padding-right: 7mm; }
+ol.n > li { margin-bottom: 2.4mm; padding-right: 1.5mm; }
+ol.n > li::marker { color: var(--accent-d); font-weight: 600; }
+
+/* ---------- code ---------- */
+code.inline {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 9.2pt; background: var(--soft-2); color: var(--ink);
+  padding: .5mm 1.4mm; border-radius: 1mm; border: .2mm solid var(--rule);
+}
+pre.code {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate; text-align: left;
+  font-size: 9.2pt; line-height: 1.62; color: #F3EFE8; background: #211D18;
+  padding: 4.5mm 5mm; border-radius: 2.5mm; margin: 0 0 5mm 0;
+  white-space: pre-wrap; word-break: break-word;
+  break-inside: avoid;
+}
+pre.code .cm { color: #A79C8C; }
+.codewrap { margin-bottom: 5mm; break-inside: avoid; }
+.codewrap .caption {
+  font-size: 8.6pt; color: var(--muted); margin-bottom: 1.6mm; font-weight: 500;
+}
+.codewrap pre.code { margin-bottom: 0; }
+
+/* ---------- callouts ---------- */
+.callout {
+  border-right: 1.1mm solid var(--accent);
+  background: var(--soft); border-radius: 0 2.5mm 2.5mm 0;
+  padding: 4.5mm 5mm 3mm 5mm; margin: 0 0 5mm 0;
+  break-inside: avoid;
+}
+.callout .t { font-weight: 700; font-size: 10.4pt; margin-bottom: 1.8mm; }
+.callout p:last-child { margin-bottom: 1.5mm; }
+.callout.warn { border-right-color: #B4472F; background: #FDF4F1; }
+.callout.warn .t { color: #91361F; }
+.callout.tip  { border-right-color: #2F7D62; background: #F1F8F4; }
+.callout.tip .t { color: #1F5B46; }
+
+/* ---------- tables ---------- */
+table.data {
+  width: 100%; border-collapse: collapse; margin: 0 0 5mm 0;
+  font-size: 10pt; break-inside: avoid; direction: rtl;
+}
+table.data th {
+  background: var(--soft-2); font-weight: 600; text-align: right;
+  padding: 2.8mm 3mm; border-bottom: .4mm solid var(--rule-2); color: var(--ink);
+}
+table.data td {
+  padding: 2.6mm 3mm; border-bottom: .25mm solid var(--rule);
+  vertical-align: top; text-align: right; color: var(--ink-2);
+}
+table.data tr:nth-child(even) td { background: #FCFAF6; }
+
+/* ---------- prompt card ---------- */
+.pcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  margin: 0 0 5mm 0; overflow: hidden;
+}
+.pcard > .head {
+  background: var(--soft-2); padding: 3mm 4.5mm 2.6mm 4.5mm;
+  border-bottom: .25mm solid var(--rule-2);
+  break-after: avoid;
+}
+.pcard .pn {
+  font-family: "PlexMono"; direction: ltr; font-size: 8.4pt; font-weight: 700;
+  color: #FFFFFF; background: var(--accent-d); border-radius: 1.5mm;
+  padding: .8mm 2.4mm; letter-spacing: .06em; display: inline-block;
+  margin-left: 3mm; vertical-align: 1mm;
+}
+.pcard .pt { font-size: 13pt; font-weight: 700; display: inline; }
+.pcard .cat {
+  display: block; font-size: 8.4pt; color: var(--muted); margin-top: 1.4mm; font-weight: 500;
+}
+.pcard > .body { padding: 3.4mm 4.5mm .5mm 4.5mm; }
+.pcard .row { margin-bottom: 2.4mm; }
+.pcard .row > .k {
+  font-size: 9pt; font-weight: 700; color: var(--accent-d);
+  margin-bottom: .8mm;
+}
+.pcard .row > .v { font-size: 10.4pt; color: var(--ink-2); line-height: 1.68; }
+.pcard .row ul.b { margin-bottom: 0; }
+.pcard .row ul.b > li { font-size: 10.2pt; margin-bottom: .9mm; }
+
+.promptbox {
+  background: var(--soft); border: .3mm dashed var(--rule-2);
+  border-radius: 2.5mm; padding: 3.4mm 4mm; margin: 0 0 3mm 0;
+  break-inside: avoid;
+}
+.promptbox .lbl {
+  font-size: 8.4pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .01em; margin-bottom: 1.8mm;
+  padding-bottom: 1.2mm; border-bottom: .25mm solid var(--rule-2);
+}
+.promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox.filebox .lbl { font-family: "PlexMono"; direction: ltr; text-align: left;
+  font-size: 8pt; letter-spacing: .02em; }
+.promptbox .txt {
+  font-size: 10.2pt; line-height: 1.66; color: var(--ink); white-space: pre-wrap;
+}
+
+/* ---------- misc blocks ---------- */
+.divider { height: .25mm; background: var(--rule); margin: 8mm 0; border: 0; }
+.spacer { height: 4mm; }
+.sectionlead {
+  background: var(--soft); border-radius: 3mm; padding: 5mm 6mm; margin: 0 0 7mm 0;
+}
+.sectionlead p { margin: 0; font-size: 10.8pt; color: var(--ink-2); }
+
+.steps { counter-reset: st; margin: 0 0 5mm 0; padding: 0; list-style: none; }
+.steps > li {
+  counter-increment: st; position: relative; padding-right: 11mm;
+  margin-bottom: 4mm; break-inside: avoid;
+}
+.steps > li::before {
+  content: counter(st); position: absolute; right: 0; top: .4mm;
+  width: 7.5mm; height: 7.5mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-family: "PlexMono"; font-size: 8.6pt; font-weight: 700;
+  text-align: center; line-height: 7.5mm;
+}
+.steps > li .sh { font-weight: 600; display: block; margin-bottom: .8mm; }
+
+.kv { width: 100%; border-collapse: collapse; margin: 0 0 5mm 0; font-size: 10pt; }
+.kv td { padding: 2.4mm 0; border-bottom: .25mm solid var(--rule); vertical-align: top; }
+.kv td:first-child { width: 40mm; color: var(--muted); font-weight: 500; padding-left: 4mm; }
+
+/* ---------- closing page ---------- */
+.endpage { break-before: page; }
+.endcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm; background: var(--soft);
+  padding: 8mm; margin-top: 6mm; text-align: center;
+}
+.endcard .h { font-size: 15pt; font-weight: 700; margin-bottom: 3mm; }
+.endcard p { font-size: 10.6pt; color: var(--ink-2); }
+.endcard a {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 12pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+
+/* ---------- chapter opener index ---------- */
+.chindex { margin: 0 0 6mm 0; }
+.chindex .row {
+  display: flex; align-items: baseline; gap: 3mm;
+  border-bottom: .25mm solid var(--rule); padding: 2.2mm 0;
+  font-size: 10.4pt;
+}
+.chindex .row b {
+  font-family: "PlexMono"; direction: ltr; font-size: 8pt; font-weight: 700;
+  color: #fff; background: var(--accent-d); border-radius: 1.4mm;
+  padding: .7mm 2mm; flex: 0 0 auto;
+}
+.chindex .row span { flex: 1 1 auto; }
+</style></head><body><section class="cover">
+  <div class="field"></div>
+  <div class="glow"></div>
+  <div class="grid-lines"><i style="right:30mm"></i><i style="right:66mm"></i><i style="right:102mm"></i><i style="right:138mm"></i><i style="right:174mm"></i></div>
+  <div class="arc" style="width:196mm;height:196mm;right:-56mm;top:-64mm"></div>
+  <div class="arc" style="width:128mm;height:128mm;left:-46mm;bottom:-40mm"></div>
+  <div class="topbar">
+    <span class="mark">PROMPTS ARABIC</span>
+    <span class="kicker">دليل عملي بالعربية</span>
+  </div>
+  <div class="plate">
+    <h1>ChatGPT من الصفر إلى الاحتراف</h1>
+    <div class="rule"></div>
+    <p class="sub">النماذج والمشاريع والملفات والبحث العميق والوكيل والذاكرة والتطبيقات والمهام ووضع الدراسة و Work و Codex</p>
+  </div>
+  <div class="strip"><div class="row"><b>01</b>النماذج والخطط واختيار المناسب</div><div class="row"><b>02</b>الملفات والبحث العميق والمشاريع</div><div class="row"><b>03</b>الوكيل والذاكرة والتطبيقات والمهام</div><div class="row"><b>04</b>الدراسة والصوت و Work و Codex والـ API</div></div>
+  <div class="promise"><span>16 فصلا</span><span>أمثلة تطبيقية</span><span>محدث في سبتمبر 2026</span></div>
+  <div class="baseline"></div>
+  <div class="platform">CHATGPT</div>
+  <div class="rights"><b>برومبتات عربية</b><span>t.me/PromptsArabic</span></div>
+</section>
+<section class="frontpage">
+  <div class="fm-title">حقوق النشر</div><div class="fm-rule"></div>
+  <div class="rights-block">
+    <p class="owner">برومبتات عربية</p>
+    <p>جميع الحقوق محفوظة لقناة <strong>برومبتات عربية</strong>.</p>
+    <p>هذا المنتج مخصص للاستخدام الشخصي للمشتري. لا يجوز إعادة نشره أو بيعه
+       أو توزيعه أو اقتباس أجزاء منه لأغراض تجارية دون إذن كتابي من المالك.</p>
+    <p>القناة الرسمية: <a class="tg" href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+  <table class="meta-table">
+    <tr><td>اسم المنتج</td><td>ChatGPT من الصفر إلى الاحتراف</td></tr>
+    <tr><td>الإصدار</td><td>الإصدار الأول</td></tr>
+    <tr><td>اللغة</td><td>العربية</td></tr>
+    <tr><td>المقاس</td><td>A4 عمودي — مهيأ للقراءة على الهاتف</td></tr>
+    <tr><td>تمت مراجعة معلومات وميزات هذا الدليل حتى تاريخ</td><td>6 سبتمبر 2026</td></tr>
+    <tr><td>مصادر التحقق</td><td>help.openai.com و openai.com — مركز المساعدة وملاحظات الإصدار الرسمية</td></tr>
+  </table>
+  <div class="callout"><div class="t">ملاحظة مهمة عن تاريخ المحتوى</div>
+    <p>منصات الذكاء الاصطناعي تتغير بسرعة. كل ميزة مذكورة هنا تم التحقق منها من
+       المصدر الرسمي بتاريخ 6 سبتمبر 2026. إذا مر وقت طويل على هذا التاريخ،
+       راجع الصفحة الرسمية للميزة قبل الاعتماد عليها في عمل حساس.</p>
+  </div>
+</section><section class="frontpage">
+  <div class="fm-title">عن هذا الدليل</div><div class="fm-rule"></div>
+  <p class="lead">ChatGPT لم يعد نافذة محادثة واحدة. صار عائلة نماذج بمستويات، وثلاثة سياقات عمل مختلفة، ومجموعة أدوات لكل منها موضعها. هذا الدليل يشرح ما هو موجود فعلا وقت مراجعته، ويعلمك كيف تختار النموذج والأداة لكل مهمة، وكيف تكتب طلبا يستفيد من قدرة بعينها بدل طلب عام يصلح لأي أداة.</p>
+  <h3>لمن هذا الدليل</h3><ul class="b"><li>من يستخدم ChatGPT يوميا ولا يعرف الفرق بين نماذجه ولا متى يبدلها</li><li>الطلاب والباحثون الذين يتعاملون مع مستندات وأبحاث</li><li>من يريد استخدام المشاريع والذاكرة والمهام بطريقة منظمة</li><li>من يخلط بين ChatGPT وبين واجهة OpenAI البرمجية</li></ul>
+  <h3>ماذا ستتعلم</h3><ul class="b"><li>عائلة النماذج الحالية وما يميز كل مستوى، وأي خطة تصل إلى ماذا</li><li>الفرق بين Chat و ChatGPT Work و Codex ومتى تستخدم كلا منها</li><li>كيف تكتب طلبا يستفيد من قدرة محددة لا طلبا عاما</li><li>الملفات والبحث على الويب والبحث العميق ومتى تستخدم كلا منها</li><li>المشاريع و Canvas ووضع الوكيل والذاكرة والتطبيقات والمهام</li><li>وضع الدراسة والصوت، وأين يفيدان فعلا</li><li>الفرق الجوهري بين ChatGPT وواجهة OpenAI البرمجية</li></ul>
+</section>
+<section class="frontpage">
+  <div class="fm-title">قبل أن تبدأ</div><div class="fm-rule"></div>
+  <h3>المتطلبات</h3><ul class="b"><li>حساب على ChatGPT — الخطة المجانية تكفي لأغلب فصول هذا الدليل</li><li>متصفح حديث، أو تطبيق ChatGPT على الحاسوب أو الهاتف</li><li>ملف أو مستند حقيقي من عملك لتجربة فصول الملفات</li><li>الاستعداد لتجربة كل فصل لا لقراءته فقط</li></ul>
+  <h3>كيف تستخدم هذا الدليل</h3><ul class="b"><li>اقرأ الفصل ثم طبقه على مهمة حقيقية قبل الانتقال</li><li>بعض الميزات تختلف بحسب خطتك — إذا لم تجد ميزة، راجع صفحتها الرسمية</li><li>كل نص داخل صندوق البرومبت قابل للنسخ، وما بين قوسين تستبدله بمحتواك</li><li>الفصل الأخير ورقة مراجعة — ارجع إليها بعد أسبوع من التطبيق</li></ul>
+  <div class="callout tip"><div class="t">طريقة القراءة الموصى بها</div>
+    <p>لا تقرأ الدليل كله دفعة واحدة. اقرأ فصلا واحدا، ثم نفّذ تمرينه على مهمة حقيقية
+       من عملك، ثم انتقل. أربعة فصول مطبَّقة أفضل من أربعة عشر فصلا مقروءا.</p></div>
+</section>
+<section class="toc"><div class="fm-title">الفهرس</div><div class="fm-rule"></div><ul><li class="l1"><a href="#ch1"><span class="t">ما هو ChatGPT اليوم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s1"><span class="t">ثلاثة سياقات لا واحد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s5"><span class="t">ما الذي يجيده فعلا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s7"><span class="t">أين لا يكون الخيار الأفضل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch2"><span class="t">النماذج الحالية وكيف تختار</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s2"><span class="t">منطق التسمية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s4"><span class="t">عائلة GPT-5.6</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s6"><span class="t">الجيل الأحدث</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s8"><span class="t">أي خطة تصل إلى ماذا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s11"><span class="t">قاعدة اختيار عملية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s13"><span class="t">نماذج لم تعد موجودة</span><span class="dots"></span></a></li><li class="l1"><a href="#ch3"><span class="t">كيف تكتب طلبا يستفيد من الأداة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s1"><span class="t">الأركان الستة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s4"><span class="t">استدع القدرة صراحة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s7"><span class="t">من طلب سيئ إلى طلب جيد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s10"><span class="t">ضبط مستوى الجهد</span><span class="dots"></span></a></li><li class="l1"><a href="#ch4"><span class="t">الملفات وتحليل المستندات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s1"><span class="t">اربط القراءة بقرار</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s4"><span class="t">مقارنة عدة مستندات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s6"><span class="t">الصور ولقطات الشاشة</span><span class="dots"></span></a></li><li class="l1"><a href="#ch5"><span class="t">البحث على الويب والبحث العميق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s1"><span class="t">الفرق العملي</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s5"><span class="t">برومبت بحث لا يعطيك كلاما عاما</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s7"><span class="t">برومبت تقرير عميق</span><span class="dots"></span></a></li><li class="l1"><a href="#ch6"><span class="t">المشاريع Projects</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s1"><span class="t">ما هو المشروع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s3"><span class="t">متى تنشئ مشروعا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s6"><span class="t">تعليمات المشروع</span><span class="dots"></span></a></li><li class="l1"><a href="#ch7"><span class="t">Canvas: مساحة التحرير المشتركة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s1"><span class="t">ما هو</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s3"><span class="t">متى تستخدمه</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s5"><span class="t">طريقة العمل الصحيحة</span><span class="dots"></span></a></li><li class="l1"><a href="#ch8"><span class="t">وضع الوكيل Agent mode</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s1"><span class="t">كيف يعمل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s3"><span class="t">كيف تكتب مهمة لوكيل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s7"><span class="t">متى لا تستخدمه</span><span class="dots"></span></a></li><li class="l1"><a href="#ch9"><span class="t">الذاكرة والتطبيقات والموصلات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s0"><span class="t">الذاكرة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s3"><span class="t">ما يستحق أن يحفظ وما لا يستحق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s5"><span class="t">التطبيقات والموصلات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch10"><span class="t">المهام المجدولة Tasks</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s1"><span class="t">ما هي</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s3"><span class="t">ما يستحق الجدولة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s6"><span class="t">برومبت مهمة مجدولة</span><span class="dots"></span></a></li><li class="l1"><a href="#ch11"><span class="t">وضع الدراسة Study mode</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s1"><span class="t">ما هو</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s3"><span class="t">لماذا يهم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s5"><span class="t">كيف تستخدمه بشكل صحيح</span><span class="dots"></span></a></li><li class="l1"><a href="#ch12"><span class="t">الصوت و ChatGPT Work و Codex</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s0"><span class="t">ChatGPT Work</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s2"><span class="t">Codex</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s4"><span class="t">الصوت</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s6"><span class="t">إضافات تعليمية</span><span class="dots"></span></a></li><li class="l1"><a href="#ch13"><span class="t">ChatGPT ليس OpenAI API</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s1"><span class="t">الفرق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s3"><span class="t">الأخطاء التي يسببها الخلط</span><span class="dots"></span></a></li><li class="l1"><a href="#ch14"><span class="t">أخطاء شائعة وأفضل الممارسات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s0"><span class="t">عشرة أخطاء وإصلاحها</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s2"><span class="t">أفضل الممارسات في سبع نقاط</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s4"><span class="t">الخصوصية</span><span class="dots"></span></a></li><li class="l1"><a href="#ch15"><span class="t">ورقة المراجعة السريعة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s0"><span class="t">أي أداة لأي مهمة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s2"><span class="t">هيكل أي طلب</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s4"><span class="t">جمل تحسن أي رد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s6"><span class="t">روتين أسبوعي في عشر دقائق</span><span class="dots"></span></a></li></ul></section>
+<h1 class="chapter" id="ch1"><span class="num">الفصل الأول</span>ما هو ChatGPT اليوم</h1><p class="lead">إذا كان انطباعك عن ChatGPT مأخوذا من سنة مضت، فهو قديم. المنتج اليوم ليس نافذة محادثة واحدة، بل ثلاثة سياقات عمل مختلفة تشترك في الحساب وتختلف في الغرض.</p>
+<h2 id="ch1-s1">ثلاثة سياقات لا واحد</h2>
+<table class="data"><thead><tr><th>السياق</th><th>لماذا وجد</th></tr></thead><tbody><tr><td>Chat</td><td>المحادثة العادية: السؤال والكتابة والتحليل والملفات</td></tr><tr><td>ChatGPT Work</td><td>وكيل للعمل الأطول متعدد الخطوات وإنتاج مخرجات نهائية</td></tr><tr><td>Codex</td><td>مخصص لتطوير البرمجيات والعمل التقني</td></tr></tbody></table>
+<p>هذا التقسيم مذكور في مركز المساعدة الرسمي: Work وكيل مصمم للعمل الأطول متعدد الخطوات والمخرجات المنجزة، بينما يبقى Codex مخصصا لتطوير البرمجيات والعمل التقني. ومعرفة أيها تفتح توفر عليك محاولة إنجاز مهمة طويلة في نافذة محادثة لم تصمم لها.</p>
+<div class="callout note"><div class="t">توفر الميزات يختلف بين السياقات</div><p>مركز المساعدة يذكر صراحة أن توفر بعض النماذج قد يختلف بين Chat و Work و Codex أثناء الطرح التدريجي. إذا وجدت نموذجا في مكان ولم تجده في آخر، فهذا سلوك موثق لا خلل.</p></div>
+<h2 id="ch1-s5">ما الذي يجيده فعلا</h2>
+<ul class="b"><li><strong>الكتابة والتحرير</strong>: مسودات ومراجعات وتغيير مستوى اللغة.</li><li><strong>التحليل</strong>: قراءة مستندات وبيانات واستخراج ما يخدم قرارا.</li><li><strong>البحث</strong>: من سؤال سريع على الويب إلى تقرير مبني على مصادر متعددة.</li><li><strong>البرمجة</strong>: من شرح مقطع إلى عمل تقني ممتد داخل Codex.</li><li><strong>التعلم</strong>: وضع دراسة مخصص يسأل ويوجه بدل أن يعطي الإجابة.</li></ul>
+<h2 id="ch1-s7">أين لا يكون الخيار الأفضل</h2>
+<p>ليس مصدرا للأرقام الرسمية ولا للأخبار اللحظية إلا مع تفعيل البحث، وحتى حينها افتح المصدر بنفسك قبل أي قرار مهم. وليس بديلا عن مختص في المسائل القانونية والطبية والمالية.</p>
+<div class="callout warn"><div class="t">قاعدة قبل كل شيء</div><p>لا تضع في المحادثة ما لا تريد أن يخرج من جهازك: كلمات مرور، ومفاتيح، وبيانات عملاء حقيقية. إذا احتجت تحليل بيانات حساسة، احذف المعرفات الشخصية أولا واستبدلها برموز.</p></div>
+<h1 class="chapter" id="ch2"><span class="num">الفصل الثاني</span>النماذج الحالية وكيف تختار</h1><p class="lead">أسرع تحسين لنتائجك ليس في صياغة أفضل، بل في اختيار النموذج المناسب للمهمة.</p>
+<div class="sectionlead"><p>كل ما في هذا الفصل مأخوذ من الصفحات الرسمية بتاريخ التحقق المذكور في صفحة المعلومات. النماذج والخطط تتغير بسرعة، فراجع صفحة النماذج الرسمية قبل الاعتماد على تفصيل بعينه.</p></div>
+<h2 id="ch2-s2">منطق التسمية</h2>
+<p>بحسب الإعلان الرسمي، الرقم يحدد جيل النموذج، بينما تحدد الأسماء Sol و Terra و Luna مستويات قدرة ثابتة يمكن أن تتطور كل واحدة منها بوتيرتها الخاصة. أي أن «Sol» ليست نسخة بل مستوى.</p>
+<h2 id="ch2-s4">عائلة GPT-5.6</h2>
+<table class="data"><thead><tr><th>النموذج</th><th>لماذا وجد</th></tr></thead><tbody><tr><td>GPT-5.6 Sol</td><td>التفكير الطليعي والعمل الوكيل الممتد: البرمجة والعمل المعرفي والبحث والأمن السيبراني والعلوم والتصميم</td></tr><tr><td>GPT-5.6 Sol Pro</td><td>أعلى خيار قدرة ضمن هذه العائلة، للمهام الصعبة وسير العمل الأطول</td></tr><tr><td>GPT-5.6 Terra</td><td>النموذج المتوازن للاستخدام اليومي</td></tr><tr><td>GPT-5.6 Luna</td><td>الأسرع والأقل تكلفة في العائلة</td></tr></tbody></table>
+<h2 id="ch2-s6">الجيل الأحدث</h2>
+<p>مركز المساعدة يذكر أن <strong>GPT-6 Pro</strong>، المدعوم بـ <strong>GPT-6 Astra</strong>، يطرح تدريجيا في ChatGPT لخطط Pro بمستوييها و Business و Enterprise، وأن الطرح تدريجي وأن التوفر قد يختلف بين Chat و Work و Codex.</p>
+<h2 id="ch2-s8">أي خطة تصل إلى ماذا</h2>
+<table class="data"><thead><tr><th>الخطة</th><th>الوصول إلى النماذج كما هو موثق</th></tr></thead><tbody><tr><td>Free و Go</td><td>GPT-5.6 Luna يصبح النموذج الافتراضي لمستخدمي Free و Go</td></tr><tr><td>Plus</td><td>الوصول إلى GPT-5.6 Sol عند مستويات جهد متوسطة فأعلى، مع إمكانية الاختيار بين Sol و Terra و Luna وضبط مستوى الجهد لكل واحد</td></tr><tr><td>Pro</td><td>ما في Plus، ويشمل GPT-5.6 Sol Pro، ويشمل GPT-6 Astra في Chat و Work و Codex مع طرحه</td></tr><tr><td>Business و Enterprise</td><td>الاختيار بين نماذج العائلة، ويشمل GPT-6 Pro مع طرحه</td></tr></tbody></table>
+<div class="callout warn"><div class="t">ما لم نتحقق منه</div><p>مصفوفة الخطط الكاملة لكل ميزة — لا لكل نموذج — لم يتحقق منها في هذا الدليل، وهي تتغير. إذا كنت ستشترك من أجل ميزة بعينها، افتح صفحة الأسعار الرسمية وتأكد من إدراج الميزة في الخطة قبل الدفع.</p></div>
+<h2 id="ch2-s11">قاعدة اختيار عملية</h2>
+<table class="data"><thead><tr><th>نوع المهمة</th><th>المستوى المناسب</th><th>لماذا</th></tr></thead><tbody><tr><td>سؤال سريع، إعادة صياغة، ترجمة قصيرة</td><td>الأسرع المتاح لك</td><td>السرعة أهم من العمق</td></tr><tr><td>تحليل مستند، أو بناء خطة، أو مقارنة قرارات</td><td>الأقوى المتاح لك</td><td>الخطأ هنا مكلف</td></tr><tr><td>عمل ممتد متعدد الخطوات لا تريد متابعته</td><td>المستوى الطليعي داخل Work</td><td>مصمم للعمل الوكيل الأطول</td></tr><tr><td>عمل برمجي داخل مشروع</td><td>Codex</td><td>مخصص للتطوير والعمل التقني</td></tr></tbody></table>
+<h2 id="ch2-s13">نماذج لم تعد موجودة</h2>
+<p>مركز المساعدة يذكر أن نماذج GPT-5.1 — أي Instant و Thinking و Pro — لم تعد متاحة في ChatGPT اعتبارا من 11 مارس 2026، وأن هناك صفحة مستقلة لتقاعد GPT-4o ونماذج أقدم. إذا وجدت شرحا يعتمد على هذه الأسماء فهو قديم.</p>
+<div class="callout tip"><div class="t">خدعة عملية</div><p>ابدأ المهمة الكبيرة بالنموذج الأقوى حتى تستقر الخطة والبنية، ثم أكمل التنفيذ المتكرر بنموذج أسرع. تحافظ على الجودة وتقلل الاستهلاك.</p></div>
+<h1 class="chapter" id="ch3"><span class="num">الفصل الثالث</span>كيف تكتب طلبا يستفيد من الأداة</h1><p class="lead">الطلب العام يعطي نتيجة عامة على أي أداة. الطلب الجيد يحدد النتيجة والشكل والقيد، ويستدعي القدرة المناسبة صراحة.</p>
+<h2 id="ch3-s1">الأركان الستة</h2>
+<ol class="steps"><li><span class="sh">الهدف</span>النتيجة النهائية لا الموضوع.</li><li><span class="sh">السياق</span>لمن، وأين يستخدم، ولماذا يهم.</li><li><span class="sh">المدخلات</span>الملفات أو النصوص أو الروابط.</li><li><span class="sh">القيود</span>الطول، واللغة، وما يجب تجنبه.</li><li><span class="sh">شكل المخرج</span>جدول أم قائمة أم فقرات — حدده صراحة.</li><li><span class="sh">معيار النجاح</span>كيف نعرف أن الناتج جيد.</li></ol>
+<p>لا تحتاج الأركان الستة في كل طلب. المهمة البسيطة تحتاج هدفا وشكل مخرج، والمعقدة تحتاجها كلها. الإطالة بلا سبب تضر بقدر النقص.</p>
+<h2 id="ch3-s4">استدع القدرة صراحة</h2>
+<p>هذه هي النقطة التي تفرق بين استخدام ChatGPT وبين استخدام أي نموذج عام. لا تكتف بالسؤال، بل حدد الأداة:</p>
+<table class="data"><thead><tr><th>بدل أن تقول</th><th>قل</th></tr></thead><tbody><tr><td>ما آخر أخبار كذا</td><td>ابحث على الويب واذكر مصدرا لكل معلومة، ثم لخص</td></tr><tr><td>اكتب لي بحثا عن كذا</td><td>استخدم البحث العميق لبناء تقرير بمصادر عن كذا</td></tr><tr><td>ساعدني في هذا الملف</td><td>اقرأ الملف المرفق واستخرج البنود المتعلقة بـ كذا</td></tr><tr><td>حسن هذا النص</td><td>افتح النص في مساحة التحرير Canvas وعدل الفقرة الثانية فقط</td></tr><tr><td>علمني هذا الموضوع</td><td>شغل وضع الدراسة واختبرني في كذا</td></tr></tbody></table>
+<h2 id="ch3-s7">من طلب سيئ إلى طلب جيد</h2>
+<div class="promptbox standalone"><div class="lbl">قالب عام صالح لأي مهمة كتابية</div><div class="txt">اكتب [نوع النص] عن [الموضوع] لجمهور
+[الجمهور]
+
+الهدف:
+[الهدف]
+الطول:
+[الطول]
+البنية:
+[البنية المطلوبة]
+النبرة: عملية ومباشرة، بلا مبالغة تسويقية
+تجنب:
+[ما يجب تجنبه]
+
+معيار النجاح:
+[ما الذي يجب أن يخرج به القارئ]
+
+اذكر الافتراضات التي بنيت عليها ردك.
+إذا كانت معلومة ضرورية ناقصة، اذكرها واسأل عنها ولا تفترضها.</div></div>
+<div class="callout tip"><div class="t">أسرع تحسين ستفعله اليوم</div><p>أضف إلى نهاية أي طلب مهم سطرين: «اذكر الافتراضات التي بنيت عليها ردك» و«اذكر ما نقصك من معلومات». سترى فورا أين كان طلبك ناقصا.</p></div>
+<h2 id="ch3-s10">ضبط مستوى الجهد</h2>
+<p>الإعلان الرسمي يذكر أن مستخدمي Plus و Pro و Business و Enterprise يستطيعون الاختيار بين نماذج العائلة وضبط مستوى جهد لكل واحد. عمليا: ارفع الجهد للمهام التحليلية الصعبة، واخفضه للمهام الروتينية حتى تكسب سرعة.</p>
+<h1 class="chapter" id="ch4"><span class="num">الفصل الرابع</span>الملفات وتحليل المستندات</h1><p class="lead">هنا يتحول ChatGPT من مساعد كتابة إلى أداة عمل: ترفع مستندا وتطلب تقريرا.</p>
+<h2 id="ch4-s1">اربط القراءة بقرار</h2>
+<p>الخطأ الشائع أن تكتب «لخص الملف». التلخيص بلا غرض يعطي كلاما عاما. اربط القراءة بقرار ستتخذه:</p>
+<div class="promptbox standalone"><div class="lbl">برومبت قراءة مستند</div><div class="txt">المستند مرفق. سأستخدم قراءتك لأجل:
+[الهدف]
+
+أعطني بهذا الترتيب:
+أولا. خلاصة في خمس نقاط، كل نقطة مرتبطة بهدفي أعلاه
+ثانيا. الأرقام والتواريخ والالتزامات المهمة
+ثالثا. ثلاث نقاط غامضة أو قابلة لأكثر من تفسير
+رابعا. الأسئلة التي يجب أن أطرحها قبل أن أقرر
+
+قواعد:
+اذكر موضع كل معلومة داخل المستند.
+إذا لم يذكر المستند معلومة، اكتب: غير مذكور في المستند.
+لا تكمل من معرفتك العامة.</div></div>
+<h2 id="ch4-s4">مقارنة عدة مستندات</h2>
+<div class="promptbox standalone"><div class="lbl">برومبت المقارنة</div><div class="txt">قارن بين المستندات المرفقة على هذه المعايير:
+[المعايير بترتيب الأهمية]
+
+المخرج:
+أولا. جدول: صف لكل مستند، عمود لكل معيار، والخلية تحتوي ما ذكره المستند لا رأيك
+ثانيا. صف يوضح أي مستند لم يذكر هذا المعيار أصلا
+ثالثا. فقرة واحدة: أيها أنسب لحالتي وهي [الحالة] ولماذا
+رابعا. ما الذي لا تكفي المستندات للحكم عليه
+
+إذا لم يذكر مستند معيارا فاكتب: غير مذكور. لا تستنتج.</div></div>
+<h2 id="ch4-s6">الصور ولقطات الشاشة</h2>
+<p>يمكنك رفع صورة ولقطة شاشة والسؤال عنها: قراءة جدول من صورة، أو شرح رسالة خطأ، أو تفسير مخطط. وعند رفع لقطة لخطأ برمجي، أرفق معها ما كنت تحاول فعله وما توقعته — الصورة وحدها تعطي نصف الإجابة.</p>
+<div class="callout warn"><div class="t">قبل أن ترفع</div><p>المستندات الحقيقية تحتوي أسماء وأرقاما وعناوين وبيانات أشخاص. احذف ما لا يحتاجه التحليل. الملف الذي رفعته لا يمكن سحبه بعد رفعه.</p></div>
+<h1 class="chapter" id="ch5"><span class="num">الفصل الخامس</span>البحث على الويب والبحث العميق</h1><p class="lead">معلومات النموذج تتوقف عند تاريخ. لتجاوز ذلك مساران مختلفان تماما، والخلط بينهما يضيع وقتك.</p>
+<h2 id="ch5-s1">الفرق العملي</h2>
+<table class="data"><thead><tr><th>السؤال</th><th>الأداة المناسبة</th></tr></thead><tbody><tr><td>ما آخر إصدار من أداة معينة؟</td><td>بحث على الويب</td></tr><tr><td>اقرأ هذه الصفحة ولخصها</td><td>بحث على الويب مع إعطاء الرابط</td></tr><tr><td>ابن تقريرا مقارنا عن سوق كذا</td><td>البحث العميق</td></tr><tr><td>اجمع كل ما كتب عن كذا مع مصادر</td><td>البحث العميق</td></tr></tbody></table>
+<p>مركز المساعدة يصف البحث العميق بأنه مصمم لمهام البحث متعددة الخطوات: يقرأ ChatGPT محتوى من مصادر متعددة عبر الإنترنت ويجمعه، وينتج مخرجات منظمة مع استشهادات. وهو مفيد للاستراتيجية والتقارير ومراجعات الأدبيات.</p>
+<div class="callout note"><div class="t">توقع الوقت</div><p>البحث العميق ليس ردا فوريا. هو عملية تستغرق وقتا ويقرأ فيها ChatGPT مصادر متعددة. اطلبه عندما تريد تقريرا، لا عندما تريد إجابة سريعة.</p></div>
+<h2 id="ch5-s5">برومبت بحث لا يعطيك كلاما عاما</h2>
+<div class="promptbox standalone"><div class="lbl">ابحث بمصادر</div><div class="txt">ابحث على الويب عن:
+[الموضوع]
+
+المطلوب:
+أولا. الوضع الحالي في خمس نقاط، مع رابط لكل نقطة
+ثانيا. ما تغير خلال آخر اثني عشر شهرا
+ثالثا. نقاط تختلف فيها المصادر، مع ذكر الخلاف صراحة
+رابعا. ما لم أجد له مصدرا موثوقا
+
+القواعد:
+المصادر الرسمية أولا، والثانوية للتأكيد فقط
+لا تذكر معلومة بلا رابط
+إذا كان المصدر قديما، اذكر تاريخه</div></div>
+<h2 id="ch5-s7">برومبت تقرير عميق</h2>
+<div class="promptbox standalone"><div class="lbl">تقرير مبني على مصادر</div><div class="txt">استخدم البحث العميق لبناء تقرير عن:
+[الموضوع]
+
+الجمهور:
+[الجمهور]
+القرار الذي سيبنى عليه:
+[القرار]
+
+بنية التقرير:
+أولا. خلاصة تنفيذية في خمس نقاط
+ثانيا. الوضع الحالي، مع مصدر لكل ادعاء
+ثالثا. الاتجاهات والتغيرات خلال آخر عام
+رابعا. وجهات النظر المتعارضة، مع ذكر من يقول ماذا
+خامسا. ما لا تكفي المصادر المتاحة للحكم عليه
+سادسا. قائمة المصادر مرتبة بالموثوقية
+
+القواعد:
+لا تخلط بين ما ورد في مصدر وما استنتجته أنت — ميزهما صراحة
+إذا كان مصدر غير رسمي، قل ذلك
+لا تعط رقما بلا تاريخ ومصدر</div></div>
+<div class="callout warn"><div class="t">قاعدة التحقق</div><p>الاستشهاد ليس تحققا. افتح مصدرين على الأقل من كل تقرير وتأكد أن الرقم المذكور موجود فعلا في الصفحة. الأخطاء التي تمر عادة هي الأرقام المنقولة من مصدر ثانوي لا الادعاءات الكبيرة.</p></div>
+<h1 class="chapter" id="ch6"><span class="num">الفصل السادس</span>المشاريع Projects</h1><p class="lead">المحادثة المنفردة تنسى. المشروع يجمع السياق. إذا كان عملك يمتد أسابيع، فالمشروع ليس رفاهية.</p>
+<h2 id="ch6-s1">ما هو المشروع</h2>
+<p>بحسب مركز المساعدة، المشاريع تتيح تنظيم المحادثات والملفات والسياق تحت هدف مشترك، وهي مناسبة لسير العمل الممتد عبر عدة جلسات، وللتعاون، وللمواضيع البحثية طويلة الأمد.</p>
+<h2 id="ch6-s3">متى تنشئ مشروعا</h2>
+<ul class="b"><li>بحث أو مشروع تخرج يمتد لأشهر</li><li>قناة محتوى لها نبرة وقواعد ثابتة</li><li>عميل أو منتج له مستندات مرجعية متكررة</li><li>مادة دراسية لها مصطلحات ومنهج</li></ul>
+<p>لا تنشئ مشروعا لسؤال عابر. كثرة المشاريع الفارغة تشتت أكثر مما تنظم.</p>
+<h2 id="ch6-s6">تعليمات المشروع</h2>
+<div class="promptbox standalone"><div class="lbl">نموذج تعليمات مشروع</div><div class="txt">السياق:
+أنا [دورك] وأعمل على [المشروع]. الجمهور:
+[الجمهور]
+
+اللغة والأسلوب:
+العربية الواضحة، والمصطلح الإنجليزي عند الحاجة فقط
+جمل قصيرة، بلا مبالغة تسويقية
+
+قواعد ثابتة:
+استخدم المصطلحات كما وردت في ملفات المشروع، لا مرادفات
+إذا نقصتك معلومة، اسأل ولا تفترض
+عند ذكر رقم أو تاريخ، اذكر مصدره من ملفات المشروع
+
+المخرج الافتراضي:
+عناوين واضحة، ثم نقاط، ثم خطوة عملية واحدة في النهاية</div></div>
+<div class="callout tip"><div class="t">أربعة ملفات تكفي</div><p>ملف السياق والقواعد، وملف المصطلحات، وملف أمثلة على أسلوبك، وملف القرارات السابقة. حدث ملف القرارات كلما اتخذت قرارا مهما — هو الذي يمنع مخالفة اختياراتك لاحقا.</p></div>
+<h1 class="chapter" id="ch7"><span class="num">الفصل السابع</span>Canvas: مساحة التحرير المشتركة</h1><p class="lead">الفرق بين تحرير مستند وبين توليد نسخة جديدة في كل مرة. Canvas يجعل المخرج شيئا تعدله لا رسالة تعيد طلبها.</p>
+<h2 id="ch7-s1">ما هو</h2>
+<p>بحسب مركز المساعدة، Canvas مساحة عمل تفاعلية للكتابة المشتركة والتحرير أو تصحيح الكود جنبا إلى جنب مع ChatGPT، تستطيع فيها وضع علامات على النص، وتلقي اقتراحات داخل السياق، واستخدام أدوات مثل رفع الملفات وتحرير الكود في مساحة مشتركة.</p>
+<h2 id="ch7-s3">متى تستخدمه</h2>
+<table class="data"><thead><tr><th>الحالة</th><th>بدونه</th><th>معه</th></tr></thead><tbody><tr><td>مقال طويل تعدله مرارا</td><td>تعيد توليد النص كله في كل مرة</td><td>تعدل فقرة محددة وتبقي الباقي</td></tr><tr><td>كود تصححه تدريجيا</td><td>تنسخ وتلصق بين نافذتين</td><td>تعدل في مكان واحد</td></tr><tr><td>مستند يمر بمراجعات</td><td>تفقد النسخ السابقة</td><td>تبني على نسخة واحدة</td></tr></tbody></table>
+<h2 id="ch7-s5">طريقة العمل الصحيحة</h2>
+<ol class="steps"><li><span class="sh">ابدأ بمسودة كاملة</span>لا تبدأ بفقرة وتبن عليها — ابدأ بهيكل كامل ولو ضعيفا.</li><li><span class="sh">عدل جزءا واحدا في كل طلب</span>«عدل الفقرة الثانية لتكون أقصر» أدق من «حسن النص».</li><li><span class="sh">حدد ما لا يتغير</span>«لا تغير العناوين» يمنع تعديلات لم تطلبها.</li><li><span class="sh">راجع الفرق بنفسك</span>لا تفترض أن التعديل مس ما طلبته فقط.</li></ol>
+<div class="promptbox standalone"><div class="lbl">برومبت تعديل جزئي في Canvas</div><div class="txt">عدل في المستند المفتوح ما يلي فقط:
+
+[الجزء المطلوب تعديله]:
+[التعديل المطلوب]
+
+لا تغير:
+العناوين
+ترتيب الأقسام
+أي فقرة لم أذكرها
+
+بعد التعديل، اذكر في سطرين ما الذي غيرته بالضبط.</div></div>
+<h1 class="chapter" id="ch8"><span class="num">الفصل الثامن</span>وضع الوكيل Agent mode</h1><p class="lead">وضع الوكيل ينقلك من طلب رد إلى طلب إنجاز. وهو أيضا الوضع الذي يحتاج أوضح التعليمات، لأنه ينفذ لا يقترح.</p>
+<h2 id="ch8-s1">كيف يعمل</h2>
+<p>بحسب مركز المساعدة، تبدأ وضع الوكيل باختياره من قائمة الأدوات أو بكتابة <code class="inline">/agent</code> في مربع الكتابة، ثم تصف المهمة التي تريد إنجازها فيبدأ الوكيل بتنفيذها، ويتوقف لطلب توضيح أو تأكيد عند الحاجة.</p>
+<h2 id="ch8-s3">كيف تكتب مهمة لوكيل</h2>
+<p>الفرق عن الطلب العادي أن الوكيل سينفذ خطوات متتابعة. فما يهم ليس فقط النتيجة بل حدود العمل ومعيار التوقف:</p>
+<div class="promptbox standalone"><div class="lbl">قالب مهمة وكيل</div><div class="txt">المهمة:
+[المهمة]
+
+النتيجة النهائية المطلوبة:
+[المخرج]
+شكل المخرج:
+[الشكل]
+
+الحدود:
+لا تفعل:
+[ما يجب ألا يفعله]
+اتوقف واسألني إذا:
+[الحالات التي تحتاج قراري]
+الحد الأقصى للخطوات قبل أن تعرض تقدمك:
+[العدد]
+
+المعلومات المتاحة:
+[المعلومات]
+المعلومات التي قد تنقصك: اذكرها واسأل عنها بدل افتراضها
+
+عند الانتهاء: اعرض ما فعلته خطوة بخطوة، وما لم تستطع إنجازه ولماذا.</div></div>
+<div class="callout warn"><div class="t">قواعد استخدام الوكيل بأمان</div><p>لا تعطه مهمة لا تستطيع مراجعة نتيجتها. الوكيل ينفذ بسرعة، والمراجعة مسؤوليتك.</p><p>حدد صراحة متى يتوقف ويسألك. الوكيل الذي لا يعرف متى يسأل يفترض.</p><p>لا تربطه بحسابات أو أدوات حساسة لمهمة تجريبية.</p></div>
+<h2 id="ch8-s7">متى لا تستخدمه</h2>
+<ul class="b"><li>المهام التي تعرف إجابتها وتريدها سريعا — المحادثة العادية أسرع.</li><li>المهام التي يتغير تعريفها أثناء العمل — حدد أولا ثم شغل الوكيل.</li><li>المهام التي لا تستطيع التحقق من صحتها — النتيجة بلا تحقق ليست إنجازا.</li></ul>
+<h1 class="chapter" id="ch9"><span class="num">الفصل التاسع</span>الذاكرة والتطبيقات والموصلات</h1><h2 id="ch9-s0">الذاكرة</h2>
+<p>بحسب مركز المساعدة، عند تفعيل الذاكرة يستطيع ChatGPT تذكر حقائق مفيدة شاركتها — كاسمك أو تفضيلاتك أو أهدافك — لتخصيص الردود لاحقا. وتستطيع عرض الذكريات وتحريرها أو حذفها في أي وقت.</p>
+<div class="callout tip"><div class="t">عادة شهرية</div><p>افتح إعدادات الذاكرة مرة كل شهر واقرأ ما حفظ. احذف ما لم يعد صحيحا. الذاكرة القديمة الخاطئة أسوأ من عدم وجود ذاكرة، لأن ردودا لاحقة تبنى عليها.</p></div>
+<h2 id="ch9-s3">ما يستحق أن يحفظ وما لا يستحق</h2>
+<table class="data"><thead><tr><th>يستحق</th><th>لا يستحق</th></tr></thead><tbody><tr><td>دورك ومجال عملك</td><td>تفاصيل مهمة انتهت</td></tr><tr><td>تفضيلاتك في الأسلوب واللغة</td><td>معلومة مؤقتة تتغير أسبوعيا</td></tr><tr><td>أدواتك التي تستخدمها</td><td>أي بيانات شخصية حساسة</td></tr><tr><td>قرارات ثابتة في مشروعك</td><td>أرقام ستتغير</td></tr></tbody></table>
+<h2 id="ch9-s5">التطبيقات والموصلات</h2>
+<p>بحسب مركز المساعدة، تتيح لك التطبيقات والموصلات إحضار أدواتك وبياناتك إلى ChatGPT، فتبحث فيها وتشير إليها وتعمل عليها دون مغادرة المحادثة.</p>
+<div class="callout warn"><div class="t">قاعدة الصلاحية الأقل</div><p>كل موصل تفعله يعطي وصولا إلى بياناتك. فعل ما تستخدمه فعلا، وأوقف ما لم تعد تستخدمه، وراجع القائمة دوريا. الموصل المنسي هو أكبر مخاطرة صامتة في أي حساب.</p></div>
+<h1 class="chapter" id="ch10"><span class="num">الفصل العاشر</span>المهام المجدولة Tasks</h1><p class="lead">الفرق بين أداة تسألها وأداة تعمل لك في الخلفية.</p>
+<h2 id="ch10-s1">ما هي</h2>
+<p>مركز المساعدة يذكر أن المهام تتيح أتمتة العمل المتكرر داخل ChatGPT. الفكرة بسيطة: بدل أن تفتح المحادثة كل صباح وتطلب الشيء نفسه، تجدوله مرة.</p>
+<h2 id="ch10-s3">ما يستحق الجدولة</h2>
+<table class="data"><thead><tr><th>المهمة</th><th>التكرار المناسب</th></tr></thead><tbody><tr><td>ملخص أخبار مجالك</td><td>يوميا أو أسبوعيا</td></tr><tr><td>تذكير بمراجعة خطة الأسبوع</td><td>أسبوعيا</td></tr><tr><td>متابعة تغير في موضوع تراقبه</td><td>أسبوعيا</td></tr><tr><td>أسئلة مراجعة في مادة تدرسها</td><td>يوميا خلال فترة الدراسة</td></tr></tbody></table>
+<div class="callout warn"><div class="t">لا تجدول ما لا تقرؤه</div><p>المهمة التي تنتج تقريرا لا تفتحه ليست أتمتة بل ضجيج. ابدأ بمهمة واحدة، واستخدمها أسبوعين، ثم قرر: هل تستحق البقاء؟</p></div>
+<h2 id="ch10-s6">برومبت مهمة مجدولة</h2>
+<div class="promptbox standalone"><div class="lbl">صيغة تصلح للتكرار</div><div class="txt">كل [التكرار] في
+[الوقت]
+
+ابحث على الويب عن أهم ما جد في [الموضوع] منذ آخر مرة.
+
+المخرج:
+أولا. ثلاث نقاط فقط، الأهم أولا، مع رابط لكل نقطة
+ثانيا. سطر واحد: هل يوجد شيء يستدعي إجراء مني
+ثالثا. إذا لم يجد شيء يستحق، اكتب: لا جديد يستحق الانتباه، ولا تختلق محتوى
+
+القواعد:
+لا تكرر ما ذكرته في المرة السابقة
+لا تتجاوز مئتي كلمة</div></div>
+<h1 class="chapter" id="ch11"><span class="num">الفصل الحادي عشر</span>وضع الدراسة Study mode</h1><p class="lead">أهم ميزة للطلاب في المنتج كله، ولسبب مخالف للحدس: لأنها تمتنع عن إعطاء الإجابة.</p>
+<h2 id="ch11-s1">ما هو</h2>
+<p>بحسب مركز المساعدة، وضع الدراسة تجربة تعلم داخل ChatGPT تساعدك على بناء فهم أعمق لموضوع، عبر طرح الأسئلة، وتوجيه تفكيرك، وشرح الأفكار خطوة بخطوة، والتحقق من فهمك أثناء تقدمك. وهو متاح عبر خطط ChatGPT عالميا على الويب و iOS و Android، ومتاح لكل نماذج ChatGPT.</p>
+<h2 id="ch11-s3">لماذا يهم</h2>
+<p>لأن الحصول على الحل يبني إحساسا بالفهم لا الفهم نفسه. القراءة سهلة والاسترجاع صعب، وما يبني المهارة هو الاسترجاع. وضع الدراسة يجبرك على الاسترجاع بدل الاكتفاء بالتعرف.</p>
+<h2 id="ch11-s5">كيف تستخدمه بشكل صحيح</h2>
+<ol class="steps"><li><span class="sh">ادرس أولا ثم ادخل الوضع</span>الوضع يختبر فهمك، ولا يغني عن القراءة الأولى.</li><li><span class="sh">اكتب إجابتك كاملة</span>الإجابة المختصرة تخفي الفجوة ولا تسدها.</li><li><span class="sh">لا تطلب الحل عند التعثر</span>اطلب تلميحا. الفرق بينهما هو الفرق بين التعلم وعدمه.</li><li><span class="sh">أعد المحاولة بعد التصحيح</span>لا تكتف بقراءة التصحيح — أعد الحل من الصفر.</li></ol>
+<div class="promptbox standalone"><div class="lbl">طلب اختبار ذاتي</div><div class="txt">اختبرني في [الموضوع] بمستوى
+[المستوى]
+
+القواعد:
+اطرح سؤالا واحدا فقط ثم توقف وانتظر إجابتي
+ابدأ بسؤال فهم، ثم تطبيق، ثم حالة حدية، ثم سؤال يكشف سوء فهم شائع
+بعد كل إجابة: ما الصحيح فيها، وما الناقص، ولماذا أخطأت إن أخطأت
+إذا أخطأت مرتين في النقطة نفسها، توقف واشرحها بزاوية مختلفة
+لا تعطني الإجابة قبل أن أحاول
+
+ابدأ بالسؤال الأول الآن.</div></div>
+<h1 class="chapter" id="ch12"><span class="num">الفصل الثاني عشر</span>الصوت و ChatGPT Work و Codex</h1><h2 id="ch12-s0">ChatGPT Work</h2>
+<p>بحسب مركز المساعدة، Work وكيل مصمم للعمل الأطول متعدد الخطوات وللمخرجات المنجزة. أي أنه ليس نافذة محادثة أسرع، بل سياق مختلف تسلم فيه مهمة وتستلم نتيجة.</p>
+<h2 id="ch12-s2">Codex</h2>
+<p>Codex يبقى مخصصا لتطوير البرمجيات والعمل التقني. ومركز المساعدة يذكر أن <strong>Codex Remote</strong> متاح بشكل عام على كل خطط ChatGPT، ويتيح بدء العمل أو متابعته على جهاز Mac أو Windows متصل من تطبيق ChatGPT على الهاتف، ومراجعة التقدم والموافقة على الإجراءات من الهاتف.</p>
+<h2 id="ch12-s4">الصوت</h2>
+<p>بحسب مركز المساعدة، يضيف ChatGPT Voice واجهة صوتية حية إلى Work و Codex في تطبيق ChatGPT لسطح المكتب، فتتحدث وتقاطع بشكل طبيعي وتنسق المهام باستخدام الأدوات والصلاحيات المتاحة للتجربة المختارة. ويتيح الصوت في Work و Codex بدء المهام، ومتابعة التقدم، وسؤال عن وكلائك، وتنسيق عدة وكلاء عبر محادثة واحدة. وهو متاح في تطبيق سطح المكتب على macOS و Windows، مع وصول عن بعد مقترن من iOS.</p>
+<h2 id="ch12-s6">إضافات تعليمية</h2>
+<p>ملاحظات الإصدار تذكر ثلاث إضافات لـ Work و Codex تساعد الطلاب والمعلمين على العمل مع موادهم الدراسية: College Student لإنشاء أدلة مذاكرة واختبارات تدريبية، و College Educator لتطوير المناهج والمواد، و K-12 Educator لتخطيط الدروس وإنشاء موارد الصف.</p>
+<div class="callout note"><div class="t">ملاحظة عن التوفر</div><p>هذه السياقات والميزات تطرح تدريجيا وتختلف بحسب الخطة والمنصة. إذا لم تجد شيئا مما ذكر، فافتح صفحته الرسمية للتأكد من حالته وخطته وقت قراءتك.</p></div>
+<h1 class="chapter" id="ch13"><span class="num">الفصل الثالث عشر</span>ChatGPT ليس OpenAI API</h1><p class="lead">هذا أكثر خلط شائع في المحتوى العربي التقني، ويؤدي إلى قرارات خاطئة وإلى توقعات لا تتحقق.</p>
+<h2 id="ch13-s1">الفرق</h2>
+<table class="data"><thead><tr><th></th><th>ChatGPT</th><th>واجهة OpenAI البرمجية</th></tr></thead><tbody><tr><td>ما هو</td><td>منتج للمستخدم النهائي</td><td>خدمة يبني عليها المطورون</td></tr><tr><td>كيف تستخدمه</td><td>تفتح تطبيقا وتكتب</td><td>تكتب كودا يرسل طلبات</td></tr><tr><td>الدفع</td><td>اشتراك شهري بخطة</td><td>بحسب الاستهلاك، غالبا لكل مليون رمز</td></tr><tr><td>الميزات</td><td>مشاريع، وذاكرة، وبحث عميق، ووضع دراسة، ووكيل</td><td>نماذج وأدوات تبني أنت واجهتها</td></tr><tr><td>من يناسبه</td><td>كل مستخدم</td><td>من يبني تطبيقا</td></tr></tbody></table>
+<h2 id="ch13-s3">الأخطاء التي يسببها الخلط</h2>
+<ul class="b"><li>افتراض أن ميزة في ChatGPT متاحة تلقائيا لمن يستخدم الواجهة البرمجية. ليست كذلك: المشاريع والذاكرة ووضع الدراسة ميزات منتج لا نقاط نهاية.</li><li>افتراض أن اشتراك ChatGPT يشمل استخدام الواجهة البرمجية. الفوترة منفصلة.</li><li>مقارنة تكلفة اشتراك شهري بتكلفة استهلاك رموز. لا يقارنان.</li><li>قراءة سعر لكل مليون رمز والظن أنه سعر ChatGPT.</li></ul>
+<div class="callout note"><div class="t">متى تحتاج الواجهة البرمجية فعلا</div><p>عندما تبني منتجا يستدعي النموذج تلقائيا: تطبيقك، أو سكربت يعالج آلاف السجلات، أو تكامل داخل نظامك. أما إن كان استخدامك أنت شخصيا للتحليل والكتابة والبحث فأنت تحتاج ChatGPT لا الواجهة.</p></div>
+<p>ملاحظة على الأسعار: أعلنت OpenAI أسعار عائلة GPT-5.6 لكل مليون رمز، ثم خفضت في 30 يوليو 2026 سعر Luna بنسبة ثمانين بالمئة وسعر Terra بنسبة عشرين بالمئة. الأسعار تتغير، فراجع صفحة التسعير الرسمية قبل بناء تقدير تكلفة.</p>
+<h1 class="chapter" id="ch14"><span class="num">الفصل الرابع عشر</span>أخطاء شائعة وأفضل الممارسات</h1><h2 id="ch14-s0">عشرة أخطاء وإصلاحها</h2>
+<table class="data"><thead><tr><th>الخطأ</th><th>الإصلاح</th></tr></thead><tbody><tr><td>طلب عام بلا جمهور ولا هدف</td><td>أضف الجمهور والهدف وشكل المخرج</td></tr><tr><td>استخدام نموذج واحد لكل شيء</td><td>بدل بحسب ثقل المهمة</td></tr><tr><td>الاعتماد على معلومة حديثة بلا بحث</td><td>فعل البحث واطلب المصادر وافتحها</td></tr><tr><td>طلب تقرير من محادثة عادية</td><td>استخدم البحث العميق</td></tr><tr><td>إعادة توليد النص كاملا عند كل تعديل</td><td>استخدم Canvas وعدل جزءا محددا</td></tr><tr><td>خلط عدة مهام في محادثة واحدة</td><td>محادثة لكل هدف، ومشروع لكل عمل ممتد</td></tr><tr><td>ترك الذاكرة بلا مراجعة</td><td>راجعها شهريا واحذف ما لم يعد صحيحا</td></tr><tr><td>تفعيل موصلات لا تستخدمها</td><td>أوقف كل ما لا تحتاجه</td></tr><tr><td>إعطاء وكيل مهمة لا تستطيع مراجعتها</td><td>حدد معيار التوقف وراجع النتيجة</td></tr><tr><td>قبول أول رد</td><td>اطلب: ما الذي يمكن تحسينه في ردك ولماذا</td></tr></tbody></table>
+<h2 id="ch14-s2">أفضل الممارسات في سبع نقاط</h2>
+<ol class="n"><li>ابدأ بالنتيجة: اكتب أولا كيف تريد المخرج أن يبدو.</li><li>استدع القدرة صراحة: بحث، أو بحث عميق، أو Canvas، أو وضع دراسة.</li><li>أعط أمثلة بدل أوصاف عندما يهمك الشكل والنبرة.</li><li>اطلب دائما ذكر الافتراضات والمعلومات الناقصة.</li><li>تحقق بنفسك من كل رقم أو تاريخ أو اقتباس قبل استخدامه.</li><li>نظم عملك الممتد في مشاريع لا في محادثات متناثرة.</li><li>احتفظ بمكتبة شخصية لطلباتك الناجحة وطورها.</li></ol>
+<h2 id="ch14-s4">الخصوصية</h2>
+<ul class="b"><li>لا ترفع بيانات لا تملك حق رفعها.</li><li>احذف المعرفات الشخصية من الملفات قبل الرفع.</li><li>راجع إعدادات الخصوصية والذاكرة في حسابك.</li><li>لا تعتمد على النموذج في مسائل قانونية أو طبية أو مالية بلا مختص.</li></ul>
+<h1 class="chapter" id="ch15"><span class="num">المرجع</span>ورقة المراجعة السريعة</h1><h2 id="ch15-s0">أي أداة لأي مهمة</h2>
+<table class="data"><thead><tr><th>أريد أن…</th><th>استخدم</th></tr></thead><tbody><tr><td>أفهم مستندا طويلا</td><td>رفع ملف + برومبت قراءة بهدف محدد</td></tr><tr><td>أعرف معلومة تتغير</td><td>البحث على الويب مع طلب المصادر</td></tr><tr><td>أبني تقريرا بمصادر</td><td>البحث العميق</td></tr><tr><td>أعدل نصا مرارا</td><td>Canvas</td></tr><tr><td>أنجز مهمة متعددة الخطوات</td><td>وضع الوكيل، أو ChatGPT Work</td></tr><tr><td>أعمل داخل مشروع برمجي</td><td>Codex</td></tr><tr><td>أتعلم موضوعا فعلا</td><td>وضع الدراسة</td></tr><tr><td>أكرر عملا دوريا</td><td>المهام المجدولة</td></tr><tr><td>أنظم عملا يمتد أسابيع</td><td>مشروع Project</td></tr></tbody></table>
+<h2 id="ch15-s2">هيكل أي طلب</h2>
+<div class="promptbox standalone"><div class="lbl">قالب عام</div><div class="txt">الهدف:
+[الهدف]
+السياق:
+[لمن، وأين يستخدم، ولماذا]
+المدخلات:
+[الملفات أو النصوص]
+القيود:
+[الطول، واللغة، وما يتجنب]
+شكل المخرج:
+[جدول / نقاط / فقرات]
+معيار النجاح:
+[متى نعتبره جيدا]
+
+اذكر الافتراضات التي بنيت عليها ردك.
+إذا نقصتك معلومة، اذكرها واسأل ولا تفترض.</div></div>
+<h2 id="ch15-s4">جمل تحسن أي رد</h2>
+<ul class="b"><li>اذكر الافتراضات التي بنيت عليها ردك.</li><li>اذكر ما نقصك من معلومات.</li><li>أعطني نسخة أقصر بنصف الطول دون فقدان معنى.</li><li>ما الذي يمكن تحسينه في ردك ولماذا؟</li><li>اذكر مصدر كل رقم أو تاريخ.</li><li>لا تخمن. إذا لم تكن متأكدا فقل ذلك.</li></ul>
+<h2 id="ch15-s6">روتين أسبوعي في عشر دقائق</h2>
+<ol class="n"><li>راجع الذاكرة واحذف ما لم يعد صحيحا.</li><li>راجع الموصلات المفعلة وأوقف ما لا تستخدمه.</li><li>راجع المهام المجدولة: أيها تقرؤه فعلا؟</li><li>احفظ أفضل طلبين استخدمتهما هذا الأسبوع.</li></ol>
+<section class="endpage">
+  <h1 class="chapter"><span class="num">THE END</span>الخلاصة والخطوة التالية</h1>
+  <p class="lead">أهم ما في هذا الدليل ليس قائمة الميزات، بل ثلاث عادات: أن تختار النموذج بحسب المهمة، وأن تستدعي القدرة المناسبة صراحة بدل الطلب العام، وأن تتحقق بنفسك من كل معلومة ستبني عليها قرارا.</p>
+<h2>ماذا تفعل غدا</h2>
+<ol class="n"><li>اختر مهمة تكررها أسبوعيا واكتب لها طلبا مكتمل الأركان.</li><li>أنشئ مشروعا واحدا لعمل يمتد أكثر من أسبوع.</li><li>جرب البحث العميق مرة على موضوع يهمك فعلا.</li><li>راجع ذاكرتك وموصلاتك ونظفها.</li></ol>
+<h2>بقية السلسلة</h2>
+<ul class="b"><li>60 برومبت احترافي لـ ChatGPT — مكتبة مبنية على قدرات هذا الدليل.</li><li>دليل Claude العملي — الأداة الأخرى التي تستحق المقارنة.</li><li>ChatGPT أم Claude أم Grok — دليل اختيار الأداة لكل مهمة.</li></ul>
+<div class="callout note"><div class="t">تنبيه عن التاريخ</div><p>تمت مراجعة كل ميزة ونموذج في هذا الدليل من مركز المساعدة والصفحات الرسمية بتاريخ 6 سبتمبر 2026. المنتج يتغير بسرعة وبعض الميزات في طرح تدريجي: إذا وجدت اختلافا بين ما هنا وما تراه على شاشتك، فالمصدر الرسمي هو المرجع.</p></div>
+  <div class="endcard">
+    <div class="h">برومبتات عربية</div>
+    <p>هذا المنتج من إنتاج قناة برومبتات عربية.<br>لمتابعة الأدلة والبرومبتات الجديدة:</p>
+    <p><a href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+</section></body></html>
