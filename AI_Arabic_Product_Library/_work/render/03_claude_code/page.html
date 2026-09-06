@@ -1,0 +1,893 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>Claude Code من الصفر إلى الاحتراف</title><style>/* ============================================================
+   Arabic AI Product Library — shared print theme
+   A4 portrait · RTL · mobile-first reading
+   ============================================================ */
+
+@font-face { font-family: "PlexAr"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 500;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-500.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 600;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-600.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-700.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-700.ttf") format("truetype"); }
+
+:root {
+  --ink:      #17140F;
+  --ink-2:    #3A342C;
+  --muted:    #6E665A;
+  --faint:    #9A9184;
+  --rule:     #E6E0D6;
+  --rule-2:   #D6CEC0;
+  --paper:    #FFFFFF;
+  --soft:     #FBF8F3;
+  --soft-2:   #F5F0E7;
+  --accent:   #3B5BA5;
+  --accent-d: #25396B;
+  --accent-w: #6F8CC9;
+}
+
+/* ---------- page setup ---------- */
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 16mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: "PlexAr"; font-size: 8.5pt; color: var(--faint);
+    margin-bottom: 5mm;
+  }
+  @bottom-left {
+    content: "PromptsArabic · t.me/PromptsArabic";
+    font-family: "PlexMono"; font-size: 6.8pt; color: #B9B1A4;
+    letter-spacing: .02em; margin-bottom: 5mm; direction: ltr;
+  }
+  @bottom-center {
+    content: string(chaptertitle);
+    font-family: "PlexAr"; font-size: 7.6pt; color: #BCB4A7;
+    margin-bottom: 5mm;
+  }
+}
+@page cover  { margin: 0; @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+@page plain  { @bottom-center{content:none} }
+@page :first { @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+
+html { direction: rtl; }
+body {
+  font-family: "PlexAr", sans-serif;
+  font-size: 11.7pt;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  margin: 0;
+  text-align: right;
+  -weasy-hyphens: none;
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover; break-after: page;
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  background: var(--accent-d); color: #fff;
+}
+.cover .field {
+  position: absolute; inset: 0;
+  background: linear-gradient(152deg, var(--accent-d) 0%, var(--accent) 52%, var(--accent-w) 100%);
+}
+.cover .glow {
+  position: absolute; width: 250mm; height: 250mm; right: -70mm; top: -85mm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 62%);
+}
+.cover .grid-lines { position: absolute; inset: 0; }
+.cover .grid-lines i {
+  position: absolute; top: 0; bottom: 0; width: .3mm; background: rgba(255,255,255,.09);
+}
+.cover .arc { position: absolute; border-radius: 50%; border: .5mm solid rgba(255,255,255,.15); }
+
+.cover .topbar {
+  position: absolute; right: 18mm; left: 18mm; top: 20mm;
+  border-bottom: .3mm solid rgba(255,255,255,.28); padding-bottom: 5mm;
+}
+.cover .kicker {
+  font-size: 10pt; font-weight: 600; color: rgba(255,255,255,.92);
+  letter-spacing: .01em; display: inline-block;
+}
+.cover .topbar .mark {
+  float: left; font-family: "PlexMono"; direction: ltr;
+  font-size: 8.4pt; font-weight: 700; letter-spacing: .18em;
+  color: rgba(255,255,255,.72);
+}
+
+.cover .plate { position: absolute; right: 18mm; left: 18mm; top: 74mm; }
+.cover h1 {
+  font-size: 40pt; font-weight: 700; line-height: 1.3;
+  margin: 0 0 7mm 0; color: #fff; letter-spacing: -.012em;
+}
+.cover .rule { width: 22mm; height: 1.2mm; background: rgba(255,255,255,.85);
+  border-radius: 1mm; margin-bottom: 7mm; }
+.cover .sub {
+  font-size: 12.2pt; font-weight: 400; line-height: 1.78;
+  color: rgba(255,255,255,.93); margin: 0; max-width: 162mm;
+}
+.cover .strip { position: absolute; right: 18mm; left: 18mm; bottom: 86mm; }
+.cover .strip .row {
+  border-top: .25mm solid rgba(255,255,255,.22);
+  padding: 2.6mm 0 2.6mm 0; font-size: 9.2pt; color: rgba(255,255,255,.80);
+}
+.cover .strip .row b { font-family: "PlexMono"; direction: ltr; font-weight: 700;
+  font-size: 7.6pt; color: rgba(255,255,255,.55); float: left; padding-top: .8mm;
+  letter-spacing: .1em; }
+
+.cover .promise {
+  position: absolute; right: 18mm; left: 18mm; bottom: 62mm; font-size: 0;
+}
+.cover .promise span {
+  display: inline-block; font-size: 9.4pt; font-weight: 500; color: #fff;
+  border: .3mm solid rgba(255,255,255,.45); border-radius: 2mm;
+  padding: 2mm 4.5mm; background: rgba(255,255,255,.12);
+  margin: 0 0 2.5mm 3mm;
+}
+.cover .baseline {
+  position: absolute; right: 18mm; left: 18mm; bottom: 44mm;
+  border-top: .3mm solid rgba(255,255,255,.28);
+}
+.cover .platform {
+  position: absolute; right: 18mm; bottom: 24mm;
+  font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 15pt; font-weight: 700; color: #fff; letter-spacing: .1em;
+}
+.cover .rights {
+  position: absolute; left: 18mm; bottom: 24mm; text-align: left;
+  font-size: 8.6pt; color: rgba(255,255,255,.86); line-height: 1.55;
+}
+.cover .rights b { font-weight: 600; display: block; }
+.cover .rights span { font-family: "PlexMono"; direction: ltr; font-size: 7.8pt;
+  color: rgba(255,255,255,.72); }
+
+/* ---------- front matter ---------- */
+.frontpage { page: plain; break-after: page; }
+.frontpage h3 { margin: 6mm 0 2mm 0; }
+.frontpage p.lead { margin-bottom: 5mm; font-size: 11.8pt; line-height: 1.85; }
+.frontpage ul.b { margin-bottom: 2mm; }
+.frontpage ul.b > li { margin-bottom: 1.7mm; }
+.fm-title { font-size: 19pt; font-weight: 700; margin: 0 0 8mm 0; color: var(--ink); }
+.fm-rule { height: 1.1mm; width: 26mm; background: var(--accent); margin-bottom: 9mm; border-radius: 1mm; }
+
+.rights-block {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  padding: 9mm 8mm; background: var(--soft); margin: 8mm 0;
+}
+.rights-block .owner { font-size: 15pt; font-weight: 700; margin: 0 0 3mm 0; }
+.rights-block p { margin: 0 0 3mm 0; font-size: 10.6pt; color: var(--ink-2); }
+.rights-block a.tg {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 11pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+.meta-table { width: 100%; border-collapse: collapse; margin-top: 6mm; }
+.meta-table td { padding: 2.6mm 0; border-bottom: .25mm solid var(--rule); font-size: 10.2pt; vertical-align: top; }
+.meta-table td:first-child { width: 44mm; color: var(--muted); font-weight: 500; }
+
+/* ---------- table of contents ---------- */
+.toc { page: plain; break-after: page; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  text-decoration: none; color: var(--ink);
+  display: flex; align-items: baseline; gap: 2.5mm;
+}
+.toc .t { flex: 0 1 auto; }
+.toc .dots {
+  flex: 1 1 auto; min-width: 6mm; align-self: flex-end;
+  border-bottom: .2mm dotted var(--rule-2); transform: translateY(-1.2mm);
+}
+.toc a::after {
+  content: target-counter(attr(href), page);
+  font-family: "PlexMono"; font-size: 8.6pt; color: var(--faint);
+  font-weight: 400; direction: ltr; flex: 0 0 auto;
+}
+.toc .l1 a {
+  font-size: 11.4pt; font-weight: 600;
+  padding: 3mm 0 3mm 0; border-bottom: .25mm solid var(--rule);
+}
+.toc .l1 a::after { color: var(--accent-d); font-weight: 700; font-size: 9pt; }
+.toc .l2 a {
+  font-size: 10pt; font-weight: 400; color: var(--ink-2);
+  padding: 1.8mm 6.5mm 1.8mm 0;
+}
+.toc .l1 .t::before {
+  content: ""; display: inline-block; width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--accent); margin-left: 3.5mm; vertical-align: middle;
+}
+
+/* ---------- headings ---------- */
+h1.chapter {
+  string-set: chaptertitle content();
+  break-before: page;
+  font-size: 23pt; font-weight: 700; line-height: 1.38;
+  margin: 0 0 3mm 0; padding-bottom: 4mm; color: var(--ink);
+  border-bottom: 1mm solid var(--accent);
+}
+h1.chapter .num {
+  display: block; font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 9.5pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .12em; margin-bottom: 3mm;
+}
+h2 {
+  font-size: 15pt; font-weight: 700; line-height: 1.55;
+  margin: 11mm 0 3.5mm 0; color: var(--ink);
+  break-after: avoid; break-inside: avoid;
+}
+h3 {
+  font-size: 12.2pt; font-weight: 600; line-height: 1.6;
+  margin: 7.5mm 0 2.5mm 0; color: var(--ink-2);
+  break-after: avoid; break-inside: avoid;
+}
+h2 + p, h3 + p { margin-top: 0; }
+
+p { margin: 0 0 3.6mm 0; orphans: 2; widows: 2; }
+p.lead { font-size: 12.4pt; color: var(--ink-2); line-height: 1.9; margin-bottom: 6mm; }
+strong { font-weight: 600; }
+
+/* ---------- lists ---------- */
+ul.b, ol.n { margin: 0 0 4.5mm 0; padding: 0 6mm 0 0; }
+ul.b { list-style: none; padding-right: 0; }
+ul.b > li {
+  position: relative; padding-right: 6.5mm; margin-bottom: 2.4mm;
+  orphans: 2; widows: 2;
+}
+ul.b > li::before {
+  content: ""; position: absolute; right: 1.6mm; top: 2.6mm;
+  width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--accent);
+}
+ol.n { padding-right: 7mm; }
+ol.n > li { margin-bottom: 2.4mm; padding-right: 1.5mm; }
+ol.n > li::marker { color: var(--accent-d); font-weight: 600; }
+
+/* ---------- code ---------- */
+code.inline {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 9.2pt; background: var(--soft-2); color: var(--ink);
+  padding: .5mm 1.4mm; border-radius: 1mm; border: .2mm solid var(--rule);
+}
+pre.code {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate; text-align: left;
+  font-size: 9.2pt; line-height: 1.62; color: #F3EFE8; background: #211D18;
+  padding: 4.5mm 5mm; border-radius: 2.5mm; margin: 0 0 5mm 0;
+  white-space: pre-wrap; word-break: break-word;
+  break-inside: avoid;
+}
+pre.code .cm { color: #A79C8C; }
+.codewrap { margin-bottom: 5mm; break-inside: avoid; }
+.codewrap .caption {
+  font-size: 8.6pt; color: var(--muted); margin-bottom: 1.6mm; font-weight: 500;
+}
+.codewrap pre.code { margin-bottom: 0; }
+
+/* ---------- callouts ---------- */
+.callout {
+  border-right: 1.1mm solid var(--accent);
+  background: var(--soft); border-radius: 0 2.5mm 2.5mm 0;
+  padding: 4.5mm 5mm 3mm 5mm; margin: 0 0 5mm 0;
+  break-inside: avoid;
+}
+.callout .t { font-weight: 700; font-size: 10.4pt; margin-bottom: 1.8mm; }
+.callout p:last-child { margin-bottom: 1.5mm; }
+.callout.warn { border-right-color: #B4472F; background: #FDF4F1; }
+.callout.warn .t { color: #91361F; }
+.callout.tip  { border-right-color: #2F7D62; background: #F1F8F4; }
+.callout.tip .t { color: #1F5B46; }
+
+/* ---------- tables ---------- */
+table.data {
+  width: 100%; border-collapse: collapse; margin: 0 0 5mm 0;
+  font-size: 10pt; break-inside: avoid; direction: rtl;
+}
+table.data th {
+  background: var(--soft-2); font-weight: 600; text-align: right;
+  padding: 2.8mm 3mm; border-bottom: .4mm solid var(--rule-2); color: var(--ink);
+}
+table.data td {
+  padding: 2.6mm 3mm; border-bottom: .25mm solid var(--rule);
+  vertical-align: top; text-align: right; color: var(--ink-2);
+}
+table.data tr:nth-child(even) td { background: #FCFAF6; }
+
+/* ---------- prompt card ---------- */
+.pcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  margin: 0 0 5mm 0; overflow: hidden;
+}
+.pcard > .head {
+  background: var(--soft-2); padding: 3mm 4.5mm 2.6mm 4.5mm;
+  border-bottom: .25mm solid var(--rule-2);
+  break-after: avoid;
+}
+.pcard .pn {
+  font-family: "PlexMono"; direction: ltr; font-size: 8.4pt; font-weight: 700;
+  color: #FFFFFF; background: var(--accent-d); border-radius: 1.5mm;
+  padding: .8mm 2.4mm; letter-spacing: .06em; display: inline-block;
+  margin-left: 3mm; vertical-align: 1mm;
+}
+.pcard .pt { font-size: 13pt; font-weight: 700; display: inline; }
+.pcard .cat {
+  display: block; font-size: 8.4pt; color: var(--muted); margin-top: 1.4mm; font-weight: 500;
+}
+.pcard > .body { padding: 3.4mm 4.5mm .5mm 4.5mm; }
+.pcard .row { margin-bottom: 2.4mm; }
+.pcard .row > .k {
+  font-size: 9pt; font-weight: 700; color: var(--accent-d);
+  margin-bottom: .8mm;
+}
+.pcard .row > .v { font-size: 10.4pt; color: var(--ink-2); line-height: 1.68; }
+.pcard .row ul.b { margin-bottom: 0; }
+.pcard .row ul.b > li { font-size: 10.2pt; margin-bottom: .9mm; }
+
+.promptbox {
+  background: var(--soft); border: .3mm dashed var(--rule-2);
+  border-radius: 2.5mm; padding: 3.4mm 4mm; margin: 0 0 3mm 0;
+  break-inside: avoid;
+}
+.promptbox .lbl {
+  font-size: 8.4pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .01em; margin-bottom: 1.8mm;
+  padding-bottom: 1.2mm; border-bottom: .25mm solid var(--rule-2);
+}
+.promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox.filebox .lbl { font-family: "PlexMono"; direction: ltr; text-align: left;
+  font-size: 8pt; letter-spacing: .02em; }
+.promptbox .txt {
+  font-size: 10.2pt; line-height: 1.66; color: var(--ink); white-space: pre-wrap;
+}
+
+/* ---------- misc blocks ---------- */
+.divider { height: .25mm; background: var(--rule); margin: 8mm 0; border: 0; }
+.spacer { height: 4mm; }
+.sectionlead {
+  background: var(--soft); border-radius: 3mm; padding: 5mm 6mm; margin: 0 0 7mm 0;
+}
+.sectionlead p { margin: 0; font-size: 10.8pt; color: var(--ink-2); }
+
+.steps { counter-reset: st; margin: 0 0 5mm 0; padding: 0; list-style: none; }
+.steps > li {
+  counter-increment: st; position: relative; padding-right: 11mm;
+  margin-bottom: 4mm; break-inside: avoid;
+}
+.steps > li::before {
+  content: counter(st); position: absolute; right: 0; top: .4mm;
+  width: 7.5mm; height: 7.5mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-family: "PlexMono"; font-size: 8.6pt; font-weight: 700;
+  text-align: center; line-height: 7.5mm;
+}
+.steps > li .sh { font-weight: 600; display: block; margin-bottom: .8mm; }
+
+.kv { width: 100%; border-collapse: collapse; margin: 0 0 5mm 0; font-size: 10pt; }
+.kv td { padding: 2.4mm 0; border-bottom: .25mm solid var(--rule); vertical-align: top; }
+.kv td:first-child { width: 40mm; color: var(--muted); font-weight: 500; padding-left: 4mm; }
+
+/* ---------- closing page ---------- */
+.endpage { break-before: page; }
+.endcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm; background: var(--soft);
+  padding: 8mm; margin-top: 6mm; text-align: center;
+}
+.endcard .h { font-size: 15pt; font-weight: 700; margin-bottom: 3mm; }
+.endcard p { font-size: 10.6pt; color: var(--ink-2); }
+.endcard a {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 12pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+
+/* ---------- chapter opener index ---------- */
+.chindex { margin: 0 0 6mm 0; }
+.chindex .row {
+  display: flex; align-items: baseline; gap: 3mm;
+  border-bottom: .25mm solid var(--rule); padding: 2.2mm 0;
+  font-size: 10.4pt;
+}
+.chindex .row b {
+  font-family: "PlexMono"; direction: ltr; font-size: 8pt; font-weight: 700;
+  color: #fff; background: var(--accent-d); border-radius: 1.4mm;
+  padding: .7mm 2mm; flex: 0 0 auto;
+}
+.chindex .row span { flex: 1 1 auto; }
+</style></head><body><section class="cover">
+  <div class="field"></div>
+  <div class="glow"></div>
+  <div class="grid-lines"><i style="right:30mm"></i><i style="right:66mm"></i><i style="right:102mm"></i><i style="right:138mm"></i><i style="right:174mm"></i></div>
+  <div class="arc" style="width:196mm;height:196mm;right:-56mm;top:-64mm"></div>
+  <div class="arc" style="width:128mm;height:128mm;left:-46mm;bottom:-40mm"></div>
+  <div class="topbar">
+    <span class="mark">PROMPTS ARABIC</span>
+    <span class="kicker">دليل عملي بالعربية</span>
+  </div>
+  <div class="plate">
+    <h1>Claude Code من الصفر إلى الاحتراف</h1>
+    <div class="rule"></div>
+    <p class="sub">دليل تطبيقي للعمل داخل مشاريعك الحقيقية: التثبيت والأذونات والذاكرة والجلسات و Git والاختبارات والمهارات والوكلاء و MCP</p>
+  </div>
+  <div class="strip"><div class="row"><b>01</b>التثبيت والجلسة الأولى</div><div class="row"><b>02</b>الأذونات والذاكرة و Git</div><div class="row"><b>03</b>المهارات والوكلاء و MCP</div><div class="row"><b>04</b>الأمان وسير العمل الكامل</div></div>
+  <div class="promise"><span>16 فصلا</span><span>أوامر فعلية</span><span>محدث في سبتمبر 2026</span></div>
+  <div class="baseline"></div>
+  <div class="platform">CLAUDE CODE</div>
+  <div class="rights"><b>برومبتات عربية</b><span>t.me/PromptsArabic</span></div>
+</section>
+<section class="frontpage">
+  <div class="fm-title">حقوق النشر</div><div class="fm-rule"></div>
+  <div class="rights-block">
+    <p class="owner">برومبتات عربية</p>
+    <p>جميع الحقوق محفوظة لقناة <strong>برومبتات عربية</strong>.</p>
+    <p>هذا المنتج مخصص للاستخدام الشخصي للمشتري. لا يجوز إعادة نشره أو بيعه
+       أو توزيعه أو اقتباس أجزاء منه لأغراض تجارية دون إذن كتابي من المالك.</p>
+    <p>القناة الرسمية: <a class="tg" href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+  <table class="meta-table">
+    <tr><td>اسم المنتج</td><td>Claude Code من الصفر إلى الاحتراف</td></tr>
+    <tr><td>الإصدار</td><td>الإصدار الأول</td></tr>
+    <tr><td>اللغة</td><td>العربية</td></tr>
+    <tr><td>المقاس</td><td>A4 عمودي — مهيأ للقراءة على الهاتف</td></tr>
+    <tr><td>تمت مراجعة معلومات وميزات هذا الدليل حتى تاريخ</td><td>6 سبتمبر 2026</td></tr>
+    <tr><td>مصادر التحقق</td><td>code.claude.com/docs (overview, setup, permission-modes, memory, sessions, commands, security)</td></tr>
+  </table>
+  <div class="callout"><div class="t">ملاحظة مهمة عن تاريخ المحتوى</div>
+    <p>منصات الذكاء الاصطناعي تتغير بسرعة. كل ميزة مذكورة هنا تم التحقق منها من
+       المصدر الرسمي بتاريخ 6 سبتمبر 2026. إذا مر وقت طويل على هذا التاريخ،
+       راجع الصفحة الرسمية للميزة قبل الاعتماد عليها في عمل حساس.</p>
+  </div>
+</section><section class="frontpage">
+  <div class="fm-title">عن هذا الدليل</div><div class="fm-rule"></div>
+  <p class="lead">هذا الدليل ليس شرحا لأوامر سطر أوامر. Claude Code أداة برمجة وكيلة تقرأ مشروعك وتعدل ملفاته وتشغل الأوامر، ولهذا فإن أهم ما ستتعلمه هنا ليس كيف تطلب منها، بل كيف تتحكم فيها: ما الذي تسمح به، وما الذي تراجعه، وكيف تتراجع عن تغيير، وكيف تبني ذاكرة للمشروع لا تعيد شرحه كل يوم. كل أمر في هذا الدليل مأخوذ من التوثيق الرسمي وقت المراجعة.</p>
+  <h3>لمن هذا الدليل</h3><ul class="b"><li>المبرمجون الذين جربوا Claude Code وشعروا أنهم لا يسيطرون عليه</li><li>طلاب مشاريع التخرج الذين يعملون على مستودع واحد لأشهر</li><li>من يريد استخدامه في مشروع فيه كود قائم لا في مشروع فارغ</li><li>من يهمه الأمان: الأسرار، ومراجعة التغييرات، والتراجع</li><li>من يريد الانتقال من الاستخدام العشوائي إلى سير عمل منظم</li></ul>
+  <h3>ماذا ستتعلم</h3><ul class="b"><li>التثبيت الرسمي الصحيح على Windows و macOS و Linux، والتحديث والتشخيص</li><li>أوضاع الأذونات الستة ومتى يصلح كل واحد، وما لا يوافق عليه أي وضع</li><li>نظام الذاكرة: ملفات CLAUDE.md وقواعد المسارات والذاكرة التلقائية</li><li>إدارة الجلسات: الاستئناف والتفريع والضغط والتصدير</li><li>التراجع عن تغييرات أحدثها الوكيل، ومراجعة الفروق قبل الاعتماد</li><li>Git والاختبارات والتصحيح وإعادة الهيكلة بطريقة قابلة للمراجعة</li><li>المهارات والخطافات والوكلاء الفرعيين و MCP والإضافات</li><li>سير عمل كامل على عشر مراحل من البيئة إلى الإصدار</li></ul>
+</section>
+<section class="frontpage">
+  <div class="fm-title">قبل أن تبدأ</div><div class="fm-rule"></div>
+  <h3>المتطلبات</h3><ul class="b"><li>جهاز Windows أو macOS أو Linux مع صلاحية تثبيت برامج</li><li>معرفة أساسية بـ Git والطرفية Terminal</li><li>اشتراك Claude مدفوع أو حساب Anthropic Console — معظم الواجهات تتطلب ذلك</li><li>مشروع برمجي حقيقي ولو صغيرا، لا مجلد فارغ</li><li>على Windows الأصلي: ينصح بتثبيت Git for Windows</li></ul>
+  <h3>كيف تستخدم هذا الدليل</h3><ul class="b"><li>نفذ كل أمر بنفسك على مشروع حقيقي أثناء القراءة</li><li>لا تتجاوز فصل الأذونات — هو الفصل الذي يحميك من أضرار حقيقية</li><li>الأوامر داخل الصناديق السوداء تكتب في الطرفية كما هي</li><li>ما بين قوسين مربعين مثل [اسم المشروع] تستبدله بقيمتك</li><li>ارجع إلى الفصل الأخير كورقة مرجعية بعد أن تتعلم الأساس</li></ul>
+  <div class="callout tip"><div class="t">طريقة القراءة الموصى بها</div>
+    <p>لا تقرأ الدليل كله دفعة واحدة. اقرأ فصلا واحدا، ثم نفّذ تمرينه على مهمة حقيقية
+       من عملك، ثم انتقل. أربعة فصول مطبَّقة أفضل من أربعة عشر فصلا مقروءا.</p></div>
+</section>
+<section class="toc"><div class="fm-title">الفهرس</div><div class="fm-rule"></div><ul><li class="l1"><a href="#ch1"><span class="t">ما هو Claude Code ومتى تستخدمه</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s1"><span class="t">الفرق بينه وبين تطبيق Claude</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s3"><span class="t">الواجهات المتاحة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s7"><span class="t">ما الذي يجيده فعلا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s9"><span class="t">متى لا تستخدمه</span><span class="dots"></span></a></li><li class="l1"><a href="#ch2"><span class="t">التثبيت والتحقق والتحديث</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s1"><span class="t">macOS و Linux و WSL</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s3"><span class="t">Windows</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s8"><span class="t">طرق تثبيت أخرى رسمية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s11"><span class="t">التحديث</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s16"><span class="t">أول تشغيل والتحقق</span><span class="dots"></span></a></li><li class="l1"><a href="#ch3"><span class="t">الجلسة الأولى: من فتح المشروع إلى أول تعديل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s1"><span class="t">الخطوات الخمس الأولى</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s3"><span class="t">أول ثلاثة طلبات في أي مشروع جديد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s7"><span class="t">الأوامر التي ستستخدمها يوميا</span><span class="dots"></span></a></li><li class="l1"><a href="#ch4"><span class="t">أوضاع الأذونات: أهم فصل في الدليل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s1"><span class="t">الأوضاع الستة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s4"><span class="t">كيف تبدل الوضع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s6"><span class="t">في أي وضع تبدأ جلستك</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s9"><span class="t">ما لا يوافق عليه أي وضع تلقائيا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s13"><span class="t">الوضع الخطر ومتى يجوز</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s15"><span class="t">بديل عملي أفضل من تخطي الأذونات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch5"><span class="t">الذاكرة: CLAUDE.md وقواعد المسارات والذاكرة التلقائية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s1"><span class="t">الفرق بين الآليتين</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s4"><span class="t">أين توضع ملفات CLAUDE.md</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s7"><span class="t">كيف تبدأ</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s10"><span class="t">كيف تكتب تعليمات فعالة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s13"><span class="t">متى تضيف إلى CLAUDE.md</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s16"><span class="t">استيراد ملفات أخرى</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s19"><span class="t">قواعد المسارات في .claude/rules</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s24"><span class="t">الذاكرة التلقائية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s31"><span class="t">إذا لم يلتزم Claude بتعليماتك</span><span class="dots"></span></a></li><li class="l1"><a href="#ch6"><span class="t">الجلسات: الاستئناف والتفريع وإدارة السياق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s1"><span class="t">الاستئناف</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s3"><span class="t">ما الذي يستعاد فعلا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s6"><span class="t">تسمية الجلسات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s9"><span class="t">تفريع محادثة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s12"><span class="t">إدارة السياق داخل الجلسة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s15"><span class="t">أين تحفظ الجلسات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch7"><span class="t">مراجعة التغييرات والتراجع عن خطأ</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s1"><span class="t">قاعدة المراجعة قبل الاعتماد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s3"><span class="t">نقاط الاستعادة Checkpointing</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s5"><span class="t">شبكة أمان لا تعتمد على الأداة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s10"><span class="t">حدود مجلد العمل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch8"><span class="t">العمل مع Git والفروع وطلبات الدمج</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s1"><span class="t">سير عمل الفرع الواحد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s3"><span class="t">طلبات مفيدة مع Git</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s7"><span class="t">الأتمتة في التكامل المستمر</span><span class="dots"></span></a></li><li class="l1"><a href="#ch9"><span class="t">الاختبارات والفحص والتصحيح وإعادة الهيكلة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s1"><span class="t">الاختبارات أولا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s4"><span class="t">التصحيح</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s7"><span class="t">إعادة الهيكلة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s9"><span class="t">الفحص والتنسيق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s11"><span class="t">المراجعة الأمنية</span><span class="dots"></span></a></li><li class="l1"><a href="#ch10"><span class="t">المهارات Skills والخطافات Hooks</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s1"><span class="t">المهارات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s4"><span class="t">الخطافات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s9"><span class="t">الإضافات Plugins</span><span class="dots"></span></a></li><li class="l1"><a href="#ch11"><span class="t">الوكلاء الفرعيون والعمل المتوازي وأشجار العمل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s1"><span class="t">الوكلاء الفرعيون Subagents</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s4"><span class="t">أشجار العمل Worktrees</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s8"><span class="t">متى تستخدم كل آلية</span><span class="dots"></span></a></li><li class="l1"><a href="#ch12"><span class="t">MCP: ربط Claude Code بأدواتك</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s1"><span class="t">من أين تبدأ</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s4"><span class="t">أمان MCP</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s6"><span class="t">قاعدة عملية</span><span class="dots"></span></a></li><li class="l1"><a href="#ch13"><span class="t">الأمان: الأسرار ومراجعة الأوامر والمحتوى غير الموثوق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s1"><span class="t">الحمايات المدمجة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s3"><span class="t">حقن التعليمات Prompt Injection</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s8"><span class="t">الأسرار: القاعدة التي لا تكسر</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s13"><span class="t">العمل على كود حساس</span><span class="dots"></span></a></li><li class="l1"><a href="#ch14"><span class="t">إدارة السياق والمشاريع الكبيرة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s1"><span class="t">ماذا يملأ سياقك</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s3"><span class="t">خمس عادات تقلل استهلاك السياق</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s6"><span class="t">المستودعات الكبيرة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s10"><span class="t">تقسيم المهمة الكبيرة</span><span class="dots"></span></a></li><li class="l1"><a href="#ch15"><span class="t">سير عمل كامل: من البيئة إلى الإصدار</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s1"><span class="t">المرحلة صفر: البيئة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s3"><span class="t">المرحلة الأولى: المتطلبات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s5"><span class="t">المرحلة الثانية: المعمارية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s7"><span class="t">المرحلة الثالثة: الأساس</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s9"><span class="t">المرحلة الرابعة: الميزات الأساسية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s11"><span class="t">المرحلة الخامسة: الاختبارات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s13"><span class="t">المرحلة السادسة: تجربة الاستخدام</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s15"><span class="t">المرحلة السابعة: الأمان</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s17"><span class="t">المرحلة الثامنة: البناء</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s19"><span class="t">المرحلة التاسعة: مراجعة الإصدار</span><span class="dots"></span></a></li><li class="l1"><a href="#ch16"><span class="t">ورقة المراجعة السريعة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch16-s1"><span class="t">التثبيت والتحديث</span><span class="dots"></span></a></li><li class="l2"><a href="#ch16-s3"><span class="t">الجلسات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch16-s5"><span class="t">الأوامر داخل الجلسة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch16-s7"><span class="t">أوضاع الأذونات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch16-s9"><span class="t">روتين الجلسة الآمنة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch16-s11"><span class="t">أخطاء تجنبها</span><span class="dots"></span></a></li></ul></section>
+<h1 class="chapter" id="ch1"><span class="num">CHAPTER 01</span>ما هو Claude Code ومتى تستخدمه</h1><p class="lead">الوصف الرسمي في التوثيق: أداة برمجة وكيلة تقرأ الكود وتعدل الملفات وتشغل الأوامر وتتكامل مع أدوات التطوير، متاحة في الطرفية والمحرر وتطبيق الحاسوب والمتصفح. الكلمة المفتاحية هنا «وكيلة»: هي لا تقترح عليك كودا لتنسخه، بل تنفذ في مشروعك.</p>
+<h2 id="ch1-s1">الفرق بينه وبين تطبيق Claude</h2>
+<table class="data"><thead><tr><th>الحاجة</th><th>الأداة</th></tr></thead><tbody><tr><td>شرح مقطع كود نسخته</td><td>تطبيق Claude</td></tr><tr><td>فهم مشروع كامل وتعديل ملفاته</td><td>Claude Code</td></tr><tr><td>كتابة محتوى أو تحليل مستند</td><td>تطبيق Claude</td></tr><tr><td>إصلاح خطأ يمتد عبر عدة ملفات</td><td>Claude Code</td></tr><tr><td>إنشاء فرع وcommit وطلب دمج</td><td>Claude Code</td></tr></tbody></table>
+<h2 id="ch1-s3">الواجهات المتاحة</h2>
+<p>التوثيق يذكر أن Claude Code يعمل على عدة واجهات، وكلها تتصل بالمحرك نفسه، فملفات CLAUDE.md والإعدادات وخوادم MCP تعمل عبرها جميعا:</p>
+<ul class="b"><li><strong>الطرفية Terminal</strong>: الواجهة الكاملة، وهي التي يركز عليها هذا الدليل.</li><li><strong>VS Code</strong>: إضافة تعرض الفروق داخل المحرر ومراجعة الخطة وسجل المحادثات.</li><li><strong>JetBrains</strong>: إضافة لـ IntelliJ و PyCharm و WebStorm وغيرها، وتتطلب تثبيت الـ CLI منفصلا.</li><li><strong>تطبيق الحاسوب</strong>: تطبيق مستقل لمراجعة الفروق بصريا وتشغيل عدة جلسات جنبا إلى جنب.</li><li><strong>المتصفح</strong>: تشغيل المهام الطويلة بلا إعداد محلي على claude.ai/code.</li></ul>
+<div class="callout note"><div class="t">ما الذي يتطلب اشتراكا</div><p>التوثيق يذكر أن معظم الواجهات تتطلب اشتراك Claude أو حساب Anthropic Console، وأن تطبيق الحاسوب يتطلب اشتراكا مدفوعا. كما تدعم واجهات الطرفية و VS Code و JetBrains مزودين خارجيين.</p></div>
+<h2 id="ch1-s7">ما الذي يجيده فعلا</h2>
+<ul class="b"><li>أتمتة العمل المؤجل: كتابة اختبارات لكود بلا اختبارات، وإصلاح أخطاء الفحص، وحل تعارضات الدمج، وتحديث الاعتماديات.</li><li>بناء ميزات وإصلاح أخطاء: يخطط، ثم يكتب عبر عدة ملفات، ثم يتحقق.</li><li>العمل مع Git مباشرة: تجهيز التغييرات وكتابة رسائل الـ commit وإنشاء الفروع وفتح طلبات الدمج.</li><li>الربط بأدواتك عبر MCP، والتخصيص بالمهارات والخطافات.</li></ul>
+<h2 id="ch1-s9">متى لا تستخدمه</h2>
+<p>لا تستخدمه على كود لا تفهمه ولا تنوي مراجعته. الأداة تنفذ، والمسؤولية عن مراجعة ما نفذ تبقى عليك. وهذه ليست نصيحة عامة: التوثيق نفسه يضع بندا اسمه مسؤولية المستخدم، ويقول إن Claude Code لا يملك إلا الصلاحيات التي تمنحها، وأنك مسؤول عن مراجعة الكود والأوامر المقترحة قبل الموافقة.</p>
+<h1 class="chapter" id="ch2"><span class="num">CHAPTER 02</span>التثبيت والتحقق والتحديث</h1><p class="lead">التوثيق يوصي بالمثبت الأصلي Native Install. المسارات التالية منقولة من صفحة التوثيق الرسمية وقت مراجعة هذا الدليل.</p>
+<h2 id="ch2-s1">macOS و Linux و WSL</h2>
+<div class="codewrap"><div class="caption">المثبت الأصلي — الطريقة الموصى بها</div><pre class="code">curl -fsSL https://claude.ai/install.sh | bash</pre></div>
+<h2 id="ch2-s3">Windows</h2>
+<div class="codewrap"><div class="caption">PowerShell</div><pre class="code">irm https://claude.ai/install.ps1 | iex</pre></div>
+<div class="codewrap"><div class="caption">موجه الأوامر CMD</div><pre class="code">curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd</pre></div>
+<div class="callout note"><div class="t">أي صدفة أنت فيها</div><p>التوثيق يعطي علامة مميزة: إذا ظهرت رسالة أن <code class="inline">&amp;&amp;</code> ليست فاصل جمل صحيحا فأنت في PowerShell لا في CMD. وإذا ظهر أن <code class="inline">irm</code> أمر غير معروف فأنت في CMD لا في PowerShell. موجه PowerShell يبدأ بـ <code class="inline">PS C:\</code> بينما موجه CMD يبدأ بـ <code class="inline">C:\</code> بلا <code class="inline">PS</code>.</p></div>
+<div class="callout tip"><div class="t">Git for Windows على ويندوز الأصلي</div><p>التوثيق ينصح بتثبيت Git for Windows على ويندوز الأصلي حتى يستطيع Claude Code استخدام أداة Bash. وبدونه يستخدم PowerShell كأداة الصدفة. أما إعدادات WSL فلا تحتاج Git for Windows.</p></div>
+<h2 id="ch2-s8">طرق تثبيت أخرى رسمية</h2>
+<table class="data"><thead><tr><th>الطريقة</th><th>الأمر</th><th>التحديث التلقائي</th></tr></thead><tbody><tr><td>Homebrew — القناة المستقرة</td><td>brew install --cask claude-code</td><td>لا</td></tr><tr><td>Homebrew — أحدث إصدار</td><td>brew install --cask claude-code@latest</td><td>لا</td></tr><tr><td>WinGet</td><td>winget install Anthropic.ClaudeCode</td><td>لا</td></tr><tr><td>المثبت الأصلي</td><td>أوامر curl و irm أعلاه</td><td>نعم، في الخلفية</td></tr></tbody></table>
+<p>التوثيق يوضح أن قناة Homebrew المستقرة تتأخر عادة نحو أسبوع وتتخطى الإصدارات التي فيها انحدارات كبيرة، بينما <code class="inline">claude-code@latest</code> يتابع أحدث قناة. كما يمكن التثبيت عبر مديري حزم لينكس: apt و dnf و apk على Debian و Fedora و RHEL و Alpine.</p>
+<h2 id="ch2-s11">التحديث</h2>
+<div class="codewrap"><div class="caption">تحديث Homebrew</div><pre class="code">brew upgrade claude-code
+brew upgrade claude-code@latest</pre></div>
+<div class="codewrap"><div class="caption">تحديث WinGet</div><pre class="code">winget upgrade Anthropic.ClaudeCode</pre></div>
+<div class="codewrap"><div class="caption">تحديث تثبيت npm</div><pre class="code">npm install -g @anthropic-ai/claude-code@latest</pre></div>
+<div class="callout warn"><div class="t">خطآن شائعان في تثبيت npm</div><p>التوثيق يحذر صراحة من <code class="inline">sudo npm install -g</code> لأنه يؤدي إلى مشكلات صلاحيات ومخاطر أمنية.</p><p>ويحذر أيضا من <code class="inline">npm update -g</code> لأنه يلتزم بنطاق الإصدارات الذي حدد وقت التثبيت الأول وقد لا ينقلك إلى أحدث إصدار. استخدم <code class="inline">@latest</code> كما في الأمر أعلاه.</p></div>
+<h2 id="ch2-s16">أول تشغيل والتحقق</h2>
+<div class="codewrap"><div class="caption">بدء العمل في مشروعك</div><pre class="code">cd path/to/your-project
+claude</pre></div>
+<p>سيطلب منك تسجيل الدخول في أول استخدام. وإذا كان متغير البيئة <code class="inline">ANTHROPIC_API_KEY</code> مضبوطا، فإن Claude Code يتخطى شاشة الدخول ويطلب منك الموافقة على المفتاح بدلا منها.</p>
+<div class="codewrap"><div class="caption">فحص البيئة والتشخيص</div><pre class="code">claude doctor</pre></div>
+<p><code class="inline">claude doctor</code> ما زال أمرا رسميا وقت مراجعة هذا الدليل: صفحة الإعداد تذكره في سياق إدارة المثبت الأصلي للمشغل في <code class="inline">~/.local/bin/claude</code> كرابط رمزي إلى <code class="inline">~/.local/share/claude/versions/</code>، وتقول إن <code class="inline">claude doctor</code> يبلغ عن مشغل لم ينشئه المثبت الأصلي. ويوجد أيضا أمر <code class="inline">/doctor</code> داخل الجلسة، ويصفه التوثيق بأنه فحص إعداد يشخص المشكلات ويستطيع إصلاحها.</p>
+<h1 class="chapter" id="ch3"><span class="num">CHAPTER 03</span>الجلسة الأولى: من فتح المشروع إلى أول تعديل</h1><p class="lead">الخطأ الأول الذي يقع فيه معظم المستخدمين: يفتحون الأداة ويطلبون منها بناء ميزة فورا. الترتيب الصحيح: افهم، ثم خطط، ثم نفذ، ثم راجع.</p>
+<h2 id="ch3-s1">الخطوات الخمس الأولى</h2>
+<ol class="steps"><li><span class="sh">افتح المشروع</span>من داخل مجلد المشروع، شغل <code class="inline">claude</code>. لا تشغله من مجلد المنزل.</li><li><span class="sh">افهم قبل أن تعدل</span>اطلب شرحا للبنية قبل أي طلب تعديل.</li><li><span class="sh">ادخل وضع التخطيط</span>استخدم Shift+Tab للتنقل بين الأوضاع، أو <code class="inline">/plan</code>، لتحصل على خطة قبل التعديل.</li><li><span class="sh">راجع الخطة</span>اقرأها فعلا. تعديل الخطة أرخص بكثير من تعديل الكود.</li><li><span class="sh">نفذ ثم راجع الفروق</span>بعد التنفيذ، شغل <code class="inline">/diff</code> لمراجعة ما تغير في شجرة العمل.</li></ol>
+<h2 id="ch3-s3">أول ثلاثة طلبات في أي مشروع جديد</h2>
+<div class="promptbox standalone"><div class="lbl">الطلب الأول — فهم البنية</div><div class="txt">اشرح لي بنية هذا المشروع.
+
+ما أريده:
+أولا. ما الذي يفعله هذا المشروع، في ثلاث جمل
+ثانيا. نقطة الدخول الرئيسية وكيف يبدأ التنفيذ
+ثالثا. أهم خمسة مجلدات ووظيفة كل واحد
+رابعا. كيف تشغل الاختبارات وكيف يبنى المشروع
+خامسا. ثلاثة أشياء غير متوقعة أو غير قياسية في هذا المستودع
+
+لا تعدل أي ملف. اقرأ فقط.</div></div>
+<div class="promptbox standalone"><div class="lbl">الطلب الثاني — تتبع مسار</div><div class="txt">تتبع ما يحدث عندما ينفذ المستخدم:
+[الإجراء]
+
+اذكر بالترتيب: الملفات التي يمر بها التنفيذ، والدوال الرئيسية في كل ملف،
+وأين تتخذ القرارات المهمة، وأين قد يفشل المسار.
+
+اذكر مسار كل ملف ورقم السطر عند الإشارة إلى كود.
+لا تعدل شيئا.</div></div>
+<div class="promptbox standalone"><div class="lbl">الطلب الثالث — أول تعديل صغير</div><div class="txt">المطلوب:
+[التعديل المطلوب]
+
+قبل أن تكتب أي كود:
+أولا. اعرض خطة: ما الملفات التي ستعدلها وماذا في كل ملف
+ثانيا. اذكر ما قد ينكسر بسبب هذا التعديل
+ثالثا. انتظر موافقتي
+
+بعد الموافقة نفذ، ثم اشرح ما فعلته في خمسة أسطر.</div></div>
+<h2 id="ch3-s7">الأوامر التي ستستخدمها يوميا</h2>
+<table class="data"><thead><tr><th>الأمر</th><th>ماذا يفعل</th></tr></thead><tbody><tr><td>/help</td><td>عرض المساعدة والأوامر المتاحة</td></tr><tr><td>/init</td><td>إنشاء ملف CLAUDE.md للمشروع</td></tr><tr><td>/plan</td><td>الدخول في وضع التخطيط من الموجه مباشرة</td></tr><tr><td>/diff</td><td>مراجعة التغييرات في شجرة العمل</td></tr><tr><td>/context</td><td>عرض ما يستهلك السياق حاليا كشبكة ملونة</td></tr><tr><td>/compact</td><td>تفريغ السياق بتلخيص المحادثة</td></tr><tr><td>/clear</td><td>بدء محادثة جديدة بسياق فارغ</td></tr><tr><td>/permissions</td><td>إدارة قواعد السماح والسؤال والمنع</td></tr><tr><td>/model</td><td>تبديل النموذج وحفظه كافتراضي</td></tr><tr><td>/doctor</td><td>فحص إعداد يشخص المشكلات ويستطيع إصلاحها</td></tr></tbody></table>
+<h1 class="chapter" id="ch4"><span class="num">CHAPTER 04</span>أوضاع الأذونات: أهم فصل في الدليل</h1><p class="lead">وضع الأذونات يحدد ما الذي يستطيع Claude فعله دون أن يسألك. فهم هذا الفصل هو الفرق بين أداة تحت سيطرتك وأداة تفاجئك.</p>
+<h2 id="ch4-s1">الأوضاع الستة</h2>
+<table class="data"><thead><tr><th>الوضع</th><th>ما يعمل بلا سؤال</th><th>الأنسب لـ</th></tr></thead><tbody><tr><td>Manual (قيمته <code class="inline">default</code>)</td><td>يسأل قبل معظم ما يعدل ملفا أو يشغل أمرا أو يصل للشبكة</td><td>العمل الحساس والكود غير المألوف</td></tr><tr><td>acceptEdits</td><td>القراءات وتعديلات الملفات وأوامر نظام ملفات شائعة</td><td>التكرار على كود تراجعه</td></tr><tr><td>plan</td><td>القراءات، مع أوامر يوافق عليها المصنف عند توفر وضع auto</td><td>استكشاف مستودع قبل تعديله</td></tr><tr><td>auto</td><td>كل شيء، مع فحوص أمان في الخلفية</td><td>المهام الطويلة وتقليل إرهاق الأسئلة</td></tr><tr><td>dontAsk</td><td>الأدوات المعتمدة مسبقا فقط</td><td>التكامل المستمر والسكربتات المقيدة</td></tr><tr><td>bypassPermissions</td><td>كل شيء</td><td>الحاويات والأجهزة الافتراضية المعزولة فقط</td></tr></tbody></table>
+<div class="callout note"><div class="t">لماذا اسمان لوضع واحد</div><p>الوضع الذي يراجع كل إجراء اسمه Manual في الـ CLI وفي <code class="inline">claude --help</code> وفي إضافتي VS Code و JetBrains وفي تطبيق الحاسوب، لكن قيمته في الإعدادات هي <code class="inline">default</code>، وهي القيمة التي تستخدمها الخطافات وتكاملات الـ SDK. ويقبل الـ CLI الاسم <code class="inline">manual</code> كمرادف، مثل <code class="inline">claude --permission-mode manual</code>.</p></div>
+<h2 id="ch4-s4">كيف تبدل الوضع</h2>
+<ul class="b"><li>داخل الـ CLI: مفتاحا <code class="inline">Shift+Tab</code>.</li><li>في VS Code: مؤشر الوضع. وفي تطبيق الحاسوب: محدد الوضع.</li><li>عند التشغيل: <code class="inline">claude --permission-mode plan</code> مثلا.</li><li>من ملف إعدادات: المفتاح <code class="inline">permissions.defaultMode</code>.</li></ul>
+<h2 id="ch4-s6">في أي وضع تبدأ جلستك</h2>
+<p>التوثيق يوضح أن Claude Code يأخذ الوضع من أول ما ينطبق: العلم <code class="inline">--permission-mode</code> أو <code class="inline">--dangerously-skip-permissions</code>، ثم <code class="inline">permissions.defaultMode</code> في ملف إعدادات، ثم الافتراضي المدمج. وعلى خطط Pro و Max و Team في الطرفية أو عبر إضافة VS Code، الافتراضي المدمج هو وضع <code class="inline">auto</code>. أما مع <code class="inline">claude -p</code> أو الـ Agent SDK أو خطة Enterprise أو مفتاح Console فالافتراضي هو <code class="inline">default</code>.</p>
+<div class="callout warn"><div class="t">قيمتان لا تعملان من ملفات إعدادات المشروع</div><p>التوثيق يذكر أن ضبط <code class="inline">"auto"</code> داخل <code class="inline">.claude/settings.json</code> أو <code class="inline">.claude/settings.local.json</code> لا يسري، وأن ضبط <code class="inline">"bypassPermissions"</code> في هذين الملفين لا يسري أيضا وتبدأ الجلسة في وضع Manual. بقية القيم تسري من أي ملف إعدادات.</p></div>
+<h2 id="ch4-s9">ما لا يوافق عليه أي وضع تلقائيا</h2>
+<p>هذه القائمة من التوثيق مهمة لأنها تعني أن حتى أخطر وضع يبقى فيه سياج. لا يوافق Claude Code تلقائيا في أي وضع، بما في ذلك <code class="inline">bypassPermissions</code>، على:</p>
+<ul class="b"><li>الأدوات التي تطابق قاعدة سؤال صريحة.</li><li>الأدوات التي تتطلب تفاعل المستخدم مثل أداة <code class="inline">AskUserQuestion</code>.</li><li>عمليات <code class="inline">rm</code> و <code class="inline">rmdir</code> التي تستهدف مسارا حرجا — ولا توافق عليها قاعدة سماح ولا خطاف.</li><li>ضمانات المراسلة بين الجلسات.</li></ul>
+<p>ويذكر التوثيق أيضا أن قواعد المنع deny تمنع في كل وضع بما فيه <code class="inline">bypassPermissions</code>، بينما قواعد السماح allow لا أثر لها داخل <code class="inline">bypassPermissions</code>.</p>
+<h2 id="ch4-s13">الوضع الخطر ومتى يجوز</h2>
+<div class="callout warn"><div class="t">قبل أن تفكر في تخطي الأذونات</div><p>الوضع <code class="inline">bypassPermissions</code>، ومعه العلم <code class="inline">--dangerously-skip-permissions</code>، ليس إعدادا افتراضيا ولا اختصارا للراحة. التوثيق يشترط لتشغيل مهمة غير مراقبة بهذا الوضع عزلا حقيقيا: حاوية أو جهاز افتراضي أو بيئة تشغيل معزولة، وعلى لينكس و macOS تشغيله بمستخدم غير الجذر.</p><p>لا تستخدمه على جهازك الشخصي وعلى مستودع فيه أسرار أو صلاحيات نشر.</p></div>
+<h2 id="ch4-s15">بديل عملي أفضل من تخطي الأذونات</h2>
+<p>إذا كان دافعك كثرة الأسئلة، فالتوثيق يعرض مسارا أنظف: وضع Manual مع صندوق Bash الرملي في وضع السماح التلقائي. تشغله بـ <code class="inline">claude --permission-mode default</code> ثم <code class="inline">/sandbox</code> وتختار auto-allow. وتبقى قواعد المنع سارية، وتبقى قواعد السؤال التي تسمي أمرا بعينه — مثل <code class="inline">Bash(git push *)</code> — تسأل.</p>
+<div class="codewrap"><div class="caption">أمثلة إطلاق بأوضاع مختلفة</div><pre class="code">claude --permission-mode default
+claude --permission-mode plan
+claude -p "run the test suite" --permission-mode dontAsk \
+  --allowedTools "Bash(npm test)" "Read"</pre></div>
+<h1 class="chapter" id="ch5"><span class="num">CHAPTER 05</span>الذاكرة: CLAUDE.md وقواعد المسارات والذاكرة التلقائية</h1><p class="lead">كل جلسة تبدأ بنافذة سياق جديدة. آليتان تنقلان المعرفة بين الجلسات: ملفات CLAUDE.md التي تكتبها أنت، والذاكرة التلقائية التي يكتبها Claude بنفسه.</p>
+<h2 id="ch5-s1">الفرق بين الآليتين</h2>
+<table class="data"><thead><tr><th></th><th>CLAUDE.md</th><th>الذاكرة التلقائية</th></tr></thead><tbody><tr><td>من يكتبها</td><td>أنت</td><td>Claude</td></tr><tr><td>ماذا تحتوي</td><td>تعليمات وقواعد</td><td>دروس وأنماط</td></tr><tr><td>النطاق</td><td>مشروع أو مستخدم أو مؤسسة</td><td>لكل مستودع، ومشتركة عبر أشجار العمل</td></tr><tr><td>تحمل في</td><td>كل جلسة</td><td>كل جلسة، أول 200 سطر أو 25 كيلوبايت</td></tr><tr><td>استخدمها لـ</td><td>معايير الكود وسير العمل ومعمارية المشروع</td><td>تفضيلاتك وتصحيحاتك وسياق لا يستنتج من الكود</td></tr></tbody></table>
+<div class="callout note"><div class="t">الذاكرة سياق لا إعداد ملزم</div><p>التوثيق صريح: Claude يتعامل مع الملفين كسياق لا كإعداد مفروض. لمنع إجراء مهما قرر Claude، استخدم خطاف <code class="inline">PreToolUse</code> بدلا من كتابة قاعدة في CLAUDE.md.</p></div>
+<h2 id="ch5-s4">أين توضع ملفات CLAUDE.md</h2>
+<table class="data"><thead><tr><th>النطاق</th><th>الموقع</th><th>الغرض</th></tr></thead><tbody><tr><td>سياسة مدارة</td><td>على لينكس و WSL: /etc/claude-code/CLAUDE.md</td><td>تعليمات على مستوى المؤسسة</td></tr><tr><td>تعليمات المستخدم</td><td>~/.claude/CLAUDE.md</td><td>تفضيلاتك في كل مشاريعك</td></tr><tr><td>تعليمات المشروع</td><td>./CLAUDE.md أو ./.claude/CLAUDE.md</td><td>تعليمات مشتركة مع الفريق عبر Git</td></tr><tr><td>تعليمات محلية</td><td>./CLAUDE.local.md</td><td>تفضيلاتك في هذا المشروع، وتضاف إلى .gitignore</td></tr></tbody></table>
+<p>التوثيق يذكر أيضا مسارات السياسة المدارة على أنظمة أخرى: على macOS <code class="inline">/Library/Application Support/ClaudeCode/CLAUDE.md</code>، وعلى Windows <code class="inline">C:\Program Files\ClaudeCode\CLAUDE.md</code>. وترتيب التحميل من الأوسع نطاقا إلى الأخص، فتظهر تعليمات المشروع في السياق بعد تعليمات المستخدم.</p>
+<h2 id="ch5-s7">كيف تبدأ</h2>
+<div class="codewrap"><div class="caption">توليد ملف بداية</div><pre class="code">/init</pre></div>
+<p>التوثيق يقول إن <code class="inline">/init</code> يحلل مستودعك وينشئ ملفا فيه أوامر البناء وتعليمات الاختبار والأعراف التي اكتشفها. وإذا كان الملف موجودا فإنه يقترح تحسينات بدل أن يستبدله. ثم تحسنه أنت بتعليمات لا يستطيع اكتشافها بنفسه.</p>
+<h2 id="ch5-s10">كيف تكتب تعليمات فعالة</h2>
+<ul class="b"><li><strong>الحجم</strong>: التوثيق يستهدف أقل من 200 سطر لكل ملف، لأن الأطول يستهلك سياقا أكثر ويقلل الالتزام.</li><li><strong>البنية</strong>: عناوين ونقاط، لا فقرات كثيفة.</li><li><strong>التحديد</strong>: «استخدم مسافتين للإزاحة» أفضل من «نسق الكود بشكل صحيح».</li><li><strong>عدم التناقض</strong>: إذا تناقضت قاعدتان فقد يختار Claude إحداهما عشوائيا.</li></ul>
+<div class="promptbox standalone filebox"><div class="lbl">CLAUDE.md</div><div class="txt"># my-project
+
+## أوامر
+تشغيل المشروع: npm run dev
+تشغيل الاختبارات: npm test
+الفحص: npm run lint
+
+## أعراف
+مسافتان للإزاحة، لا علامات جدولة.
+معالجات الـ API في src/api/handlers/ فقط.
+شغل npm test قبل أي commit.
+
+## قرارات معمارية
+طبقة الوصول للبيانات في src/db وحدها.
+ممنوع استدعاء قاعدة البيانات من المكونات مباشرة.</div></div>
+<h2 id="ch5-s13">متى تضيف إلى CLAUDE.md</h2>
+<p>التوثيق يعطي أربع علامات واضحة:</p>
+<ol class="n"><li>عندما يرتكب Claude الخطأ نفسه للمرة الثانية.</li><li>عندما تكشف مراجعة كود شيئا كان يجب أن يعرفه عن هذا المستودع.</li><li>عندما تكتب التصحيح نفسه الذي كتبته في الجلسة الماضية.</li><li>عندما يحتاج زميل جديد السياق نفسه ليصبح منتجا.</li></ol>
+<h2 id="ch5-s16">استيراد ملفات أخرى</h2>
+<p>يمكن لملف CLAUDE.md استيراد ملفات أخرى بصيغة <code class="inline">@path/to/import</code>. المسارات النسبية والمطلقة مسموحة، والنسبي يحل بالنسبة للملف الذي يحتويه لا لمجلد العمل. والاستيراد المتداخل مسموح بعمق أقصاه أربع قفزات. ولمنع استيراد مسار ذكرته نصا، ضعه بين علامتي اقتباس خلفية.</p>
+<div class="callout note"><div class="t">AGENTS.md</div><p>التوثيق واضح: Claude Code يقرأ <code class="inline">CLAUDE.md</code> لا <code class="inline">AGENTS.md</code>. إذا كان مستودعك يستخدم <code class="inline">AGENTS.md</code> لوكلاء آخرين، أنشئ <code class="inline">CLAUDE.md</code> يستورده بسطر <code class="inline">@AGENTS.md</code> ثم أضف تحته تعليمات خاصة بـ Claude.</p></div>
+<h2 id="ch5-s19">قواعد المسارات في .claude/rules</h2>
+<p>للمشاريع الكبيرة، يمكن تقسيم التعليمات إلى ملفات داخل <code class="inline">.claude/rules/</code>. وأهم ميزة فيها أن القاعدة يمكن ربطها بمسارات محددة عبر حقل <code class="inline">paths</code> في مقدمة YAML، فلا تحمل إلا عندما يعمل Claude على ملفات مطابقة.</p>
+<div class="codewrap"><div class="caption">مقدمة YAML التي تربط القاعدة بمسارات معينة</div><pre class="code">---
+paths:
+  - "src/api/**/*.ts"
+---</pre></div>
+<div class="promptbox standalone filebox"><div class="lbl">.claude/rules/api.md — بقية الملف</div><div class="txt"># قواعد تطوير الـ API
+
+كل نقطة نهاية تتحقق من مدخلاتها قبل أي معالجة.
+استخدم صيغة الخطأ القياسية المعرفة في src/api/errors.
+أضف تعليقات توثيق OpenAPI لكل نقطة نهاية جديدة.</div></div>
+<p>القواعد التي لا تحمل حقل <code class="inline">paths</code> تحمل دائما بالأولوية نفسها لـ <code class="inline">.claude/CLAUDE.md</code>. والقواعد الشخصية في <code class="inline">~/.claude/rules/</code> تحمل قبل قواعد المشروع، فتكون لقواعد المشروع أولوية أعلى.</p>
+<h2 id="ch5-s24">الذاكرة التلقائية</h2>
+<p>الذاكرة التلقائية مفعلة افتراضيا. يحفظ Claude أربعة أنواع من الملاحظات، ويسجل النوع في حقل <code class="inline">type</code> في مقدمة ملف الذاكرة:</p>
+<table class="data"><thead><tr><th>النوع</th><th>ماذا يحفظ</th></tr></thead><tbody><tr><td>user</td><td>دورك وخبرتك وتفضيلات عملك</td></tr><tr><td>feedback</td><td>تصحيحاتك لـ Claude والمقاربات التي أكدتها</td></tr><tr><td>project</td><td>العمل الجاري والمواعيد والقرارات التي لا تستنتج من الكود أو من سجل Git</td></tr><tr><td>reference</td><td>أين تجد معلومات خارج المشروع، مثل متتبع مسائل أو لوحة</td></tr></tbody></table>
+<p>ويتخطى Claude ما يستطيع استنتاجه من الكود نفسه مثل المعمارية ومسارات الملفات، ويتخطى ما تقوله ملفات CLAUDE.md أصلا. مكان التخزين <code class="inline">~/.claude/projects/&lt;project&gt;/memory/</code> وفيه ملف فهرس <code class="inline">MEMORY.md</code> وملف لكل موضوع. والذاكرة محلية على الجهاز ولا تشارك عبر الأجهزة.</p>
+<div class="codewrap"><div class="caption">إدارة الذاكرة</div><pre class="code">/memory
+/context</pre></div>
+<div class="codewrap"><div class="caption">إيقاف الذاكرة التلقائية لمشروع واحد</div><pre class="code">{
+  "autoMemoryEnabled": false
+}</pre></div>
+<p>ويمكن إيقافها عبر متغير البيئة <code class="inline">CLAUDE_CODE_DISABLE_AUTO_MEMORY=1</code>. وملفات الذاكرة نصوص Markdown عادية تستطيع تحريرها أو حذفها في أي وقت.</p>
+<h2 id="ch5-s31">إذا لم يلتزم Claude بتعليماتك</h2>
+<ol class="n"><li>شغل <code class="inline">/context</code> وتحقق أن ملفك ظهر تحت Memory files. إذا لم يظهر فهو لا يراه.</li><li>تأكد أن الملف في موقع يحمل لجلستك.</li><li>اجعل التعليمة أكثر تحديدا.</li><li>ابحث عن تعليمات متناقضة بين الملفات.</li><li>إذا كانت التعليمة يجب أن تنفذ في لحظة محددة — قبل كل commit مثلا — فاكتبها خطافا لا تعليمة.</li></ol>
+<h1 class="chapter" id="ch6"><span class="num">CHAPTER 06</span>الجلسات: الاستئناف والتفريع وإدارة السياق</h1><p class="lead">الجلسة محادثة محفوظة مرتبطة بمجلد المشروع، تحفظ محليا أثناء عملك، فتستطيع العودة إليها أو تفريعها لتجربة مقاربة أخرى.</p>
+<h2 id="ch6-s1">الاستئناف</h2>
+<table class="data"><thead><tr><th>الأمر</th><th>ماذا يفعل</th></tr></thead><tbody><tr><td>claude --continue</td><td>استئناف آخر جلسة تفاعلية في المجلد الحالي</td></tr><tr><td>claude --resume</td><td>فتح منتقي الجلسات</td></tr><tr><td>claude --resume &lt;name&gt;</td><td>استئناف الجلسة المسماة مباشرة</td></tr><tr><td>claude --from-pr &lt;number&gt;</td><td>منتقي جلسات مرتبطة بطلب دمج معين</td></tr><tr><td>/resume</td><td>التبديل إلى محادثة أخرى من داخل جلسة نشطة</td></tr></tbody></table>
+<h2 id="ch6-s3">ما الذي يستعاد فعلا</h2>
+<ul class="b"><li>سجل المحادثة كاملا بما فيه استدعاءات الأدوات ونتائجها.</li><li>النموذج الذي كانت الجلسة تستخدمه، إلا في حالات يذكرها التوثيق مثل تقاعد النموذج أو تمرير <code class="inline">--model</code>.</li><li>وضع الأذونات، بتفصيل يختلف حسب طريقة الاستئناف.</li><li>الهدف النشط والمهام المجدولة التي لم تنته صلاحيتها.</li></ul>
+<div class="callout warn"><div class="t">ما لا يستعاد</div><p>التوثيق يذكر أن أعلام الإطلاق ليست كلها تستعاد. إذا كانت جلستك تعتمد على <code class="inline">--mcp-config</code> أو <code class="inline">--settings</code> أو <code class="inline">--plugin-dir</code> أو <code class="inline">--fallback-model</code> أو مجلدات أضيفت بـ <code class="inline">--add-dir</code>، فمررها مجددا عند الاستئناف. أما ملفات الإعدادات القياسية فتقرأ عند الإطلاق ولا تحتاج تمريرا.</p></div>
+<h2 id="ch6-s6">تسمية الجلسات</h2>
+<div class="codewrap"><div class="caption">التسمية عند البدء وأثناء العمل</div><pre class="code">claude -n auth-refactor
+/rename auth-refactor</pre></div>
+<p>التسمية تجعل الجلسة قابلة للعثور في المنتقي وقابلة للاستئناف بالاسم. وهي الأهم عندما تعمل على عدة مهام بالتوازي.</p>
+<h2 id="ch6-s9">تفريع محادثة</h2>
+<p>التفريع ينشئ نسخة من المحادثة حتى الآن وينقلك إليها، ويترك الأصلية كما هي. استخدمه لتجربة مقاربة مختلفة دون خسارة المسار الذي كنت عليه.</p>
+<div class="codewrap"><div class="caption">التفريع</div><pre class="code">/branch try-streaming-approach
+claude --continue --fork-session</pre></div>
+<h2 id="ch6-s12">إدارة السياق داخل الجلسة</h2>
+<table class="data"><thead><tr><th>الأمر</th><th>ماذا يفعل</th><th>متى</th></tr></thead><tbody><tr><td>/context</td><td>عرض ما يستهلك السياق حاليا</td><td>عندما تشعر أن الردود تباطأت</td></tr><tr><td>/compact
+[تعليمات]</td><td>استبدال السجل بملخص، مع إمكانية توجيهه</td><td>عند اقتراب امتلاء السياق مع رغبتك في المتابعة</td></tr><tr><td>/clear
+[اسم]</td><td>بدء محادثة جديدة بسياق فارغ</td><td>عند تغير الهدف كليا</td></tr><tr><td>/export
+[ملف]</td><td>تصدير المحادثة نصا</td><td>عند الحاجة لتوثيق ما جرى</td></tr></tbody></table>
+<div class="callout tip"><div class="t">ما ينجو من الضغط</div><p>التوثيق يذكر أن CLAUDE.md في جذر المشروع ينجو من الضغط: بعد <code class="inline">/compact</code> يعيد Claude قراءته من القرص وحقنه في الجلسة. أما التعليمة التي أعطيتها في المحادثة فقط فتضيع. إذا كانت تعليمة مهمة، اكتبها في CLAUDE.md.</p></div>
+<h2 id="ch6-s15">أين تحفظ الجلسات</h2>
+<p>افتراضيا يحفظ Claude Code النصوص بصيغة JSONL في <code class="inline">~/.claude/projects/&lt;project&gt;/&lt;session-id&gt;.jsonl</code>، حيث <code class="inline">&lt;project&gt;</code> هو مسار مجلد عملك بعد استبدال الرموز غير الأبجدية الرقمية بـ <code class="inline">-</code>. والتوثيق يحذر من أن صيغة السطور داخلية وتتغير بين الإصدارات، فلا تبن سكربتا يحللها مباشرة، واستخدم <code class="inline">/export</code> أو الواجهات البرمجية بدلا من ذلك.</p>
+<h1 class="chapter" id="ch7"><span class="num">CHAPTER 07</span>مراجعة التغييرات والتراجع عن خطأ</h1><p class="lead">هذا الفصل هو شبكة الأمان. أي شخص يستخدم أداة وكيلة سيمر بلحظة يعدل فيها الوكيل شيئا لم يكن يجب أن يعدل. المهم أن تعرف كيف ترجع.</p>
+<h2 id="ch7-s1">قاعدة المراجعة قبل الاعتماد</h2>
+<ol class="steps"><li><span class="sh">راجع الفرق أولا</span>شغل <code class="inline">/diff</code> وانظر ما تغير فعلا، لا ما قيل لك إنه تغير.</li><li><span class="sh">شغل الاختبارات</span>قبل أي commit، لا بعده.</li><li><span class="sh">اقرأ ما لا تفهمه</span>إذا وجدت تغييرا لا تفهم سببه، اسأل عنه قبل الاعتماد.</li><li><span class="sh">اعتمد على دفعات صغيرة</span>تغيير صغير مراجع أفضل من عشرة ملفات تعتمدها دفعة واحدة.</li></ol>
+<h2 id="ch7-s3">نقاط الاستعادة Checkpointing</h2>
+<p>التوثيق يفرد صفحة مرجعية لـ Checkpointing، ويصفها بأنها إرجاع الكود والمحادثة إلى نقطة سابقة داخل الجلسة نفسها. وهي مختلفة عن التفريع: التفريع ينسخ المحادثة إلى مسار جديد، بينما الاستعادة ترجع بك إلى الوراء. كما تذكر صفحة الجلسات أن قائمة الاستعادة تحتوي مدخلا للجلسة السابقة يتيح الرجوع إلى ما قبل <code class="inline">/clear</code> داخل نفس عملية Claude Code.</p>
+<h2 id="ch7-s5">شبكة أمان لا تعتمد على الأداة</h2>
+<p>أفضل حماية ليست ميزة داخل Claude Code بل عادة في Git. اجعل كل جلسة عمل تبدأ من حالة نظيفة معروفة:</p>
+<div class="codewrap"><div class="caption">قبل أن تبدأ جلسة تعديل</div><pre class="code">git status
+git checkout -b feature/my-task
+claude</pre></div>
+<div class="codewrap"><div class="caption">إذا ساءت الأمور</div><pre class="code">git diff
+git checkout -- src/app.js
+git stash
+git reset --hard</pre></div>
+<div class="callout warn"><div class="t">احذر من هذا الأمر تحديدا</div><p><code class="inline">git reset --hard</code> يحذف كل التغييرات غير المعتمدة نهائيا، وما حذفه لا يسترجع من Git. شغل <code class="inline">git diff</code> وانظر ماذا ستخسر قبل تنفيذه، أو استخدم <code class="inline">git stash</code> الذي يحفظ التغييرات بدل أن يمحوها.</p></div>
+<h2 id="ch7-s10">حدود مجلد العمل</h2>
+<p>التوثيق يذكر حماية مهمة: في وضع Manual يستطيع Claude Code الكتابة فقط في المجلد الذي بدأ فيه ومجلداته الفرعية، ولا يستطيع تعديل ملفات في مجلدات أعلى دون إذن صريح. كما يسألك في وضع Manual قبل قراءة مسارات خارج هذا الحد بأدوات القراءة والبحث. ولهذا لا تشغل Claude Code من مجلد المنزل.</p>
+<h1 class="chapter" id="ch8"><span class="num">CHAPTER 08</span>العمل مع Git والفروع وطلبات الدمج</h1><p class="lead">Claude Code يعمل مع Git مباشرة: يجهز التغييرات، ويكتب رسائل الـ commit، وينشئ الفروع، ويفتح طلبات الدمج. الفائدة الحقيقية تظهر عندما تجعل ذلك جزءا من سير عمل منضبط لا أمرا عابرا.</p>
+<h2 id="ch8-s1">سير عمل الفرع الواحد</h2>
+<ol class="steps"><li><span class="sh">افتح فرعا لكل مهمة</span>لا تعمل على الفرع الرئيسي مباشرة.</li><li><span class="sh">اطلب خطة قبل التنفيذ</span>في وضع التخطيط، لتراجع النطاق قبل أن يكتب سطر.</li><li><span class="sh">نفذ ثم راجع</span><code class="inline">/diff</code> ثم الاختبارات ثم الاعتماد.</li><li><span class="sh">commit صغير ومعنوي</span>رسالة تشرح لماذا لا ماذا.</li><li><span class="sh">افتح طلب دمج</span>واترك للمراجع فرصة حقيقية للفهم.</li></ol>
+<h2 id="ch8-s3">طلبات مفيدة مع Git</h2>
+<div class="promptbox standalone"><div class="lbl">مراجعة قبل الاعتماد</div><div class="txt">راجع التغييرات الحالية في شجرة العمل قبل أن أعتمدها.
+
+أعطني:
+أولا. ملخص ما تغير، ملفا ملفا، في سطر لكل ملف
+ثانيا. أي تغيير لم أطلبه صراحة
+ثالثا. أي تغيير قد يكسر سلوكا قائما
+رابعا. ملفات كان يجب تعديلها ولم تعدل
+
+لا تعدل شيئا الآن. راجع فقط.</div></div>
+<div class="promptbox standalone"><div class="lbl">رسالة commit</div><div class="txt">اكتب رسالة commit للتغييرات الحالية.
+
+القواعد:
+سطر أول لا يتجاوز 72 حرفا، يقول ماذا تغير
+سطر فارغ
+فقرة تشرح لماذا كان التغيير ضروريا، لا كيف نفذ
+اذكر أي أثر جانبي أو تغيير في السلوك
+
+لا تذكر أسماء ملفات في السطر الأول.</div></div>
+<div class="promptbox standalone"><div class="lbl">حل تعارض دمج</div><div class="txt">ساعدني في حل تعارضات الدمج الحالية.
+
+لكل تعارض:
+أولا. ما الذي كان يحاول كل طرف فعله
+ثانيا. هل التعارض نصي فقط أم منطقي
+ثالثا. الحل المقترح وسببه
+رابعا. ما الذي يجب اختباره بعد الحل
+
+إذا كان طرفا التعارض يغيران السلوك نفسه بطريقتين مختلفتين، توقف واسألني.</div></div>
+<h2 id="ch8-s7">الأتمتة في التكامل المستمر</h2>
+<p>التوثيق يذكر أن مراجعة الكود وفرز المسائل يمكن أتمتتهما عبر GitHub Actions أو GitLab CI/CD، وأن هناك مراجعة كود تلقائية على كل طلب دمج عبر GitHub Code Review، وأن ذكر <code class="inline">@Claude</code> في Slack يمكن أن يحول بلاغ خطأ إلى طلب دمج.</p>
+<h1 class="chapter" id="ch9"><span class="num">CHAPTER 09</span>الاختبارات والفحص والتصحيح وإعادة الهيكلة</h1><p class="lead">هذه هي المهام التي يتفوق فيها الوكيل فعلا، لأن لها معيار نجاح آليا: الاختبار ينجح أو يفشل، والفحص يمر أو لا يمر.</p>
+<h2 id="ch9-s1">الاختبارات أولا</h2>
+<p>أفضل طريقة لاستخدام أداة وكيلة في كود قائم هي أن تعطيها معيارا آليا تتحقق به من نفسها. اطلب الاختبار قبل التعديل، لا بعده.</p>
+<div class="promptbox standalone"><div class="lbl">اختبارات قبل التعديل</div><div class="txt">قبل أن نعدل [الوحدة]، اكتب اختبارات تصف سلوكها الحالي.
+
+المطلوب:
+أولا. اقرأ الوحدة وحدد سلوكها الفعلي، لا المفترض
+ثانيا. اكتب اختبارات تغطي المسار الطبيعي والحدود وحالات الفشل
+ثالثا. شغلها وتأكد أنها تنجح على الكود الحالي كما هو
+رابعا. اذكر أي سلوك بدا لك خاطئا ولم تختبره
+
+لا تعدل كود الوحدة نفسها في هذه الخطوة.</div></div>
+<h2 id="ch9-s4">التصحيح</h2>
+<div class="promptbox standalone"><div class="lbl">تشخيص خطأ</div><div class="txt">شخص هذا الخطأ.
+
+رسالة الخطأ كاملة:
+[رسالة الخطأ]
+
+السلوك المتوقع:
+[المتوقع]
+السلوك الفعلي:
+[الفعلي]
+ما جربته:
+[المحاولات]
+
+المطلوب:
+أولا. اقرأ الكود المتعلق وحدد أربع فرضيات مرتبة بالأرجحية
+ثانيا. لكل فرضية: كيف نثبتها أو ننفيها بأقل تغيير ممكن
+ثالثا. ابدأ بالاختبار الأسرع ونفذه
+رابعا. أخبرني بالنتيجة قبل أن تنتقل للفرضية التالية
+
+لا تغير كودا على أمل أن يعمل.</div></div>
+<div class="callout warn"><div class="t">خطأ شائع في التصحيح</div><p>لا تسمح بأن تتحول الجلسة إلى سلسلة تغييرات عشوائية حتى يختفي الخطأ. اطلب فرضية ودليلا قبل كل تغيير. الخطأ الذي يختفي بلا تفسير يعود.</p></div>
+<h2 id="ch9-s7">إعادة الهيكلة</h2>
+<div class="promptbox standalone"><div class="lbl">إعادة هيكلة آمنة</div><div class="txt">أعد هيكلة [الوحدة] بحيث
+[الهدف]
+
+الشروط:
+لا تغيير في السلوك الخارجي
+الاختبارات الحالية يجب أن تبقى ناجحة بلا تعديل
+على دفعات: نفذ خطوة واحدة، شغل الاختبارات، ثم توقف وأخبرني
+
+ابدأ بأن تعرض لي خطة الخطوات وحدها، وانتظر موافقتي.</div></div>
+<h2 id="ch9-s9">الفحص والتنسيق</h2>
+<p>اجعل الفحص والتنسيق آليين لا طلبا يدويا. أدرج أوامرهما في CLAUDE.md ليعرفها Claude في كل جلسة، ثم اربطهما بخطاف حتى يعملا بعد كل تعديل ملف كما ذكر التوثيق في مثال الخطافات.</p>
+<h2 id="ch9-s11">المراجعة الأمنية</h2>
+<p>التوثيق يذكر أمر <code class="inline">/security-review</code> ويصفه بأنه تمريرة أمنية عند الطلب على التغييرات في فرعك الحالي، ويذكر إضافة إرشاد الأمان التي تجعل Claude يراجع ويصلح الثغرات في تغييراته أثناء الجلسة. اجعل واحدة منهما جزءا من روتينك قبل أي طلب دمج.</p>
+<h1 class="chapter" id="ch10"><span class="num">CHAPTER 10</span>المهارات Skills والخطافات Hooks</h1><p class="lead">هاتان الآليتان تحولان Claude Code من أداة عامة إلى أداة تعرف طريقة عمل فريقك.</p>
+<h2 id="ch10-s1">المهارات</h2>
+<p>التوثيق يصف المهارات بأنها تحزم سير عمل متكررا يمكن لفريقك مشاركته، وتستدعى مثل <code class="inline">/review-pr</code> أو <code class="inline">/deploy-staging</code>. والفارق المهم عن القواعد أن المهارة لا تحمل إلا عندما تستدعيها أنت أو عندما يرى Claude أنها متعلقة بطلبك، بينما القواعد تحمل في كل جلسة أو عند فتح ملفات مطابقة.</p>
+<table class="data"><thead><tr><th>إذا كانت التعليمة…</th><th>ضعها في</th></tr></thead><tbody><tr><td>حقيقة يجب أن تعرف في كل جلسة</td><td>CLAUDE.md</td></tr><tr><td>خاصة بنوع ملفات أو مجلد</td><td>قاعدة في .claude/rules بحقل paths</td></tr><tr><td>إجراء متعدد الخطوات يستدعى عند الحاجة</td><td>مهارة Skill</td></tr><tr><td>يجب أن تنفذ في لحظة محددة مهما قرر Claude</td><td>خطاف Hook</td></tr></tbody></table>
+<h2 id="ch10-s4">الخطافات</h2>
+<p>الخطافات تشغل أوامر صدفة قبل أو بعد إجراءات Claude Code، مثل التنسيق التلقائي بعد كل تعديل ملف، أو تشغيل الفحص قبل الـ commit. وهي الآلية الوحيدة التي تنفذ بغض النظر عما يقرره Claude، ولهذا فالتوثيق يوجهك إليها عندما تريد منعا حقيقيا لا مجرد توجيه.</p>
+<div class="codewrap"><div class="caption">إدارة الخطافات</div><pre class="code">/hooks</pre></div>
+<div class="callout tip"><div class="t">خطاف أول يستحق الإعداد</div><p>خطاف <code class="inline">PreToolUse</code> يمنع إجراء قبل وقوعه. استخدمه لمنع الكتابة في ملفات حساسة أو تشغيل أوامر محظورة في مشروعك، بدل الاعتماد على تعليمة نصية في CLAUDE.md قد لا يلتزم بها.</p></div>
+<p>ويذكر التوثيق خطافا مفيدا للتشخيص اسمه <code class="inline">InstructionsLoaded</code>، يسجل أي ملفات تعليمات حملت ومتى ولماذا، وهو مفيد لتصحيح القواعد المرتبطة بمسارات.</p>
+<h2 id="ch10-s9">الإضافات Plugins</h2>
+<p>التوثيق يفرد صفحات لاكتشاف الإضافات الجاهزة عبر الأسواق، وإنشاء الإضافات، وإنشاء سوق إضافات وتوزيعه، وتقييد إصدارات اعتماديات الإضافة. تعامل مع أي إضافة أو مهارة من طرف ثالث كما تتعامل مع أي برنامج تنزله: اعرف مصدرها، واقرأ ما تطلبه، ولا تثبت ما لا تحتاجه.</p>
+<h1 class="chapter" id="ch11"><span class="num">CHAPTER 11</span>الوكلاء الفرعيون والعمل المتوازي وأشجار العمل</h1><p class="lead">عندما تكبر المهمة، لا تحل بجلسة واحدة أطول بل بتقسيمها. التوثيق يوفر أكثر من آلية لذلك، ولكل واحدة موضعها.</p>
+<h2 id="ch11-s1">الوكلاء الفرعيون Subagents</h2>
+<p>التوثيق يذكر إمكانية تشغيل عدة وكلاء يعملون على أجزاء مختلفة من المهمة في وقت واحد، مع وكيل قائد ينسق العمل ويوزع المهام الفرعية ويدمج النتائج. والصفحات المتعلقة تشمل: تشغيل الوكلاء بالتوازي، وإنشاء وكلاء فرعيين مخصصين، وإدارة عدة وكلاء عبر عرض الوكلاء، وتنسيق فرق من جلسات Claude Code، والمراسلة بين الجلسات، وتنسيق الوكلاء الفرعيين على نطاق واسع عبر سير العمل الديناميكي.</p>
+<div class="callout note"><div class="t">ما لا ترثه الوكلاء الفرعية</div><p>التوثيق يوضح أن الذاكرة التلقائية للمحادثة الرئيسية لا تحمل في الوكلاء الفرعيين، والاستثناء هو التفريع الذي يرث المحادثة الأصلية ورسالة النظام. وللوكيل الفرعي ذاكرة تلقائية خاصة به في مجلد منفصل إذا فعلت.</p></div>
+<h2 id="ch11-s4">أشجار العمل Worktrees</h2>
+<p>أشجار عمل Git تتيح تشغيل جلسات متوازية معزولة على فروع منفصلة، وللتوثيق صفحة مخصصة لها. الفائدة العملية: تجرب مقاربتين في وقت واحد دون أن تتداخل تغييرات إحداهما مع الأخرى، ودون تبديل الفروع في مجلد واحد.</p>
+<div class="codewrap"><div class="caption">شجرة عمل لكل تجربة</div><pre class="code">git worktree add ../experiment-a -b experiment-a
+cd ../experiment-a
+claude</pre></div>
+<div class="callout note"><div class="t">الذاكرة التلقائية عبر أشجار العمل</div><p>التوثيق يذكر أن كل أشجار العمل والمجلدات الفرعية داخل المستودع نفسه تشترك في مجلد ذاكرة تلقائية واحد. أما ملف <code class="inline">CLAUDE.local.md</code> المستبعد من Git فيوجد فقط في شجرة العمل التي أنشأته فيها.</p></div>
+<h2 id="ch11-s8">متى تستخدم كل آلية</h2>
+<table class="data"><thead><tr><th>الحالة</th><th>الآلية</th></tr></thead><tbody><tr><td>مهمة واحدة كبيرة قابلة للتقسيم إلى أجزاء مستقلة</td><td>وكلاء فرعيون بالتوازي</td></tr><tr><td>تجربة مقاربتين مختلفتين للمشكلة نفسها</td><td>تفريع المحادثة، أو شجرتا عمل</td></tr><tr><td>العمل على ميزتين مختلفتين في وقت واحد</td><td>أشجار عمل منفصلة</td></tr><tr><td>سؤال جانبي لا تريد إضافته للمحادثة</td><td>الأمر /btw</td></tr></tbody></table>
+<h1 class="chapter" id="ch12"><span class="num">CHAPTER 12</span>MCP: ربط Claude Code بأدواتك</h1><p class="lead">بروتوكول MCP معيار مفتوح لربط أدوات الذكاء الاصطناعي بمصادر بيانات خارجية. به يستطيع Claude Code قراءة مستندات التصميم في Google Drive، وتحديث تذاكر Jira، وسحب بيانات من Slack، أو استخدام أدواتك الخاصة.</p>
+<h2 id="ch12-s1">من أين تبدأ</h2>
+<div class="codewrap"><div class="caption">إدارة خوادم MCP</div><pre class="code">/mcp
+/mcp reconnect &lt;server&gt;
+/mcp disable &lt;server&gt;</pre></div>
+<p>التوثيق يفرد صفحة بداية سريعة لربط أول خادم من طرف إلى طرف، وصفحة أوسع لربط Claude Code بالأدوات عبر MCP، وصفحة إدارية للتحكم في وصول خوادم MCP على مستوى المؤسسة.</p>
+<h2 id="ch12-s4">أمان MCP</h2>
+<div class="callout warn"><div class="t">ما يقوله التوثيق بوضوح</div><p>قائمة خوادم MCP المسموحة تضبط داخل كود مصدر مشروعك كجزء من إعدادات Claude Code التي يودعها المهندسون في نظام التحكم بالإصدارات.</p><p>التوثيق يشجع على كتابة خوادمك بنفسك أو استخدام خوادم من مزودين تثق بهم، ويذكر صراحة أن Anthropic تراجع الموصلات مقابل معايير الإدراج قبل إضافتها إلى الدليل، لكنها لا تدقق أمنيا ولا تدير أي خادم MCP.</p><p>الخوادم الجديدة تتطلب تحقق ثقة عند أول استخدام. ولاحظ أن التحقق معطل عند التشغيل غير التفاعلي بعلم <code class="inline">-p</code>.</p></div>
+<h2 id="ch12-s6">قاعدة عملية</h2>
+<ul class="b"><li>لا تضف خادما لا تعرف ماذا يقرأ وماذا يكتب.</li><li>أعط كل خادم أقل صلاحية تكفي مهمته.</li><li>راجع قائمة الخوادم المفعلة دوريا وأوقف ما لم تعد تستخدمه.</li><li>على مستوى الفريق، اجعل قائمة الخوادم مراجعة في طلب دمج مثل أي كود.</li></ul>
+<h1 class="chapter" id="ch13"><span class="num">CHAPTER 13</span>الأمان: الأسرار ومراجعة الأوامر والمحتوى غير الموثوق</h1><p class="lead">أداة تشغل أوامر في جهازك تحتاج انضباطا أمنيا. هذا الفصل يجمع ما يقوله التوثيق الرسمي، لا نصائح عامة.</p>
+<h2 id="ch13-s1">الحمايات المدمجة</h2>
+<ul class="b"><li><strong>نموذج قائم على الأذونات</strong>: في وضع Manual يبدأ Claude Code بصلاحيات قراءة فقط، ويسأل قبل تعديل ملف أو تشغيل أمر.</li><li><strong>أوامر قراءة فقط</strong>: يشغل مجموعة مدمجة مثل <code class="inline">ls</code> و <code class="inline">cat</code> و <code class="inline">git status</code> دون سؤال.</li><li><strong>حد مجلد العمل</strong>: لا يكتب خارج المجلد الذي بدأ فيه ومجلداته الفرعية دون إذن.</li><li><strong>صندوق Bash الرملي</strong>: عزل نظام الملفات والشبكة لأوامر Bash، يضبط بـ <code class="inline">/sandbox</code>.</li><li><strong>تحقق الثقة</strong>: أول تشغيل على مستودع وأي خادم MCP جديد يتطلبان تحقق ثقة.</li><li><strong>تخزين آمن للاعتمادات</strong>: المفاتيح والرموز تخزن في سلسلة مفاتيح macOS عند توفرها، وتحمى بصلاحيات الملفات على Windows و Linux.</li></ul>
+<h2 id="ch13-s3">حقن التعليمات Prompt Injection</h2>
+<p>حقن التعليمات أسلوب يحاول به مهاجم تجاوز تعليمات المساعد أو التلاعب بها عبر إدراج نص خبيث. التوثيق يذكر عدة حمايات، من أهمها عمليا:</p>
+<ul class="b"><li>الأوامر التي تجلب محتوى من الويب مثل <code class="inline">curl</code> و <code class="inline">wget</code> <strong>لا يوافق عليها تلقائيا</strong> افتراضيا. في وضع Manual تسأل مثل أي أمر غير قرائي. ولمنعها كليا أضفها إلى <code class="inline">permissions.deny</code>.</li><li>جلب الويب يستخدم نافذة سياق منفصلة لتجنب حقن تعليمات خبيثة في المحادثة.</li><li>في وضع Manual، الأوامر المشبوهة تتطلب موافقة يدوية حتى لو كانت في قائمة السماح سابقا.</li></ul>
+<div class="callout warn"><div class="t">أفضل الممارسات مع المحتوى غير الموثوق</div><p>راجع الأوامر المقترحة قبل الموافقة.</p><p>تجنب تمرير محتوى غير موثوق مباشرة إلى Claude.</p><p>تحقق من التغييرات المقترحة على الملفات الحرجة.</p><p>استخدم أجهزة افتراضية لتشغيل السكربتات واستدعاء الأدوات، خصوصا عند التعامل مع خدمات ويب خارجية.</p><p>بلغ عن السلوك المريب بـ <code class="inline">/feedback</code>.</p></div>
+<p>والتوثيق نفسه يذيل ذلك بتحذير مهم: رغم أن هذه الحمايات تقلل المخاطر بدرجة كبيرة، لا يوجد نظام محصن تماما ضد كل الهجمات.</p>
+<h2 id="ch13-s8">الأسرار: القاعدة التي لا تكسر</h2>
+<ol class="n"><li>لا تكتب مفتاحا ولا كلمة مرور ولا رمزا داخل الكود أبدا.</li><li>ضعها في ملف <code class="inline">.env</code> واقرأها من متغيرات البيئة.</li><li>أضف <code class="inline">.env</code> إلى <code class="inline">.gitignore</code> قبل أن تنشئه، لا بعده.</li><li>أنشئ <code class="inline">.env.example</code> فيه أسماء المتغيرات بلا قيم، وأودعه في المستودع.</li><li>إذا تسرب مفتاح إلى Git فلا يكفي حذفه في commit جديد: أبطل المفتاح وأنشئ غيره.</li></ol>
+<div class="codewrap"><div class="caption">.gitignore — الحد الأدنى</div><pre class="code">.env
+.env.local
+*.pem
+*.key
+secrets/
+CLAUDE.local.md</pre></div>
+<div class="codewrap"><div class="caption">.env.example — يودع في المستودع</div><pre class="code">DATABASE_URL=
+API_KEY=
+JWT_SECRET=</pre></div>
+<div class="callout warn"><div class="t">قبل أول commit في أي مشروع</div><p>شغل <code class="inline">git status</code> وتأكد أن <code class="inline">.env</code> غير مدرج. تسريب مفتاح إلى مستودع عام يكتشف آليا خلال دقائق من قبل من يبحث عنه.</p></div>
+<h2 id="ch13-s13">العمل على كود حساس</h2>
+<ul class="b"><li>راجع كل تغيير مقترح قبل الموافقة.</li><li>استخدم إعدادات أذونات خاصة بالمستودعات الحساسة.</li><li>فكر في حاويات التطوير dev containers لعزل إضافي.</li><li>دقق إعدادات أذوناتك دوريا بـ <code class="inline">/permissions</code>.</li></ul>
+<h1 class="chapter" id="ch14"><span class="num">CHAPTER 14</span>إدارة السياق والمشاريع الكبيرة</h1><p class="lead">المشروع الكبير لا يدار بجلسة أطول. يدار بتقليل ما يدخل السياق وبتقسيم العمل.</p>
+<h2 id="ch14-s1">ماذا يملأ سياقك</h2>
+<p>شغل <code class="inline">/context</code> لترى ما يستهلك السياق حاليا. التوثيق يوضح أن ملفات CLAUDE.md تحمل في بداية كل جلسة وتستهلك رموزا إلى جانب محادثتك، ولهذا يستهدف أقل من 200 سطر لكل ملف. والقواعد المرتبطة بمسارات تحمل فقط عندما يعمل Claude على ملفات مطابقة، وهي الوسيلة الرئيسية لتقليل الضجيج في مستودع كبير.</p>
+<h2 id="ch14-s3">خمس عادات تقلل استهلاك السياق</h2>
+<ol class="n"><li>جلسة واحدة لهدف واحد. عند تغير الهدف، <code class="inline">/clear</code>.</li><li>اطلب من Claude قراءة ملفات محددة بدل استكشاف المستودع كله.</li><li>استخدم قواعد المسارات بدل ملف CLAUDE.md ضخم.</li><li>حول الإجراءات المتكررة إلى مهارات تحمل عند الحاجة فقط.</li><li>استخدم <code class="inline">/compact</code> مع تعليمات موجهة بدل تركه يلخص كل شيء بالتساوي.</li></ol>
+<div class="codewrap"><div class="caption">ضغط موجه بدل ضغط عام</div><pre class="code">/compact keep architecture decisions and edited file names; drop debugging detail</pre></div>
+<h2 id="ch14-s6">المستودعات الكبيرة</h2>
+<p>التوثيق يفرد صفحة لإعداد Claude Code في مستودع أحادي monorepo أو قاعدة كود كبيرة، ويذكر إعداد <code class="inline">claudeMdExcludes</code> لتخطي ملفات CLAUDE.md الخاصة بفرق أخرى لا تخص عملك. والأنماط تطابق على المسارات المطلقة بصيغة glob، ويمكن ضبطها في أي طبقة إعدادات.</p>
+<div class="codewrap"><div class="caption">.claude/settings.local.json</div><pre class="code">{
+  "claudeMdExcludes": [
+    "**/monorepo/CLAUDE.md",
+    "/home/user/monorepo/other-team/.claude/rules/**"
+  ]
+}</pre></div>
+<div class="callout note"><div class="t">ما لا يمكن استبعاده</div><p>التوثيق يذكر أن ملفات CLAUDE.md الخاصة بسياسة مدارة لا يمكن استبعادها، لضمان سريان تعليمات المؤسسة بغض النظر عن الإعدادات الفردية.</p></div>
+<h2 id="ch14-s10">تقسيم المهمة الكبيرة</h2>
+<ol class="steps"><li><span class="sh">اكتب النطاق أولا</span>ما الداخل وما الخارج، في ملف تعود إليه.</li><li><span class="sh">قسم إلى مراحل لكل مرحلة مخرج</span>لا إلى مهام بلا مخرج ملموس.</li><li><span class="sh">جلسة لكل مرحلة</span>وسمها باسم المرحلة لتجدها لاحقا.</li><li><span class="sh">سجل القرارات في CLAUDE.md</span>حتى لا تنقض في المرحلة التالية.</li><li><span class="sh">راجع بعد كل مرحلة</span>قبل أن تفتح المرحلة التي بعدها.</li></ol>
+<h1 class="chapter" id="ch15"><span class="num">CHAPTER 15</span>سير عمل كامل: من البيئة إلى الإصدار</h1><p class="lead">هذه المراحل العشر هي الهيكل الذي تعمل به على أي مشروع حقيقي. لكل مرحلة مخرج ملموس ومعيار انتقال.</p>
+<h2 id="ch15-s1">المرحلة صفر: البيئة</h2>
+<ul class="b"><li>ثبت Claude Code وتحقق بـ <code class="inline">claude doctor</code>.</li><li>تأكد أن المشروع في مستودع Git وأن الشجرة نظيفة.</li><li>أنشئ <code class="inline">.gitignore</code> و <code class="inline">.env.example</code> قبل أي كود.</li><li><strong>معيار الانتقال</strong>: تستطيع تشغيل المشروع واختباراته محليا.</li></ul>
+<h2 id="ch15-s3">المرحلة الأولى: المتطلبات</h2>
+<div class="promptbox standalone"><div class="lbl">استخراج المتطلبات</div><div class="txt">سنبني:
+[وصف المشروع]
+المستخدم:
+[المستخدم]
+
+قبل أي كود، ساعدني في تحديد:
+أولا. المشكلة في ثلاث جمل
+ثانيا. قصص المستخدم الأساسية، خمس على الأكثر
+ثالثا. ما هو خارج النطاق صراحة
+رابعا. معايير القبول: متى نعتبر المشروع منتهيا
+خامسا. الأسئلة التي يجب أن أجيب عنها قبل البدء
+
+اكتب النتيجة في ملف REQUIREMENTS.md.
+لا تكتب أي كود في هذه المرحلة.</div></div>
+<h2 id="ch15-s5">المرحلة الثانية: المعمارية</h2>
+<div class="promptbox standalone"><div class="lbl">قرار معماري</div><div class="txt">اقترح معمارية لهذا المشروع بناء على REQUIREMENTS.md.
+
+المطلوب:
+أولا. خياران معماريان مختلفان جوهريا
+ثانيا. لكل خيار: ما يناسبه، وأين يفشل، وتكلفة التراجع عنه
+ثالثا. توصية واحدة، والشرط الذي يقلبها
+رابعا. بنية المجلدات المقترحة
+خامسا. القرارات التي يجب تثبيتها في CLAUDE.md
+
+قيودي:
+[القيود]
+خبرتي:
+[الخبرة]</div></div>
+<h2 id="ch15-s7">المرحلة الثالثة: الأساس</h2>
+<ul class="b"><li>أنشئ الهيكل والإعدادات وملف CLAUDE.md.</li><li>شغل <code class="inline">/init</code> ثم حسن الملف يدويا.</li><li>أضف الفحص والتنسيق والاختبارات من اليوم الأول.</li><li><strong>معيار الانتقال</strong>: هيكل يعمل، واختبار واحد ناجح ولو تافها.</li></ul>
+<h2 id="ch15-s9">المرحلة الرابعة: الميزات الأساسية</h2>
+<ul class="b"><li>ميزة واحدة لكل فرع ولكل جلسة.</li><li>خطة قبل التنفيذ، ثم <code class="inline">/diff</code> بعده، ثم الاختبارات، ثم commit.</li><li><strong>معيار الانتقال</strong>: كل قصة مستخدم أساسية تعمل من طرف إلى طرف.</li></ul>
+<h2 id="ch15-s11">المرحلة الخامسة: الاختبارات</h2>
+<ul class="b"><li>غط الحدود وحالات الفشل لا المسار السعيد فقط.</li><li>اجعل الاختبارات تعمل في التكامل المستمر لا على جهازك فقط.</li><li><strong>معيار الانتقال</strong>: تستطيع تعديل الكود وأنت واثق أن الاختبار سيمسك الانحدار.</li></ul>
+<h2 id="ch15-s13">المرحلة السادسة: تجربة الاستخدام</h2>
+<ul class="b"><li>رسائل الخطأ الظاهرة للمستخدم: مفهومة وتخبره ماذا يفعل.</li><li>الحالات الفارغة وحالات التحميل والفشل.</li><li><strong>معيار الانتقال</strong>: شخص لم ير المشروع يستطيع إتمام المهمة الأساسية.</li></ul>
+<h2 id="ch15-s15">المرحلة السابعة: الأمان</h2>
+<ul class="b"><li>لا أسرار في الكود، و<code class="inline">.env</code> مستبعد من Git.</li><li>تحقق من كل مدخل خارجي.</li><li>شغل <code class="inline">/security-review</code> على تغييرات الفرع.</li><li><strong>معيار الانتقال</strong>: لا ثغرة حرجة مفتوحة.</li></ul>
+<h2 id="ch15-s17">المرحلة الثامنة: البناء</h2>
+<ul class="b"><li>بناء نظيف من مستودع نظيف، لا من جهازك فقط.</li><li>وثق أوامر البناء في CLAUDE.md وفي README.</li><li><strong>معيار الانتقال</strong>: يستطيع شخص آخر بناء المشروع باتباع التوثيق.</li></ul>
+<h2 id="ch15-s19">المرحلة التاسعة: مراجعة الإصدار</h2>
+<ul class="b"><li>اختبر على بيئة قريبة من الإنتاج.</li><li>راجع سجل التغييرات وتأكد أنه يعكس ما تغير فعلا.</li><li>جهز خطة تراجع: كيف ترجع إذا فشل الإصدار.</li><li><strong>معيار الانتقال</strong>: تعرف بالضبط ماذا ستفعل لو انكسر شيء بعد ساعة من النشر.</li></ul>
+<div class="callout tip"><div class="t">قاعدة المراحل</div><p>لا تنتقل لمرحلة قبل تحقق معيار انتقال السابقة. تخطي مرحلة لا يوفر وقتا، بل يؤجل اكتشاف المشكلة إلى مرحلة أغلى.</p></div>
+<h1 class="chapter" id="ch16"><span class="num">CHAPTER 16</span>ورقة المراجعة السريعة</h1><p class="lead">صفحتان ترجع إليهما بعد أن تنسى التفاصيل.</p>
+<h2 id="ch16-s1">التثبيت والتحديث</h2>
+<div class="codewrap"><pre class="code">curl -fsSL https://claude.ai/install.sh | bash
+irm https://claude.ai/install.ps1 | iex
+
+brew install --cask claude-code
+winget install Anthropic.ClaudeCode
+
+brew upgrade claude-code
+winget upgrade Anthropic.ClaudeCode
+npm install -g @anthropic-ai/claude-code@latest
+
+claude doctor</pre></div>
+<h2 id="ch16-s3">الجلسات</h2>
+<div class="codewrap"><pre class="code">claude
+claude -n &lt;session-name&gt;
+claude --continue
+claude --resume
+claude --resume &lt;session-name&gt;
+claude --continue --fork-session
+claude --from-pr &lt;number&gt;</pre></div>
+<h2 id="ch16-s5">الأوامر داخل الجلسة</h2>
+<table class="data"><thead><tr><th>الأمر</th><th>الوظيفة</th></tr></thead><tbody><tr><td>/init</td><td>إنشاء CLAUDE.md للمشروع</td></tr><tr><td>/memory</td><td>تحرير ملفات الذاكرة وتبديل الذاكرة التلقائية</td></tr><tr><td>/context</td><td>عرض ما يستهلك السياق</td></tr><tr><td>/compact
+[تعليمات]</td><td>تلخيص المحادثة لتفريغ السياق</td></tr><tr><td>/clear
+[اسم]</td><td>بدء محادثة جديدة بسياق فارغ</td></tr><tr><td>/branch
+[اسم]</td><td>تفريع المحادثة</td></tr><tr><td>/resume
+[اسم]</td><td>التبديل إلى محادثة أخرى</td></tr><tr><td>/rename
+[اسم]</td><td>تسمية الجلسة الحالية</td></tr><tr><td>/diff</td><td>مراجعة تغييرات شجرة العمل</td></tr><tr><td>/permissions</td><td>إدارة قواعد السماح والسؤال والمنع</td></tr><tr><td>/hooks</td><td>عرض إعدادات الخطافات</td></tr><tr><td>/mcp</td><td>إدارة خوادم MCP</td></tr><tr><td>/agents</td><td>إدارة إعدادات الوكلاء الفرعيين</td></tr><tr><td>/model
+[النموذج]</td><td>تبديل النموذج</td></tr><tr><td>/effort
+[المستوى]</td><td>ضبط مستوى الجهد</td></tr><tr><td>/plan
+[وصف]</td><td>الدخول في وضع التخطيط</td></tr><tr><td>/doctor</td><td>فحص إعداد يشخص ويصلح</td></tr><tr><td>/export
+[ملف]</td><td>تصدير المحادثة نصا</td></tr><tr><td>/security-review</td><td>تمريرة أمنية على تغييرات الفرع</td></tr><tr><td>/usage</td><td>عرض الاستهلاك</td></tr></tbody></table>
+<h2 id="ch16-s7">أوضاع الأذونات</h2>
+<div class="codewrap"><pre class="code">claude --permission-mode default
+claude --permission-mode plan
+claude --permission-mode auto
+claude --permission-mode dontAsk</pre></div>
+<h2 id="ch16-s9">روتين الجلسة الآمنة</h2>
+<ol class="n"><li><code class="inline">git status</code> — ابدأ من شجرة نظيفة.</li><li><code class="inline">git checkout -b</code> — فرع لكل مهمة.</li><li>وضع التخطيط أولا، وراجع الخطة.</li><li>نفذ، ثم <code class="inline">/diff</code>.</li><li>شغل الاختبارات والفحص.</li><li>commit صغير برسالة تشرح السبب.</li></ol>
+<h2 id="ch16-s11">أخطاء تجنبها</h2>
+<ul class="b"><li>تشغيل Claude Code من مجلد المنزل بدل مجلد المشروع.</li><li>استخدام <code class="inline">--dangerously-skip-permissions</code> خارج بيئة معزولة.</li><li>اعتماد تغييرات بلا <code class="inline">/diff</code> وبلا اختبارات.</li><li>ملف CLAUDE.md ضخم بدل قواعد مرتبطة بمسارات.</li><li>جلسة واحدة طويلة لعدة أهداف مختلفة.</li><li>إضافة خادم MCP أو مهارة من مصدر لا تعرفه.</li><li><code class="inline">sudo npm install -g</code> أو <code class="inline">npm update -g</code> لتحديث الأداة.</li></ul>
+<section class="endpage">
+  <h1 class="chapter"><span class="num">THE END</span>الخلاصة والخطوة التالية</h1>
+  <p class="lead">أهم ما في هذا الدليل ليس قائمة الأوامر بل ثلاث عادات: أن تبدأ كل مهمة من فرع نظيف، وأن تراجع الفروق قبل الاعتماد، وأن تكتب في CLAUDE.md كل ما اضطررت لشرحه مرتين.</p>
+<h2>خطة الأسبوع الأول</h2>
+<ol class="steps"><li><span class="sh">اليوم الأول</span>ثبت الأداة، وشغل <code class="inline">claude doctor</code>، وافتح مشروعا حقيقيا واطلب شرح بنيته.</li><li><span class="sh">اليوم الثاني</span>شغل <code class="inline">/init</code> وحسن ملف CLAUDE.md يدويا.</li><li><span class="sh">اليوم الثالث</span>نفذ تعديلا صغيرا في وضع التخطيط، وراجعه بـ <code class="inline">/diff</code> قبل الاعتماد.</li><li><span class="sh">اليوم الرابع</span>اضبط <code class="inline">.gitignore</code> و <code class="inline">.env.example</code>، وراجع <code class="inline">/permissions</code>.</li><li><span class="sh">اليوم الخامس</span>اكتب أول قاعدة في <code class="inline">.claude/rules</code> مرتبطة بمسار.</li><li><span class="sh">اليومان السادس والسابع</span>نفذ ميزة كاملة بسير عمل المراحل، من الخطة إلى طلب الدمج.</li></ol>
+<h2>بقية السلسلة</h2>
+<ul class="b"><li>تعلم البرمجة مع Claude Code — لمن يريد أن يتعلم فعلا لا أن يكتب له.</li><li>ابن موقعك الأول مع Claude Code — مشروع ويب كامل خطوة بخطوة.</li><li>ابن تطبيقك الأول مع Claude Code — تطبيق هاتف من الفكرة إلى البناء.</li></ul>
+<div class="callout note"><div class="t">تنبيه عن التاريخ</div><p>Claude Code يتطور أسرع من معظم الأدوات. كل أمر وكل اسم ميزة في هذا الدليل مأخوذ من التوثيق الرسمي على code.claude.com بتاريخ 6 سبتمبر 2026. قبل الاعتماد على سلوك دقيق، راجع صفحة الميزة الرسمية.</p></div>
+  <div class="endcard">
+    <div class="h">برومبتات عربية</div>
+    <p>هذا المنتج من إنتاج قناة برومبتات عربية.<br>لمتابعة الأدلة والبرومبتات الجديدة:</p>
+    <p><a href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+</section></body></html>

@@ -1,0 +1,103 @@
+{
+ "product": "Claude Code من الصفر إلى الاحتراف",
+ "id": "03_claude_code",
+ "pdf": {
+  "pdf": "Claude_Code_Zero_To_Pro_Arabic_Final.pdf",
+  "pages": 56,
+  "issues": [],
+  "checks": {
+   "fonts": [
+    "CRZFJS+PlexAr-Semi-Bold",
+    "FNPUCG+PlexAr-Medium",
+    "HIRYNU+PlexAr-Bold",
+    "NETSUB+PlexMono",
+    "TFCPFR+PlexAr",
+    "UWGIWA+DejaVu-Sans-Bold",
+    "WDHEQY+PlexMono-Bold"
+   ],
+   "fonts_not_embedded": [],
+   "empty_pages": [],
+   "overflow_blocks": [],
+   "presentation_form_pages": [],
+   "pages_without_text": [],
+   "internal_links": 675,
+   "external_links": 2,
+   "telegram_link_annotations": [
+    [
+     2,
+     "https://t.me/PromptsArabic"
+    ],
+    [
+     56,
+     "https://t.me/PromptsArabic"
+    ]
+   ],
+   "broken_internal_links": [],
+   "owner_mentions": 5,
+   "tg_text_mentions": 58,
+   "search_hits": {
+    "برومبتات عربية": 57,
+    "t.me/PromptsArabic": 58
+   },
+   "canonical_arabic_words": 1760,
+   "extract_missing_words_count": 0,
+   "extract_missing_words": [],
+   "search_sample_size": 126,
+   "search_unfindable": [],
+   "variables_with_digits": [],
+   "variables": [
+    "[اسم المشروع]",
+    "[اسم]",
+    "[الإجراء]",
+    "[التعديل المطلوب]",
+    "[الخبرة]",
+    "[الفعلي]",
+    "[القيود]",
+    "[المتوقع]",
+    "[المحاولات]",
+    "[المستخدم]",
+    "[المستوى]",
+    "[النموذج]",
+    "[الهدف]",
+    "[الوحدة]",
+    "[تعليمات]",
+    "[رسالة الخطأ]",
+    "[ملف]",
+    "[وصف المشروع]",
+    "[وصف]"
+   ],
+   "variables_broken": [],
+   "pages_rendered": 56
+  }
+ },
+ "docx": {
+  "docx": "Claude_Code_Zero_To_Pro_Arabic_Final.docx",
+  "issues": [],
+  "checks": {
+   "paragraphs": 708,
+   "tables": 13,
+   "styles_used": [
+    "APL Body",
+    "APL Bullet",
+    "APL Callout",
+    "APL Caption",
+    "APL Code",
+    "APL H1",
+    "APL H2",
+    "APL H3",
+    "APL Lead",
+    "APL Prompt",
+    "APL PromptLbl",
+    "APL Subtitle",
+    "APL Title",
+    "Normal"
+   ],
+   "paragraphs_with_bidi": 661,
+   "sections_rtl": true,
+   "owner_mentions": 5,
+   "tg_mentions": 3,
+   "rendered_pages": 51
+  }
+ },
+ "prompt_numbers": []
+}

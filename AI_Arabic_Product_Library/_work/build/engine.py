@@ -120,6 +120,16 @@ def validate(blocks, where=""):
                 if len(row) != n:
                     raise ValueError("%s: table row %r does not match %d headers"
                                      % (where, row, n))
+        if k == "code":
+            # A code block is LTR by design. Arabic inside it is reordered against
+            # the block direction, which breaks both the rendering and the copy of
+            # any bracketed variable it contains. Captions are RTL and take the
+            # Arabic explanation instead.
+            bad = re.findall(r"[ء-ي]{2,}", b[2])
+            if bad:
+                raise ValueError(
+                    "%s: Arabic text inside an LTR code block (%s...). Put the "
+                    "explanation in the caption, or use a promptbox." % (where, bad[:3]))
         if k == "prompt":
             need = ("n", "title", "category", "when", "gives", "text", "example", "output")
             missing = [x for x in need if not b[1].get(x)]
@@ -160,6 +170,11 @@ def _blocks_html(blocks, ids=None):
             lbl = b[1] or "البرومبت الجاهز للنسخ"
             h.append('<div class="promptbox standalone"><div class="lbl">%s</div>'
                      '<div class="txt">%s</div></div>' % (_esc(lbl), prompt_text(_esc(b[2]))))
+        elif k == "filebox":
+            # A file whose content is Arabic: rendered RTL so the text is correct,
+            # with its markers left exactly as the file needs them.
+            h.append('<div class="promptbox standalone filebox"><div class="lbl">%s</div>'
+                     '<div class="txt">%s</div></div>' % (_esc(b[1]), rtl_tail(_esc(b[2]))))
         elif k == "callout":
             kind, title, paras = b[1], b[2], b[3]
             body = "".join("<p>%s</p>" % inline(p) for p in paras)
@@ -630,6 +645,13 @@ def _docx_blocks(doc, blocks, accent):
                 pPr = _pr(p); shade(pPr, "F3F0EA")
                 add_text(p, line if line else " ", mono=True, size=9)
                 first = False
+        elif k == "filebox":
+            q = _p(doc, "APL PromptLbl", b[1]); keep_with_next(q)
+            for line in rtl_tail(plain(b[2])).split("\n"):
+                p = _p(doc, "APL Prompt", line if line.strip() else " ")
+                keep_lines(p); shade(_pr(p), "FBF8F3")
+                p.paragraph_format.space_after = Pt(0)
+            doc.add_paragraph(style="APL Body")
         elif k == "promptbox":
             q = _p(doc, "APL PromptLbl", b[1] or "البرومبت الجاهز للنسخ"); keep_with_next(q)
             for line in prompt_text(plain(b[2])).split("\n"):
@@ -831,10 +853,13 @@ def dump_canonical(d, path):
                 lines.extend(plain(a) + " " + plain(c) for a, c in b[1])
             elif k == "code":
                 if b[1]: lines.append(plain(b[1]))
-                lines.append(b[2])
+                lines.append(strip_tashkeel(b[2]))
             elif k == "promptbox":
                 if b[1]: lines.append(plain(b[1]))
                 lines.append(prompt_text(plain(b[2])))
+            elif k == "filebox":
+                lines.append(plain(b[1]))
+                lines.append(rtl_tail(plain(b[2])))
             elif k == "callout":
                 lines.append(plain(b[2])); lines.extend(plain(x) for x in b[3])
             elif k == "table":
