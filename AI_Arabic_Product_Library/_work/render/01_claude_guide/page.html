@@ -1,0 +1,778 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>دليل Claude العملي</title><style>/* ============================================================
+   Arabic AI Product Library — shared print theme
+   A4 portrait · RTL · mobile-first reading
+   ============================================================ */
+
+@font-face { font-family: "PlexAr"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 500;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-500.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 600;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-600.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-700.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-700.ttf") format("truetype"); }
+
+:root {
+  --ink:      #17140F;
+  --ink-2:    #3A342C;
+  --muted:    #6E665A;
+  --faint:    #9A9184;
+  --rule:     #E6E0D6;
+  --rule-2:   #D6CEC0;
+  --paper:    #FFFFFF;
+  --soft:     #FBF8F3;
+  --soft-2:   #F5F0E7;
+  --accent:   #C2683A;
+  --accent-d: #8F4526;
+  --accent-w: #DD9A6B;
+}
+
+/* ---------- page setup ---------- */
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 16mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: "PlexAr"; font-size: 8.5pt; color: var(--faint);
+    margin-bottom: 5mm;
+  }
+  @bottom-left {
+    content: "PromptsArabic · t.me/PromptsArabic";
+    font-family: "PlexMono"; font-size: 6.8pt; color: #B9B1A4;
+    letter-spacing: .02em; margin-bottom: 5mm; direction: ltr;
+  }
+  @bottom-center {
+    content: string(chaptertitle);
+    font-family: "PlexAr"; font-size: 7.6pt; color: #BCB4A7;
+    margin-bottom: 5mm;
+  }
+}
+@page cover  { margin: 0; @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+@page plain  { @bottom-center{content:none} }
+@page :first { @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+
+html { direction: rtl; }
+body {
+  font-family: "PlexAr", sans-serif;
+  font-size: 11.7pt;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  margin: 0;
+  text-align: right;
+  -weasy-hyphens: none;
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover; break-after: page;
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  background: var(--accent-d); color: #fff;
+}
+.cover .field {
+  position: absolute; inset: 0;
+  background: linear-gradient(152deg, var(--accent-d) 0%, var(--accent) 52%, var(--accent-w) 100%);
+}
+.cover .glow {
+  position: absolute; width: 250mm; height: 250mm; right: -70mm; top: -85mm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 62%);
+}
+.cover .grid-lines { position: absolute; inset: 0; }
+.cover .grid-lines i {
+  position: absolute; top: 0; bottom: 0; width: .3mm; background: rgba(255,255,255,.09);
+}
+.cover .arc { position: absolute; border-radius: 50%; border: .5mm solid rgba(255,255,255,.15); }
+
+.cover .topbar {
+  position: absolute; right: 18mm; left: 18mm; top: 20mm;
+  border-bottom: .3mm solid rgba(255,255,255,.28); padding-bottom: 5mm;
+}
+.cover .kicker {
+  font-size: 10pt; font-weight: 600; color: rgba(255,255,255,.92);
+  letter-spacing: .01em; display: inline-block;
+}
+.cover .topbar .mark {
+  float: left; font-family: "PlexMono"; direction: ltr;
+  font-size: 8.4pt; font-weight: 700; letter-spacing: .18em;
+  color: rgba(255,255,255,.72);
+}
+
+.cover .plate { position: absolute; right: 18mm; left: 18mm; top: 74mm; }
+.cover h1 {
+  font-size: 40pt; font-weight: 700; line-height: 1.3;
+  margin: 0 0 7mm 0; color: #fff; letter-spacing: -.012em;
+}
+.cover .rule { width: 22mm; height: 1.2mm; background: rgba(255,255,255,.85);
+  border-radius: 1mm; margin-bottom: 7mm; }
+.cover .sub {
+  font-size: 12.2pt; font-weight: 400; line-height: 1.78;
+  color: rgba(255,255,255,.93); margin: 0; max-width: 162mm;
+}
+.cover .strip { position: absolute; right: 18mm; left: 18mm; bottom: 86mm; }
+.cover .strip .row {
+  border-top: .25mm solid rgba(255,255,255,.22);
+  padding: 2.6mm 0 2.6mm 0; font-size: 9.2pt; color: rgba(255,255,255,.80);
+}
+.cover .strip .row b { font-family: "PlexMono"; direction: ltr; font-weight: 700;
+  font-size: 7.6pt; color: rgba(255,255,255,.55); float: left; padding-top: .8mm;
+  letter-spacing: .1em; }
+
+.cover .promise {
+  position: absolute; right: 18mm; left: 18mm; bottom: 62mm; font-size: 0;
+}
+.cover .promise span {
+  display: inline-block; font-size: 9.4pt; font-weight: 500; color: #fff;
+  border: .3mm solid rgba(255,255,255,.45); border-radius: 2mm;
+  padding: 2mm 4.5mm; background: rgba(255,255,255,.12);
+  margin: 0 0 2.5mm 3mm;
+}
+.cover .baseline {
+  position: absolute; right: 18mm; left: 18mm; bottom: 44mm;
+  border-top: .3mm solid rgba(255,255,255,.28);
+}
+.cover .platform {
+  position: absolute; right: 18mm; bottom: 24mm;
+  font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 15pt; font-weight: 700; color: #fff; letter-spacing: .1em;
+}
+.cover .rights {
+  position: absolute; left: 18mm; bottom: 24mm; text-align: left;
+  font-size: 8.6pt; color: rgba(255,255,255,.86); line-height: 1.55;
+}
+.cover .rights b { font-weight: 600; display: block; }
+.cover .rights span { font-family: "PlexMono"; direction: ltr; font-size: 7.8pt;
+  color: rgba(255,255,255,.72); }
+
+/* ---------- front matter ---------- */
+.frontpage { page: plain; break-after: page; }
+.frontpage h3 { margin: 6mm 0 2mm 0; }
+.frontpage p.lead { margin-bottom: 5mm; font-size: 11.8pt; line-height: 1.85; }
+.frontpage ul.b { margin-bottom: 2mm; }
+.frontpage ul.b > li { margin-bottom: 1.7mm; }
+.fm-title { font-size: 19pt; font-weight: 700; margin: 0 0 8mm 0; color: var(--ink); }
+.fm-rule { height: 1.1mm; width: 26mm; background: var(--accent); margin-bottom: 9mm; border-radius: 1mm; }
+
+.rights-block {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  padding: 9mm 8mm; background: var(--soft); margin: 8mm 0;
+}
+.rights-block .owner { font-size: 15pt; font-weight: 700; margin: 0 0 3mm 0; }
+.rights-block p { margin: 0 0 3mm 0; font-size: 10.6pt; color: var(--ink-2); }
+.rights-block a.tg {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 11pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+.meta-table { width: 100%; border-collapse: collapse; margin-top: 6mm; }
+.meta-table td { padding: 2.6mm 0; border-bottom: .25mm solid var(--rule); font-size: 10.2pt; vertical-align: top; }
+.meta-table td:first-child { width: 44mm; color: var(--muted); font-weight: 500; }
+
+/* ---------- table of contents ---------- */
+.toc { page: plain; break-after: page; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  text-decoration: none; color: var(--ink);
+  display: flex; align-items: baseline; gap: 2.5mm;
+}
+.toc .t { flex: 0 1 auto; }
+.toc .dots {
+  flex: 1 1 auto; min-width: 6mm; align-self: flex-end;
+  border-bottom: .2mm dotted var(--rule-2); transform: translateY(-1.2mm);
+}
+.toc a::after {
+  content: target-counter(attr(href), page);
+  font-family: "PlexMono"; font-size: 8.6pt; color: var(--faint);
+  font-weight: 400; direction: ltr; flex: 0 0 auto;
+}
+.toc .l1 a {
+  font-size: 11.4pt; font-weight: 600;
+  padding: 3mm 0 3mm 0; border-bottom: .25mm solid var(--rule);
+}
+.toc .l1 a::after { color: var(--accent-d); font-weight: 700; font-size: 9pt; }
+.toc .l2 a {
+  font-size: 10pt; font-weight: 400; color: var(--ink-2);
+  padding: 1.8mm 6.5mm 1.8mm 0;
+}
+.toc .l1 .t::before {
+  content: ""; display: inline-block; width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--accent); margin-left: 3.5mm; vertical-align: middle;
+}
+
+/* ---------- headings ---------- */
+h1.chapter {
+  string-set: chaptertitle content();
+  break-before: page;
+  font-size: 24pt; font-weight: 700; line-height: 1.4;
+  margin: 0 0 3mm 0; padding-bottom: 5mm; color: var(--ink);
+  border-bottom: 1mm solid var(--accent);
+}
+h1.chapter .num {
+  display: block; font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 9.5pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .12em; margin-bottom: 3mm;
+}
+h2 {
+  font-size: 15pt; font-weight: 700; line-height: 1.55;
+  margin: 11mm 0 3.5mm 0; color: var(--ink);
+  break-after: avoid; break-inside: avoid;
+}
+h3 {
+  font-size: 12.2pt; font-weight: 600; line-height: 1.6;
+  margin: 7.5mm 0 2.5mm 0; color: var(--ink-2);
+  break-after: avoid; break-inside: avoid;
+}
+h2 + p, h3 + p { margin-top: 0; }
+
+p { margin: 0 0 3.6mm 0; orphans: 2; widows: 2; }
+p.lead { font-size: 12.4pt; color: var(--ink-2); line-height: 1.9; margin-bottom: 6mm; }
+strong { font-weight: 600; }
+
+/* ---------- lists ---------- */
+ul.b, ol.n { margin: 0 0 4.5mm 0; padding: 0 6mm 0 0; }
+ul.b { list-style: none; padding-right: 0; }
+ul.b > li {
+  position: relative; padding-right: 6.5mm; margin-bottom: 2.4mm;
+  orphans: 2; widows: 2;
+}
+ul.b > li::before {
+  content: ""; position: absolute; right: 1.6mm; top: 2.6mm;
+  width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--accent);
+}
+ol.n { padding-right: 7mm; }
+ol.n > li { margin-bottom: 2.4mm; padding-right: 1.5mm; }
+ol.n > li::marker { color: var(--accent-d); font-weight: 600; }
+
+/* ---------- code ---------- */
+code.inline {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 9.2pt; background: var(--soft-2); color: var(--ink);
+  padding: .5mm 1.4mm; border-radius: 1mm; border: .2mm solid var(--rule);
+}
+pre.code {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate; text-align: left;
+  font-size: 9.2pt; line-height: 1.62; color: #F3EFE8; background: #211D18;
+  padding: 4.5mm 5mm; border-radius: 2.5mm; margin: 0 0 5mm 0;
+  white-space: pre-wrap; word-break: break-word;
+  break-inside: avoid;
+}
+pre.code .cm { color: #A79C8C; }
+.codewrap { margin-bottom: 5mm; break-inside: avoid; }
+.codewrap .caption {
+  font-size: 8.6pt; color: var(--muted); margin-bottom: 1.6mm; font-weight: 500;
+}
+.codewrap pre.code { margin-bottom: 0; }
+
+/* ---------- callouts ---------- */
+.callout {
+  border-right: 1.1mm solid var(--accent);
+  background: var(--soft); border-radius: 0 2.5mm 2.5mm 0;
+  padding: 4.5mm 5mm 3mm 5mm; margin: 0 0 5mm 0;
+  break-inside: avoid;
+}
+.callout .t { font-weight: 700; font-size: 10.4pt; margin-bottom: 1.8mm; }
+.callout p:last-child { margin-bottom: 1.5mm; }
+.callout.warn { border-right-color: #B4472F; background: #FDF4F1; }
+.callout.warn .t { color: #91361F; }
+.callout.tip  { border-right-color: #2F7D62; background: #F1F8F4; }
+.callout.tip .t { color: #1F5B46; }
+
+/* ---------- tables ---------- */
+table.data {
+  width: 100%; border-collapse: collapse; margin: 0 0 5mm 0;
+  font-size: 10pt; break-inside: avoid; direction: rtl;
+}
+table.data th {
+  background: var(--soft-2); font-weight: 600; text-align: right;
+  padding: 2.8mm 3mm; border-bottom: .4mm solid var(--rule-2); color: var(--ink);
+}
+table.data td {
+  padding: 2.6mm 3mm; border-bottom: .25mm solid var(--rule);
+  vertical-align: top; text-align: right; color: var(--ink-2);
+}
+table.data tr:nth-child(even) td { background: #FCFAF6; }
+
+/* ---------- prompt card ---------- */
+.pcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  margin: 0 0 7mm 0; overflow: hidden; break-inside: avoid;
+}
+.pcard > .head {
+  background: var(--soft-2); padding: 4mm 5mm 3.4mm 5mm;
+  border-bottom: .25mm solid var(--rule-2);
+}
+.pcard .pn {
+  font-family: "PlexMono"; direction: ltr; font-size: 8.4pt; font-weight: 700;
+  color: #FFFFFF; background: var(--accent-d); border-radius: 1.5mm;
+  padding: .8mm 2.4mm; letter-spacing: .06em; display: inline-block;
+  margin-left: 3mm; vertical-align: 1mm;
+}
+.pcard .pt { font-size: 13pt; font-weight: 700; display: inline; }
+.pcard .cat {
+  display: block; font-size: 8.6pt; color: var(--muted); margin-top: 2.2mm; font-weight: 500;
+}
+.pcard > .body { padding: 4.5mm 5mm 1mm 5mm; }
+.pcard .row { margin-bottom: 3.4mm; }
+.pcard .row > .k {
+  font-size: 9.2pt; font-weight: 700; color: var(--accent-d);
+  margin-bottom: 1.2mm;
+}
+.pcard .row > .v { font-size: 10.6pt; color: var(--ink-2); line-height: 1.8; }
+.pcard .row ul.b { margin-bottom: 0; }
+.pcard .row ul.b > li { font-size: 10pt; margin-bottom: 1.4mm; }
+
+.promptbox {
+  background: var(--soft); border: .3mm dashed var(--rule-2);
+  border-radius: 2.5mm; padding: 4.5mm 5mm; margin: 0 0 4mm 0;
+}
+.promptbox .lbl {
+  font-size: 8.4pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .01em; margin-bottom: 2.4mm;
+  padding-bottom: 1.6mm; border-bottom: .25mm solid var(--rule-2);
+}
+.promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox .txt {
+  font-size: 10.4pt; line-height: 1.88; color: var(--ink); white-space: pre-wrap;
+}
+
+/* ---------- misc blocks ---------- */
+.divider { height: .25mm; background: var(--rule); margin: 8mm 0; border: 0; }
+.spacer { height: 4mm; }
+.sectionlead {
+  background: var(--soft); border-radius: 3mm; padding: 5mm 6mm; margin: 0 0 7mm 0;
+}
+.sectionlead p { margin: 0; font-size: 10.8pt; color: var(--ink-2); }
+
+.steps { counter-reset: st; margin: 0 0 5mm 0; padding: 0; list-style: none; }
+.steps > li {
+  counter-increment: st; position: relative; padding-right: 11mm;
+  margin-bottom: 4mm; break-inside: avoid;
+}
+.steps > li::before {
+  content: counter(st); position: absolute; right: 0; top: .4mm;
+  width: 7.5mm; height: 7.5mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-family: "PlexMono"; font-size: 8.6pt; font-weight: 700;
+  text-align: center; line-height: 7.5mm;
+}
+.steps > li .sh { font-weight: 600; display: block; margin-bottom: .8mm; }
+
+.kv { width: 100%; border-collapse: collapse; margin: 0 0 5mm 0; font-size: 10pt; }
+.kv td { padding: 2.4mm 0; border-bottom: .25mm solid var(--rule); vertical-align: top; }
+.kv td:first-child { width: 40mm; color: var(--muted); font-weight: 500; padding-left: 4mm; }
+
+/* ---------- closing page ---------- */
+.endpage { break-before: page; }
+.endcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm; background: var(--soft);
+  padding: 8mm; margin-top: 6mm; text-align: center;
+}
+.endcard .h { font-size: 15pt; font-weight: 700; margin-bottom: 3mm; }
+.endcard p { font-size: 10.6pt; color: var(--ink-2); }
+.endcard a {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 12pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+</style></head><body><section class="cover">
+  <div class="field"></div>
+  <div class="glow"></div>
+  <div class="grid-lines"><i style="right:30mm"></i><i style="right:66mm"></i><i style="right:102mm"></i><i style="right:138mm"></i><i style="right:174mm"></i></div>
+  <div class="arc" style="width:196mm;height:196mm;right:-56mm;top:-64mm"></div>
+  <div class="arc" style="width:128mm;height:128mm;left:-46mm;bottom:-40mm"></div>
+  <div class="topbar">
+    <span class="mark">PROMPTS ARABIC</span>
+    <span class="kicker">دليل عملي بالعربية</span>
+  </div>
+  <div class="plate">
+    <h1>دليل Claude العملي</h1>
+    <div class="rule"></div>
+    <p class="sub">من أول محادثة إلى البحث والتحليل والملفات والمشاريع والعمل الاحترافي بأحدث ميزات Claude</p>
+  </div>
+  <div class="strip"><div class="row"><b>01</b>اختيار النموذج وكتابة الطلب</div><div class="row"><b>02</b>الملفات والبحث و Research</div><div class="row"><b>03</b>المشاريع و Artifacts والذاكرة</div><div class="row"><b>04</b>إدارة السياق والخطط والحدود</div></div>
+  <div class="promise"><span>14 فصلا</span><span>أمثلة تطبيقية</span><span>محدث في سبتمبر 2026</span></div>
+  <div class="baseline"></div>
+  <div class="platform">CLAUDE</div>
+  <div class="rights"><b>برومبتات عربية</b><span>t.me/PromptsArabic</span></div>
+</section>
+<section class="frontpage">
+  <div class="fm-title">حقوق النشر</div><div class="fm-rule"></div>
+  <div class="rights-block">
+    <p class="owner">برومبتات عربية</p>
+    <p>جميع الحقوق محفوظة لقناة <strong>برومبتات عربية</strong>.</p>
+    <p>هذا المنتج مخصص للاستخدام الشخصي للمشتري. لا يجوز إعادة نشره أو بيعه
+       أو توزيعه أو اقتباس أجزاء منه لأغراض تجارية دون إذن كتابي من المالك.</p>
+    <p>القناة الرسمية: <a class="tg" href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+  <table class="meta-table">
+    <tr><td>اسم المنتج</td><td>دليل Claude العملي</td></tr>
+    <tr><td>الإصدار</td><td>الإصدار الأول</td></tr>
+    <tr><td>اللغة</td><td>العربية</td></tr>
+    <tr><td>المقاس</td><td>A4 عمودي — مهيأ للقراءة على الهاتف</td></tr>
+    <tr><td>تمت مراجعة معلومات وميزات هذا الدليل حتى تاريخ</td><td>6 سبتمبر 2026</td></tr>
+    <tr><td>مصادر التحقق</td><td>platform.claude.com و code.claude.com و support.claude.com</td></tr>
+  </table>
+  <div class="callout"><div class="t">ملاحظة مهمة عن تاريخ المحتوى</div>
+    <p>منصات الذكاء الاصطناعي تتغير بسرعة. كل ميزة مذكورة هنا تم التحقق منها من
+       المصدر الرسمي بتاريخ 6 سبتمبر 2026. إذا مر وقت طويل على هذا التاريخ،
+       راجع الصفحة الرسمية للميزة قبل الاعتماد عليها في عمل حساس.</p>
+  </div>
+</section><section class="frontpage">
+  <div class="fm-title">عن هذا الدليل</div><div class="fm-rule"></div>
+  <p class="lead">هذا ليس شرحا نظريا لما يستطيع الذكاء الاصطناعي فعله. هو دليل تشغيل: كل فصل يعطيك مفهوما واحدا، ثم طريقة استخدامه داخل Claude، ثم مثالا تكتبه بنفسك وتحصل على نتيجة. الهدف أن تنتقل من استخدام Claude كصندوق أسئلة إلى استخدامه كأداة عمل يومية في البحث والتحليل والكتابة والملفات والمشاريع.</p>
+  <h3>لمن هذا الدليل</h3><ul class="b"><li>من يستخدم Claude لأول مرة ويريد بداية صحيحة بدون تجربة عشوائية</li><li>من يستخدمه منذ فترة لكن نتائجه متوسطة ولا يعرف السبب</li><li>الطلاب والباحثون الذين يتعاملون مع مستندات وأوراق طويلة</li><li>صناع المحتوى والمسوقون ومن يكتب بالعربية بشكل يومي</li><li>المبرمجون الذين يريدون استخدام Claude في التحليل والمراجعة وليس في الكتابة فقط</li></ul>
+  <h3>ماذا ستتعلم</h3><ul class="b"><li>الفرق العملي بين نماذج Claude الحالية وكيف تختار النموذج لكل مهمة</li><li>كيف تكتب طلبا يعطي نتيجة دقيقة من المحاولة الأولى بدل خمس محاولات</li><li>كيف تُشغل الملفات والمستندات الطويلة بشكل صحيح وما حدودها الحقيقية</li><li>متى تستخدم البحث على الويب ومتى تستخدم Research وما الفرق</li><li>كيف تبني مشروعا Project له سياق وذاكرة خاصة به</li><li>كيف تتعامل مع Artifacts والذاكرة والموصلات Connectors</li><li>كيف تدير السياق في المحادثات الطويلة ولا تخسر عملك</li><li>الخطط والحدود وكيف لا تستهلك رصيدك في مهام تافهة</li></ul>
+</section>
+<section class="frontpage">
+  <div class="fm-title">قبل أن تبدأ</div><div class="fm-rule"></div>
+  <h3>المتطلبات</h3><ul class="b"><li>حساب على claude.ai — الخطة المجانية تكفي لمعظم فصول هذا الدليل</li><li>متصفح حديث، أو تطبيق Claude على الحاسوب أو الهاتف</li><li>ملف PDF أو مستند حقيقي من عملك لتجربة فصول الملفات عليه</li><li>استعداد لكتابة الطلبات بنفسك بدل نسخها كما هي — النسخ وحده لا يعلم شيئا</li></ul>
+  <h3>كيف تستخدم هذا الدليل</h3><ul class="b"><li>اقرأ الفصل كاملا مرة واحدة، ثم ارجع ونفذ التمرين الموجود فيه</li><li>لا تنتقل إلى الفصل التالي قبل أن تجرب مثالا واحدا على الأقل بنفسك</li><li>كل نص داخل صندوق «البرومبت» قابل للنسخ مباشرة، وما بين قوسين مثل [الموضوع] تستبدله بمحتواك</li><li>الفصل الأخير ورقة مراجعة سريعة — ارجع إليها بعد أسبوع من التطبيق</li></ul>
+  <div class="callout tip"><div class="t">طريقة القراءة الموصى بها</div>
+    <p>لا تقرأ الدليل كله دفعة واحدة. اقرأ فصلا واحدا، ثم نفّذ تمرينه على مهمة حقيقية
+       من عملك، ثم انتقل. أربعة فصول مطبَّقة أفضل من أربعة عشر فصلا مقروءا.</p></div>
+</section>
+<section class="toc"><div class="fm-title">الفهرس</div><div class="fm-rule"></div><ul><li class="l1"><a href="#ch1"><span class="t">ما هو Claude ومتى يكون الأداة الصحيحة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s1"><span class="t">ما الذي يجيده Claude فعلا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s4"><span class="t">أين لا يكون الخيار الأفضل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s7"><span class="t">الفرق بين Claude و Claude Code</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s11"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch2"><span class="t">النماذج الحالية وكيف تختار بينها</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s2"><span class="t">عائلة النماذج الحالية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s6"><span class="t">قاعدة اختيار عملية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s9"><span class="t">ما تغير ويجب ألا تكرره</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s11"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch3"><span class="t">كيف تكتب طلبا يعطي نتيجة من أول مرة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s1"><span class="t">القاعدة الذهبية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s3"><span class="t">الأركان الستة لأي طلب جيد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s6"><span class="t">اشرح السبب، لا الأمر فقط</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s9"><span class="t">استخدم الوسوم لفصل أجزاء الطلب</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s12"><span class="t">الأمثلة أقوى من الوصف</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s14"><span class="t">عالج نقص المعلومات صراحة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s17"><span class="t">من طلب سيئ إلى طلب جيد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s22"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch4"><span class="t">الملفات وتحليل المستندات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s1"><span class="t">ما الذي يحدث فعلا عند رفع ملف</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s4"><span class="t">أين ترفع الملف: المحادثة أم المشروع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s6"><span class="t">طريقة صحيحة لقراءة مستند</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s9"><span class="t">مقارنة عدة مستندات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s12"><span class="t">الصور ولقطات الشاشة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s15"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch5"><span class="t">البحث على الويب و Research</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s1"><span class="t">البحث على الويب</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s4"><span class="t">Research: التقارير العميقة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s8"><span class="t">برومبت بحث لا يعطيك كلاما عاما</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s11"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch6"><span class="t">المشاريع Projects: بيت عملك داخل Claude</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s1"><span class="t">ما هو المشروع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s3"><span class="t">متى تُنشئ مشروعا</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s6"><span class="t">تعليمات المشروع: أهم ما ستكتبه</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s9"><span class="t">ملفات المشروع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s12"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch7"><span class="t">Artifacts: من رد نصي إلى مخرج تستخدمه</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s1"><span class="t">ما الجديد في النظام الحالي</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s3"><span class="t">الأذونات والموصلات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s6"><span class="t">متى تطلبه صراحة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s9"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch8"><span class="t">الذاكرة والموصلات والمهارات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s1"><span class="t">الذاكرة Memory</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s5"><span class="t">الموصلات Connectors</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s7"><span class="t">المهارات Skills والإضافات Plugins</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s10"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch9"><span class="t">إدارة السياق والمحادثات الطويلة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s1"><span class="t">لماذا تتدهور المحادثات الطويلة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s3"><span class="t">قاعدة المحادثة الواحدة لهدف واحد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s5"><span class="t">تقنية نقطة الحفظ</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s8"><span class="t">متى تبدأ محادثة جديدة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s10"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch10"><span class="t">استخدامات عملية: كتابة وتحليل ودراسة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s1"><span class="t">الكتابة بأسلوبك أنت</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s4"><span class="t">التحليل واتخاذ القرار</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s6"><span class="t">الدراسة والفهم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s9"><span class="t">البيانات والجداول</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s11"><span class="t">البرمجة داخل تطبيق Claude</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s14"><span class="t">تمرين الفصل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch11"><span class="t">الخطط والحدود</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s1"><span class="t">الخطط المتاحة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s4"><span class="t">كيف تعمل الحدود</span><span class="dots"></span></a></li><li class="l1"><a href="#ch12"><span class="t">أخطاء شائعة وأفضل الممارسات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s1"><span class="t">عشرة أخطاء وإصلاحها</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s3"><span class="t">أفضل الممارسات في سبع نقاط</span><span class="dots"></span></a></li><li class="l1"><a href="#ch13"><span class="t">ورقة المراجعة السريعة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s1"><span class="t">هيكل أي طلب</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s3"><span class="t">أي أداة لأي مهمة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s5"><span class="t">جمل تحسن أي رد</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s7"><span class="t">روتين أسبوعي في عشر دقائق</span><span class="dots"></span></a></li><li class="l1"><a href="#ch14"><span class="t">خطة الثلاثين يوما</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s1"><span class="t">الأسبوع الأول: الأساس</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s3"><span class="t">الأسبوع الثاني: التنظيم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s5"><span class="t">الأسبوع الثالث: التوسع</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s7"><span class="t">الأسبوع الرابع: التثبيت</span><span class="dots"></span></a></li></ul></section>
+<h1 class="chapter" id="ch1"><span class="num">CHAPTER 01</span>ما هو Claude ومتى يكون الأداة الصحيحة</h1><p class="lead">Claude مساعد ذكاء اصطناعي من شركة Anthropic. تكتب له بالعربية أو الإنجليزية، وترفع له ملفات وصورا، فيقرأ ويحلل ويكتب ويبرمج ويبحث في الويب عند تفعيل ذلك. لكن الفارق الحقيقي بين مستخدم يحصل على نتائج ممتازة وآخر يحصل على كلام عام ليس في الأداة، بل في طريقة تشغيلها.</p>
+<h2 id="ch1-s1">ما الذي يجيده Claude فعلا</h2>
+<p>قبل أن تتعلم الميزات، اعرف أين تكون هذه الأداة أفضل خيار. هذه ليست قائمة تسويقية، بل تقسيم عملي بناء على طبيعة المهمة:</p>
+<ul class="b"><li><strong>النصوص الطويلة</strong>: قراءة مستند أو عقد أو بحث وتحويله إلى خلاصة منظمة أو مقارنة أو جدول.</li><li><strong>الكتابة المنظمة</strong>: مسودات ومقالات ورسائل وخطط، خصوصا عندما تعطيه بنية واضحة يلتزم بها.</li><li><strong>التفكير خطوة بخطوة</strong>: تحليل مشكلة، مقارنة خيارات، بناء معايير قرار.</li><li><strong>البرمجة</strong>: شرح كود موجود، اكتشاف سبب خطأ، اقتراح تحسين، كتابة اختبارات.</li><li><strong>التعلم</strong>: شرح مفهوم بمستويات مختلفة، وتوليد تمارين، ومراجعة إجاباتك.</li></ul>
+<h2 id="ch1-s4">أين لا يكون الخيار الأفضل</h2>
+<p>الصراحة هنا توفر عليك وقتا. Claude ليس مصدرا للأرقام الرسمية ولا للأخبار اللحظية إلا إذا فعلت البحث على الويب، وحتى حينها راجع المصدر بنفسك في القرارات المهمة. وليس بديلا عن مختص في المسائل القانونية والطبية والمالية.</p>
+<div class="callout warn"><div class="t">قاعدة قبل كل شيء</div><p>لا تضع داخل المحادثة بيانات لا تريد أن تخرج من جهازك: كلمات مرور، مفاتيح API، أرقام بطاقات، بيانات عملاء حقيقية. إذا احتجت لتحليل بيانات حساسة، احذف المعرفات الشخصية أولا واستبدلها برموز.</p></div>
+<h2 id="ch1-s7">الفرق بين Claude و Claude Code</h2>
+<p>كثيرون يخلطون بينهما. <code class="inline">Claude</code> هو التطبيق الذي تتحدث معه في المتصفح أو الهاتف أو الحاسوب. أما <code class="inline">Claude Code</code> فأداة برمجة وكيلة تعمل داخل مشروعك: تقرأ ملفات المشروع، وتعدلها، وتشغل الأوامر، وتتكامل مع Git. الوصف الرسمي لها في التوثيق: أداة برمجة وكيلة تقرأ الكود وتعدل الملفات وتشغل الأوامر وتتكامل مع أدوات التطوير، متاحة في الطرفية والمحرر وتطبيق الحاسوب والمتصفح.</p>
+<table class="data"><thead><tr><th>الحاجة</th><th>الأداة المناسبة</th></tr></thead><tbody><tr><td>فهم مستند أو كتابة محتوى أو تحليل</td><td>تطبيق Claude</td></tr><tr><td>تعديل ملفات مشروع برمجي فعليا</td><td>Claude Code</td></tr><tr><td>شرح مقطع كود قصير نسخته</td><td>تطبيق Claude</td></tr><tr><td>إصلاح خطأ داخل مستودع كامل</td><td>Claude Code</td></tr></tbody></table>
+<p>منتج مستقل في هذه السلسلة مخصص لـ Claude Code من الصفر إلى الاحتراف.</p>
+<h2 id="ch1-s11">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">اكتب ثلاث مهام حقيقية تكررها أسبوعيا</span>من عملك أو دراستك، لا مهام افتراضية.</li><li><span class="sh">صنف كل مهمة</span>هل هي نص طويل، أم كتابة، أم تحليل، أم كود؟</li><li><span class="sh">اختر مهمة واحدة فقط</span>هي التي ستطبق عليها كل أمثلة هذا الدليل حتى نهايته.</li></ol>
+<h1 class="chapter" id="ch2"><span class="num">CHAPTER 02</span>النماذج الحالية وكيف تختار بينها</h1><p class="lead">اختيار النموذج هو أسرع طريقة لتحسين النتيجة وتقليل استهلاك رصيدك. النماذج ليست «أفضل وأسوأ» فقط، بل مقايضة بين العمق والسرعة والتكلفة.</p>
+<div class="sectionlead"><p>الجدول التالي مأخوذ من صفحة النماذج الرسمية في توثيق Anthropic، بتاريخ التحقق المذكور في صفحة المعلومات. النماذج تتغير، فراجع الصفحة الرسمية قبل الاعتماد على رقم محدد.</p></div>
+<h2 id="ch2-s2">عائلة النماذج الحالية</h2>
+<table class="data"><thead><tr><th>النموذج</th><th>لماذا وُجد</th><th>نافذة السياق</th><th>أقصى مخرجات</th></tr></thead><tbody><tr><td>Claude Opus 5</td><td>العمل الوكيل المعقد والبرمجة وعمل المؤسسات</td><td>مليون رمز</td><td>128 ألف رمز</td></tr><tr><td>Claude Fable 5.1</td><td>التفكير الصعب والمهام الطويلة الممتدة</td><td>مليون رمز</td><td>128 ألف رمز</td></tr><tr><td>Claude Sonnet 5</td><td>أفضل توازن بين السرعة والذكاء</td><td>مليون رمز</td><td>128 ألف رمز</td></tr><tr><td>Claude Haiku 4.5</td><td>الأسرع، بذكاء قريب من الطليعة</td><td>200 ألف رمز</td><td>64 ألف رمز</td></tr></tbody></table>
+<p>التوثيق الرسمي يقول صراحة: ابدأ بـ <strong>Claude Opus 5</strong> لمعظم الأعمال، واستخدم <strong>Claude Fable 5.1</strong> للتفكير الصعب والمهام الوكيلة الطويلة، أو حين لا تكفيك نتائج Opus 5 عند مستوى جهد أعلى.</p>
+<div class="callout note"><div class="t">ماذا يعني «مليون رمز»</div><p>الرمز token وحدة تقريبية أصغر من الكلمة. التوثيق يوضح أن مليون رمز على المُرمِز الحالي يساوي تقريبا 555 ألف كلمة أو 2.5 مليون حرف. عمليا: كتاب كامل أو عشرات المستندات في محادثة واحدة.</p></div>
+<h2 id="ch2-s6">قاعدة اختيار عملية</h2>
+<table class="data"><thead><tr><th>نوع المهمة</th><th>ابدأ بـ</th><th>لماذا</th></tr></thead><tbody><tr><td>سؤال سريع، إعادة صياغة، ترجمة قصيرة</td><td>الأسرع المتاح</td><td>لا تحتاج عمقا، والسرعة أهم</td></tr><tr><td>تحليل مستند أو بناء خطة أو مقارنة قرارات</td><td>النموذج الأقوى المتاح لك</td><td>الخطأ هنا مكلف</td></tr><tr><td>برمجة حقيقية أو تصحيح خطأ متشعب</td><td>Claude Opus 5</td><td>مصمم للعمل الوكيل والبرمجة</td></tr><tr><td>مهمة طويلة متعددة الخطوات لا تريد متابعتها</td><td>Claude Fable 5.1</td><td>مخصص للمهام الممتدة</td></tr></tbody></table>
+<div class="callout tip"><div class="t">خدعة عملية</div><p>ابدأ المهام الكبيرة بنموذج قوي حتى تستقر الخطة والبنية، ثم أكمل التنفيذ المتكرر بنموذج أسرع. هذا يحافظ على الجودة ويقلل الاستهلاك.</p></div>
+<h2 id="ch2-s9">ما تغير ويجب ألا تكرره</h2>
+<p>طريقة «التفكير الموسع» اليدوية القديمة — التي كنت تشغلها بميزانية تفكير محددة — لم تعد الطريقة الحالية. التوثيق يذكر أنها أصبحت مهجورة على Claude Opus 4.6 و Claude Sonnet 4.6 وغير مقبولة على النماذج الأحدث. النماذج الحالية تستخدم تفكيرا تكيفيا يقرر فيه النموذج عمق تفكيره، ويوجَه بمستوى الجهد.</p>
+<h2 id="ch2-s11">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">خذ المهمة التي اخترتها في الفصل الأول</span></li><li><span class="sh">نفذها مرتين</span>مرة بأسرع نموذج متاح لك، ومرة بأقواه.</li><li><span class="sh">قارن ثلاثة أشياء</span>دقة النتيجة، وطول الوقت، وكم مرة اضطررت لتصحيح الرد.</li><li><span class="sh">اكتب القاعدة الخاصة بك</span>مثال: هذه المهمة تستحق النموذج القوي، وتلك لا.</li></ol>
+<h1 class="chapter" id="ch3"><span class="num">CHAPTER 03</span>كيف تكتب طلبا يعطي نتيجة من أول مرة</h1><p class="lead">معظم النتائج الضعيفة سببها طلب ناقص وليس نموذجا ضعيفا. هذا الفصل هو أهم فصل في الدليل، وهو مبني على إرشادات هندسة البرومبتات الرسمية من Anthropic.</p>
+<h2 id="ch3-s1">القاعدة الذهبية</h2>
+<p>التوثيق الرسمي يضعها بوضوح: اعرض طلبك على زميل ليس لديه سياق عن المهمة واطلب منه تنفيذه. إذا ارتبك، فسيرتبك النموذج أيضا. تعامل مع Claude كموظف ذكي جدا لكنه جديد ولا يعرف أعرافك ولا طريقة عملك.</p>
+<h2 id="ch3-s3">الأركان الستة لأي طلب جيد</h2>
+<ol class="steps"><li><span class="sh">الهدف</span>ما النتيجة النهائية التي تريدها؟ لا الموضوع، بل النتيجة.</li><li><span class="sh">السياق</span>لمن؟ وأين ستستخدم؟ ولماذا يهمك هذا؟</li><li><span class="sh">المدخلات</span>ما المعلومات أو الملفات التي تعطيها له؟</li><li><span class="sh">القيود</span>الطول، اللغة، ما يجب تجنبه، مستوى القارئ.</li><li><span class="sh">شكل المخرج</span>جدول؟ قائمة مرقمة؟ ثلاث فقرات؟ حدده صراحة.</li><li><span class="sh">معيار النجاح</span>كيف نعرف أن الناتج جيد؟ اكتب الشرط.</li></ol>
+<p>لا تحتاج الأركان الستة في كل طلب. المهمة البسيطة تحتاج هدفا وشكل مخرج فقط. المهمة المعقدة تحتاجها كلها. الإطالة بلا سبب تضر بقدر النقص.</p>
+<h2 id="ch3-s6">اشرح السبب، لا الأمر فقط</h2>
+<p>من الإرشادات الرسمية: إعطاء السبب وراء التعليمة يحسن النتيجة، لأن النموذج يعمم من الشرح. مثال من التوثيق نفسه:</p>
+<table class="data"><thead><tr><th>أقل فعالية</th><th>أكثر فعالية</th></tr></thead><tbody><tr><td>لا تستخدم علامات الحذف أبدا</td><td>ردك سيُقرأ بصوت آلي، فلا تستخدم علامات الحذف لأن المحرك الصوتي لا يعرف كيف ينطقها</td></tr></tbody></table>
+<h2 id="ch3-s9">استخدم الوسوم لفصل أجزاء الطلب</h2>
+<p>عندما يخلط طلبك تعليمات وسياقا وأمثلة ومدخلات، ضع كل نوع داخل وسم XML خاص به. هذا يقلل سوء الفهم. التوثيق يوصي بأسماء وسوم واضحة ومتسقة، وبتداخلها عندما يكون للمحتوى تسلسل طبيعي.</p>
+<div class="promptbox standalone"><div class="lbl">بنية طلب واضحة</div><div class="txt">&lt;المهمة&gt;
+لخص العقد المرفق لأجل التفاوض على بنود الدفع.
+&lt;/المهمة&gt;
+
+&lt;القيود&gt;
+- بالعربية
+- لا تتجاوز 300 كلمة
+- لا تعطِ رأيا قانونيا
+&lt;/القيود&gt;
+
+&lt;شكل_المخرج&gt;
+1. البنود المتعلقة بالدفع
+2. المخاطر على الطرف الثاني
+3. أسئلة يجب طرحها قبل التوقيع
+&lt;/شكل_المخرج&gt;</div></div>
+<h2 id="ch3-s12">الأمثلة أقوى من الوصف</h2>
+<p>الأمثلة من أكثر الطرق موثوقية لضبط الشكل والنبرة والبنية. الإرشادات الرسمية تنصح بأن تكون الأمثلة قريبة من حالتك الفعلية، ومتنوعة تغطي الحالات الحدية، وموضوعة داخل وسوم <code class="inline">&lt;example&gt;</code> أو <code class="inline">&lt;examples&gt;</code>، وبعدد 3 إلى 5 أمثلة لأفضل نتيجة.</p>
+<h2 id="ch3-s14">عالج نقص المعلومات صراحة</h2>
+<p>أخطر سلوك في أي أداة ذكاء اصطناعي هو ملء الفراغ بالتخمين. اكتب في كل طلب مهم سطرا واحدا يمنع ذلك:</p>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">إذا كانت معلومة ضرورية ناقصة، اذكرها بوضوح في قسم منفصل واسأل عنها،
+ولا تفترض قيمة من عندك.</div></div>
+<h2 id="ch3-s17">من طلب سيئ إلى طلب جيد</h2>
+<table class="data"><thead><tr><th>الطلب</th><th>المشكلة</th></tr></thead><tbody><tr><td>اكتب لي مقالا عن الذكاء الاصطناعي</td><td>لا جمهور ولا هدف ولا طول ولا زاوية</td></tr><tr><td>لخص هذا الملف</td><td>لأي غرض؟ وبأي طول؟ وما الذي يهمك فيه؟</td></tr><tr><td>صحح لي هذا الكود</td><td>ما السلوك المتوقع؟ وما الخطأ الظاهر؟ وما البيئة؟</td></tr></tbody></table>
+<p>الصيغة المحسنة للطلب الأول:</p>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">اكتب مقالا بالعربية عن [الموضوع] لجمهور
+[الجمهور]
+
+الهدف:
+[الهدف]
+الطول: 700 كلمة تقريبا.
+البنية: مقدمة قصيرة، ثلاثة محاور بعناوين فرعية، خاتمة فيها خطوة عملية واحدة.
+النبرة: عملية ومباشرة، بلا مبالغة تسويقية.
+تجنب: العموميات والجمل الإنشائية.
+
+معيار النجاح: أن يخرج القارئ بثلاث معلومات قابلة للتطبيق اليوم.</div></div>
+<div class="callout tip"><div class="t">أسرع تحسين ستفعله اليوم</div><p>أضف إلى نهاية أي طلب مهم هذين السطرين: «اذكر الافتراضات التي بنيت عليها ردك» و«اذكر ما نقصك من معلومات». ستكتشف فورا أين كان طلبك ناقصا.</p></div>
+<h2 id="ch3-s22">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">خذ آخر طلب كتبته لـ Claude ولم تعجبك نتيجته</span></li><li><span class="sh">أعد كتابته بالأركان الستة</span>لا تغير الموضوع، غير البنية فقط.</li><li><span class="sh">قارن الناتجين</span>واكتب في سطر واحد: أي ركن كان الناقص؟</li></ol>
+<h1 class="chapter" id="ch4"><span class="num">CHAPTER 04</span>الملفات وتحليل المستندات</h1><p class="lead">هنا يتحول Claude من مساعد كتابة إلى أداة عمل. ارفع مستندا وتعامل معه كأنك تعطيه لزميل ذكي وتطلب منه تقريرا.</p>
+<h2 id="ch4-s1">ما الذي يحدث فعلا عند رفع ملف</h2>
+<p>بحسب مركز المساعدة الرسمي، يحلل Claude النص والعناصر البصرية — كالصور والرسوم البيانية — في ملفات PDF التي تبلغ 100 صفحة أو أقل. أما ملفات PDF من 101 إلى 1000 صفحة فيعالج نصها فقط ولا يحلل عناصرها البصرية. هذه ليست تفصيلة هامشية: إذا كان تقريرك يعتمد على رسم بياني داخل ملف من 400 صفحة، فلن يراه.</p>
+<div class="callout note"><div class="t">الحل العملي للملف الضخم</div><p>قص الصفحات المهمة إلى ملف منفصل أصغر من 100 صفحة وارفعه، أو صور الرسم البياني وارفعه صورة مستقلة. هذا يعيد إليك التحليل البصري.</p></div>
+<h2 id="ch4-s4">أين ترفع الملف: المحادثة أم المشروع</h2>
+<table class="data"><thead><tr><th>الحالة</th><th>المكان الصحيح</th></tr></thead><tbody><tr><td>ملف تستخدمه مرة واحدة</td><td>ارفعه داخل المحادثة</td></tr><tr><td>ملف سترجع إليه في محادثات كثيرة</td><td>قسم الملفات داخل مشروع Project</td></tr><tr><td>مستندات مرجعية ثابتة لفريق أو مادة دراسية</td><td>مشروع مخصص لها</td></tr></tbody></table>
+<h2 id="ch4-s6">طريقة صحيحة لقراءة مستند</h2>
+<p>الخطأ الشائع أن تكتب «لخص الملف». التلخيص بلا غرض يعطيك كلاما عاما. اربط القراءة بقرار ستتخذه:</p>
+<div class="promptbox standalone"><div class="lbl">برومبت قراءة مستند</div><div class="txt">أنت محلل مستندات دقيق.
+
+المستند مرفق. سأستخدم قراءتك لأجل:
+[الهدف]
+
+أعطني بهذا الترتيب:
+1. خلاصة في خمس نقاط، كل نقطة مرتبطة بهدفي أعلاه
+2. الأرقام والتواريخ والالتزامات المهمة
+3. ثلاث مخاطر أو نقاط غامضة تحتاج توضيحا
+4. الأسئلة التي يجب أن أطرحها قبل اتخاذ قراري
+
+اذكر مكان كل معلومة داخل المستند.
+إذا لم يذكر المستند معلومة، اكتب: غير مذكور في المستند. ولا تخمن.</div></div>
+<h2 id="ch4-s9">مقارنة عدة مستندات</h2>
+<p>ارفع الملفات معا واطلب مصفوفة مقارنة بمعايير تحددها أنت. تحديد المعايير مسبقا هو ما يفرق بين مقارنة مفيدة وكلام إنشائي.</p>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">قارن بين المستندات المرفقة على هذه المعايير: [المعيار الأول]، [المعيار الثاني]،
+[المعيار الثالث]
+
+المخرج: جدول، صف لكل مستند، عمود لكل معيار.
+تحت الجدول: فقرة واحدة تقول أيها أنسب لـ [الحالة] ولماذا.
+إذا كان معيار غير مذكور في مستند، اكتب: غير مذكور.</div></div>
+<h2 id="ch4-s12">الصور ولقطات الشاشة</h2>
+<p>يمكنك رفع صورة ولقطة شاشة والسؤال عنها: قراءة جدول من صورة، شرح رسالة خطأ، تفسير مخطط. عند رفع لقطة شاشة لخطأ برمجي، أرفق معها ما كنت تحاول فعله وما توقعته — الصورة وحدها تعطي نصف الإجابة.</p>
+<div class="callout warn"><div class="t">قبل أن ترفع</div><p>المستندات الحقيقية تحتوي أسماء وأرقام هواتف وعناوين وبيانات عملاء. احذف ما لا يحتاجه التحليل. الملف الذي رفعته لا يمكن سحبه بعد رفعه.</p></div>
+<h2 id="ch4-s15">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">ارفع مستندا حقيقيا من عملك</span>عقد، أو تقرير، أو مادة دراسية.</li><li><span class="sh">استخدم برومبت قراءة المستند أعلاه</span>بعد تعبئة [الهدف] بهدف حقيقي.</li><li><span class="sh">تحقق من نقطتين</span>افتح المستند وتأكد أن ما قاله موجود فعلا في مكانه.</li></ol>
+<h1 class="chapter" id="ch5"><span class="num">CHAPTER 05</span>البحث على الويب و Research</h1><p class="lead">معلومات النموذج تتوقف عند تاريخ معين. لتجاوز ذلك هناك مساران رسميان: البحث على الويب، وميزة Research. الخلط بينهما يضيع وقتك.</p>
+<h2 id="ch5-s1">البحث على الويب</h2>
+<p>عند تفعيل البحث على الويب، يستطيع Claude استدعاء أداة بحث لدعم رده بمحتوى من الويب الحي. ويستطيع أيضا جلب محتوى صفحة معينة مباشرة إذا أعطيته رابطها — وهي ميزة جلب الويب — فيقرأ المقال أو الصفحة كاملة ويناقشها معك.</p>
+<ul class="b"><li>استخدمه للأسئلة التي تتغير: أسعار، إصدارات، أخبار، مواعيد.</li><li>أعطه الرابط مباشرة عندما تعرف المصدر، فهذا أدق من تركه يبحث.</li><li>اطلب منه دائما أن يذكر المصدر، وافتح المصدر بنفسك قبل أي قرار مهم.</li></ul>
+<h2 id="ch5-s4">Research: التقارير العميقة</h2>
+<p>بحسب مركز المساعدة، يجب تشغيل البحث على الويب حتى تعمل ميزة Research. وهي مناسبة لجمع المعلومات الشامل الذي يحتاج خمس استدعاءات أدوات أو أكثر خلال دقيقة إلى ثلاث دقائق، وتنتج تقارير معمقة بتجميع معلومات من مصادر متعددة عبر الويب وتكاملاتك. يبحث Claude في سياق عملك الداخلي والويب معا، ثم يجمع النتيجة في تقرير منظم مع الاستشهادات.</p>
+<table class="data"><thead><tr><th>السؤال</th><th>الأداة المناسبة</th></tr></thead><tbody><tr><td>ما آخر إصدار مستقر من أداة معينة؟</td><td>بحث على الويب</td></tr><tr><td>اقرأ هذه الصفحة ولخصها لي</td><td>بحث على الويب مع الرابط</td></tr><tr><td>ابنِ لي تقريرا مقارنا عن سوق
+[المجال]</td><td>Research</td></tr><tr><td>اجمع لي كل ما كُتب عن [الموضوع] مع مصادر</td><td>Research</td></tr></tbody></table>
+<div class="callout note"><div class="t">توقع الوقت</div><p>Research ليس ردا فوريا. هو عملية تستغرق دقائق ويستدعي فيها Claude أدوات متعددة. اطلبه عندما تريد تقريرا، لا عندما تريد إجابة سريعة.</p></div>
+<h2 id="ch5-s8">برومبت بحث لا يعطيك كلاما عاما</h2>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ابحث في الويب عن:
+[الموضوع]
+
+المطلوب:
+1. الوضع الحالي في 5 نقاط، مع رابط لكل نقطة
+2. ما تغير خلال آخر 12 شهرا
+3. نقاط يختلف فيها المصادر، مع ذكر الخلاف صراحة
+4. ما لم أجد له مصدرا موثوقا
+
+القواعد:
+- المصادر الرسمية أولا، ثم المصادر الثانوية للتأكيد فقط
+- لا تذكر معلومة بلا رابط
+- إذا كان المصدر قديما، اذكر تاريخه</div></div>
+<div class="callout warn"><div class="t">الحدود التي يجب أن تعرفها</div><p>توفر الميزات وحدودها يختلف حسب الخطة وأحيانا حسب المنطقة. تحقق من صفحة الميزة الرسمية إذا كنت تبني عليها عملا يعتمد على دقة التوقيت.</p></div>
+<h2 id="ch5-s11">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">اسأل سؤالا عن موضوع يتغير</span>بدون تفعيل البحث.</li><li><span class="sh">اسأل السؤال نفسه</span>مع تفعيل البحث وطلب المصادر.</li><li><span class="sh">افتح مصدرين</span>وتأكد أن الرقم المذكور موجود فعلا في الصفحة.</li></ol>
+<h1 class="chapter" id="ch6"><span class="num">CHAPTER 06</span>المشاريع Projects: بيت عملك داخل Claude</h1><p class="lead">المحادثة المنفردة تنسى. المشروع يتذكر. إذا كنت تعمل على شيء يمتد أسابيع، فالمشروع ليس رفاهية بل الطريقة الصحيحة.</p>
+<h2 id="ch6-s1">ما هو المشروع</h2>
+<p>المشروع يجمع المحادثات والملفات والسياق تحت هدف مشترك. وبحسب مركز المساعدة، لكل مشروع ذاكرته الخاصة، منفصلة عن محادثاتك خارج المشاريع. ويمكن أرشفة المشاريع لتنظيم القائمة، وهو مفيد للمشاريع المنتهية أو التي لا تعمل عليها حاليا لكنك قد تحتاج الرجوع إليها.</p>
+<h2 id="ch6-s3">متى تُنشئ مشروعا</h2>
+<ul class="b"><li>مشروع تخرج أو بحث يمتد لأشهر</li><li>قناة محتوى لها نبرة وقواعد ثابتة</li><li>عميل أو منتج له مستندات مرجعية متكررة</li><li>مادة دراسية لها مصطلحات ومنهج محدد</li></ul>
+<p>لا تُنشئ مشروعا لسؤال عابر. كثرة المشاريع الفارغة تشتت أكثر مما تنظم.</p>
+<h2 id="ch6-s6">تعليمات المشروع: أهم ما ستكتبه</h2>
+<p>تعليمات المشروع تُقرأ في كل محادثة داخله. اكتبها مرة، فتوفر عليك تكرار السياق في كل مرة. نموذج قابل للنسخ:</p>
+<div class="promptbox standalone"><div class="lbl">تعليمات مشروع</div><div class="txt">السياق:
+أنا [دورك] وأعمل على [المشروع]. الجمهور:
+[الجمهور]
+
+اللغة والأسلوب:
+- العربية الواضحة، والمصطلح الإنجليزي عند الحاجة فقط
+- جمل قصيرة، بلا مبالغة تسويقية
+
+قواعد ثابتة:
+- استخدم المصطلحات كما وردت في ملفات المشروع، لا مرادفات
+- إذا نقصتك معلومة، اسأل ولا تفترض
+- عند ذكر رقم أو تاريخ، اذكر مصدره من ملفات المشروع
+
+المخرج الافتراضي:
+عناوين واضحة، ثم نقاط، ثم خطوة عملية واحدة في النهاية.</div></div>
+<h2 id="ch6-s9">ملفات المشروع</h2>
+<p>ضع في قسم الملفات ما يحتاجه Claude في كل محادثة: مسرد المصطلحات، دليل النبرة، مواصفات المنتج، ملخص المتطلبات. لا ترفع كل شيء — الملفات التي لا تُستخدم تزيد التشويش ولا تزيد الجودة.</p>
+<div class="callout tip"><div class="t">بنية مشروع تعمل فعلا</div><p>أربعة ملفات تكفي في الغالب: ملف السياق والقواعد، ملف المصطلحات، ملف الأمثلة المعتمدة على أسلوبك، وملف القرارات السابقة. حدث ملف القرارات كلما اتخذت قرارا مهما، فهو الذي يمنع Claude من مخالفة اختياراتك لاحقا.</p></div>
+<h2 id="ch6-s12">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">أنشئ مشروعا واحدا</span>لمهمتك التي اخترتها في الفصل الأول.</li><li><span class="sh">اكتب تعليماته</span>باستخدام النموذج أعلاه.</li><li><span class="sh">ارفع ملفين مرجعيين فقط</span>ثم ابدأ محادثة واختبر: هل التزم بالقواعد بلا تذكير؟</li></ol>
+<h1 class="chapter" id="ch7"><span class="num">CHAPTER 07</span>Artifacts: من رد نصي إلى مخرج تستخدمه</h1><p class="lead">Artifacts هي المخرجات التي تخرج من المحادثة إلى مساحة مستقلة: مستند، صفحة، أداة صغيرة، جدول. تعدلها وتشاركها بدل أن تبقى نصا داخل الدردشة.</p>
+<h2 id="ch7-s1">ما الجديد في النظام الحالي</h2>
+<p>بحسب مركز المساعدة، المخرجات المنشأة في 19 أغسطس 2026 أو بعده تستخدم نظام Artifacts المحدث: تُحفظ في حسابك، ويمكن مشاركتها مع أشخاص محددين أو مع كل من في مؤسستك، وتُفتح على الويب.</p>
+<h2 id="ch7-s3">الأذونات والموصلات</h2>
+<p>قبل أن يستخدم أي artifact تطبيقاتك المتصلة، يعرض Claude الموصلات والأدوات التي سيستخدمها ويطلب إذنك. يمكنك إيقاف أدوات بعينها، ويُحفظ اختيارك لذلك الـ artifact حتى تغيره.</p>
+<div class="callout warn"><div class="t">اقرأ قبل أن توافق</div><p>شاشة الأذونات ليست خطوة شكلية. اقرأ أي موصل سيُستخدم وأي أداة. إذا كان المخرج لا يحتاج بريدك أو ملفاتك السحابية، أوقف ذلك الموصل.</p></div>
+<h2 id="ch7-s6">متى تطلبه صراحة</h2>
+<ul class="b"><li>مستند طويل ستعدله وتعيد استخدامه</li><li>جدول أو قائمة مرجعية ستشاركها مع فريق</li><li>أداة حاسبة أو نموذج صغير تريد تجربته</li><li>أي مخرج ستعود إليه لاحقا بدل نسخه من الدردشة</li></ul>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">اجعل المخرج artifact مستقلا، وليس ردا داخل المحادثة.
+
+المحتوى:
+[المحتوى]
+الشكل:
+[مستند / جدول / صفحة]
+اجعله قابلا للتعديل والتوسعة لاحقا، وضع عناوين واضحة.</div></div>
+<h2 id="ch7-s9">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">اطلب مخرجا كـ artifact</span>قائمة مرجعية لمهمتك المختارة.</li><li><span class="sh">عدله مرتين</span>بطلب تعديل جزئي، لا بإعادة إنشائه.</li><li><span class="sh">لاحظ الفرق</span>بين تعديل مخرج قائم وبين توليد رد جديد كل مرة.</li></ol>
+<h1 class="chapter" id="ch8"><span class="num">CHAPTER 08</span>الذاكرة والموصلات والمهارات</h1><p class="lead">هذه الثلاثة تحول Claude من أداة تبدأ من الصفر كل مرة إلى أداة تعرف سياقك وتصل إلى أدواتك. وهي أيضا الثلاثة التي تحتاج انتباها للخصوصية.</p>
+<h2 id="ch8-s1">الذاكرة Memory</h2>
+<p>بحسب مركز المساعدة، الذاكرة مفعلة افتراضيا لخطط Free و Pro و Max على الويب وتطبيق Claude للحاسوب وتطبيق الهاتف. وهي تعمل عبر الدردشة و Cowork في السحابة. وكل ما يتذكره Claude معروض تحت قسم Topics في الإعدادات ثم Memory، حيث تستطيع تعديل أي عنصر أو حذفه.</p>
+<div class="callout tip"><div class="t">عادة شهرية مفيدة</div><p>افتح الإعدادات ثم Memory مرة كل شهر واقرأ ما حُفظ. احذف ما لم يعد صحيحا. الذاكرة القديمة الخاطئة أسوأ من عدم وجود ذاكرة، لأنها تُبنى عليها ردود لاحقة.</p></div>
+<p>وتذكر التمييز المهم: لكل مشروع ذاكرته الخاصة المنفصلة عن محادثاتك خارج المشاريع. هذا يعني أن ما يتعلمه في مشروع العمل لا يتسرب إلى محادثاتك الشخصية.</p>
+<h2 id="ch8-s5">الموصلات Connectors</h2>
+<p>الموصلات تربط Claude بأدواتك ومصادر بياناتك، فيبحث فيها ويستشهد بها دون أن تغادر المحادثة. وقد رأينا في الفصل السابق أن استخدامها داخل artifact يمر بشاشة إذن صريحة يمكنك التحكم فيها لكل أداة على حدة.</p>
+<h2 id="ch8-s7">المهارات Skills والإضافات Plugins</h2>
+<p>المهارات تحزم سير عمل متكررا لتستدعيه بأمر واحد. وبحسب مركز المساعدة، هناك قسم Customize في تطبيق Claude للحاسوب يجمع المهارات والإضافات والموصلات في مكان واحد. كما تستطيع خطط Enterprise تفعيل فحص أمني للمهارات والإضافات، يتحقق تلقائيا من المهارات والإضافات الخارجية بحثا عن محتوى ضار عند رفعها أو تعديلها.</p>
+<div class="callout warn"><div class="t">المهارة الخارجية كود تشغله</div><p>المهارة أو الإضافة من طرف ثالث ليست مجرد نص. تعامل معها كما تتعامل مع أي برنامج تنزله: اعرف مصدرها، واقرأ ما تطلبه من صلاحيات، ولا تثبت ما لا تحتاجه.</p></div>
+<h2 id="ch8-s10">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">افتح الإعدادات ثم Memory</span>واقرأ القائمة كاملة.</li><li><span class="sh">احذف عنصرين</span>قديمين أو غير دقيقين.</li><li><span class="sh">راجع الموصلات المفعلة</span>وأوقف ما لا تستخدمه فعلا.</li></ol>
+<h1 class="chapter" id="ch9"><span class="num">CHAPTER 09</span>إدارة السياق والمحادثات الطويلة</h1><p class="lead">نافذة السياق كبيرة جدا في النماذج الحالية، لكن «كبيرة» لا تعني «بلا حدود». المحادثة التي تطول بلا تنظيم تفقد دقتها تدريجيا وتستهلك رصيدك أسرع.</p>
+<h2 id="ch9-s1">لماذا تتدهور المحادثات الطويلة</h2>
+<ul class="b"><li>تتراكم فيها قرارات متناقضة اتخذتها في أوقات مختلفة</li><li>تتراكم فيها مسودات مرفوضة تشوش على المسودة المعتمدة</li><li>يصبح الجزء المهم مدفونا وسط كلام كثير</li></ul>
+<h2 id="ch9-s3">قاعدة المحادثة الواحدة لهدف واحد</h2>
+<p>لا تناقش خطة المحتوى وتصحيح كود وترجمة رسالة في محادثة واحدة. افتح محادثة لكل هدف. المشروع يحفظ السياق المشترك، والمحادثة تحفظ المهمة.</p>
+<h2 id="ch9-s5">تقنية نقطة الحفظ</h2>
+<p>عندما تصل إلى نتيجة مرضية في محادثة طويلة، اطلب ملخصا يصلح لبدء محادثة جديدة. هذه أفضل طريقة عملية للانتقال دون خسارة:</p>
+<div class="promptbox standalone"><div class="lbl">برومبت نقطة الحفظ</div><div class="txt">لخص هذه المحادثة في صيغة أستطيع لصقها في بداية محادثة جديدة.
+
+اشمل:
+1. الهدف النهائي
+2. القرارات المعتمدة، وما رُفض ولماذا
+3. المصطلحات والأسلوب المتفق عليه
+4. الوضع الحالي بالضبط
+5. الخطوة التالية
+
+اكتبه كتعليمات موجهة لمساعد جديد لا يعرف شيئا عن السياق.
+لا تضف أي معلومة جديدة.</div></div>
+<h2 id="ch9-s8">متى تبدأ محادثة جديدة</h2>
+<table class="data"><thead><tr><th>العلامة</th><th>ماذا تفعل</th></tr></thead><tbody><tr><td>بدأ يكرر معلومات صححتها له</td><td>خذ نقطة حفظ وابدأ محادثة جديدة</td></tr><tr><td>تغير الهدف عن الذي بدأت به</td><td>محادثة جديدة</td></tr><tr><td>صارت الردود أبطأ وأقل دقة</td><td>خذ نقطة حفظ</td></tr><tr><td>أنهيت مرحلة وتبدأ مرحلة مختلفة</td><td>محادثة جديدة داخل المشروع نفسه</td></tr></tbody></table>
+<h2 id="ch9-s10">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">افتح أطول محادثة عندك</span></li><li><span class="sh">خذ نقطة حفظ</span>بالبرومبت أعلاه.</li><li><span class="sh">ابدأ محادثة جديدة بها</span>ولاحظ الفرق في وضوح الردود.</li></ol>
+<h1 class="chapter" id="ch10"><span class="num">CHAPTER 10</span>استخدامات عملية: كتابة وتحليل ودراسة</h1><p class="lead">هذا الفصل تطبيقي بالكامل: أنماط جاهزة لأكثر المهام تكرارا، مكتوبة بالأركان التي تعلمتها في الفصل الثالث.</p>
+<h2 id="ch10-s1">الكتابة بأسلوبك أنت</h2>
+<p>الطريقة الأفضل ليست أن تصف أسلوبك، بل أن تعطيه أمثلة منه. هذا تطبيق مباشر لإرشادات الأمثلة الرسمية:</p>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">فيما يلي ثلاثة نماذج من كتابتي.
+
+&lt;أمثلة&gt;
+&lt;مثال&gt;[النص الأول]&lt;/مثال&gt;
+&lt;مثال&gt;[النص الثاني]&lt;/مثال&gt;
+&lt;مثال&gt;[النص الثالث]&lt;/مثال&gt;
+&lt;/أمثلة&gt;
+
+استخرج من هذه النماذج: طول الجملة، ونوع المفردات، وطريقة الافتتاح، والإيقاع.
+ثم اكتب [النص المطلوب] بالأسلوب نفسه.
+لا تقلد الموضوع، قلد الأسلوب فقط.</div></div>
+<h2 id="ch10-s4">التحليل واتخاذ القرار</h2>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">ساعدني في قرار:
+[القرار]
+
+الخيارات: [الخيار الأول]، [الخيار الثاني]،
+[الخيار الثالث]
+ما يهمني بالترتيب: [المعيار الأول]، [المعيار الثاني]،
+[المعيار الثالث]
+قيودي:
+[الوقت / الميزانية / المهارات المتاحة]
+
+المخرج:
+1. جدول: صف لكل خيار، عمود لكل معيار، تقييم من 5 مع سبب من سطر
+2. ما الذي يجعل كل خيار خاطئا
+3. توصية واحدة، مع الشرط الذي لو تغير لتغيرت التوصية
+4. المعلومات الناقصة التي كانت ستغير التحليل</div></div>
+<h2 id="ch10-s6">الدراسة والفهم</h2>
+<p>أسوأ استخدام للذكاء الاصطناعي في الدراسة هو طلب الحل. أفضل استخدام هو أن تجعله يختبرك:</p>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">اشرح لي [المفهوم] على ثلاث مستويات:
+1. بلغة بسيطة جدا
+2. بالمستوى الجامعي مع المصطلحات الصحيحة
+3. مع مثال عملي واحد
+
+ثم اطرح علي 5 أسئلة تكشف إن كنت فهمت فعلا أم حفظت فقط.
+لا تعطني الإجابات الآن. انتظر إجاباتي ثم صححها واشرح سبب كل خطأ.</div></div>
+<h2 id="ch10-s9">البيانات والجداول</h2>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">حلل البيانات المرفقة.
+
+الهدف:
+[الهدف]
+المخرج:
+1. ثلاث ملاحظات مدعومة بأرقام من البيانات نفسها
+2. أي شذوذ أو قيمة تبدو خاطئة
+3. ما لا تستطيع البيانات الإجابة عنه
+
+لا تستنتج علاقة سببية من ارتباط.
+اذكر أي افتراض بنيت عليه أي رقم.</div></div>
+<h2 id="ch10-s11">البرمجة داخل تطبيق Claude</h2>
+<p>للتعديل على مشروع كامل، Claude Code هو الأداة. أما داخل تطبيق Claude فأفضل استخدام هو الفهم والمراجعة:</p>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">هذا كود بلغة
+[لغة البرمجة]
+
+[الكود]
+
+المطلوب:
+1. اشرح ما يفعله سطرا بسطر للأجزاء غير الواضحة
+2. ما الحالات الحدية التي سيفشل فيها
+3. ما المشكلات الأمنية إن وجدت
+4. اقترح نسخة محسنة مع شرح سبب كل تغيير
+
+لا تعد كتابة الكود من الصفر. عدل الموجود.</div></div>
+<h2 id="ch10-s14">تمرين الفصل</h2>
+<ol class="steps"><li><span class="sh">اختر نمطين من هذا الفصل</span>الأقرب لعملك.</li><li><span class="sh">طبقهما على بياناتك الحقيقية</span></li><li><span class="sh">عدل النمط</span>احذف ما لا يلزمك وأضف قيدك الخاص، واحفظه عندك.</li></ol>
+<h1 class="chapter" id="ch11"><span class="num">CHAPTER 11</span>الخطط والحدود</h1><p class="lead">فهم الخطط ليس موضوعا ماليا فقط. هو يحدد كم مهمة تنجز في اليوم قبل أن تتوقف.</p>
+<h2 id="ch11-s1">الخطط المتاحة</h2>
+<p>بحسب مركز المساعدة والصفحة الرسمية للأسعار، هناك خمس خطط: Free و Pro و Max و Team و Enterprise.</p>
+<table class="data"><thead><tr><th>الخطة</th><th>ما تعرفه عنها رسميا</th></tr></thead><tbody><tr><td>Free</td><td>استخدام محدود بلا دفع</td></tr><tr><td>Pro</td><td>20 دولارا شهريا في الولايات المتحدة، وبالعملة المحلية حيث يتوفر ذلك، مع خصم للاشتراك السنوي</td></tr><tr><td>Max</td><td>كل ما في Pro، مع استخدام أكبر: 5 أضعاف أو 20 ضعفا من استخدام Pro لكل جلسة، وحدود مخرجات أعلى</td></tr><tr><td>Team</td><td>خطة للفرق</td></tr><tr><td>Enterprise</td><td>خطة المؤسسات، وتشمل خيارات مثل الفحص الأمني للمهارات والإضافات</td></tr></tbody></table>
+<h2 id="ch11-s4">كيف تعمل الحدود</h2>
+<p>الخطط المدفوعة تعطي حدودا أعلى. وحد الاستخدام في Max قائم على الجلسة ويُعاد ضبطه كل خمس ساعات. كما أن لخطط Max حدا أسبوعيا يسري على كل النماذج، ويُعاد ضبطه في وقت ثابت كل أسبوع مخصص لحسابك، ولا يتغير هذا الموعد بحسب وقت بدء استخدامك.</p>
+<div class="callout tip"><div class="t">كيف لا تحرق رصيدك</div><p>استخدم النموذج الأسرع للمهام الخفيفة، ولا تعد إرسال الطلب كاملا عند التعديل — اطلب تعديلا جزئيا. وابدأ محادثة جديدة عند تغير الهدف بدل إطالة محادثة ثقيلة.</p></div>
+<div class="callout note"><div class="t">ما لم يُتحقق منه</div><p>أسعار الخطط تختلف بالدولة والعملة وقد تتغير. والحدود الدقيقة لكل خطة قد تُحدَث. راجع صفحة الأسعار الرسمية قبل الاشتراك.</p></div>
+<h1 class="chapter" id="ch12"><span class="num">CHAPTER 12</span>أخطاء شائعة وأفضل الممارسات</h1><p class="lead">هذه الأخطاء تتكرر عند معظم المستخدمين، وكل واحد منها له إصلاح من سطر واحد.</p>
+<h2 id="ch12-s1">عشرة أخطاء وإصلاحها</h2>
+<table class="data"><thead><tr><th>الخطأ</th><th>الإصلاح</th></tr></thead><tbody><tr><td>طلب عام بلا جمهور ولا هدف</td><td>أضف: الجمهور، والهدف، وشكل المخرج</td></tr><tr><td>الاعتماد على معلومة حديثة بلا بحث</td><td>فعل البحث واطلب المصدر وافتحه بنفسك</td></tr><tr><td>إعادة كتابة الطلب كاملا عند كل تعديل</td><td>اطلب تعديلا جزئيا محددا</td></tr><tr><td>خلط عدة مهام في محادثة واحدة</td><td>محادثة لكل هدف</td></tr><tr><td>تجاهل المشاريع</td><td>أنشئ مشروعا لكل عمل يمتد أكثر من أسبوع</td></tr><tr><td>قبول أول رد</td><td>اطلب: ما الذي يمكن تحسينه في ردك ولماذا</td></tr><tr><td>عدم تحديد ما يجب تجنبه</td><td>اكتب قائمة «تجنب» قصيرة داخل الطلب</td></tr><tr><td>السماح بالتخمين</td><td>أضف: إذا نقصتك معلومة فاسأل ولا تفترض</td></tr><tr><td>رفع بيانات حساسة</td><td>احذف المعرفات قبل الرفع</td></tr><tr><td>نسيان توثيق ما نجح</td><td>احفظ الطلبات التي نجحت في ملف عندك</td></tr></tbody></table>
+<h2 id="ch12-s3">أفضل الممارسات في سبع نقاط</h2>
+<ol class="n"><li>ابدأ بالنتيجة: اكتب أولا كيف تريد المخرج أن يبدو.</li><li>اشرح السبب وراء أي قيد، فالنموذج يعمم من الشرح.</li><li>أعطِ أمثلة بدل أوصاف عندما يهمك الشكل والنبرة.</li><li>افصل أجزاء الطلب بوسوم واضحة عندما يطول.</li><li>اطلب دائما ذكر الافتراضات والمعلومات الناقصة.</li><li>تحقق بنفسك من كل رقم أو تاريخ أو اقتباس قبل استخدامه.</li><li>احتفظ بمكتبة شخصية لطلباتك الناجحة، وطورها بدل إعادة اختراعها.</li></ol>
+<div class="callout warn"><div class="t">قاعدة التحقق</div><p>أي معلومة ستبني عليها قرارا أو تنشرها باسمك: افتح مصدرها الرسمي وتأكد منها. هذه القاعدة وحدها تمنع أغلب المشكلات الحقيقية.</p></div>
+<h1 class="chapter" id="ch13"><span class="num">CHAPTER 13</span>ورقة المراجعة السريعة</h1><p class="lead">صفحة واحدة ترجع إليها بعد أن تنسى تفاصيل الدليل.</p>
+<h2 id="ch13-s1">هيكل أي طلب</h2>
+<div class="promptbox standalone"><div class="lbl">البرومبت الجاهز للنسخ</div><div class="txt">الهدف:
+[الهدف]
+السياق:
+[لمن، وأين يُستخدم، ولماذا]
+المدخلات:
+[الملفات أو النصوص]
+القيود:
+[الطول، اللغة، ما يُتجنب]
+شكل المخرج:
+[جدول / نقاط / فقرات]
+معيار النجاح:
+[متى نعتبره جيدا]
+
+إذا نقصتك معلومة، اذكرها واسأل ولا تفترض.</div></div>
+<h2 id="ch13-s3">أي أداة لأي مهمة</h2>
+<table class="data"><thead><tr><th>أريد أن…</th><th>استخدم</th></tr></thead><tbody><tr><td>أفهم مستندا طويلا</td><td>رفع ملف + برومبت قراءة بهدف محدد</td></tr><tr><td>أعرف معلومة تتغير</td><td>البحث على الويب مع طلب المصادر</td></tr><tr><td>أبني تقريرا شاملا بمصادر</td><td>Research</td></tr><tr><td>أعمل على شيء يمتد أسابيع</td><td>مشروع Project بتعليمات وملفات</td></tr><tr><td>أنتج مستندا سأعدله وأشاركه</td><td>Artifact</td></tr><tr><td>أعدل ملفات مشروع برمجي</td><td>Claude Code</td></tr></tbody></table>
+<h2 id="ch13-s5">جمل تحسن أي رد</h2>
+<ul class="b"><li>اذكر الافتراضات التي بنيت عليها ردك.</li><li>اذكر ما نقصك من معلومات.</li><li>أعطني نسخة أقصر بنصف الطول دون فقدان معنى.</li><li>ما الذي يمكن تحسينه في ردك ولماذا؟</li><li>اذكر مصدر كل رقم أو تاريخ.</li><li>لا تخمن. إذا لم تكن متأكدا فقل ذلك.</li></ul>
+<h2 id="ch13-s7">روتين أسبوعي في عشر دقائق</h2>
+<ol class="n"><li>افتح الإعدادات ثم Memory واحذف ما لم يعد صحيحا.</li><li>أرشف المشاريع المنتهية.</li><li>احفظ أفضل طلبين استخدمتهما هذا الأسبوع في ملفك الشخصي.</li><li>راجع الموصلات المفعلة وأوقف ما لا تستخدمه.</li></ol>
+<h1 class="chapter" id="ch14"><span class="num">CHAPTER 14</span>خطة الثلاثين يوما</h1><p class="lead">القراءة وحدها لا تغير شيئا. هذه خطة قصيرة تحول ما قرأته إلى عادة عمل.</p>
+<h2 id="ch14-s1">الأسبوع الأول: الأساس</h2>
+<ul class="b"><li>اليوم 1–2: أعد كتابة ثلاثة طلبات قديمة بالأركان الستة.</li><li>اليوم 3–4: جرب نموذجين مختلفين على المهمة نفسها وسجل الفرق.</li><li>اليوم 5–7: ارفع مستندين حقيقيين وطبق برومبت القراءة بهدف.</li></ul>
+<h2 id="ch14-s3">الأسبوع الثاني: التنظيم</h2>
+<ul class="b"><li>أنشئ مشروعك الأول واكتب تعليماته.</li><li>ارفع ملفين مرجعيين فقط، وجرب محادثتين داخله.</li><li>طبق نقطة الحفظ على محادثة طويلة.</li></ul>
+<h2 id="ch14-s5">الأسبوع الثالث: التوسع</h2>
+<ul class="b"><li>استخدم البحث على الويب في ثلاث مهام وتحقق من المصادر بنفسك.</li><li>جرب Research مرة واحدة على موضوع يهمك فعلا.</li><li>أنتج أول artifact وعدله مرتين بدل إعادة توليده.</li></ul>
+<h2 id="ch14-s7">الأسبوع الرابع: التثبيت</h2>
+<ul class="b"><li>راجع الذاكرة والموصلات ونظفها.</li><li>اجمع طلباتك الناجحة في ملف واحد مرتب بالفئات.</li><li>اكتب لنفسك ثلاث قواعد شخصية تعلمتها من التجربة، لا من هذا الدليل.</li></ul>
+<div class="callout tip"><div class="t">المقياس الحقيقي</div><p>بعد ثلاثين يوما اسأل نفسك سؤالا واحدا: هل قل عدد المرات التي أعدت فيها صياغة الطلب؟ إذا قل، فقد تحسنت فعلا. وإذا لم يقل، ارجع إلى الفصل الثالث.</p></div>
+<section class="endpage">
+  <h1 class="chapter"><span class="num">THE END</span>الخلاصة والخطوة التالية</h1>
+  <p class="lead">أهم ما في هذا الدليل ليس قائمة الميزات، بل ثلاث عادات: أن تكتب طلبا مكتمل الأركان، وأن تنظم عملك في مشاريع بدل محادثات متناثرة، وأن تتحقق بنفسك من كل معلومة ستبني عليها قرارا.</p>
+<h2>ماذا تفعل غدا</h2>
+<ol class="n"><li>اختر مهمة واحدة تكررها أسبوعيا.</li><li>اكتب لها طلبا مكتمل الأركان واحفظه.</li><li>أنشئ لها مشروعا إن كانت تمتد أكثر من أسبوع.</li><li>كررها خمس مرات وطور الطلب في كل مرة.</li></ol>
+<h2>بقية السلسلة</h2>
+<ul class="b"><li>60 برومبت احترافي لـ Claude — مكتبة جاهزة مبنية على قواعد هذا الدليل.</li><li>Claude Code من الصفر إلى الاحتراف — للعمل داخل المشاريع البرمجية.</li><li>تعلم البرمجة مع Claude Code — لمن يريد أن يتعلم فعلا لا أن يُكتب له.</li></ul>
+<div class="callout note"><div class="t">تنبيه أخير عن التاريخ</div><p>تمت مراجعة كل ميزة في هذا الدليل من مصدرها الرسمي بتاريخ 6 سبتمبر 2026. المنصات تتغير بسرعة: إذا وجدت اختلافا بين ما هنا وما تراه على شاشتك، فالمصدر الرسمي هو المرجع.</p></div>
+  <div class="endcard">
+    <div class="h">برومبتات عربية</div>
+    <p>هذا المنتج من إنتاج قناة برومبتات عربية.<br>لمتابعة الأدلة والبرومبتات الجديدة:</p>
+    <p><a href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+</section></body></html>

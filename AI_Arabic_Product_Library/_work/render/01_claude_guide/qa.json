@@ -1,0 +1,106 @@
+{
+ "product": "دليل Claude العملي",
+ "id": "01_claude_guide",
+ "pdf": {
+  "pdf": "Claude_Guide_Arabic_Final.pdf",
+  "pages": 45,
+  "issues": [],
+  "checks": {
+   "fonts": [
+    "CRZFJS+PlexAr-Semi-Bold",
+    "FNPUCG+PlexAr-Medium",
+    "HIRYNU+PlexAr-Bold",
+    "NETSUB+PlexMono",
+    "TFCPFR+PlexAr",
+    "WDHEQY+PlexMono-Bold"
+   ],
+   "fonts_not_embedded": [],
+   "empty_pages": [],
+   "overflow_blocks": [],
+   "presentation_form_pages": [],
+   "pages_without_text": [],
+   "internal_links": 546,
+   "external_links": 2,
+   "telegram_link_annotations": [
+    [
+     2,
+     "https://t.me/PromptsArabic"
+    ],
+    [
+     45,
+     "https://t.me/PromptsArabic"
+    ]
+   ],
+   "broken_internal_links": [],
+   "owner_mentions": 5,
+   "tg_text_mentions": 47,
+   "search_hits": {
+    "برومبتات عربية": 57,
+    "t.me/PromptsArabic": 47
+   },
+   "canonical_arabic_words": 1611,
+   "extract_missing_words_count": 0,
+   "extract_missing_words": [],
+   "search_sample_size": 124,
+   "search_unfindable": [],
+   "variables_with_digits": [],
+   "variables": [
+    "[الجمهور]",
+    "[الحالة]",
+    "[الخيار الأول]",
+    "[الخيار الثالث]",
+    "[الخيار الثاني]",
+    "[القرار]",
+    "[الكود]",
+    "[المجال]",
+    "[المحتوى]",
+    "[المشروع]",
+    "[المعيار الأول]",
+    "[المعيار الثالث]",
+    "[المعيار الثاني]",
+    "[المفهوم]",
+    "[الملفات أو النصوص]",
+    "[الموضوع]",
+    "[النص الأول]",
+    "[النص الثالث]",
+    "[النص الثاني]",
+    "[النص المطلوب]",
+    "[الهدف]",
+    "[دورك]",
+    "[لغة البرمجة]",
+    "[متى نعتبره جيدا]"
+   ],
+   "variables_broken": [],
+   "pages_rendered": 45
+  }
+ },
+ "docx": {
+  "docx": "Claude_Guide_Arabic_Final.docx",
+  "issues": [],
+  "checks": {
+   "paragraphs": 528,
+   "tables": 12,
+   "styles_used": [
+    "APL Body",
+    "APL Bullet",
+    "APL Callout",
+    "APL Caption",
+    "APL H1",
+    "APL H2",
+    "APL H3",
+    "APL Lead",
+    "APL Prompt",
+    "APL PromptLbl",
+    "APL Subtitle",
+    "APL Title",
+    "Normal"
+   ],
+   "paragraphs_with_bidi": 482,
+   "sections_rtl": true,
+   "owner_mentions": 5,
+   "tg_mentions": 3,
+   "rendered_pages": 40
+  }
+ },
+ "prompt_numbers": []
+}
