@@ -130,15 +130,11 @@ def write(modname, sources, visual_notes, extra_limits=()):
 
     A("## Known limitations")
     A("")
-    A("- **Cover is editorial, not photographic.** The brief asks for a photographic cover. "
-      "This build environment allows outbound network access only to package registries "
-      "(npm, PyPI, crates.io); every image host — including licensed stock libraries — is "
-      "blocked by the egress proxy, and no image-generation tool is available. Rather than "
-      "ship an unlicensed or low-quality image, the cover is a typographic/editorial design "
-      "built as vector: full-bleed gradient, hairline grid, title, contents strip, promise "
-      "chips and the owner mark. It was checked at Telegram-thumbnail size and the title "
-      "reads in under a second. `_work/research/image_sources.json` records why no image "
-      "source could be used.")
+    A("- **Cover is the owner's photographic artwork.** The cover supplied by the owner is "
+      "placed full-bleed on page 1 of both files at exactly A4 (210 x 297 mm), with no page "
+      "margin and no footer over the artwork. Page order, page numbers, page counts, the "
+      "copyright page and all internal content are unaffected by it. "
+      "`_work/research/image_sources.json` records where the cover came from.")
     A("- **DOCX table of contents shows page numbers only after a field update.** The file "
       "carries a live Word TOC field; pressing F9 in Word fills it. This is intentional: "
       "hard-coding PDF page numbers into the DOCX would be wrong, because Word repaginates.")

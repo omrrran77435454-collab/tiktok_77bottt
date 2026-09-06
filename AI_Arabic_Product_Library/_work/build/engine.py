@@ -262,7 +262,22 @@ def _prompt_html(p):
             '<div class="body">%s</div></div>'
             % (p["n"], inline(p["title"]), inline(p["category"]), "".join(rows)))
 
+COVERS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "covers")
+
+def cover_image(d):
+    """Path to the product's photographic cover, or None if it has none."""
+    for ext in (".jpg", ".png"):
+        f = os.path.abspath(os.path.join(COVERS, d["id"] + ext))
+        if os.path.exists(f):
+            return f
+    return None
+
 def _cover_html(d):
+    img = cover_image(d)
+    if img:
+        return ('<section class="cover photo">'
+                '<img class="coverart" src="file://%s" alt="">'
+                '</section>' % img)
     lines = "".join('<i style="right:%dmm"></i>' % x for x in (30, 66, 102, 138, 174))
     promise = "".join("<span>%s</span>" % _esc(x) for x in d["promise"])
     strip = "".join('<div class="row"><b>%02d</b>%s</div>' % (i, _esc(x))
@@ -781,17 +796,40 @@ def build_docx(d, out_path):
 
     acs = ac.lstrip("#").upper()
     # --- cover ---
-    p = _p(doc, "APL Body"); p.paragraph_format.space_after = Pt(90)
-    p = _p(doc, "APL Body", d["kicker"], color=acs, bold=True, size=11)
-    p = _p(doc, "APL Title", d["title"])
-    p = _p(doc, "APL Subtitle", d["subtitle"])
-    p = _p(doc, "APL Body"); p.paragraph_format.space_after = Pt(24)
-    p = _p(doc, "APL Body", " · ".join(d["promise"]), color="6E665A", size=10)
-    p = _p(doc, "APL Body"); p.paragraph_format.space_after = Pt(40)
-    p = _p(doc, "APL H3", d["platform"], color=acs)
-    p = _p(doc, "APL Body", "برومبتات عربية", bold=True, size=10)
-    p = _p(doc, "APL Body", "t.me/PromptsArabic", size=9, color="6E665A")
-    doc.add_page_break()
+    img = cover_image(d)
+    if img:
+        # Full-bleed cover: its own section with zero margins and no footer, so
+        # the artwork fills page 1 exactly. The body section that follows keeps
+        # the original margins, footer and page numbering.
+        s.top_margin = s.bottom_margin = s.left_margin = s.right_margin = Mm(0)
+        s.footer.is_linked_to_previous = False
+        for fp in list(s.footer.paragraphs):
+            fp._p.getparent().remove(fp._p)
+        s.footer.add_paragraph()
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        pf = p.paragraph_format
+        pf.space_before = Pt(0); pf.space_after = Pt(0); pf.line_spacing = 1
+        p.add_run().add_picture(img, width=Mm(210), height=Mm(297))
+        body = doc.add_section(WD_SECTION.NEW_PAGE)
+        body.page_width, body.page_height = Mm(210), Mm(297)
+        body.top_margin, body.bottom_margin = Mm(20), Mm(18)
+        body.left_margin, body.right_margin = Mm(18), Mm(18)
+        _sec_rtl(body)
+        body.footer.is_linked_to_previous = False
+        _footer(doc, body)
+    else:
+        p = _p(doc, "APL Body"); p.paragraph_format.space_after = Pt(90)
+        p = _p(doc, "APL Body", d["kicker"], color=acs, bold=True, size=11)
+        p = _p(doc, "APL Title", d["title"])
+        p = _p(doc, "APL Subtitle", d["subtitle"])
+        p = _p(doc, "APL Body"); p.paragraph_format.space_after = Pt(24)
+        p = _p(doc, "APL Body", " · ".join(d["promise"]), color="6E665A", size=10)
+        p = _p(doc, "APL Body"); p.paragraph_format.space_after = Pt(40)
+        p = _p(doc, "APL H3", d["platform"], color=acs)
+        p = _p(doc, "APL Body", "برومبتات عربية", bold=True, size=10)
+        p = _p(doc, "APL Body", "t.me/PromptsArabic", size=9, color="6E665A")
+        doc.add_page_break()
 
     # --- rights ---
     _p(doc, "APL H1", "حقوق النشر")

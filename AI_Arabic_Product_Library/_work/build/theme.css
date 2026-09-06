@@ -395,3 +395,10 @@ table.data tr:nth-child(even) td { background: #FCFAF6; }
   padding: .7mm 2mm; flex: 0 0 auto;
 }
 .chindex .row span { flex: 1 1 auto; }
+
+/* Photographic cover: full-bleed A4 image, page 1 only. */
+.cover.photo { background: #fff; padding: 0; }
+.cover.photo .coverart {
+  display: block; width: 210mm; height: 297mm; object-fit: cover;
+  margin: 0; max-width: none;
+}
