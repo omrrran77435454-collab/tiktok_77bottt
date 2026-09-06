@@ -1,0 +1,103 @@
+{
+ "product": "ChatGPT أم Claude أم Grok",
+ "id": "11_which_tool",
+ "pdf": {
+  "pdf": "Which_AI_To_Use_Arabic_Final.pdf",
+  "pages": 34,
+  "issues": [],
+  "checks": {
+   "fonts": [
+    "CRZFJS+PlexAr-Semi-Bold",
+    "FNPUCG+PlexAr-Medium",
+    "HIRYNU+PlexAr-Bold",
+    "NETSUB+PlexMono",
+    "TFCPFR+PlexAr",
+    "UWGIWA+DejaVu-Sans-Bold",
+    "WDHEQY+PlexMono-Bold"
+   ],
+   "fonts_not_embedded": [],
+   "empty_pages": [],
+   "overflow_blocks": [],
+   "presentation_form_pages": [],
+   "pages_without_text": [],
+   "internal_links": 370,
+   "external_links": 2,
+   "telegram_link_annotations": [
+    [
+     2,
+     "https://t.me/PromptsArabic"
+    ],
+    [
+     34,
+     "https://t.me/PromptsArabic"
+    ]
+   ],
+   "broken_internal_links": [],
+   "owner_mentions": 5,
+   "tg_text_mentions": 36,
+   "search_hits": {
+    "برومبتات عربية": 57,
+    "t.me/PromptsArabic": 36
+   },
+   "canonical_arabic_words": 1339,
+   "extract_missing_words_count": 0,
+   "extract_missing_words": [],
+   "search_sample_size": 122,
+   "search_unfindable": [],
+   "variables_with_digits": [],
+   "variables": [
+    "[الادعاء]",
+    "[البديل]",
+    "[التكرار]",
+    "[الجمهور]",
+    "[الطول]",
+    "[القيود]",
+    "[اللوحة ودرجة التشبع]",
+    "[المحاولات]",
+    "[المستوى]",
+    "[المصدر الذي وصلك منه]",
+    "[المصدر والاتجاه والقسوة]",
+    "[المهام]",
+    "[المهمة]",
+    "[الموضوع]",
+    "[النبرة]",
+    "[الوقت]",
+    "[حدة الخلفية]",
+    "[موضع العنصر في الإطار وكم يشغل]",
+    "[نسبة العرض إلى الارتفاع]",
+    "[نوع النص]"
+   ],
+   "variables_broken": [],
+   "pages_rendered": 34
+  }
+ },
+ "docx": {
+  "docx": "Which_AI_To_Use_Arabic_Final.docx",
+  "issues": [],
+  "checks": {
+   "paragraphs": 399,
+   "tables": 16,
+   "styles_used": [
+    "APL Body",
+    "APL Bullet",
+    "APL Callout",
+    "APL Caption",
+    "APL H1",
+    "APL H2",
+    "APL H3",
+    "APL Lead",
+    "APL Prompt",
+    "APL PromptLbl",
+    "APL Subtitle",
+    "APL Title",
+    "Normal"
+   ],
+   "paragraphs_with_bidi": 359,
+   "sections_rtl": true,
+   "owner_mentions": 5,
+   "tg_mentions": 3,
+   "rendered_pages": 32
+  }
+ },
+ "prompt_numbers": []
+}
