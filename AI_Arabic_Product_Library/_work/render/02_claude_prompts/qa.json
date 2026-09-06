@@ -13,8 +13,7 @@
     "NETSUB+PlexMono",
     "TFCPFR+PlexAr",
     "UWGIWA+DejaVu-Sans-Bold",
-    "WDHEQY+PlexMono-Bold",
-    "XKQQSR+DejaVu-Sans"
+    "WDHEQY+PlexMono-Bold"
    ],
    "fonts_not_embedded": [],
    "empty_pages": [],
@@ -40,7 +39,7 @@
     "برومبتات عربية": 57,
     "t.me/PromptsArabic": 90
    },
-   "canonical_arabic_words": 2780,
+   "canonical_arabic_words": 2782,
    "extract_missing_words_count": 0,
    "extract_missing_words": [],
    "search_sample_size": 121,
@@ -182,14 +181,13 @@
   "docx": "Claude_60_Prompts_Arabic_Final.docx",
   "issues": [],
   "checks": {
-   "paragraphs": 2425,
+   "paragraphs": 2426,
    "tables": 3,
    "styles_used": [
     "APL Body",
     "APL Bullet",
     "APL Callout",
     "APL Caption",
-    "APL Code",
     "APL H1",
     "APL H2",
     "APL H3",

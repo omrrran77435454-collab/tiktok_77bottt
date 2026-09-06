@@ -1,0 +1,105 @@
+{
+ "product": "تعلم البرمجة مع Claude Code",
+ "id": "04_learn_programming",
+ "pdf": {
+  "pdf": "Learn_Programming_With_Claude_Code_Arabic_Final.pdf",
+  "pages": 63,
+  "issues": [],
+  "checks": {
+   "fonts": [
+    "CRZFJS+PlexAr-Semi-Bold",
+    "FNPUCG+PlexAr-Medium",
+    "HIRYNU+PlexAr-Bold",
+    "NETSUB+PlexMono",
+    "TFCPFR+PlexAr",
+    "UWGIWA+DejaVu-Sans-Bold",
+    "WDHEQY+PlexMono-Bold"
+   ],
+   "fonts_not_embedded": [],
+   "empty_pages": [],
+   "overflow_blocks": [],
+   "presentation_form_pages": [],
+   "pages_without_text": [],
+   "internal_links": 410,
+   "external_links": 2,
+   "telegram_link_annotations": [
+    [
+     2,
+     "https://t.me/PromptsArabic"
+    ],
+    [
+     63,
+     "https://t.me/PromptsArabic"
+    ]
+   ],
+   "broken_internal_links": [],
+   "owner_mentions": 5,
+   "tg_text_mentions": 65,
+   "search_hits": {
+    "برومبتات عربية": 57,
+    "t.me/PromptsArabic": 65
+   },
+   "canonical_arabic_words": 1632,
+   "extract_missing_words_count": 0,
+   "extract_missing_words": [],
+   "search_sample_size": 126,
+   "search_unfindable": [],
+   "variables_with_digits": [],
+   "variables": [
+    "[الأوامر التي نفذتها ومخرجاتها]",
+    "[الاختبار]",
+    "[الاختبارات]",
+    "[البنية والكود]",
+    "[الحالة]",
+    "[الخطأ]",
+    "[الطريقة الأولى]",
+    "[الطريقة الثانية]",
+    "[الفرضية]",
+    "[الكود بعد]",
+    "[الكود قبل]",
+    "[الكود]",
+    "[المحاولات]",
+    "[المخطط والاستعلامات]",
+    "[الموضوع]",
+    "[النتيجة]",
+    "[توقعك]",
+    "[رسالة الخطأ]",
+    "[فرضيتك]",
+    "[فهمك]",
+    "[وصف التمرين]"
+   ],
+   "variables_broken": [],
+   "pages_rendered": 63
+  }
+ },
+ "docx": {
+  "docx": "Learn_Programming_With_Claude_Code_Arabic_Final.docx",
+  "issues": [],
+  "checks": {
+   "paragraphs": 1237,
+   "tables": 2,
+   "styles_used": [
+    "APL Body",
+    "APL Bullet",
+    "APL Callout",
+    "APL Caption",
+    "APL Code",
+    "APL H1",
+    "APL H2",
+    "APL H3",
+    "APL Lead",
+    "APL Prompt",
+    "APL PromptLbl",
+    "APL Subtitle",
+    "APL Title",
+    "Normal"
+   ],
+   "paragraphs_with_bidi": 1184,
+   "sections_rtl": true,
+   "owner_mentions": 5,
+   "tg_mentions": 3,
+   "rendered_pages": 64
+  }
+ },
+ "prompt_numbers": []
+}

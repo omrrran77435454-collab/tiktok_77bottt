@@ -1,0 +1,1386 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>تعلم البرمجة مع Claude Code</title><style>/* ============================================================
+   Arabic AI Product Library — shared print theme
+   A4 portrait · RTL · mobile-first reading
+   ============================================================ */
+
+@font-face { font-family: "PlexAr"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 500;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-500.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 600;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-600.ttf") format("truetype"); }
+@font-face { font-family: "PlexAr"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/IBMPlexSansArabic-700.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 400;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-400.ttf") format("truetype"); }
+@font-face { font-family: "PlexMono"; font-weight: 700;
+  src: url("file:///tmp/claude-0/-home-user-tiktok-77bottt/a4ed7ef0-1c0a-5c24-ae3e-2d311b4b6b46/scratchpad/fonts/ttf/JetBrainsMono-700.ttf") format("truetype"); }
+
+:root {
+  --ink:      #17140F;
+  --ink-2:    #3A342C;
+  --muted:    #6E665A;
+  --faint:    #9A9184;
+  --rule:     #E6E0D6;
+  --rule-2:   #D6CEC0;
+  --paper:    #FFFFFF;
+  --soft:     #FBF8F3;
+  --soft-2:   #F5F0E7;
+  --accent:   #8A5A2B;
+  --accent-d: #5E3A16;
+  --accent-w: #B98A56;
+}
+
+/* ---------- page setup ---------- */
+@page {
+  size: A4 portrait;
+  margin: 18mm 16mm 16mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: "PlexAr"; font-size: 8.5pt; color: var(--faint);
+    margin-bottom: 5mm;
+  }
+  @bottom-left {
+    content: "PromptsArabic · t.me/PromptsArabic";
+    font-family: "PlexMono"; font-size: 6.8pt; color: #B9B1A4;
+    letter-spacing: .02em; margin-bottom: 5mm; direction: ltr;
+  }
+  @bottom-center {
+    content: string(chaptertitle);
+    font-family: "PlexAr"; font-size: 7.6pt; color: #BCB4A7;
+    margin-bottom: 5mm;
+  }
+}
+@page cover  { margin: 0; @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+@page plain  { @bottom-center{content:none} }
+@page :first { @bottom-right{content:none} @bottom-left{content:none} @bottom-center{content:none} }
+
+html { direction: rtl; }
+body {
+  font-family: "PlexAr", sans-serif;
+  font-size: 11.7pt;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  margin: 0;
+  text-align: right;
+  -weasy-hyphens: none;
+}
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover; break-after: page;
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  background: var(--accent-d); color: #fff;
+}
+.cover .field {
+  position: absolute; inset: 0;
+  background: linear-gradient(152deg, var(--accent-d) 0%, var(--accent) 52%, var(--accent-w) 100%);
+}
+.cover .glow {
+  position: absolute; width: 250mm; height: 250mm; right: -70mm; top: -85mm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), rgba(255,255,255,0) 62%);
+}
+.cover .grid-lines { position: absolute; inset: 0; }
+.cover .grid-lines i {
+  position: absolute; top: 0; bottom: 0; width: .3mm; background: rgba(255,255,255,.09);
+}
+.cover .arc { position: absolute; border-radius: 50%; border: .5mm solid rgba(255,255,255,.15); }
+
+.cover .topbar {
+  position: absolute; right: 18mm; left: 18mm; top: 20mm;
+  border-bottom: .3mm solid rgba(255,255,255,.28); padding-bottom: 5mm;
+}
+.cover .kicker {
+  font-size: 10pt; font-weight: 600; color: rgba(255,255,255,.92);
+  letter-spacing: .01em; display: inline-block;
+}
+.cover .topbar .mark {
+  float: left; font-family: "PlexMono"; direction: ltr;
+  font-size: 8.4pt; font-weight: 700; letter-spacing: .18em;
+  color: rgba(255,255,255,.72);
+}
+
+.cover .plate { position: absolute; right: 18mm; left: 18mm; top: 74mm; }
+.cover h1 {
+  font-size: 40pt; font-weight: 700; line-height: 1.3;
+  margin: 0 0 7mm 0; color: #fff; letter-spacing: -.012em;
+}
+.cover .rule { width: 22mm; height: 1.2mm; background: rgba(255,255,255,.85);
+  border-radius: 1mm; margin-bottom: 7mm; }
+.cover .sub {
+  font-size: 12.2pt; font-weight: 400; line-height: 1.78;
+  color: rgba(255,255,255,.93); margin: 0; max-width: 162mm;
+}
+.cover .strip { position: absolute; right: 18mm; left: 18mm; bottom: 86mm; }
+.cover .strip .row {
+  border-top: .25mm solid rgba(255,255,255,.22);
+  padding: 2.6mm 0 2.6mm 0; font-size: 9.2pt; color: rgba(255,255,255,.80);
+}
+.cover .strip .row b { font-family: "PlexMono"; direction: ltr; font-weight: 700;
+  font-size: 7.6pt; color: rgba(255,255,255,.55); float: left; padding-top: .8mm;
+  letter-spacing: .1em; }
+
+.cover .promise {
+  position: absolute; right: 18mm; left: 18mm; bottom: 62mm; font-size: 0;
+}
+.cover .promise span {
+  display: inline-block; font-size: 9.4pt; font-weight: 500; color: #fff;
+  border: .3mm solid rgba(255,255,255,.45); border-radius: 2mm;
+  padding: 2mm 4.5mm; background: rgba(255,255,255,.12);
+  margin: 0 0 2.5mm 3mm;
+}
+.cover .baseline {
+  position: absolute; right: 18mm; left: 18mm; bottom: 44mm;
+  border-top: .3mm solid rgba(255,255,255,.28);
+}
+.cover .platform {
+  position: absolute; right: 18mm; bottom: 24mm;
+  font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 15pt; font-weight: 700; color: #fff; letter-spacing: .1em;
+}
+.cover .rights {
+  position: absolute; left: 18mm; bottom: 24mm; text-align: left;
+  font-size: 8.6pt; color: rgba(255,255,255,.86); line-height: 1.55;
+}
+.cover .rights b { font-weight: 600; display: block; }
+.cover .rights span { font-family: "PlexMono"; direction: ltr; font-size: 7.8pt;
+  color: rgba(255,255,255,.72); }
+
+/* ---------- front matter ---------- */
+.frontpage { page: plain; break-after: page; }
+.frontpage h3 { margin: 6mm 0 2mm 0; }
+.frontpage p.lead { margin-bottom: 5mm; font-size: 11.8pt; line-height: 1.85; }
+.frontpage ul.b { margin-bottom: 2mm; }
+.frontpage ul.b > li { margin-bottom: 1.7mm; }
+.fm-title { font-size: 19pt; font-weight: 700; margin: 0 0 8mm 0; color: var(--ink); }
+.fm-rule { height: 1.1mm; width: 26mm; background: var(--accent); margin-bottom: 9mm; border-radius: 1mm; }
+
+.rights-block {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  padding: 9mm 8mm; background: var(--soft); margin: 8mm 0;
+}
+.rights-block .owner { font-size: 15pt; font-weight: 700; margin: 0 0 3mm 0; }
+.rights-block p { margin: 0 0 3mm 0; font-size: 10.6pt; color: var(--ink-2); }
+.rights-block a.tg {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 11pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+.meta-table { width: 100%; border-collapse: collapse; margin-top: 6mm; }
+.meta-table td { padding: 2.6mm 0; border-bottom: .25mm solid var(--rule); font-size: 10.2pt; vertical-align: top; }
+.meta-table td:first-child { width: 44mm; color: var(--muted); font-weight: 500; }
+
+/* ---------- table of contents ---------- */
+.toc { page: plain; break-after: page; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  text-decoration: none; color: var(--ink);
+  display: flex; align-items: baseline; gap: 2.5mm;
+}
+.toc .t { flex: 0 1 auto; }
+.toc .dots {
+  flex: 1 1 auto; min-width: 6mm; align-self: flex-end;
+  border-bottom: .2mm dotted var(--rule-2); transform: translateY(-1.2mm);
+}
+.toc a::after {
+  content: target-counter(attr(href), page);
+  font-family: "PlexMono"; font-size: 8.6pt; color: var(--faint);
+  font-weight: 400; direction: ltr; flex: 0 0 auto;
+}
+.toc .l1 a {
+  font-size: 11.4pt; font-weight: 600;
+  padding: 3mm 0 3mm 0; border-bottom: .25mm solid var(--rule);
+}
+.toc .l1 a::after { color: var(--accent-d); font-weight: 700; font-size: 9pt; }
+.toc .l2 a {
+  font-size: 10pt; font-weight: 400; color: var(--ink-2);
+  padding: 1.8mm 6.5mm 1.8mm 0;
+}
+.toc .l1 .t::before {
+  content: ""; display: inline-block; width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--accent); margin-left: 3.5mm; vertical-align: middle;
+}
+
+/* ---------- headings ---------- */
+h1.chapter {
+  string-set: chaptertitle content();
+  break-before: page;
+  font-size: 23pt; font-weight: 700; line-height: 1.38;
+  margin: 0 0 3mm 0; padding-bottom: 4mm; color: var(--ink);
+  border-bottom: 1mm solid var(--accent);
+}
+h1.chapter .num {
+  display: block; font-family: "PlexMono"; direction: ltr; text-align: right;
+  font-size: 9.5pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .12em; margin-bottom: 3mm;
+}
+h2 {
+  font-size: 15pt; font-weight: 700; line-height: 1.55;
+  margin: 11mm 0 3.5mm 0; color: var(--ink);
+  break-after: avoid; break-inside: avoid;
+}
+h3 {
+  font-size: 12.2pt; font-weight: 600; line-height: 1.6;
+  margin: 7.5mm 0 2.5mm 0; color: var(--ink-2);
+  break-after: avoid; break-inside: avoid;
+}
+h2 + p, h3 + p { margin-top: 0; }
+
+p { margin: 0 0 3.6mm 0; orphans: 2; widows: 2; }
+p.lead { font-size: 12.4pt; color: var(--ink-2); line-height: 1.9; margin-bottom: 6mm; }
+strong { font-weight: 600; }
+
+/* ---------- lists ---------- */
+ul.b, ol.n { margin: 0 0 4.5mm 0; padding: 0 6mm 0 0; }
+ul.b { list-style: none; padding-right: 0; }
+ul.b > li {
+  position: relative; padding-right: 6.5mm; margin-bottom: 2.4mm;
+  orphans: 2; widows: 2;
+}
+ul.b > li::before {
+  content: ""; position: absolute; right: 1.6mm; top: 2.6mm;
+  width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--accent);
+}
+ol.n { padding-right: 7mm; }
+ol.n > li { margin-bottom: 2.4mm; padding-right: 1.5mm; }
+ol.n > li::marker { color: var(--accent-d); font-weight: 600; }
+
+/* ---------- code ---------- */
+code.inline {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 9.2pt; background: var(--soft-2); color: var(--ink);
+  padding: .5mm 1.4mm; border-radius: 1mm; border: .2mm solid var(--rule);
+}
+pre.code {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate; text-align: left;
+  font-size: 9.2pt; line-height: 1.62; color: #F3EFE8; background: #211D18;
+  padding: 4.5mm 5mm; border-radius: 2.5mm; margin: 0 0 5mm 0;
+  white-space: pre-wrap; word-break: break-word;
+  break-inside: avoid;
+}
+pre.code .cm { color: #A79C8C; }
+.codewrap { margin-bottom: 5mm; break-inside: avoid; }
+.codewrap .caption {
+  font-size: 8.6pt; color: var(--muted); margin-bottom: 1.6mm; font-weight: 500;
+}
+.codewrap pre.code { margin-bottom: 0; }
+
+/* ---------- callouts ---------- */
+.callout {
+  border-right: 1.1mm solid var(--accent);
+  background: var(--soft); border-radius: 0 2.5mm 2.5mm 0;
+  padding: 4.5mm 5mm 3mm 5mm; margin: 0 0 5mm 0;
+  break-inside: avoid;
+}
+.callout .t { font-weight: 700; font-size: 10.4pt; margin-bottom: 1.8mm; }
+.callout p:last-child { margin-bottom: 1.5mm; }
+.callout.warn { border-right-color: #B4472F; background: #FDF4F1; }
+.callout.warn .t { color: #91361F; }
+.callout.tip  { border-right-color: #2F7D62; background: #F1F8F4; }
+.callout.tip .t { color: #1F5B46; }
+
+/* ---------- tables ---------- */
+table.data {
+  width: 100%; border-collapse: collapse; margin: 0 0 5mm 0;
+  font-size: 10pt; break-inside: avoid; direction: rtl;
+}
+table.data th {
+  background: var(--soft-2); font-weight: 600; text-align: right;
+  padding: 2.8mm 3mm; border-bottom: .4mm solid var(--rule-2); color: var(--ink);
+}
+table.data td {
+  padding: 2.6mm 3mm; border-bottom: .25mm solid var(--rule);
+  vertical-align: top; text-align: right; color: var(--ink-2);
+}
+table.data tr:nth-child(even) td { background: #FCFAF6; }
+
+/* ---------- prompt card ---------- */
+.pcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm;
+  margin: 0 0 5mm 0; overflow: hidden;
+}
+.pcard > .head {
+  background: var(--soft-2); padding: 3mm 4.5mm 2.6mm 4.5mm;
+  border-bottom: .25mm solid var(--rule-2);
+  break-after: avoid;
+}
+.pcard .pn {
+  font-family: "PlexMono"; direction: ltr; font-size: 8.4pt; font-weight: 700;
+  color: #FFFFFF; background: var(--accent-d); border-radius: 1.5mm;
+  padding: .8mm 2.4mm; letter-spacing: .06em; display: inline-block;
+  margin-left: 3mm; vertical-align: 1mm;
+}
+.pcard .pt { font-size: 13pt; font-weight: 700; display: inline; }
+.pcard .cat {
+  display: block; font-size: 8.4pt; color: var(--muted); margin-top: 1.4mm; font-weight: 500;
+}
+.pcard > .body { padding: 3.4mm 4.5mm .5mm 4.5mm; }
+.pcard .row { margin-bottom: 2.4mm; }
+.pcard .row > .k {
+  font-size: 9pt; font-weight: 700; color: var(--accent-d);
+  margin-bottom: .8mm;
+}
+.pcard .row > .v { font-size: 10.4pt; color: var(--ink-2); line-height: 1.68; }
+.pcard .row ul.b { margin-bottom: 0; }
+.pcard .row ul.b > li { font-size: 10.2pt; margin-bottom: .9mm; }
+
+.promptbox {
+  background: var(--soft); border: .3mm dashed var(--rule-2);
+  border-radius: 2.5mm; padding: 3.4mm 4mm; margin: 0 0 3mm 0;
+  break-inside: avoid;
+}
+.promptbox .lbl {
+  font-size: 8.4pt; font-weight: 700; color: var(--accent-d);
+  letter-spacing: .01em; margin-bottom: 1.8mm;
+  padding-bottom: 1.2mm; border-bottom: .25mm solid var(--rule-2);
+}
+.promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox.filebox .lbl { font-family: "PlexMono"; direction: ltr; text-align: left;
+  font-size: 8pt; letter-spacing: .02em; }
+.promptbox .txt {
+  font-size: 10.2pt; line-height: 1.66; color: var(--ink); white-space: pre-wrap;
+}
+
+/* ---------- misc blocks ---------- */
+.divider { height: .25mm; background: var(--rule); margin: 8mm 0; border: 0; }
+.spacer { height: 4mm; }
+.sectionlead {
+  background: var(--soft); border-radius: 3mm; padding: 5mm 6mm; margin: 0 0 7mm 0;
+}
+.sectionlead p { margin: 0; font-size: 10.8pt; color: var(--ink-2); }
+
+.steps { counter-reset: st; margin: 0 0 5mm 0; padding: 0; list-style: none; }
+.steps > li {
+  counter-increment: st; position: relative; padding-right: 11mm;
+  margin-bottom: 4mm; break-inside: avoid;
+}
+.steps > li::before {
+  content: counter(st); position: absolute; right: 0; top: .4mm;
+  width: 7.5mm; height: 7.5mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-family: "PlexMono"; font-size: 8.6pt; font-weight: 700;
+  text-align: center; line-height: 7.5mm;
+}
+.steps > li .sh { font-weight: 600; display: block; margin-bottom: .8mm; }
+
+.kv { width: 100%; border-collapse: collapse; margin: 0 0 5mm 0; font-size: 10pt; }
+.kv td { padding: 2.4mm 0; border-bottom: .25mm solid var(--rule); vertical-align: top; }
+.kv td:first-child { width: 40mm; color: var(--muted); font-weight: 500; padding-left: 4mm; }
+
+/* ---------- closing page ---------- */
+.endpage { break-before: page; }
+.endcard {
+  border: .3mm solid var(--rule-2); border-radius: 3mm; background: var(--soft);
+  padding: 8mm; margin-top: 6mm; text-align: center;
+}
+.endcard .h { font-size: 15pt; font-weight: 700; margin-bottom: 3mm; }
+.endcard p { font-size: 10.6pt; color: var(--ink-2); }
+.endcard a {
+  font-family: "PlexMono"; direction: ltr; unicode-bidi: isolate;
+  font-size: 12pt; font-weight: 700; color: var(--accent-d); text-decoration: none;
+}
+
+/* ---------- chapter opener index ---------- */
+.chindex { margin: 0 0 6mm 0; }
+.chindex .row {
+  display: flex; align-items: baseline; gap: 3mm;
+  border-bottom: .25mm solid var(--rule); padding: 2.2mm 0;
+  font-size: 10.4pt;
+}
+.chindex .row b {
+  font-family: "PlexMono"; direction: ltr; font-size: 8pt; font-weight: 700;
+  color: #fff; background: var(--accent-d); border-radius: 1.4mm;
+  padding: .7mm 2mm; flex: 0 0 auto;
+}
+.chindex .row span { flex: 1 1 auto; }
+</style></head><body><section class="cover">
+  <div class="field"></div>
+  <div class="glow"></div>
+  <div class="grid-lines"><i style="right:30mm"></i><i style="right:66mm"></i><i style="right:102mm"></i><i style="right:138mm"></i><i style="right:174mm"></i></div>
+  <div class="arc" style="width:196mm;height:196mm;right:-56mm;top:-64mm"></div>
+  <div class="arc" style="width:128mm;height:128mm;left:-46mm;bottom:-40mm"></div>
+  <div class="topbar">
+    <span class="mark">PROMPTS ARABIC</span>
+    <span class="kicker">منهج تعلم بالعربية</span>
+  </div>
+  <div class="plate">
+    <h1>تعلم البرمجة مع Claude Code</h1>
+    <div class="rule"></div>
+    <p class="sub">منهج عملي يجعل الأداة تعلمك لا تبرمج بدلا منك: مفهوم، ثم محاولة، ثم مراجعة، ثم إصلاح، ثم بناء</p>
+  </div>
+  <div class="strip"><div class="row"><b>01</b>منهج التعلم وإعداد وضع المعلم</div><div class="row"><b>02</b>الأساسيات: المتغيرات والشروط والحلقات والدوال</div><div class="row"><b>03</b>الهياكل والكائنات والملفات والواجهات</div><div class="row"><b>04</b>قواعد البيانات و Git والاختبارات والأمان</div></div>
+  <div class="promise"><span>17 درسا</span><span>تمارين ومشاريع</span><span>محدث في سبتمبر 2026</span></div>
+  <div class="baseline"></div>
+  <div class="platform">CLAUDE CODE</div>
+  <div class="rights"><b>برومبتات عربية</b><span>t.me/PromptsArabic</span></div>
+</section>
+<section class="frontpage">
+  <div class="fm-title">حقوق النشر</div><div class="fm-rule"></div>
+  <div class="rights-block">
+    <p class="owner">برومبتات عربية</p>
+    <p>جميع الحقوق محفوظة لقناة <strong>برومبتات عربية</strong>.</p>
+    <p>هذا المنتج مخصص للاستخدام الشخصي للمشتري. لا يجوز إعادة نشره أو بيعه
+       أو توزيعه أو اقتباس أجزاء منه لأغراض تجارية دون إذن كتابي من المالك.</p>
+    <p>القناة الرسمية: <a class="tg" href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+  <table class="meta-table">
+    <tr><td>اسم المنتج</td><td>تعلم البرمجة مع Claude Code</td></tr>
+    <tr><td>الإصدار</td><td>الإصدار الأول</td></tr>
+    <tr><td>اللغة</td><td>العربية</td></tr>
+    <tr><td>المقاس</td><td>A4 عمودي — مهيأ للقراءة على الهاتف</td></tr>
+    <tr><td>تمت مراجعة معلومات وميزات هذا الدليل حتى تاريخ</td><td>6 سبتمبر 2026</td></tr>
+    <tr><td>مصادر التحقق</td><td>code.claude.com/docs (permission modes, memory, sessions) و python.org (الإصدار المستقر)</td></tr>
+  </table>
+  <div class="callout"><div class="t">ملاحظة مهمة عن تاريخ المحتوى</div>
+    <p>منصات الذكاء الاصطناعي تتغير بسرعة. كل ميزة مذكورة هنا تم التحقق منها من
+       المصدر الرسمي بتاريخ 6 سبتمبر 2026. إذا مر وقت طويل على هذا التاريخ،
+       راجع الصفحة الرسمية للميزة قبل الاعتماد عليها في عمل حساس.</p>
+  </div>
+</section><section class="frontpage">
+  <div class="fm-title">عن هذا الدليل</div><div class="fm-rule"></div>
+  <p class="lead">أسهل شيء أن تطلب من أداة ذكاء اصطناعي أن تكتب لك برنامجا. وأسوأ نتيجة أن تحصل على برنامج يعمل ولا تفهم منه سطرا. هذا الدليل يعكس المعادلة: كل درس يعطيك مفهوما، ثم مهمة تكتبها بنفسك، ثم برومبت مراجعة يجعل Claude Code يصحح محاولتك ويشرح سبب الخطأ دون أن يعطيك الحل، ثم اختبارا، ثم تحسينا. تتعلم البرمجة فعلا، وتتعلم في الوقت نفسه كيف تستخدم أداة وكيلة بطريقة لا تفقدك المهارة.</p>
+  <h3>لمن هذا الدليل</h3><ul class="b"><li>من يبدأ البرمجة من الصفر ولا يريد أن يصبح ناسخا للأكواد</li><li>من تعلم أساسيات متفرقة ويريد ترتيبها في منهج</li><li>الطلاب الذين يستخدمون الذكاء الاصطناعي في الواجبات ويخشون أن يفقدوا الفهم</li><li>من يعرف لغة ويريد طريقة منظمة لتعلم لغة ثانية</li></ul>
+  <h3>ماذا ستتعلم</h3><ul class="b"><li>منهج Learn ثم Try ثم Review ثم Fix ثم Build وكيف تطبقه على أي موضوع</li><li>كيف تضبط Claude Code في وضع المعلم بحيث يرفض أن يعطيك الحل</li><li>الأساسيات: قراءة الكود، والمتغيرات، والأنواع، والشروط، والحلقات، والدوال</li><li>هياكل البيانات والبرمجة الكائنية والاستثناءات والملفات والوحدات</li><li>الواجهات البرمجية وقواعد البيانات و Git والاختبارات والتصحيح</li><li>أساسيات الأمان والكود النظيف</li><li>ثلاثة مشاريع متدرجة تبني فيها شيئا يعمل</li></ul>
+</section>
+<section class="frontpage">
+  <div class="fm-title">قبل أن تبدأ</div><div class="fm-rule"></div>
+  <h3>المتطلبات</h3><ul class="b"><li>Python مثبت — الإصدار المستقر وقت مراجعة هذا الدليل هو 3.14</li><li>محرر نصوص، ويفضل VS Code</li><li>Claude Code مثبت ويعمل — راجع دليل Claude Code في هذه السلسلة</li><li>مجلد فارغ للتمارين، داخل مستودع Git</li><li>الاستعداد لكتابة كود خاطئ أولا. هذا شرط التعلم لا عائق له</li></ul>
+  <h3>كيف تستخدم هذا الدليل</h3><ul class="b"><li>درس واحد في الجلسة الواحدة. لا تقرأ خمسة دروس دفعة واحدة</li><li>اكتب محاولتك قبل أن ترسل برومبت المراجعة — هذه هي القاعدة الوحيدة غير القابلة للتفاوض</li><li>إذا صحح لك Claude خطأ، أعد كتابة الحل من الصفر لا تعديل السطر فقط</li><li>لا تنتقل لدرس جديد قبل أن تجيب على أسئلة اختبر فهمك دون النظر</li><li>المشاريع المصغرة ليست اختيارية — هي المكان الذي يثبت فيه ما تعلمته</li></ul>
+  <div class="callout tip"><div class="t">طريقة القراءة الموصى بها</div>
+    <p>لا تقرأ الدليل كله دفعة واحدة. اقرأ فصلا واحدا، ثم نفّذ تمرينه على مهمة حقيقية
+       من عملك، ثم انتقل. أربعة فصول مطبَّقة أفضل من أربعة عشر فصلا مقروءا.</p></div>
+</section>
+<section class="toc"><div class="fm-title">الفهرس</div><div class="fm-rule"></div><ul><li class="l1"><a href="#ch1"><span class="t">لماذا يفشل معظم من يتعلم البرمجة بالذكاء الاصطناعي</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s1"><span class="t">الوهم الذي يقتل التعلم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s4"><span class="t">منهج هذا الدليل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s6"><span class="t">قاعدة العشرين دقيقة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch1-s8"><span class="t">ما لن يفعله هذا الدليل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch2"><span class="t">اضبط Claude Code في وضع المعلم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s1"><span class="t">الخطوة الأولى: مجلد التعلم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s3"><span class="t">الخطوة الثانية: ملف CLAUDE.md التعليمي</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s6"><span class="t">الخطوة الثالثة: وضع الأذونات المناسب للتعلم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s10"><span class="t">الخطوة الرابعة: اختبر أن الضبط يعمل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch2-s14"><span class="t">برومبتات ستستخدمها في كل درس</span><span class="dots"></span></a></li><li class="l1"><a href="#ch3"><span class="t">قراءة الكود قبل كتابته</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s1"><span class="t">اقرأ ثم توقع ثم شغل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch3-s15"><span class="t">اسأل عن الكود لا عن الحل</span><span class="dots"></span></a></li><li class="l1"><a href="#ch4"><span class="t">المتغيرات وأنواع البيانات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s1"><span class="t">الأنواع الأساسية وما تسمح به</span><span class="dots"></span></a></li><li class="l2"><a href="#ch4-s15"><span class="t">تسمية المتغيرات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch5"><span class="t">الشروط واتخاذ القرار</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s1"><span class="t">if و elif و else</span><span class="dots"></span></a></li><li class="l2"><a href="#ch5-s15"><span class="t">الشروط المركبة والقيم الصادقة</span><span class="dots"></span></a></li><li class="l1"><a href="#ch6"><span class="t">الحلقات والتكرار</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s1"><span class="t">for و while ومتى تستخدم كلا منهما</span><span class="dots"></span></a></li><li class="l2"><a href="#ch6-s15"><span class="t">التكرار على الهياكل وفهم القوائم</span><span class="dots"></span></a></li><li class="l1"><a href="#ch7"><span class="t">الدوال</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s1"><span class="t">دالة واحدة، مسؤولية واحدة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch7-s15"><span class="t">الوسائط والقيم الافتراضية والفخ الشهير</span><span class="dots"></span></a></li><li class="l1"><a href="#ch8"><span class="t">هياكل البيانات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch8-s1"><span class="t">القائمة والمجموعة والقاموس والصف</span><span class="dots"></span></a></li><li class="l1"><a href="#ch9"><span class="t">البرمجة الكائنية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s1"><span class="t">من قاموس إلى صنف</span><span class="dots"></span></a></li><li class="l2"><a href="#ch9-s15"><span class="t">الوراثة والتركيب</span><span class="dots"></span></a></li><li class="l1"><a href="#ch10"><span class="t">الاستثناءات ومعالجة الأخطاء</span><span class="dots"></span></a></li><li class="l2"><a href="#ch10-s1"><span class="t">التقاط ما تتوقعه فقط</span><span class="dots"></span></a></li><li class="l1"><a href="#ch11"><span class="t">الملفات والوحدات والحزم</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s1"><span class="t">قراءة الملفات وكتابتها بأمان</span><span class="dots"></span></a></li><li class="l2"><a href="#ch11-s15"><span class="t">الوحدات والحزم واستيرادها</span><span class="dots"></span></a></li><li class="l1"><a href="#ch12"><span class="t">الواجهات البرمجية APIs</span><span class="dots"></span></a></li><li class="l2"><a href="#ch12-s1"><span class="t">طلب HTTP ومعالجة استجابته</span><span class="dots"></span></a></li><li class="l1"><a href="#ch13"><span class="t">قواعد البيانات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch13-s1"><span class="t">SQLite: قاعدة بيانات في ملف</span><span class="dots"></span></a></li><li class="l1"><a href="#ch14"><span class="t">Git: تاريخ عملك</span><span class="dots"></span></a></li><li class="l2"><a href="#ch14-s1"><span class="t">الدورة اليومية</span><span class="dots"></span></a></li><li class="l1"><a href="#ch15"><span class="t">الاختبارات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch15-s1"><span class="t">اختبار الوحدة</span><span class="dots"></span></a></li><li class="l1"><a href="#ch16"><span class="t">التصحيح المنهجي</span><span class="dots"></span></a></li><li class="l2"><a href="#ch16-s1"><span class="t">من الخطأ إلى السبب في خمس خطوات</span><span class="dots"></span></a></li><li class="l1"><a href="#ch17"><span class="t">أساسيات الأمان والكود النظيف</span><span class="dots"></span></a></li><li class="l2"><a href="#ch17-s1"><span class="t">الخطأ الأول: الأسرار في الكود</span><span class="dots"></span></a></li><li class="l2"><a href="#ch17-s6"><span class="t">الخطأ الثاني: الثقة في المدخلات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch17-s9"><span class="t">الخطأ الثالث: رسائل خطأ تكشف الداخل</span><span class="dots"></span></a></li><li class="l2"><a href="#ch17-s11"><span class="t">الكود النظيف في خمس قواعد</span><span class="dots"></span></a></li><li class="l1"><a href="#ch18"><span class="t">ثلاثة مشاريع متدرجة</span><span class="dots"></span></a></li><li class="l2"><a href="#ch18-s1"><span class="t">المشروع الأول: مدير مهام في الطرفية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch18-s3"><span class="t">المشروع الثاني: محلل ملفات نصية</span><span class="dots"></span></a></li><li class="l2"><a href="#ch18-s5"><span class="t">المشروع الثالث: خدمة صغيرة بقاعدة بيانات</span><span class="dots"></span></a></li><li class="l2"><a href="#ch18-s7"><span class="t">كيف تدير كل مشروع</span><span class="dots"></span></a></li></ul></section>
+<h1 class="chapter" id="ch1"><span class="num">الفصل الأول</span>لماذا يفشل معظم من يتعلم البرمجة بالذكاء الاصطناعي</h1><p class="lead">المشكلة ليست في الأداة. المشكلة أن الأداة تجيب بسرعة، والتعلم يحتاج تعثرا. عندما تحصل على الحل قبل أن تحاول، يشعر دماغك بأنه فهم، بينما لم يبن شيئا.</p>
+<h2 id="ch1-s1">الوهم الذي يقتل التعلم</h2>
+<p>اقرأ حلا صحيحا وستقول: كنت سأصل إليه. هذا شعور حقيقي وخاطئ في الوقت نفسه، واسمه في علم التعلم وهم الطلاقة. القراءة سهلة، والاسترجاع صعب. وما يبني المهارة هو الاسترجاع لا القراءة.</p>
+<table class="data"><thead><tr><th>ما تفعله</th><th>ما تظنه</th><th>ما يحدث فعلا</th></tr></thead><tbody><tr><td>تقرأ حلا جاهزا</td><td>فهمت</td><td>تعرفت على الحل ولن تنتجه</td></tr><tr><td>تنسخ كودا ويعمل</td><td>أنجزت</td><td>أنجز الكود، ولم تتعلم</td></tr><tr><td>تحاول وتفشل ثم تصحح</td><td>أضعت وقتا</td><td>بنيت المهارة فعلا</td></tr></tbody></table>
+<h2 id="ch1-s4">منهج هذا الدليل</h2>
+<ol class="steps"><li><span class="sh">Learn — المفهوم</span>شرح قصير ومثال واحد واضح. لا محاضرة.</li><li><span class="sh">Try — المحاولة</span>مهمة صغيرة تكتبها بنفسك قبل أي مساعدة.</li><li><span class="sh">Review — المراجعة</span>برومبت يجعل Claude يشخص محاولتك دون أن يحلها.</li><li><span class="sh">Fix — الإصلاح</span>تعيد الكتابة بنفسك بناء على التشخيص.</li><li><span class="sh">Build — البناء</span>مشروع مصغر يجمع ما تعلمته في شيء يعمل.</li></ol>
+<h2 id="ch1-s6">قاعدة العشرين دقيقة</h2>
+<div class="callout warn"><div class="t">لا تطلب المساعدة قبل عشرين دقيقة</div><p>إذا تعثرت، اضبط مؤقتا عشرين دقيقة وحاول وحدك: اقرأ رسالة الخطأ، واطبع القيم، وجرب مدخلا أبسط. أغلب ما ستتعلمه في حياتك البرمجية سيأتي من هذه الدقائق تحديدا، لا من الإجابة التي تليها.</p><p>وبعد العشرين دقيقة، لا تطلب الحل. اطلب تلميحا. الفرق بينهما هو الفرق بين أن تتعلم وألا تتعلم.</p></div>
+<h2 id="ch1-s8">ما لن يفعله هذا الدليل</h2>
+<ul class="b"><li>لن يعطيك حلولا كاملة تنسخها. برومبتات المراجعة مصممة لمنع ذلك.</li><li>لن يشرح كل تفاصيل اللغة. يشرح ما تحتاجه لتبني، ويعلمك كيف تسأل عن الباقي.</li><li>لن يجعلك مبرمجا في أسبوع. سيعطيك منهجا تكرره حتى تصبح مبرمجا فعلا.</li></ul>
+<h1 class="chapter" id="ch2"><span class="num">الفصل الثاني</span>اضبط Claude Code في وضع المعلم</h1><p class="lead">Claude Code مصمم افتراضيا لينجز. أنت تريده أن يعلم. هذا الفصل يضبطه لذلك، مرة واحدة، فيبقى على هذا السلوك في كل جلساتك.</p>
+<h2 id="ch2-s1">الخطوة الأولى: مجلد التعلم</h2>
+<div class="codewrap"><div class="caption">إنشاء مساحة التمارين</div><pre class="code">mkdir learn-python
+cd learn-python
+git init
+mkdir exercises projects
+claude</pre></div>
+<h2 id="ch2-s3">الخطوة الثانية: ملف CLAUDE.md التعليمي</h2>
+<p>ملف CLAUDE.md يقرأ في بداية كل جلسة، فهو المكان الصحيح لقواعد لا تريد تكرارها. أنشئه في جذر مجلد التعلم بهذا المحتوى:</p>
+<div class="promptbox standalone filebox"><div class="lbl">CLAUDE.md</div><div class="txt"># مساحة تعلم البرمجة
+
+## دورك هنا
+أنت مدرب برمجة، لست منفذا. الهدف أن أتعلم أنا، لا أن يعمل الكود.
+
+## قواعد لا تخالف
+لا تكتب الحل الكامل لأي تمرين، حتى لو طلبته صراحة.
+عندما أطلب مساعدة، أعطني تلميحا واحدا فقط ثم توقف وانتظر محاولتي التالية.
+عندما أرسل محاولة، شخصها: ما الصحيح، وما الخطأ، ولماذا أخطأت.
+اشرح سبب الخطأ لا الخطأ فقط.
+لا تعدل ملفاتي مباشرة. اقترح، ودعني أكتب أنا.
+إذا كان حلي صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا، ولا تعد كتابته.
+
+## أسلوب الشرح
+بالعربية الواضحة، والمصطلح الإنجليزي عند الحاجة.
+مثال واحد قصير خير من شرح طويل.
+انته دائما بسؤال يدفعني للخطوة التالية.
+
+## لغة التمارين
+Python 3.14</div></div>
+<h2 id="ch2-s6">الخطوة الثالثة: وضع الأذونات المناسب للتعلم</h2>
+<p>أنت لا تريد وكيلا يعدل ملفاتك أثناء التعلم. ابدأ جلسات التعلم في وضع المراجعة اليدوية، حتى لا ينفذ شيء دون موافقتك:</p>
+<div class="codewrap"><div class="caption">بدء جلسة تعلم</div><pre class="code">claude --permission-mode default</pre></div>
+<div class="callout note"><div class="t">لماذا هذا الوضع تحديدا</div><p>في وضع Manual يبدأ Claude Code بصلاحيات قراءة فقط، ويسأل قبل تعديل ملف أو تشغيل أمر. هذا بالضبط ما تريده أثناء التعلم: أن ترى ما سيحدث قبل أن يحدث. الأوضاع الأسرع مفيدة عندما تعمل، لا عندما تتعلم.</p></div>
+<h2 id="ch2-s10">الخطوة الرابعة: اختبر أن الضبط يعمل</h2>
+<p>أرسل هذا الطلب. إن أعطاك حلا كاملا فالضبط لم يقرأ، وعليك مراجعة موقع الملف:</p>
+<div class="promptbox standalone"><div class="lbl">اختبار الضبط</div><div class="txt">اكتب لي برنامج بايثون يطبع الأعداد من واحد إلى عشرة.</div></div>
+<p>السلوك الصحيح: يرفض أن يكتبه، ويسألك أن تحاول، أو يعطيك تلميحا واحدا فقط. إذا كتب الحل كاملا، شغل <code class="inline">/context</code> وتحقق أن CLAUDE.md ظهر تحت Memory files.</p>
+<h2 id="ch2-s14">برومبتات ستستخدمها في كل درس</h2>
+<div class="promptbox standalone"><div class="lbl">برومبت التلميح</div><div class="txt">أنا عالق في هذا التمرين:
+[وصف التمرين]
+
+محاولتي حتى الآن:
+[الكود]
+
+ما جربته:
+[المحاولات]
+
+أعطني تلميحا واحدا فقط. لا تعطني الحل ولا سطرا من الكود.
+اجعل التلميح سؤالا يوجه تفكيري.</div></div>
+<div class="promptbox standalone"><div class="lbl">برومبت شرح رسالة الخطأ</div><div class="txt">هذه رسالة خطأ ولا أفهمها:
+[رسالة الخطأ]
+
+اشرح لي:
+أولا. ماذا تقول الرسالة حرفيا
+ثانيا. ماذا تعني عمليا في كود مثل كودي
+ثالثا. أين أبدأ البحث في كودي
+
+لا تصلح الخطأ ولا تخبرني بالسطر المسؤول. علمني كيف أجده بنفسي.</div></div>
+<div class="promptbox standalone"><div class="lbl">برومبت الاختبار الذاتي</div><div class="txt">اختبرني في
+[الموضوع]
+
+اطرح سؤالا واحدا وانتظر إجابتي.
+ابدأ بسؤال فهم، ثم تطبيق، ثم حالة حدية.
+بعد كل إجابة: ما الصحيح فيها وما الناقص ولماذا.
+لا تعطني الإجابة قبل أن أحاول.</div></div>
+<h1 class="chapter" id="ch3"><span class="num">الفصل الثالث</span>قراءة الكود قبل كتابته</h1><p class="lead">المبرمج يقضي في قراءة الكود أضعاف ما يقضيه في كتابته. ومع ذلك يبدأ معظم المتعلمين بالكتابة. هذا الفصل يعكس الترتيب.</p>
+<h2 id="ch3-s1">اقرأ ثم توقع ثم شغل</h2>
+<p>أفضل تمرين لبناء الفهم: اقرأ الكود، واكتب على ورقة ما تتوقع أن يطبعه، ثم شغله وقارن. الفرق بين توقعك والنتيجة هو بالضبط الفجوة في فهمك.</p>
+<div class="codewrap"><div class="caption">اقرأ هذا الكود ولا تشغله بعد</div><pre class="code">x = 5
+y = x
+x = 10
+print(y)
+
+items = [1, 2, 3]
+copy = items
+items.append(4)
+print(copy)</pre></div>
+<h3>مهمتك أنت</h3>
+<p>اكتب على ورقة ما تتوقع أن يطبعه كل سطر print. ثم شغل الملف. إذا اختلفت النتيجة عن توقعك، لا تبحث عن السبب فورا — اكتب فرضيتك أولا.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">شغلت هذا الكود وتوقعي كان مختلفا عن النتيجة.
+
+توقعي كان:
+[توقعك]
+النتيجة الفعلية:
+[النتيجة]
+فرضيتي عن السبب:
+[فرضيتك]
+
+قيم فرضيتي: هل هي صحيحة أم قريبة أم خاطئة، ولماذا.
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>السؤال الحاسم: عندما تكتب y = x، هل نسخت القيمة أم نسخت إشارة إلى المكان نفسه؟ وهل الجواب واحد للأعداد وللقوائم؟</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>ما الفرق بين نسخ القيمة ونسخ المرجع؟</li><li>لماذا تصرف العدد بشكل مختلف عن القائمة؟</li><li>كيف تحصل على نسخة مستقلة فعلا من قائمة؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>بعد أن تفهم السبب، اكتب مثالا من عندك يظهر السلوك نفسه بقاموس بدل قائمة، ثم توقع نتيجته قبل تشغيله.</p>
+<h2 id="ch3-s15">اسأل عن الكود لا عن الحل</h2>
+<p>عندما تواجه كودا لا تفهمه في مشروع، لا تطلب إعادة كتابته. اطلب تفكيكه. هذا هو الاستخدام الأنفع لأداة وكيلة أثناء التعلم.</p>
+<div class="codewrap"><div class="caption">كود غامض عمدا</div><pre class="code">def f(n):
+    return n if n &lt; 2 else f(n - 1) + f(n - 2)
+
+print([f(i) for i in range(10)])</pre></div>
+<h3>مهمتك أنت</h3>
+<p>اقرأ الكود وحاول وحدك: ماذا يطبع؟ ما اسم المتتالية التي ينتجها؟ ولماذا يبطؤ بشدة عند n كبيرة؟ اكتب إجاباتك قبل أن ترسل أي شيء.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">قرأت هذا الكود وكتبت فهمي له:
+
+[فهمك]
+
+قيم فهمي:
+ما الصحيح فيه، وما الناقص، وما الخطأ.
+هل استخدمت مصطلحا بشكل صحيح شكليا دون أن أدرك معناه؟
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>جرب أن تتتبع f(4) يدويا على ورقة: كم مرة يستدعى f(2)؟ العدد نفسه هو سبب البطء.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>ما شرط التوقف في هذه الدالة، وماذا يحدث بدونه؟</li><li>لماذا يتكرر حساب القيم نفسها؟</li><li>ما الفكرة العامة التي تحل مشكلة التكرار هذه؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أعد كتابة الدالة بحلقة بدل الاستدعاء الذاتي، وقس الفرق في الزمن بنفسك.</p>
+<h1 class="chapter" id="ch4"><span class="num">الفصل الرابع</span>المتغيرات وأنواع البيانات</h1><p class="lead">المتغير اسم يشير إلى قيمة. والنوع يحدد ما يمكن فعله بها. أغلب أخطاء المبتدئين تأتي من الخلط في النوع لا في المنطق.</p>
+<h2 id="ch4-s1">الأنواع الأساسية وما تسمح به</h2>
+<p>كل قيمة في بايثون لها نوع، والنوع هو الذي يقرر أي عملية مسموحة. عندما ترى خطأ TypeError فالسبب دائما أنك طلبت من نوع شيئا لا يفعله.</p>
+<div class="codewrap"><div class="caption">جرب هذا وتوقع أي سطر سيفشل</div><pre class="code">age = 20
+name = "Omar"
+height = 1.75
+is_student = True
+
+print(type(age), type(name), type(height), type(is_student))
+print("Age: " + age)</pre></div>
+<h3>مهمتك أنت</h3>
+<p>توقع أي سطر سيفشل ولماذا. ثم شغل. ثم أصلح السطر الفاشل بطريقتين مختلفتين.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">أصلحت السطر الفاشل بطريقتين:
+
+الطريقة الأولى:
+[الطريقة الأولى]
+
+الطريقة الثانية:
+[الطريقة الثانية]
+
+أيهما أفضل ولماذا؟ وهل هناك طريقة ثالثة أفضل منهما؟
+لا تكتب الطريقة الثالثة كاملة، صفها بكلمات فقط.
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>أمامك خياران عامان: أن تحول العدد إلى نص، أو أن تستخدم صيغة تدمج القيم بلا تحويل يدوي. ابحث عن الثاني.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>ما الفرق بين 5 و 5.0 و '5' في بايثون؟</li><li>متى يكون التحويل بين الأنواع خطرا؟</li><li>لماذا يعتبر True قابلا للجمع مع عدد في بايثون؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>اكتب دالة تستقبل قيمة وتطبع نوعها وطولها إن كان لها طول، وتتعامل بهدوء مع الأنواع التي لا طول لها.</p>
+<h2 id="ch4-s15">تسمية المتغيرات</h2>
+<p>الاسم الجيد يوفر تعليقا. الاسم السيئ يخلق خطأ. هذه ليست مسألة ذوق، بل أول مهارة في الكود النظيف.</p>
+<div class="codewrap"><div class="caption">الكود نفسه، باسمين مختلفين</div><pre class="code"># hard to read
+d = 86400
+t = 3 * d
+
+# easy to read
+SECONDS_PER_DAY = 86400
+three_days_in_seconds = 3 * SECONDS_PER_DAY</pre></div>
+<h3>مهمتك أنت</h3>
+<p>خذ آخر كود كتبته وأعد تسمية كل متغير فيه بحيث يمكن قراءة السطر بلا تعليق. لا تغير المنطق، غير الأسماء فقط.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">أعدت تسمية متغيرات هذا الكود:
+
+قبل:
+[الكود قبل]
+
+بعد:
+[الكود بعد]
+
+قيم التسمية:
+أي اسم ما زال غامضا؟
+أي اسم أطول من اللازم؟
+أي اسم يصف كيف بدل أن يصف ماذا؟
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>اختبار عملي: اقرأ السطر بصوت عال. إذا احتجت النظر إلى سطر آخر لتفهمه، فالاسم سيئ.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا تكتب الثوابت بأحرف كبيرة عرفا؟</li><li>متى يكون الاسم القصير مثل i مقبولا؟</li><li>ما الفرق بين اسم يصف المحتوى واسم يصف النوع؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>اطلب من Claude أن يراجع تسمياتك في ملف كامل، لكن اطلب ملاحظات فقط لا تعديلات.</p>
+<h1 class="chapter" id="ch5"><span class="num">الفصل الخامس</span>الشروط واتخاذ القرار</h1><p class="lead">الشرط هو أول مكان يتحول فيه البرنامج من قائمة أوامر إلى منطق.</p>
+<h2 id="ch5-s1">if و elif و else</h2>
+<p>الترتيب في سلسلة الشروط ليس تفصيلا. الشرط الأول الذي يتحقق هو الذي ينفذ، وما بعده لا يفحص أصلا. أغلب أخطاء الشروط سببها ترتيب خاطئ لا منطق خاطئ.</p>
+<div class="codewrap"><div class="caption">ما الخطأ في هذا التصنيف</div><pre class="code">def grade(score):
+    if score &gt;= 50:
+        return "pass"
+    elif score &gt;= 85:
+        return "excellent"
+    elif score &gt;= 70:
+        return "very good"
+    else:
+        return "fail"
+
+print(grade(90))</pre></div>
+<h3>مهمتك أنت</h3>
+<p>شغل الكود. النتيجة غير متوقعة. اكتشف السبب بنفسك، ثم أعد كتابة الدالة بحيث تعطي التصنيف الصحيح لكل درجة من صفر إلى مئة.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">أعدت كتابة دالة التصنيف:
+
+[الكود]
+
+اختبرها ذهنيا على هذه القيم: صفر، خمسين، تسعة وأربعين، خمسة وثمانين، مئة، وقيمة سالبة.
+
+قل لي:
+أي قيمة تعطي نتيجة خاطئة، ولماذا
+هل عالجت القيم خارج النطاق
+هل ترتيب شروطي صحيح
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>اسأل نفسك: عندما تكون الدرجة 90، أي شرط يفحص أولا؟ وهل يتحقق؟ وماذا يحدث بعده؟</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا لم يصل التنفيذ إلى شرط excellent؟</li><li>ما القاعدة العامة لترتيب شروط النطاقات؟</li><li>كيف تتعامل مع درجة خارج النطاق المسموح؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أضف تحققا من المدخل: إذا كانت الدرجة خارج صفر إلى مئة، لا ترجع تصنيفا بل أبلغ عن خطأ.</p>
+<h2 id="ch5-s15">الشروط المركبة والقيم الصادقة</h2>
+<p>بايثون تعتبر قيما كثيرة صادقة أو كاذبة ضمنيا، وهذا مريح وخطر في آن. القائمة الفارغة كاذبة، والصفر كاذب، والنص الفارغ كاذب.</p>
+<div class="codewrap"><div class="caption">توقع مخرجات هذا الكود</div><pre class="code">values = [0, "", [], None, "0", [0], " "]
+for v in values:
+    print(repr(v), "-&gt;", bool(v))</pre></div>
+<h3>مهمتك أنت</h3>
+<p>توقع نتيجة كل سطر قبل التشغيل. ثم اكتب دالة is_empty تعتبر النص الذي يحتوي مسافات فقط فارغا، بينما تعتبر '0' غير فارغ.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">كتبت دالة is_empty:
+
+[الكود]
+
+اختبرها على: نص فارغ، مسافات فقط، النص صفر، قائمة فارغة، None، والعدد صفر.
+
+قل لي أي حالة تعطي نتيجة خاطئة ولماذا، وهل غطيت كل الأنواع التي قد تصلها.
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>النص الذي يحتوي مسافات ليس فارغا في نظر بايثون. ما الدالة التي تزيل المسافات من الطرفين؟</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا bool('0') يساوي True؟</li><li>ما الفرق بين == و is؟ ومتى يكون استخدام is خطأ؟</li><li>لماذا يفضل التحقق الصريح من None بدل الاعتماد على الصدق الضمني؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أعد كتابة الدالة بحيث ترفع خطأ واضحا إذا وصلها نوع لا تتوقعه، بدل أن تعطي نتيجة صامتة.</p>
+<h1 class="chapter" id="ch6"><span class="num">الفصل السادس</span>الحلقات والتكرار</h1><p class="lead">الحلقة هي المكان الذي يصبح فيه البرنامج أسرع منك. وهي أيضا المكان الذي يعلق فيه إلى الأبد إذا أخطأت.</p>
+<h2 id="ch6-s1">for و while ومتى تستخدم كلا منهما</h2>
+<p>القاعدة العملية: استخدم for عندما تعرف على ماذا تدور، و while عندما تعرف متى تتوقف. الخلط بينهما يولد حلقات لا نهائية أو تكرارا ناقصا.</p>
+<div class="codewrap"><div class="caption">حلقتان تفعلان الشيء نفسه</div><pre class="code">names = ["Sara", "Omar", "Lina"]
+
+for name in names:
+    print(name)
+
+i = 0
+while i &lt; len(names):
+    print(names[i])
+    i += 1</pre></div>
+<h3>مهمتك أنت</h3>
+<p>اكتب برنامجا يطلب من المستخدم عددا بين واحد وعشرة، ويكرر الطلب حتى يدخل عددا صحيحا داخل النطاق. ثم اطبع جدول ضرب هذا العدد.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">كتبت برنامج جدول الضرب:
+
+[الكود]
+
+راجعه على هذه الحالات: إدخال نص بدل عدد، إدخال عدد خارج النطاق، إدخال فارغ.
+
+قل لي:
+أي حالة تسقط البرنامج
+هل حلقتي قد تدور بلا نهاية في حالة ما
+هل كررت كودا كان يمكن ألا يتكرر
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>عندما يدخل المستخدم نصا وتحوله إلى عدد، ماذا يحدث؟ وأي بنية تحمي الكود من الانهيار عند ذلك؟</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>متى تفضل while على for؟</li><li>ما الذي يجعل حلقة while لا نهائية؟</li><li>ما الفرق بين break و continue و return داخل حلقة؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أضف حدا أقصى للمحاولات: بعد خمس محاولات فاشلة، اخرج برسالة واضحة بدل الاستمرار.</p>
+<h2 id="ch6-s15">التكرار على الهياكل وفهم القوائم</h2>
+<p>فهم القائمة list comprehension ليس زينة. هو الطريقة الاصطلاحية في بايثون لتحويل مجموعة إلى أخرى، وقراءته أسهل من حلقة بثلاثة أسطر متى استخدم في موضعه.</p>
+<div class="codewrap"><div class="caption">الحلقة وفهم القائمة</div><pre class="code">numbers = [1, 2, 3, 4, 5, 6]
+
+squares = []
+for n in numbers:
+    if n % 2 == 0:
+        squares.append(n * n)
+
+squares_short = [n * n for n in numbers if n % 2 == 0]
+
+print(squares, squares_short)</pre></div>
+<h3>مهمتك أنت</h3>
+<p>اكتب باستخدام فهم القائمة: قائمة بأطوال كل كلمة في جملة، وقائمة بالكلمات التي طولها أكبر من أربعة أحرف فقط، وقاموس يربط كل كلمة بطولها.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">كتبت هذه التحويلات:
+
+[الكود]
+
+قيمها:
+هل كل واحدة قابلة للقراءة، أم أن إحداها أصبحت معقدة ويجب أن تعود حلقة عادية
+هل هناك حالة تعطي نتيجة خاطئة مع علامات الترقيم
+ما الذي كنت ستكتبه أنت بشكل مختلف ولماذا
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>لتقسيم الجملة إلى كلمات هناك دالة جاهزة على النص. وعلامات الترقيم ستلتصق بالكلمات — فكر كيف تعالجها.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>متى يصبح فهم القائمة أسوأ من حلقة عادية؟</li><li>ما الفرق بين فهم القائمة وفهم القاموس؟</li><li>ما الذي يحدث لو وضعت شرطا بعد for وشرطا آخر قبل for؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>حول أحد تعبيراتك إلى مولد generator وقارن استهلاك الذاكرة على قائمة كبيرة.</p>
+<h1 class="chapter" id="ch7"><span class="num">الفصل السابع</span>الدوال</h1><p class="lead">الدالة هي أول أداة حقيقية لمحاربة التعقيد. وهي أيضا أول مكان تظهر فيه جودة تفكيرك.</p>
+<h2 id="ch7-s1">دالة واحدة، مسؤولية واحدة</h2>
+<p>الدالة التي تفعل شيئين تصعب تسميتها، وتصعب اختبارها، وتنكسر لسببين. علامة الإنذار: تجد نفسك تستخدم كلمة «و» في اسمها.</p>
+<div class="codewrap"><div class="caption">دالة تفعل أكثر من اللازم</div><pre class="code">def process(path):
+    with open(path) as f:
+        lines = f.readlines()
+    cleaned = [l.strip() for l in lines if l.strip()]
+    total = sum(len(l) for l in cleaned)
+    print("Lines:", len(cleaned))
+    print("Chars:", total)
+    with open("report.txt", "w") as f:
+        f.write(str(total))
+    return cleaned</pre></div>
+<h3>مهمتك أنت</h3>
+<p>هذه الدالة تقرأ وتنظف وتحسب وتطبع وتكتب وترجع. قسمها إلى دوال، لكل واحدة مسؤولية واحدة واسم يصفها بلا كلمة «و».</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">قسمت الدالة إلى دوال أصغر:
+
+[الكود]
+
+قيم التقسيم:
+هل كل دالة لها مسؤولية واحدة فعلا
+هل اسم كل دالة يصف ما تفعله بدقة
+أي دالة ما زالت تفعل شيئين
+هل جعلت الطباعة منفصلة عن الحساب
+أي دالة يصعب اختبارها وحدها ولماذا
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>اسأل عن كل دالة: هل تستطيع اختبارها دون ملف حقيقي ودون قراءة المخرجات المطبوعة؟ إن كان لا، فهي تفعل أكثر من شيء.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا يفضل فصل الحساب عن الطباعة؟</li><li>ما مشكلة دالة ترجع قيمة وتكتب ملفا في الوقت نفسه؟</li><li>كيف تختبر دالة تقرأ ملفا دون إنشاء ملف حقيقي؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أضف لكل دالة سطر توثيق docstring يقول ماذا تستقبل وماذا ترجع ومتى ترفع خطأ.</p>
+<h2 id="ch7-s15">الوسائط والقيم الافتراضية والفخ الشهير</h2>
+<p>القيمة الافتراضية في بايثون تقيم مرة واحدة عند تعريف الدالة لا عند كل استدعاء. مع القوائم والقواميس ينتج عن ذلك أشهر فخ في اللغة.</p>
+<div class="codewrap"><div class="caption">شغل هذا وراقب النتيجة</div><pre class="code">def add_item(item, basket=[]):
+    basket.append(item)
+    return basket
+
+print(add_item("apple"))
+print(add_item("bread"))
+print(add_item("milk"))</pre></div>
+<h3>مهمتك أنت</h3>
+<p>شغل الكود وفسر النتيجة. ثم أعد كتابة الدالة بحيث تبدأ كل استدعاء بسلة فارغة إن لم تمرر سلة، دون أن تفقد إمكانية تمرير سلة موجودة.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">أصلحت مشكلة القيمة الافتراضية:
+
+[الكود]
+
+قيم الحل:
+هل يعمل عند الاستدعاء بلا وسيط
+هل يعمل عند تمرير سلة موجودة
+هل يعدل السلة الممررة أم ينسخها، وأيهما الصحيح هنا برأيك
+هل هناك حالة لم أفكر فيها
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>القيمة الافتراضية الآمنة للأنواع القابلة للتغيير هي None، ثم تنشئ القيمة داخل الدالة.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا تشترك الاستدعاءات في القائمة نفسها؟</li><li>أي الأنواع آمنة كقيمة افتراضية وأيها خطر؟</li><li>ما الفرق بين تعديل القائمة الممررة وإرجاع نسخة جديدة؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>اكتب دالة تستقبل عددا غير محدد من الوسائط، وأخرى تستقبل وسائط مسماة، وجرب الفرق.</p>
+<h1 class="chapter" id="ch8"><span class="num">الفصل الثامن</span>هياكل البيانات</h1><p class="lead">اختيار الهيكل المناسب يحل نصف المشكلة قبل أن تكتب سطرا. الاختيار الخاطئ يجعلك تكتب كودا يعوض عنه.</p>
+<h2 id="ch8-s1">القائمة والمجموعة والقاموس والصف</h2>
+<p>لكل هيكل خاصية تميزه: القائمة مرتبة وقابلة للتغيير، والمجموعة بلا تكرار وبحث سريع، والقاموس يربط مفتاحا بقيمة، والصف غير قابل للتغيير.</p>
+<div class="codewrap"><div class="caption">الهياكل الأربعة</div><pre class="code">names = ["Sara", "Omar", "Sara"]
+unique = {"Sara", "Omar", "Sara"}
+ages = {"Sara": 22, "Omar": 24}
+point = (3, 7)
+
+print(names, unique, ages, point)
+print("Sara" in unique, ages["Sara"], point[0])</pre></div>
+<h3>مهمتك أنت</h3>
+<p>لديك قائمة بألف اسم فيها تكرار. اكتب كودا يعطي: عدد الأسماء الفريدة، والأسماء التي تكررت أكثر من مرة، وعدد مرات تكرار كل اسم. اختر الهيكل المناسب لكل مهمة.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">حللت مسألة الأسماء المتكررة:
+
+[الكود]
+
+قيم اختياري للهياكل:
+هل استخدمت الهيكل المناسب لكل جزء
+هل هناك جزء يعمل بتعقيد أعلى من اللازم
+هل كنت سأستفيد من أداة جاهزة في المكتبة القياسية بدل كتابة العد يدويا
+ما الذي سيحدث لو صار العدد مليون اسم
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>البحث عن عنصر داخل قائمة يمر على عناصرها واحدا واحدا. البحث داخل مجموعة لا يفعل ذلك. هذا الفرق يقرر اختيارك.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا البحث في المجموعة أسرع من البحث في القائمة؟</li><li>متى تستخدم الصف بدل القائمة؟</li><li>ما الذي يصلح أن يكون مفتاحا في القاموس وما لا يصلح؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أعد كتابة الحل باستخدام أداة عد جاهزة من المكتبة القياسية، وقارن وضوح الكودين.</p>
+<h3>مشروع مصغر</h3>
+<p><strong>مشروع مصغر</strong>: برنامج يقرأ ملفا نصيا ويطبع أكثر عشر كلمات تكرارا مع عدد مراتها، متجاهلا حالة الأحرف وعلامات الترقيم. اكتبه بنفسك، ثم اطلب مراجعة لا حلا.</p>
+<h1 class="chapter" id="ch9"><span class="num">الفصل التاسع</span>البرمجة الكائنية</h1><p class="lead">الكائن ليس تعقيدا إضافيا. هو طريقة لتجميع بيانات مترابطة مع العمليات التي تخصها في مكان واحد.</p>
+<h2 id="ch9-s1">من قاموس إلى صنف</h2>
+<p>عندما تجد نفسك تمرر القاموس نفسه إلى عشر دوال، فأنت تحتاج صنفا. الصنف يجمع البيانات مع سلوكها ويمنع الحالات غير الصحيحة.</p>
+<div class="codewrap"><div class="caption">الشكل الأول: قاموس ودوال</div><pre class="code">student = {"name": "Sara", "grades": [90, 85, 78]}
+
+def average(s):
+    return sum(s["grades"]) / len(s["grades"])
+
+def add_grade(s, g):
+    s["grades"].append(g)
+
+print(average(student))</pre></div>
+<h3>مهمتك أنت</h3>
+<p>حول هذا إلى صنف Student فيه الاسم والدرجات، وميثود لإضافة درجة، وميثود لحساب المعدل، ومنع إضافة درجة خارج نطاق صفر إلى مئة.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">حولت الكود إلى صنف:
+
+[الكود]
+
+قيم التصميم:
+هل منعت الحالات غير الصحيحة فعلا أم يمكن الالتفاف عليها
+هل المعدل خاصية محسوبة أم ميثود، وأيهما أنسب هنا
+ماذا يحدث لو لم تكن هناك درجات بعد
+هل كشفت بيانات داخلية كان يجب حمايتها
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>فكر في اللحظة التي تكون فيها قائمة الدرجات فارغة. القسمة على صفر لن ترحمك.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>ما الفرق بين متغير الصنف ومتغير النسخة؟</li><li>ما دور self ولماذا يكتب صراحة في بايثون؟</li><li>متى يكون الصنف مبالغة ويكفي قاموس أو دالة؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أضف ميثود يعرض الطالب كنص مقروء، ثم اجعله يعمل مع print مباشرة.</p>
+<h2 id="ch9-s15">الوراثة والتركيب</h2>
+<p>الوراثة تستخدم أكثر مما تستحق. القاعدة العملية: استخدم الوراثة عندما تكون العلاقة «هو نوع من»، واستخدم التركيب عندما تكون «يملك».</p>
+<div class="codewrap"><div class="caption">وراثة بسيطة</div><pre class="code">class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def greet(self):
+        return "Hello, " + self.name
+
+
+class Student(Person):
+    def __init__(self, name, university):
+        super().__init__(name)
+        self.university = university
+
+
+s = Student("Omar", "KSU")
+print(s.greet(), s.university)</pre></div>
+<h3>مهمتك أنت</h3>
+<p>أضف صنف Teacher يرث من Person، ثم صمم صنف Course يحتوي معلما وقائمة طلاب. قرر أين تستخدم الوراثة وأين تستخدم التركيب، واكتب سبب كل قرار في تعليق.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">صممت الأصناف التالية:
+
+[الكود]
+
+قيم قراراتي:
+أين استخدمت الوراثة وكان التركيب أنسب، أو العكس
+هل هناك تكرار بين الأصناف كان يمكن تجنبه
+هل سيصعب توسيع هذا التصميم لاحقا، وأين تحديدا
+ما أول شيء سينكسر لو أضفنا نوعا ثالثا من الأشخاص
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>اختبار سريع: هل يمكن أن يكون Course نوعا من Person؟ إن كان الجواب لا، فالعلاقة ليست وراثة.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>ماذا يفعل super() ولماذا نستدعيه؟</li><li>متى تفضل التركيب على الوراثة؟</li><li>ما مشكلة سلاسل الوراثة العميقة؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أضف ميثود يحسب عدد الطلاب في المقرر، ثم فكر: هل يجب أن يمنع المقرر تسجيل الطالب نفسه مرتين؟ نفذ ذلك.</p>
+<h1 class="chapter" id="ch10"><span class="num">الفصل العاشر</span>الاستثناءات ومعالجة الأخطاء</h1><p class="lead">البرنامج الجيد ليس الذي لا يخطئ، بل الذي يفشل بوضوح ويخبرك بما حدث.</p>
+<h2 id="ch10-s1">التقاط ما تتوقعه فقط</h2>
+<p>التقاط كل الأخطاء بجملة واحدة عامة يخفي المشكلة بدل حلها، ويجعل التصحيح لاحقا شبه مستحيل. التقط النوع الذي تتوقعه وتعرف كيف تعالجه.</p>
+<div class="codewrap"><div class="caption">معالجة سيئة ومعالجة أفضل</div><pre class="code">def read_age_bad(text):
+    try:
+        return int(text)
+    except:
+        return 0
+
+
+def read_age_better(text):
+    try:
+        value = int(text)
+    except ValueError:
+        raise ValueError("Age must be a whole number, got: " + repr(text))
+    if not 0 &lt;= value &lt;= 130:
+        raise ValueError("Age out of range: " + str(value))
+    return value</pre></div>
+<h3>مهمتك أنت</h3>
+<p>اكتب دالة تقرأ ملف إعدادات نصيا وترجع قاموسا. عالج بوضوح ثلاث حالات: الملف غير موجود، والملف موجود لكن صيغته خاطئة، والملف فارغ.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">كتبت دالة قراءة الإعدادات:
+
+[الكود]
+
+قيم معالجة الأخطاء:
+هل التقطت أنواعا محددة أم استخدمت التقاطا عاما
+هل رسائل الخطأ تقول للمستخدم ماذا يفعل
+هل أخفيت خطأ يجب أن يظهر
+هل يفشل البرنامج بهدوء في حالة كان يجب أن يتوقف فيها
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>الملف غير الموجود والملف بصيغة خاطئة نوعان مختلفان من الخطأ. لا تعالجهما بالكتلة نفسها.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا التقاط Exception العام خطر؟</li><li>متى تعيد رفع الخطأ بدل معالجته؟</li><li>ما الفرق بين finally و else في جملة try؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أنشئ نوع خطأ خاصا بمشروعك يرث من Exception، واستخدمه بدل ValueError العام.</p>
+<h1 class="chapter" id="ch11"><span class="num">الفصل الحادي عشر</span>الملفات والوحدات والحزم</h1><p class="lead">البرنامج الذي يعيش في ملف واحد يتوقف عن النمو عند حد معين. تنظيم الملفات هو ما يجعله يستمر.</p>
+<h2 id="ch11-s1">قراءة الملفات وكتابتها بأمان</h2>
+<p>جملة with تغلق الملف تلقائيا حتى لو حدث خطأ في المنتصف. بدونها قد يبقى الملف مفتوحا وتفقد بيانات لم تكتب بعد.</p>
+<div class="codewrap"><div class="caption">القراءة والكتابة</div><pre class="code">from pathlib import Path
+
+path = Path("notes.txt")
+
+path.write_text("first line\nsecond line\n", encoding="utf-8")
+
+content = path.read_text(encoding="utf-8")
+for line in content.splitlines():
+    print(line)
+
+with path.open("a", encoding="utf-8") as f:
+    f.write("third line\n")</pre></div>
+<h3>مهمتك أنت</h3>
+<p>اكتب برنامجا يقرأ ملف CSV بسيطا فيه اسم ودرجة في كل سطر، ويطبع المعدل، ويكتب تقريرا في ملف جديد. عالج السطر المشوه بلا إسقاط البرنامج.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">كتبت برنامج معالجة الملف:
+
+[الكود]
+
+قيمه:
+هل حددت الترميز encoding صراحة، ولماذا يهم ذلك مع العربية
+هل أغلقت كل الملفات في كل المسارات بما فيها مسار الخطأ
+كيف تصرفت مع السطر المشوه، وهل تجاهلته بصمت
+هل يعمل الكود لو كان الملف كبيرا جدا
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>تحديد encoding='utf-8' ليس اختياريا مع النص العربي. جرب بدونه على جهاز بإعدادات مختلفة وسترى.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا نستخدم with عند فتح الملفات؟</li><li>ما الفرق بين وضع الكتابة ووضع الإلحاق؟</li><li>متى تقرأ الملف سطرا سطرا بدل قراءته كاملا؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>حول البرنامج ليتعامل مع مجلد كامل من الملفات بدل ملف واحد.</p>
+<h2 id="ch11-s15">الوحدات والحزم واستيرادها</h2>
+<p>كل ملف بايثون وحدة. تقسيم الكود إلى وحدات يجعل كل جزء قابلا للاختبار وإعادة الاستخدام، ويمنع الملف الواحد من أن يصبح ألف سطر.</p>
+<div class="codewrap"><div class="caption">بنية مشروع صغير</div><pre class="code">myproject/
+    __init__.py
+    main.py
+    calculator.py
+    tests/
+        test_calculator.py</pre></div>
+<h3>مهمتك أنت</h3>
+<p>قسم أحد برامجك السابقة إلى ثلاث وحدات على الأقل: واحدة للمنطق، وواحدة لقراءة وكتابة البيانات، وواحدة للتشغيل. اجعل وحدة المنطق لا تستورد شيئا من الوحدتين الأخريين.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">قسمت المشروع إلى وحدات بهذا الشكل:
+
+[البنية والكود]
+
+قيم التقسيم:
+هل وحدة المنطق مستقلة فعلا عن الإدخال والإخراج
+هل هناك استيراد دائري بين وحدتين
+هل وضعت في كل وحدة ما يخصها فعلا
+ما الوحدة التي سيصعب اختبارها وحدها ولماذا
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>القاعدة: المنطق لا يعرف من أين جاءت البيانات ولا إلى أين تذهب. إن كان يستورد شيئا عن الملفات، فقد اختلط.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>ما الفرق بين import x و from x import y؟</li><li>ما وظيفة ملف __init__.py؟</li><li>ما الاستيراد الدائري ولماذا يسبب مشكلة؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أضف كتلة تشغيل شرطية في main.py حتى لا يعمل الكود عند استيراد الوحدة.</p>
+<h1 class="chapter" id="ch12"><span class="num">الفصل الثاني عشر</span>الواجهات البرمجية APIs</h1><p class="lead">الواجهة البرمجية هي كيف يتحدث برنامجك مع العالم. وهي أيضا أول مكان تتعلم فيه أن الشبكة تفشل.</p>
+<h2 id="ch12-s1">طلب HTTP ومعالجة استجابته</h2>
+<p>الطلب الناجح ليس الحالة الوحيدة. الخدمة قد ترد بخطأ، أو تتأخر، أو ترد بصيغة غير متوقعة. الكود الذي يفترض النجاح ينهار في أول يوم استخدام حقيقي.</p>
+<div class="codewrap"><div class="caption">طلب مع معالجة الحالات</div><pre class="code">import json
+import urllib.request
+import urllib.error
+
+def fetch(url, timeout=10):
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as response:
+            if response.status != 200:
+                raise RuntimeError("Unexpected status: " + str(response.status))
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        raise RuntimeError("HTTP error " + str(e.code)) from e
+    except urllib.error.URLError as e:
+        raise RuntimeError("Network error") from e
+    except json.JSONDecodeError as e:
+        raise RuntimeError("Response was not valid JSON") from e</pre></div>
+<h3>مهمتك أنت</h3>
+<p>اكتب دالة تستدعي واجهة برمجية عامة تختارها، وتستخرج ثلاثة حقول منها، وتتعامل مع: انقطاع الشبكة، ورد بحالة خطأ، ورد ينقصه أحد الحقول.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">كتبت دالة استدعاء الواجهة:
+
+[الكود]
+
+قيمها:
+هل عالجت انقطاع الشبكة والمهلة وحالة الخطأ كحالات منفصلة
+ماذا يحدث إذا نقص حقل من الرد
+هل وضعت مهلة زمنية، ولماذا هي ضرورية
+هل هناك مفتاح أو سر في الكود
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>الطلب بلا مهلة قد ينتظر إلى الأبد. والرد الذي ينقصه حقل ليس خطأ شبكة بل خطأ بيانات — عالجهما بشكل مختلف.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>ما الفرق بين خطأ الشبكة وخطأ الحالة 404 وخطأ صيغة البيانات؟</li><li>لماذا نضع مهلة على كل طلب خارجي؟</li><li>أين تضع مفتاح الواجهة إن كانت تتطلب مفتاحا؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أضف إعادة محاولة واحدة عند فشل الشبكة فقط، بلا إعادة محاولة عند خطأ 404.</p>
+<h1 class="chapter" id="ch13"><span class="num">الفصل الثالث عشر</span>قواعد البيانات</h1><p class="lead">الملف يكفي حتى تحتاج بحثا أو علاقات أو كتابة من أكثر من مكان. عندها تحتاج قاعدة بيانات.</p>
+<h2 id="ch13-s1">SQLite: قاعدة بيانات في ملف</h2>
+<p>SQLite تأتي مع بايثون ولا تحتاج خادما، فهي أفضل مكان لتتعلم SQL الحقيقي قبل الانتقال إلى قواعد أكبر.</p>
+<div class="codewrap"><div class="caption">إنشاء واستعلام آمن</div><pre class="code">import sqlite3
+
+conn = sqlite3.connect("school.db")
+cur = conn.cursor()
+
+cur.execute('''
+    CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        grade INTEGER CHECK (grade BETWEEN 0 AND 100)
+    )
+''')
+
+cur.execute("INSERT INTO students (name, grade) VALUES (?, ?)", ("Sara", 92))
+conn.commit()
+
+for row in cur.execute("SELECT name, grade FROM students WHERE grade &gt; ?", (80,)):
+    print(row)
+
+conn.close()</pre></div>
+<h3>مهمتك أنت</h3>
+<p>صمم جدولين مرتبطين: طلاب ومقررات، مع جدول ثالث يربط بينهما. اكتب استعلاما يعطي اسم كل طالب مع عدد مقرراته.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">صممت قاعدة البيانات هذه:
+
+[المخطط والاستعلامات]
+
+قيم التصميم:
+هل المفاتيح الأساسية والأجنبية صحيحة
+هل هناك بيانات مكررة كان يمكن تجنبها
+هل استعلامي يعطي نتيجة صحيحة للطالب الذي لا يسجل أي مقرر
+هل استخدمت وسائط الاستعلام أم دمجت القيم في النص
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>الطالب بلا مقررات لن يظهر في ربط عادي. ابحث عن نوع الربط الذي يبقيه.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا نستخدم علامات الاستفهام بدل دمج القيم في نص الاستعلام؟</li><li>ما الفرق بين INNER JOIN و LEFT JOIN؟</li><li>ما وظيفة commit ولماذا قد تختفي بياناتك بدونه؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>أضف فهرسا index على العمود الذي تبحث به كثيرا، وقس الفرق على بيانات كبيرة.</p>
+<h3>مشروع مصغر</h3>
+<p><strong>مشروع مصغر</strong>: نظام صغير لإدارة مكتبة: كتب ومستعيرون وعمليات استعارة، مع أوامر لإضافة كتاب وتسجيل استعارة وعرض الكتب المتأخرة. اكتبه بنفسك واستخدم Claude للمراجعة فقط.</p>
+<h1 class="chapter" id="ch14"><span class="num">الفصل الرابع عشر</span>Git: تاريخ عملك</h1><p class="lead">Git ليس أداة للفرق فقط. هو شبكة الأمان التي تسمح لك بتجربة أي شيء دون خوف.</p>
+<h2 id="ch14-s1">الدورة اليومية</h2>
+<p>أغلب من يتعلم Git يحفظ أوامر ولا يفهم النموذج. النموذج بسيط: شجرة عمل، ومنطقة تجهيز، ومستودع. وكل أمر ينقل شيئا بين هذه الثلاثة.</p>
+<div class="codewrap"><div class="caption">الدورة الكاملة</div><pre class="code">git status
+git add src/calculator.py
+git commit -m "Add average calculation"
+
+git log --oneline
+git diff HEAD~1
+
+git checkout -b feature/report
+git switch main
+git merge feature/report</pre></div>
+<h3>مهمتك أنت</h3>
+<p>أنشئ مستودعا جديدا، وسجل خمسة commits تمثل تطور برنامج صغير، ثم أنشئ فرعا وجرب فيه تغييرا، ثم ادمجه. ثم تراجع عن آخر commit دون فقدان التغييرات.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">نفذت هذه العمليات في Git:
+
+[الأوامر التي نفذتها ومخرجاتها]
+
+قيم:
+هل رسائل commit تصف السبب أم تصف الملفات
+هل كانت commits بحجم مناسب أم كبيرة جدا
+هل الأمر الذي استخدمته للتراجع هو الأنسب لحالتي
+ما الذي كان سيحدث لو استخدمت reset --hard بدلا منه
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>هناك فرق جوهري بين تراجع يحتفظ بتغييراتك في شجرة العمل وتراجع يمحوها. اعرف أيهما نفذت قبل أن تنفذه.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>ما الفرق بين git reset و git revert؟</li><li>ماذا تفعل منطقة التجهيز staging area ولماذا هي مفيدة؟</li><li>متى تنشئ فرعا جديدا؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>اكتب ملف .gitignore مناسبا لمشروع بايثون، وتأكد أن ملفات البيئة والذاكرة المؤقتة مستبعدة.</p>
+<h1 class="chapter" id="ch15"><span class="num">الفصل الخامس عشر</span>الاختبارات</h1><p class="lead">الاختبار ليس عبئا إضافيا. هو ما يسمح لك بتغيير الكود دون خوف، وهو أوضح توثيق لما يفترض أن يفعله.</p>
+<h2 id="ch15-s1">اختبار الوحدة</h2>
+<p>الاختبار الجيد يصف سلوكا واحدا، ويفشل لسبب واحد، ويقرأ اسمه فيفهم القارئ ما الذي انكسر دون فتح الكود.</p>
+<div class="codewrap"><div class="caption">اختبارات بسيطة</div><pre class="code">import pytest
+from calculator import average
+
+
+def test_average_of_positive_numbers():
+    assert average([2, 4, 6]) == 4
+
+
+def test_average_of_single_value():
+    assert average([7]) == 7
+
+
+def test_average_of_empty_list_raises():
+    with pytest.raises(ValueError):
+        average([])</pre></div>
+<h3>مهمتك أنت</h3>
+<p>اكتب اختبارات لدالة كتبتها في فصل سابق. غط المسار الطبيعي والحدود وحالة يجب أن تفشل فيها الدالة عمدا. اكتب الاختبارات قبل أن تصلح أي خطأ تجده.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">كتبت هذه الاختبارات:
+
+[الاختبارات]
+
+قيمها:
+هل يختبر كل اختبار سلوكا واحدا
+هل أسماء الاختبارات تصف السلوك أم تصف الدالة
+ما الحالة الحدية التي لم أغطها
+هل هناك اختبار سينجح حتى لو كسرت الدالة
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>اختبار جيد يفشل عندما تكسر الدالة عمدا. جرب أن تفسد سطرا في الدالة وانظر: هل فشل اختبار؟</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا يجب أن يكون الاختبار مستقلا عن ترتيب التنفيذ؟</li><li>ما الفرق بين اختبار الوحدة واختبار التكامل؟</li><li>متى يكون الاختبار الذي ينجح دائما عديم القيمة؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>اجعل الاختبارات تعمل بأمر واحد، وسجل ذلك الأمر في CLAUDE.md ليعرفه Claude في كل جلسة.</p>
+<h1 class="chapter" id="ch16"><span class="num">الفصل السادس عشر</span>التصحيح المنهجي</h1><p class="lead">المبرمج المبتدئ يغير أشياء حتى يختفي الخطأ. المبرمج المحترف يضع فرضية ويختبرها.</p>
+<h2 id="ch16-s1">من الخطأ إلى السبب في خمس خطوات</h2>
+<p>التغيير العشوائي قد يخفي الخطأ ولا يزيله، فيعود لاحقا في مكان أسوأ. المنهج يوصلك إلى السبب لا إلى اختفاء العرض.</p>
+<div class="codewrap"><div class="caption">أدوات التتبع الأساسية</div><pre class="code">import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+def divide(a, b):
+    logging.debug("divide called with a=%s b=%s", a, b)
+    if b == 0:
+        logging.warning("division by zero attempted")
+        raise ValueError("b must not be zero")
+    return a / b
+
+
+# stop and inspect at this point
+# breakpoint()</pre></div>
+<h3>مهمتك أنت</h3>
+<p>خذ كودا لديك فيه خطأ. اتبع الخطوات الخمس: أعد إنتاج الخطأ بثبات، ثم قلص الحالة إلى أصغر مثال يظهره، ثم ضع فرضية، ثم اختبرها، ثم أصلح السبب لا العرض.</p>
+<div class="callout warn"><div class="t">قبل أن تكمل</div><p>اكتب الحل بنفسك أولا، ولو كان خاطئا. البرومبت التالي مصمم لمراجعة محاولتك، لا لكتابتها بدلا منك. إذا نسخت الحل جاهزا فلن يحدث تعلم.</p></div>
+<h3>برومبت المراجعة</h3>
+<div class="promptbox standalone"><div class="lbl">أرسل هذا إلى Claude Code بعد أن تكتب محاولتك</div><div class="txt">تتبعت خطأ بهذه الطريقة:
+
+الخطأ:
+[الخطأ]
+أصغر حالة تظهره:
+[الحالة]
+فرضيتي:
+[الفرضية]
+كيف اختبرتها:
+[الاختبار]
+ما اكتشفته:
+[النتيجة]
+
+قيم منهجي:
+هل كانت فرضيتي قابلة للاختبار أم عامة
+هل قلصت الحالة بما يكفي
+هل أصلحت السبب أم العرض
+ما الخطوة التي تخطيتها وكانت ستوفر علي وقتا
+قواعد ثابتة:
+لا تكتب الحل الصحيح كاملا.
+اشرح سبب كل خطأ لا الخطأ فقط.
+إذا كان الحل صحيحا لكن يمكن تحسينه، قل ما الأفضل ولماذا.
+انته بسؤال واحد يدفعني للخطوة التالية.</div></div>
+<h3>تلميح إن تعثرت</h3>
+<div class="callout tip"><div class="t">تلميح</div><p>أقوى سؤال في التصحيح ليس «لماذا يفشل؟» بل «متى لا يفشل؟». الفرق بين الحالتين يحوي السبب.</p></div>
+<h3>اختبر فهمك</h3>
+<ol class="n"><li>لماذا يعتبر تقليص الحالة أهم خطوة في التصحيح؟</li><li>ما الفرق بين الطباعة للتتبع واستخدام سجل logging؟</li><li>متى تستخدم نقطة توقف breakpoint بدل الطباعة؟</li></ol>
+<h3>خطوة التحسين</h3>
+<p>استبدل كل print للتتبع في مشروعك بـ logging بمستويات مناسبة، حتى تستطيع إسكاتها دون حذفها.</p>
+<h1 class="chapter" id="ch17"><span class="num">الفصل السابع عشر</span>أساسيات الأمان والكود النظيف</h1><p class="lead">لن تكتب نظاما آمنا بقراءة فصل واحد. لكن ثلاثة أخطاء تتكرر عند كل مبتدئ، وتجنبها يرفع مستواك فورا.</p>
+<h2 id="ch17-s1">الخطأ الأول: الأسرار في الكود</h2>
+<p>المفتاح المكتوب داخل الكود يصل إلى Git، ومن Git إلى كل من نسخ المستودع، وإلى الأبد حتى لو حذفته في commit لاحق.</p>
+<div class="codewrap"><div class="caption">الصواب: من متغيرات البيئة</div><pre class="code">import os
+
+api_key = os.environ.get("API_KEY")
+if not api_key:
+    raise RuntimeError("API_KEY is not set")</pre></div>
+<div class="promptbox standalone filebox"><div class="lbl">.gitignore</div><div class="txt">.env
+.env.local
+__pycache__/
+*.pyc
+.venv/
+*.db</div></div>
+<div class="callout warn"><div class="t">إذا تسرب مفتاح</div><p>لا يكفي حذفه في commit جديد، فهو باق في تاريخ المستودع. أبطل المفتاح من لوحة الخدمة وأنشئ غيره. هذه هي الخطوة الوحيدة الفعالة.</p></div>
+<h2 id="ch17-s6">الخطأ الثاني: الثقة في المدخلات</h2>
+<p>أي شيء يأتي من خارج برنامجك غير موثوق: إدخال المستخدم، والملف، ورد الواجهة البرمجية. تحقق منه قبل استخدامه، ولا تدمجه في استعلام أو أمر نظام.</p>
+<div class="codewrap"><div class="caption">الفرق الذي يمنع حقن SQL</div><pre class="code"># never do this
+cur.execute("SELECT * FROM users WHERE name = '" + name + "'")
+
+# always do this
+cur.execute("SELECT * FROM users WHERE name = ?", (name,))</pre></div>
+<h2 id="ch17-s9">الخطأ الثالث: رسائل خطأ تكشف الداخل</h2>
+<p>رسالة الخطأ التي تعرض مسار الملف على الخادم أو نص الاستعلام تساعد المهاجم أكثر مما تساعد المستخدم. اعرض رسالة مفهومة، وسجل التفاصيل في السجل لا على الشاشة.</p>
+<h2 id="ch17-s11">الكود النظيف في خمس قواعد</h2>
+<ol class="n"><li>اسم يشرح نفسه أفضل من تعليق يشرح اسما سيئا.</li><li>دالة واحدة لمسؤولية واحدة، وطولها يقرأ بلا تمرير الشاشة.</li><li>لا تكرر نفسك، لكن لا تجرد قبل أن يتكرر الشيء ثلاث مرات.</li><li>التعليق يشرح لماذا لا ماذا. ماذا يقولها الكود نفسه.</li><li>احذف الكود الميت. Git يحتفظ به إن احتجته.</li></ol>
+<div class="promptbox standalone"><div class="lbl">برومبت مراجعة نظافة الكود</div><div class="txt">راجع نظافة هذا الكود، لا صحته.
+
+[الكود]
+
+أعطني ملاحظات على:
+أسماء غامضة أو مضللة
+دوال تفعل أكثر من شيء
+تكرار كان يمكن تجنبه
+تعليقات تشرح ماذا بدل لماذا
+كود ميت أو غير مستخدم
+
+لكل ملاحظة: الموضع، والسبب، والبديل موصوفا بكلمات.
+لا تعد كتابة الكود.</div></div>
+<h1 class="chapter" id="ch18"><span class="num">الفصل الثامن عشر</span>ثلاثة مشاريع متدرجة</h1><p class="lead">الدروس تبني المعرفة، والمشاريع تبني المهارة. نفذ الثلاثة بالترتيب، وطبق في كل واحد سير عمل المراحل بدل الارتجال.</p>
+<h2 id="ch18-s1">المشروع الأول: مدير مهام في الطرفية</h2>
+<ul class="b"><li><strong>ما يغطيه</strong>: القوائم والقواميس والملفات والدوال ومعالجة الأخطاء.</li><li><strong>المطلوب</strong>: إضافة مهمة، وعرض المهام، وإتمام مهمة، وحذف مهمة، وحفظ في ملف JSON.</li><li><strong>معيار الانتهاء</strong>: تغلق البرنامج وتفتحه فتجد مهامك كما تركتها.</li><li><strong>التحدي</strong>: تعامل بهدوء مع ملف تالف أو مفقود بدل الانهيار.</li></ul>
+<h2 id="ch18-s3">المشروع الثاني: محلل ملفات نصية</h2>
+<ul class="b"><li><strong>ما يغطيه</strong>: الملفات والوحدات والاختبارات وهياكل البيانات.</li><li><strong>المطلوب</strong>: يقرأ مجلدا من الملفات النصية ويخرج تقريرا: عدد الكلمات، وأكثر الكلمات تكرارا، ومتوسط طول الجملة.</li><li><strong>معيار الانتهاء</strong>: منطق التحليل في وحدة مستقلة لها اختبارات تعمل بلا ملفات حقيقية.</li><li><strong>التحدي</strong>: اجعله يعمل على النص العربي بشكل صحيح، وانتبه للترميز.</li></ul>
+<h2 id="ch18-s5">المشروع الثالث: خدمة صغيرة بقاعدة بيانات</h2>
+<ul class="b"><li><strong>ما يغطيه</strong>: قواعد البيانات والواجهات البرمجية والأمان والاختبارات و Git.</li><li><strong>المطلوب</strong>: تخزين سجلات في SQLite، وواجهة تستدعي خدمة خارجية لإثراء البيانات، وتقرير.</li><li><strong>معيار الانتهاء</strong>: لا سر في الكود، وكل مدخل خارجي متحقق منه، والاختبارات تمر.</li><li><strong>التحدي</strong>: اكتب README يستطيع شخص آخر تشغيل المشروع باتباعه وحده.</li></ul>
+<h2 id="ch18-s7">كيف تدير كل مشروع</h2>
+<ol class="steps"><li><span class="sh">اكتب المتطلبات أولا</span>في ملف REQUIREMENTS.md، قبل أي كود.</li><li><span class="sh">افتح فرعا لكل ميزة</span>ولا تعمل على الفرع الرئيسي.</li><li><span class="sh">اكتب أنت، وراجع Claude</span>استخدم برومبتات المراجعة لا برومبتات التنفيذ.</li><li><span class="sh">اختبر قبل الاعتماد</span>شغل الاختبارات ثم <code class="inline">/diff</code> ثم commit.</li><li><span class="sh">اكتب ما تعلمته</span>بعد كل مشروع، ثلاث قواعد تطبقها في الذي يليه.</li></ol>
+<div class="callout tip"><div class="t">علامة أنك تعلمت فعلا</div><p>عندما تنظر إلى كود كتبته قبل شهر وتجد فيه ما تريد تغييره، فقد تعلمت. وعندما تستطيع شرح سبب كل سطر كتبته لشخص آخر، فقد أتقنت.</p></div>
+<section class="endpage">
+  <h1 class="chapter"><span class="num">THE END</span>الخلاصة والخطوة التالية</h1>
+  <p class="lead">القاعدة التي يقوم عليها هذا الدليل كله: الأداة تسرع من يعرف، ولا تصنع من لا يعرف. استخدمها لتراجعك وتختبرك وتشرح لك سبب خطئك، لا لتكتب بدلا عنك.</p>
+<h2>خطتك بعد هذا الدليل</h2>
+<ol class="n"><li>أعد قراءة الفصل الثاني واضبط CLAUDE.md التعليمي إن لم تفعل بعد.</li><li>نفذ درسا واحدا يوميا، مع كتابة المحاولة قبل المراجعة.</li><li>أنجز المشاريع الثلاثة بالترتيب، ولا تتخطى واحدا.</li><li>بعد كل مشروع، اكتب ثلاث قواعد تعلمتها وضعها في CLAUDE.md.</li><li>انتقل بعدها إلى بناء موقع أو تطبيق حقيقي.</li></ol>
+<h2>بقية السلسلة</h2>
+<ul class="b"><li>Claude Code من الصفر إلى الاحتراف — لإتقان الأداة نفسها.</li><li>ابن موقعك الأول مع Claude Code — أول مشروع حقيقي كامل.</li><li>ابن تطبيقك الأول مع Claude Code — تطبيق هاتف من الفكرة إلى البناء.</li></ul>
+<div class="callout note"><div class="t">تنبيه عن التاريخ</div><p>أوامر Claude Code وأسماء أوضاعه في هذا الدليل مأخوذة من التوثيق الرسمي بتاريخ 6 سبتمبر 2026، والإصدار المستقر من Python وقت المراجعة هو 3.14. المفاهيم البرمجية نفسها لا ترتبط بإصدار.</p></div>
+  <div class="endcard">
+    <div class="h">برومبتات عربية</div>
+    <p>هذا المنتج من إنتاج قناة برومبتات عربية.<br>لمتابعة الأدلة والبرومبتات الجديدة:</p>
+    <p><a href="https://t.me/PromptsArabic">https://t.me/PromptsArabic</a></p>
+  </div>
+</section></body></html>

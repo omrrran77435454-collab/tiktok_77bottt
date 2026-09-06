@@ -337,6 +337,8 @@ table.data tr:nth-child(even) td { background: #FCFAF6; }
   padding-bottom: 1.2mm; border-bottom: .25mm solid var(--rule-2);
 }
 .promptbox.standalone { margin: 0 0 5.5mm 0; break-inside: avoid; }
+.promptbox.filebox .lbl { font-family: "PlexMono"; direction: ltr; text-align: left;
+  font-size: 8pt; letter-spacing: .02em; }
 .promptbox .txt {
   font-size: 10.2pt; line-height: 1.66; color: var(--ink); white-space: pre-wrap;
 }
@@ -473,7 +475,7 @@ table.data tr:nth-child(even) td { background: #FCFAF6; }
 <p>الأمثلة من أكثر الطرق موثوقية لضبط الشكل والنبرة والبنية. الإرشادات الرسمية تنصح بأن تكون قريبة من حالتك الفعلية، ومتنوعة تغطي الحالات الحدية، وموضوعة داخل وسوم مثل &lt;example&gt; أو &lt;examples&gt;، وبعدد ثلاثة إلى خمسة أمثلة لأفضل نتيجة. برومبت رقم 16 في هذه المكتبة تطبيق مباشر لهذه القاعدة.</p>
 <h2 id="ch2-s9">الوسوم لفصل الأجزاء</h2>
 <p>عندما يخلط البرومبت تعليمات وسياقا وأمثلة ومدخلات، تساعد وسوم XML النموذج على تمييز كل نوع. التوثيق يوصي بأسماء وسوم واضحة ومتسقة، وبتداخلها عندما يكون للمحتوى تسلسل طبيعي.</p>
-<div class="codewrap"><div class="caption">شكل الوسوم داخل برومبت</div><pre class="code">&lt;المهمة&gt;
+<div class="promptbox standalone filebox"><div class="lbl">بنية برومبت بوسوم عربية</div><div class="txt">&lt;المهمة&gt;
 ...
 &lt;/المهمة&gt;
 
@@ -483,7 +485,7 @@ table.data tr:nth-child(even) td { background: #FCFAF6; }
 
 &lt;شكل_المخرج&gt;
 ...
-&lt;/شكل_المخرج&gt;</pre></div>
+&lt;/شكل_المخرج&gt;</div></div>
 <h2 id="ch2-s12">معالجة نقص المعلومات</h2>
 <p>أخطر سلوك في أي أداة ذكاء اصطناعي هو ملء الفراغ بالتخمين. لهذا يتكرر في هذه المكتبة سطر واحد بصيغ مختلفة: إذا كانت معلومة ضرورية ناقصة، اذكرها واسأل عنها ولا تفترض قيمة من عندك. أضف هذا السطر إلى أي برومبت تكتبه بنفسك.</p>
 <h2 id="ch2-s14">طول البرومبت</h2>

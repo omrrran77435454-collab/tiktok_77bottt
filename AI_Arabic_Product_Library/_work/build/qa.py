@@ -133,7 +133,11 @@ def pdf_report(pdf_path, canonical_path, png_dir=None, dpi=110):
                 "%d/%d sampled Arabic words are not findable by PDF search: %s"
                 % (len(unfindable), len(sample), unfindable[:10])))
         # authoring rules that keep variables copy-safe
-        digit_vars = sorted(set(re.findall(r"\[[^\]\n]*[0-9][^\]\n]*\]", canon)))
+        # Only template variables count: a bracket that holds Arabic text. Python
+        # list literals such as [1, 2, 3] live inside ASCII code blocks and are
+        # not affected by bidi reordering.
+        digit_vars = sorted({v for v in re.findall(r"\[[^\]\n]{1,40}\]", canon)
+                             if re.search(r"[ء-ي]", v) and re.search(r"[0-9]", v)})
         r["checks"]["variables_with_digits"] = digit_vars
         if digit_vars:
             r["issues"].append(("MAJOR",
