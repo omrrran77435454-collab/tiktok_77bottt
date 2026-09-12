@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 520" width="620" height="520" role="img" aria-label="رسمة كرتونية لطالب يستخدم الحاسوب بجانب روبوت ذكاء اصطناعي">
+  <defs>
+    <clipPath id="screenClip"><rect x="222" y="300" width="176" height="70" rx="8"/></clipPath>
+  </defs>
+
+  <!-- خلفيات ناعمة -->
+  <circle cx="310" cy="250" r="205" fill="#DDF3E7"/>
+  <circle cx="310" cy="250" r="205" fill="none" stroke="#C7E8D6" stroke-width="2" stroke-dasharray="10 14"/>
+  <circle cx="486" cy="128" r="52" fill="#FFE3D5"/>
+  <circle cx="128" cy="360" r="40" fill="#FDF1D3"/>
+  <ellipse cx="310" cy="468" rx="215" ry="26" fill="#CFEADB"/>
+
+  <!-- نباتات -->
+  <g fill="#44A47A">
+    <path d="M92 468c0-44 20-74 52-88-10 34-12 60-8 88z"/>
+    <path d="M92 468c-26-22-34-48-30-78 22 20 36 44 40 78z" fill="#2F8C68"/>
+    <rect x="86" y="462" width="46" height="8" rx="4" fill="#24735C"/>
+  </g>
+  <g fill="#44A47A">
+    <path d="M520 468c4-40 24-66 56-76-14 30-18 52-16 76z"/>
+    <rect x="512" y="462" width="50" height="8" rx="4" fill="#24735C"/>
+  </g>
+
+  <!-- كتب -->
+  <g>
+    <rect x="418" y="424" width="120" height="18" rx="6" fill="#F2663D"/>
+    <rect x="428" y="406" width="110" height="18" rx="6" fill="#F9C74F"/>
+    <rect x="438" y="388" width="100" height="18" rx="6" fill="#44A47A"/>
+    <rect x="424" y="430" width="26" height="6" rx="3" fill="#ffffff" opacity=".55"/>
+    <rect x="434" y="412" width="26" height="6" rx="3" fill="#ffffff" opacity=".55"/>
+  </g>
+
+  <!-- الطالب -->
+  <g>
+    <!-- الجسم -->
+    <path d="M222 440v-98c0-48 39-87 87-87s87 39 87 87v98z" fill="#24735C"/>
+    <path d="M222 440v-98c0-31 16-58 41-73l26 40-24 131z" fill="#1F6450"/>
+    <!-- الأكمام -->
+    <rect x="196" y="288" width="52" height="132" rx="26" fill="#2F8C68"/>
+    <rect x="372" y="288" width="52" height="132" rx="26" fill="#2F8C68"/>
+    <!-- الرقبة -->
+    <rect x="288" y="228" width="44" height="46" rx="18" fill="#E8B182"/>
+    <!-- الرأس -->
+    <circle cx="310" cy="186" r="62" fill="#F5C8A0"/>
+    <!-- الأذنان -->
+    <circle cx="250" cy="192" r="12" fill="#E8B182"/>
+    <circle cx="370" cy="192" r="12" fill="#E8B182"/>
+    <!-- الشعر -->
+    <path d="M248 176c2-40 30-62 62-62s60 22 62 62c-10-16-22-24-36-26-12 16-38 22-58 12-10 6-20 14-30 14z" fill="#3B2B23"/>
+    <!-- العينان -->
+    <circle cx="288" cy="188" r="8" fill="#2C2118"/>
+    <circle cx="334" cy="188" r="8" fill="#2C2118"/>
+    <circle cx="290.5" cy="185" r="2.6" fill="#ffffff"/>
+    <circle cx="336.5" cy="185" r="2.6" fill="#ffffff"/>
+    <!-- الحاجبان -->
+    <path d="M276 172c6-6 16-7 23-3" stroke="#3B2B23" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M322 169c7-4 17-3 23 3" stroke="#3B2B23" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <!-- الابتسامة -->
+    <path d="M292 210c10 11 26 11 36 0" stroke="#2C2118" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <!-- خدود -->
+    <circle cx="268" cy="206" r="9" fill="#F2A98C" opacity=".55"/>
+    <circle cx="352" cy="206" r="9" fill="#F2A98C" opacity=".55"/>
+    <!-- ياقة -->
+    <path d="M286 250l24 24 24-24" stroke="#153E35" stroke-width="7" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- الحاسوب المحمول -->
+  <g>
+    <rect x="212" y="288" width="196" height="94" rx="14" fill="#153E35"/>
+    <rect x="222" y="298" width="176" height="74" rx="9" fill="#FFFDF9"/>
+    <g clip-path="url(#screenClip)">
+      <rect x="222" y="298" width="176" height="74" fill="#FFFDF9"/>
+      <circle cx="310" cy="336" r="26" fill="#DDF3E7"/>
+      <text x="310" y="345" text-anchor="middle" font-family="Verdana, Arial, sans-serif" font-size="22" font-weight="bold" fill="#24735C">AI</text>
+    </g>
+    <rect x="186" y="382" width="248" height="18" rx="9" fill="#24735C"/>
+    <rect x="186" y="382" width="248" height="8" rx="4" fill="#2F8C68"/>
+    <rect x="286" y="386" width="48" height="6" rx="3" fill="#153E35" opacity=".5"/>
+    <!-- اليدان على الجهاز -->
+    <circle cx="222" cy="384" r="17" fill="#F5C8A0"/>
+    <circle cx="398" cy="384" r="17" fill="#F5C8A0"/>
+  </g>
+
+  <!-- الروبوت الصغير -->
+  <g>
+    <rect x="446" y="242" width="104" height="92" rx="26" fill="#FFFFFF" stroke="#CFE8DA" stroke-width="3"/>
+    <rect x="464" y="262" width="68" height="46" rx="16" fill="#153E35"/>
+    <circle cx="486" cy="285" r="7" fill="#44A47A"/>
+    <circle cx="510" cy="285" r="7" fill="#44A47A"/>
+    <path d="M492 297c4 4 10 4 14 0" stroke="#44A47A" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <rect x="492" y="222" width="12" height="22" rx="6" fill="#44A47A"/>
+    <circle cx="498" cy="216" r="10" fill="#F9C74F"/>
+    <rect x="432" y="272" width="16" height="40" rx="8" fill="#44A47A"/>
+    <rect x="548" y="272" width="16" height="40" rx="8" fill="#44A47A"/>
+    <rect x="464" y="332" width="22" height="16" rx="7" fill="#24735C"/>
+    <rect x="510" y="332" width="22" height="16" rx="7" fill="#24735C"/>
+  </g>
+
+  <!-- درع الحماية -->
+  <g transform="translate(96,150)">
+    <path d="M40 0l38 15v30c0 26-16 45-38 54C18 90 2 71 2 45V15z" fill="#F2663D"/>
+    <path d="M22 46l12 12 24-26" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+
+  <!-- نقاط زينة -->
+  <g fill="#44A47A" opacity=".5">
+    <circle cx="176" cy="118" r="6"/><circle cx="206" cy="92" r="4"/><circle cx="556" cy="392" r="6"/><circle cx="586" cy="360" r="4"/>
+  </g>
+</svg>

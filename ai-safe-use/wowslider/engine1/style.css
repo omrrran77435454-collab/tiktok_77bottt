@@ -1,0 +1,215 @@
+/* ==========================================================================
+   WOWSlider - ملف تنسيق شريط الصور المتحرك (engine1/style.css)
+   ألوان الشريط مأخوذة من هوية الموقع (أخضر + برتقالي)
+   ========================================================================== */
+
+#wowslider-container1 {
+  position: relative;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 18px 44px rgba(21, 62, 53, .12);
+  background: #DDF3E7;
+  direction: rtl;
+}
+
+/* منطقة الصور: نسبة ثابتة حتى لا تقفز الصفحة أثناء التحميل */
+#wowslider-container1 .ws_images {
+  position: relative;
+  width: 100%;
+  padding-top: 38.33%;            /* 460 / 1200 */
+  overflow: hidden;
+}
+
+#wowslider-container1 .ws_images ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  inset: 0;
+}
+
+#wowslider-container1 .ws_images li {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .8s ease;
+}
+
+#wowslider-container1 .ws_images li.ws_active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+#wowslider-container1 .ws_images img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;            /* إظهار الرسمة كاملة دون قص */
+  display: block;
+}
+
+/* لون خلفية كل شريحة (مأخوذ من ألوان الرسمة نفسها) */
+#wowslider-container1 .ws_images li:nth-child(1) { background: #E9F6EF; }
+#wowslider-container1 .ws_images li:nth-child(2) { background: #FFF1E9; }
+#wowslider-container1 .ws_images li:nth-child(3) { background: #FFFBEF; }
+
+/* بطاقة النص فوق الشريحة */
+#wowslider-container1 .ws_caption {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 4%;          /* في الاتجاه العربي: الجهة اليمنى */
+  transform: translateY(-50%);
+  width: min(430px, 46%);
+  background: rgba(255, 253, 249, .94);
+  border: 1px solid #E7E5DF;
+  border-radius: 22px;
+  padding: 1.4rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(21, 62, 53, .10);
+  z-index: 5;
+}
+
+#wowslider-container1 .ws_caption h3 {
+  margin: 0 0 .5rem;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #153E35;
+  line-height: 1.5;
+}
+
+#wowslider-container1 .ws_caption p {
+  margin: 0;
+  color: #66756F;
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+#wowslider-container1 .ws_caption .ws_caption_link {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-top: .9rem;
+  background: #24735C;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: .95rem;
+  padding: .55rem 1.3rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+#wowslider-container1 .ws_caption .ws_caption_link:hover { background: #153E35; color: #fff; }
+
+@keyframes wsCaptionInMobile {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* حركة دخول النص */
+#wowslider-container1 .ws_caption.ws_caption_in { animation: wsCaptionIn .7s ease both; }
+@keyframes wsCaptionIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(-22px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+/* أزرار التالي والسابق */
+#wowslider-container1 .ws_next,
+#wowslider-container1 .ws_prev {
+  position: absolute;
+  bottom: 16px;
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 253, 249, .92);
+  color: #153E35;
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 8;
+  box-shadow: 0 6px 18px rgba(21, 62, 53, .14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .2s ease, color .2s ease;
+}
+/* في الاتجاه العربي: زر التالي في أقصى اليسار وبجانبه زر السابق */
+#wowslider-container1 .ws_next { inset-inline-end: 16px; }
+#wowslider-container1 .ws_prev { inset-inline-end: 72px; }
+#wowslider-container1 .ws_next:hover,
+#wowslider-container1 .ws_prev:hover { background: #F2663D; color: #fff; }
+#wowslider-container1 .ws_next:focus-visible,
+#wowslider-container1 .ws_prev:focus-visible { outline: 3px solid #44A47A; outline-offset: 2px; }
+
+/* النقاط السفلية */
+#wowslider-container1 .ws_bullets {
+  position: absolute;
+  bottom: 14px;
+  inset-inline: 0;
+  display: flex;
+  justify-content: center;
+  gap: .5rem;
+  z-index: 8;
+}
+#wowslider-container1 .ws_bullets button {
+  width: 11px;
+  height: 11px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(21, 62, 53, .25);
+  cursor: pointer;
+  transition: all .25s ease;
+}
+#wowslider-container1 .ws_bullets button.ws_selected { background: #F2663D; width: 30px; border-radius: 999px; }
+#wowslider-container1 .ws_bullets button:focus-visible { outline: 3px solid #44A47A; outline-offset: 3px; }
+
+/* شريط تقدم بسيط يوضح وقت الانتقال */
+#wowslider-container1 .ws_progress {
+  position: absolute;
+  bottom: 0;
+  inset-inline-start: 0;
+  height: 4px;
+  width: 0;
+  background: #44A47A;
+  opacity: .75;
+  border-start-end-radius: 4px;
+  z-index: 8;
+}
+
+/* التجاوب: على الشاشات المتوسطة والصغيرة تصبح الرسمة في الأعلى والنص تحتها */
+@media (max-width: 992px) {
+  #wowslider-container1 .ws_images { padding-top: 76%; }
+  #wowslider-container1 .ws_images img { object-position: center top; }
+
+  #wowslider-container1 .ws_caption {
+    top: auto;
+    bottom: 74px;
+    inset-inline: 22px;
+    width: auto;
+    transform: none;
+    padding: 1.2rem 1.4rem;
+  }
+  #wowslider-container1 .ws_caption.ws_caption_in { animation: wsCaptionInMobile .6s ease both; }
+  #wowslider-container1 .ws_caption h3 { font-size: 1.35rem; }
+  #wowslider-container1 .ws_caption p { font-size: .98rem; }
+}
+
+@media (max-width: 576px) {
+  #wowslider-container1 { border-radius: 20px; }
+  #wowslider-container1 .ws_images { padding-top: 105%; }
+
+  #wowslider-container1 .ws_caption {
+    bottom: 70px;
+    inset-inline: 12px;
+    padding: 1rem;
+  }
+  #wowslider-container1 .ws_caption h3 { font-size: 1.1rem; }
+
+  #wowslider-container1 .ws_next,
+  #wowslider-container1 .ws_prev { width: 38px; height: 38px; bottom: 12px; }
+  #wowslider-container1 .ws_next { inset-inline-end: 12px; }
+  #wowslider-container1 .ws_prev { inset-inline-end: 58px; }
+  #wowslider-container1 .ws_bullets { bottom: 24px; }
+}

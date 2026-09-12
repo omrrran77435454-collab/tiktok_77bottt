@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" width="320" height="260" role="img" aria-label="رسمة كتاب مفتوح مع مقالات">
+  <circle cx="160" cy="130" r="112" fill="#FFE3D5"/>
+  <path d="M52 84h96c8 0 12 5 12 12v104H64c-7 0-12-5-12-12z" fill="#FFFDF9" stroke="#E7E5DF" stroke-width="3"/>
+  <path d="M268 84h-96c-8 0-12 5-12 12v104h96c7 0 12-5 12-12z" fill="#FFFFFF" stroke="#E7E5DF" stroke-width="3"/>
+  <path d="M160 96v104" stroke="#24735C" stroke-width="8" stroke-linecap="round"/>
+  <g stroke="#44A47A" stroke-width="8" stroke-linecap="round">
+    <path d="M76 116h62"/><path d="M76 140h62"/><path d="M76 164h40"/>
+  </g>
+  <g stroke="#F2663D" stroke-width="8" stroke-linecap="round">
+    <path d="M182 116h62"/><path d="M182 140h44"/><path d="M182 164h62"/>
+  </g>
+  <circle cx="160" cy="66" r="18" fill="#F9C74F"/>
+  <path d="M152 66l6 6 12-13" stroke="#FFFDF9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

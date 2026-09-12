@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>إنشاء حساب وتسجيل الدخول | AI SAFE</title>
+  <meta name="description" content="واجهة تسجيل دخول وإنشاء حساب مع التحقق من صحة البيانات باستخدام jQuery Validation (نموذج واجهة أمامية للعرض الدراسي).">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+
+  <!-- مكتبات خارجية (نسخ محلية) -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="../vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="../vendor/toastr/toastr.min.css">
+
+  <!-- تنسيقات الموقع -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+
+<body data-base="../">
+
+  <a class="skip-link" href="#main-content">تخطي إلى المحتوى الرئيسي</a>
+
+  <!-- ===================== الهيدر ===================== -->
+  <header class="site-header">
+    <div class="container-page header-inner">
+
+      <a href="../index.html" class="brand" aria-label="الصفحة الرئيسية لموقع AI SAFE">
+        <img src="../images/illustrations/logo.svg" alt="شعار الموقع على شكل درع حماية" class="brand-logo" width="46" height="46">
+        <span>
+          <span class="brand-name">AI SAFE</span>
+          <span class="brand-tag">الاستخدام الآمن للذكاء الاصطناعي</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="القائمة الرئيسية">
+        <a class="nav-item-link" href="../index.html">الرئيسية</a>
+        <a class="nav-item-link" href="../html/tips.html">النصائح</a>
+        <a class="nav-item-link" href="../html/privacy.html">حماية البيانات</a>
+        <a class="nav-item-link" href="../html/articles.html">المقالات</a>
+        <a class="nav-item-link" href="../html/contact.html">تواصل معنا</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn-app btn-secondary-app btn-sm-app" href="../html/account.html#register">
+          <i class="fa-solid fa-user-plus" aria-hidden="true"></i> إنشاء حساب
+        </a>
+        <a class="btn-app btn-primary-app btn-sm-app" href="../html/account.html#login">
+          <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> تسجيل الدخول
+        </a>
+        <button class="menu-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"
+                aria-controls="mobileMenu" aria-label="فتح قائمة التنقل">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- قائمة الجوال (Bootstrap Offcanvas) -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title h5" id="mobileMenuLabel">قائمة الموقع</h2>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="إغلاق القائمة"></button>
+    </div>
+    <div class="offcanvas-body">
+      <nav aria-label="قائمة التنقل للجوال">
+        <a class="mobile-nav-link" href="../index.html"><i class="fa-solid fa-house" aria-hidden="true"></i> الرئيسية</a>
+        <a class="mobile-nav-link" href="../html/tips.html"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> النصائح</a>
+        <a class="mobile-nav-link" href="../html/privacy.html"><i class="fa-solid fa-lock" aria-hidden="true"></i> حماية البيانات</a>
+        <a class="mobile-nav-link" href="../html/articles.html"><i class="fa-solid fa-book-open" aria-hidden="true"></i> المقالات</a>
+        <a class="mobile-nav-link" href="../html/contact.html"><i class="fa-solid fa-headset" aria-hidden="true"></i> تواصل معنا</a>
+      </nav>
+      <hr>
+      <a class="btn-app btn-primary-app btn-block-app mb-2" href="../html/account.html#login">
+        <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> تسجيل الدخول
+      </a>
+      <a class="btn-app btn-secondary-app btn-block-app" href="../html/account.html#register">
+        <i class="fa-solid fa-user-plus" aria-hidden="true"></i> إنشاء حساب
+      </a>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- ترويسة الصفحة -->
+    <section class="page-hero">
+      <div class="container-page">
+        <div class="page-hero-grid">
+          <div>
+            <ul class="breadcrumb-app">
+              <li><a href="../index.html">الرئيسية</a></li>
+              <li>الحساب</li>
+            </ul>
+            <h1>حسابك في AI SAFE</h1>
+            <p>سجّل دخولك أو أنشئ حساباً جديداً لمتابعة النصائح والمقالات. جميع الحقول يتم التحقق منها قبل الإرسال.</p>
+          </div>
+          <div class="page-art">
+            <img src="../images/illustrations/page-account.svg" width="320" height="260" alt="رسمة بطاقة تسجيل دخول آمنة">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="auth-title">
+      <div class="container-page">
+        <h2 id="auth-title" class="visually-hidden">نماذج الحساب</h2>
+
+        <!-- تقسيم باستخدام CSS Grid -->
+        <div class="split-grid">
+
+          <div class="form-card">
+            <!-- التبويبات: تسجيل الدخول / إنشاء حساب -->
+            <div class="auth-tabs" role="tablist" aria-label="اختر نوع النموذج">
+              <button type="button" class="auth-tab active" role="tab" aria-selected="true"
+                      data-target="login" aria-controls="login">
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> تسجيل الدخول
+              </button>
+              <button type="button" class="auth-tab" role="tab" aria-selected="false"
+                      data-target="register" aria-controls="register">
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> إنشاء حساب
+              </button>
+            </div>
+
+            <!-- ========== نموذج تسجيل الدخول ========== -->
+            <section class="auth-panel" id="login" aria-labelledby="login-title">
+              <h2 id="login-title" class="h4">تسجيل الدخول</h2>
+              <p>أدخل بريدك الإلكتروني وكلمة المرور للمتابعة.</p>
+
+              <form id="loginForm" novalidate>
+                <div class="field">
+                  <label class="form-label-app" for="loginEmail">البريد الإلكتروني</label>
+                  <input type="email" class="form-control-app" id="loginEmail" name="loginEmail"
+                         placeholder="example@mail.com" autocomplete="email">
+                </div>
+
+                <div class="field">
+                  <label class="form-label-app" for="loginPassword">كلمة المرور</label>
+                  <input type="password" class="form-control-app" id="loginPassword" name="loginPassword"
+                         placeholder="********" autocomplete="current-password">
+                  <p class="input-hint">8 أحرف على الأقل.</p>
+                </div>
+
+                <button type="submit" class="btn-app btn-primary-app btn-block-app">
+                  <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> دخول
+                </button>
+              </form>
+            </section>
+
+            <!-- ========== نموذج إنشاء حساب ========== -->
+            <section class="auth-panel" id="register" aria-labelledby="register-title" hidden>
+              <h2 id="register-title" class="h4">إنشاء حساب جديد</h2>
+              <p>أكمل البيانات التالية، وسيتم التحقق منها قبل الإرسال.</p>
+
+              <form id="registerForm" novalidate>
+                <div class="field">
+                  <label class="form-label-app" for="fullName">الاسم الكامل</label>
+                  <input type="text" class="form-control-app" id="fullName" name="fullName"
+                         placeholder="اكتب اسمك الكامل" autocomplete="name">
+                </div>
+
+                <div class="field">
+                  <label class="form-label-app" for="regEmail">البريد الإلكتروني</label>
+                  <input type="email" class="form-control-app" id="regEmail" name="regEmail"
+                         placeholder="example@mail.com" autocomplete="email">
+                </div>
+
+                <div class="field">
+                  <label class="form-label-app" for="regPhone">رقم الهاتف</label>
+                  <input type="tel" class="form-control-app" id="regPhone" name="regPhone"
+                         placeholder="7XXXXXXXX" autocomplete="tel">
+                </div>
+
+                <div class="field">
+                  <label class="form-label-app" for="regPassword">كلمة المرور</label>
+                  <input type="password" class="form-control-app" id="regPassword" name="regPassword"
+                         placeholder="********" autocomplete="new-password">
+                  <p class="input-hint">8 أحرف على الأقل.</p>
+                </div>
+
+                <div class="field">
+                  <label class="form-label-app" for="regConfirmPassword">تأكيد كلمة المرور</label>
+                  <input type="password" class="form-control-app" id="regConfirmPassword" name="regConfirmPassword"
+                         placeholder="********" autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn-app btn-green-app btn-block-app">
+                  <i class="fa-solid fa-user-plus" aria-hidden="true"></i> إنشاء الحساب
+                </button>
+              </form>
+            </section>
+          </div>
+
+          <aside class="side-note" aria-labelledby="auth-note-title">
+            <div class="feature-icon ic-peach"><i class="fa-solid fa-circle-info" aria-hidden="true"></i></div>
+            <h3 id="auth-note-title">ملاحظة مهمة</h3>
+            <p>
+              هذه الصفحة <strong>نموذج واجهة أمامية (Front-End)</strong> ضمن مشروع مقرر تصميم الويب،
+              ولا يوجد خلفها خادم أو قاعدة بيانات.
+            </p>
+            <ul>
+              <li>لا يتم إرسال البيانات إلى أي جهة.</li>
+              <li>لا يتم تخزين كلمات المرور إطلاقاً.</li>
+              <li>الهدف هو عرض التحقق من صحة البيانات (Validation).</li>
+              <li>بعد نجاح التحقق يظهر إشعار Toastr فقط.</li>
+            </ul>
+
+            <h3>نصيحة أمان</h3>
+            <p>عند إنشاء حساب حقيقي في أي موقع، استخدم كلمة مرور طويلة وغير مكررة، وفعّل التحقق بخطوتين.</p>
+
+            <a class="btn-app btn-green-app btn-block-app mt-2" href="../html/privacy.html">
+              <i class="fa-solid fa-lock" aria-hidden="true"></i> اقرأ صفحة حماية البيانات
+            </a>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- شريط التواصل -->
+    <section class="section">
+      <div class="container-page">
+        <div class="contact-band">
+          <div>
+            <h2><i class="fa-solid fa-paper-plane" aria-hidden="true" style="color:#F2663D"></i> واجهت مشكلة في النموذج؟</h2>
+            <p>تواصل معنا وسنساعدك.</p>
+          </div>
+          <a class="phone-pill" href="tel:+967778672726" aria-label="اتصل بنا على الرقم 967778672726+">
+            <i class="fa-solid fa-phone" aria-hidden="true"></i> +967 778 672 726
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== الفوتر ===================== -->
+  <footer class="site-footer">
+    <div class="container-page">
+      <div class="footer-grid">
+
+        <div>
+          <div class="footer-brand">
+            <img src="../images/illustrations/logo.svg" alt="شعار AI SAFE" width="46" height="46" class="brand-logo">
+            <span>
+              <span class="brand-name">AI SAFE</span>
+              <span class="brand-tag">الاستخدام الآمن للذكاء الاصطناعي</span>
+            </span>
+          </div>
+          <p>معاً لاستخدام أكثر أماناً ومسؤولية للذكاء الاصطناعي.</p>
+        </div>
+
+        <nav aria-labelledby="footer-links-title">
+          <h3 id="footer-links-title">روابط الموقع</h3>
+          <ul class="footer-links">
+            <li><a href="../index.html">الرئيسية</a></li>
+            <li><a href="../html/tips.html">النصائح</a></li>
+            <li><a href="../html/privacy.html">حماية البيانات</a></li>
+            <li><a href="../html/articles.html">المقالات</a></li>
+            <li><a href="../html/contact.html">تواصل معنا</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer-contact">
+          <h3>للتواصل</h3>
+          <p>للاتصال أو المراسلة عبر واتساب:</p>
+          <p><a href="tel:+967778672726"><i class="fa-solid fa-phone" aria-hidden="true"></i> +967 778 672 726</a></p>
+          <p><a href="https://wa.me/967778672726" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> واتساب</a></p>
+        </div>
+
+      </div>
+
+      <p class="footer-bottom">موقع توعوي تعليمي - مشروع مقرر تصميم الويب</p>
+    </div>
+  </footer>
+
+
+  <!-- زر العودة إلى الأعلى -->
+  <button type="button" id="backToTop" class="back-to-top" aria-label="العودة إلى أعلى الصفحة">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- ===================== ملفات JavaScript ===================== -->
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../vendor/toastr/toastr.min.js"></script>
+  <script src="../vendor/jquery-validation/jquery.validate.min.js"></script>
+  <script src="../vendor/jquery-validation/additional-methods.min.js"></script>
+  <script src="../js/validation.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

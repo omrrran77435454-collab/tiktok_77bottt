@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تقرير مشروع: الاستخدام الآمن للذكاء الاصطناعي</title>
+<link rel="stylesheet" href="../fonts/tajawal.css">
+<style>
+  :root{
+    --green-dark:#153E35; --green:#24735C; --green-fresh:#44A47A; --mint:#DDF3E7;
+    --coral:#F2663D; --peach:#FFE3D5; --yellow:#F9C74F;
+    --cream:#FFF9F3; --text:#19332D; --text-2:#55645F; --border:#E7E5DF;
+  }
+  @page { size: A4 portrait; margin: 16mm 14mm; }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:#fff; color:var(--text);
+    font-family:"Tajawal","Noto Kufi Arabic","Segoe UI",Tahoma,Arial,sans-serif;
+    font-size:13.5pt; line-height:2;
+  }
+  .page{ max-width:190mm; margin:0 auto; padding:0 4mm; }
+
+  h1,h2,h3{ color:var(--green-dark); line-height:1.6; margin:0 0 .5rem; }
+  h1{ font-size:26pt; font-weight:800; }
+  h2{ font-size:17pt; font-weight:800; margin-top:1.6rem; }
+  h3{ font-size:14pt; font-weight:700; margin-top:1rem; }
+  p{ margin:0 0 .8rem; }
+  ul,ol{ padding-inline-start:1.4rem; margin:0 0 .9rem; }
+  li{ margin-bottom:.35rem; }
+  strong{ color:var(--green-dark); }
+  code{ background:var(--mint); padding:.1rem .35rem; border-radius:5px; font-size:11.5pt; direction:ltr; display:inline-block; }
+
+  /* الغلاف */
+  .cover{ text-align:center; padding:14mm 0 8mm; page-break-after:always; }
+  .cover .logo{ width:92px; height:92px; }
+  .cover h1{ font-size:30pt; margin-top:1rem; }
+  .cover .sub{ color:var(--coral); font-size:19pt; font-weight:800; margin-bottom:1.2rem; }
+  .cover .course{ display:inline-block; background:var(--mint); color:var(--green);
+     padding:.5rem 1.6rem; border-radius:999px; font-weight:700; font-size:14pt; }
+  .fields{ margin:2rem auto 0; max-width:135mm; text-align:start; }
+  .field-row{ display:flex; align-items:center; gap:.8rem; border-bottom:1.5px dashed var(--border);
+     padding:.65rem .2rem; }
+  .field-row span{ min-width:42mm; font-weight:700; color:var(--green-dark); }
+  .field-row em{ flex:1; color:#c9c9c9; font-style:normal; }
+  .cover-note{ margin-top:1.4rem; color:var(--text-2); font-size:11.5pt; }
+
+  /* الأقسام */
+  section{ page-break-inside:avoid; margin-bottom:.6rem; }
+  .num{ display:inline-flex; align-items:center; justify-content:center;
+     width:30px; height:30px; border-radius:50%; background:var(--green); color:#fff;
+     font-size:12pt; font-weight:700; margin-inline-end:.5rem; vertical-align:middle; }
+
+  .box{ background:var(--cream); border:1px solid var(--border); border-radius:14px;
+     padding:.9rem 1.1rem; margin:.6rem 0 1rem; }
+  .box-mint{ background:var(--mint); border-color:#CFE9DB; }
+  .box-peach{ background:var(--peach); border-color:#F8D3C2; }
+  .box p:last-child, .box ul:last-child{ margin-bottom:0; }
+
+  table{ width:100%; border-collapse:collapse; margin:.6rem 0 1rem; font-size:11.5pt; }
+  caption{ caption-side:top; text-align:start; color:var(--text-2); font-size:11pt; padding-bottom:.3rem; }
+  th,td{ border:1px solid var(--border); padding:.45rem .6rem; text-align:start; vertical-align:top; }
+  thead th{ background:var(--green); color:#fff; font-weight:700; }
+  tbody tr:nth-child(even){ background:#FBFAF7; }
+
+  figure{ margin:.8rem 0 1.2rem; text-align:center; page-break-inside:avoid; }
+  figure img{ max-width:100%; border:1px solid var(--border); border-radius:10px; }
+  figcaption{ color:var(--text-2); font-size:11pt; margin-top:.4rem; }
+  .shot-pair{ display:flex; gap:8px; justify-content:center; align-items:flex-start; }
+  .shot-pair img{ max-height:150mm; }
+  .shot-mobile{ max-height:150mm; }
+
+  .toc ol{ counter-reset:none; }
+  .toc li{ margin-bottom:.2rem; }
+  .page-break{ page-break-before:always; }
+</style>
+</head>
+<body>
+
+<!-- ============ الغلاف ============ -->
+<div class="page cover">
+  <img class="logo" src="../images/illustrations/logo.svg" alt="شعار المشروع">
+  <h1>الاستخدام الآمن للذكاء الاصطناعي</h1>
+  <p class="sub">Safe Use of Artificial Intelligence</p>
+  <p class="course">مشروع مقرر: تصميم الويب</p>
+
+  <div class="fields">
+    <div class="field-row"><span>اسم الطالب</span><em>........................................</em></div>
+    <div class="field-row"><span>الرقم الجامعي</span><em>........................................</em></div>
+    <div class="field-row"><span>القسم</span><em>........................................</em></div>
+    <div class="field-row"><span>المستوى</span><em>........................................</em></div>
+    <div class="field-row"><span>اسم الدكتور</span><em>........................................</em></div>
+    <div class="field-row"><span>العام الجامعي</span><em>........................................</em></div>
+  </div>
+
+  <p class="cover-note">موقع توعوي عربي من نوع Front-End مبني بـ HTML و CSS و JavaScript و Bootstrap و jQuery</p>
+</div>
+
+<div class="page">
+
+<!-- ============ الفهرس ============ -->
+<section class="toc">
+  <h2>محتويات التقرير</h2>
+  <ol>
+    <li>مقدمة المشروع</li>
+    <li>المشكلة التي يعالجها الموقع</li>
+    <li>هدف المشروع</li>
+    <li>الفئة المستهدفة</li>
+    <li>فكرة الموقع</li>
+    <li>خريطة صفحات الموقع</li>
+    <li>شرح الصفحة الرئيسية</li>
+    <li>شرح صفحة النصائح</li>
+    <li>شرح صفحة حماية البيانات</li>
+    <li>شرح صفحة المقالات</li>
+    <li>شرح تسجيل الدخول وإنشاء الحساب</li>
+    <li>شرح صفحة تواصل معنا</li>
+    <li>شرح WOWSlider</li>
+    <li>شرح Grid و Flexbox</li>
+    <li>شرح Responsive Design</li>
+    <li>شرح Media Queries</li>
+    <li>شرح Bootstrap</li>
+    <li>شرح jQuery</li>
+    <li>شرح jQuery Validation</li>
+    <li>شرح Toastr Notification</li>
+    <li>شرح Ajax</li>
+    <li>شرح Bootstrap Modal</li>
+    <li>شرح Font Awesome</li>
+    <li>شرح Semantic HTML</li>
+    <li>شرح هيكل المشروع</li>
+    <li>شرح كيفية تشغيل الموقع</li>
+    <li>جدول متطلبات المقرر الـ14</li>
+    <li>نتائج الاختبارات</li>
+    <li>GitHub</li>
+    <li>شهادة Cursa</li>
+    <li>الخاتمة</li>
+  </ol>
+</section>
+
+<!-- ============ 1 ============ -->
+<section>
+  <h2><span class="num">1</span> مقدمة المشروع</h2>
+  <p>
+    أصبحت أدوات الذكاء الاصطناعي جزءاً من يوم الطالب: نستخدمها لشرح درس، أو تلخيص محاضرة، أو ترتيب فكرة.
+    ومع هذا الانتشار السريع ظهرت أسئلة مهمة: ما الذي يحدث للبيانات التي أكتبها؟ وهل كل إجابة أحصل عليها صحيحة؟
+    وهل استخدامي لهذه الأدوات في الدراسة مقبول أم يُعدّ غشاً؟
+  </p>
+  <p>
+    هذا المشروع موقع عربي توعوي بسيط يجيب عن هذه الأسئلة بلغة واضحة، ويقدّم قواعد عملية يستطيع أي طالب تطبيقها فوراً.
+    الموقع من نوع <strong>Front-End</strong> فقط، أي أنه واجهة أمامية بدون خادم أو قاعدة بيانات،
+    وقد بُني باستخدام HTML و CSS و JavaScript مع مكتبات Bootstrap و jQuery.
+  </p>
+</section>
+
+<!-- ============ 2 ============ -->
+<section>
+  <h2><span class="num">2</span> المشكلة التي يعالجها الموقع</h2>
+  <p>المشكلة ليست في التقنية نفسها، بل في طريقة استخدامها. وأبرز المشكلات التي لاحظناها:</p>
+  <ul>
+    <li>كتابة بيانات شخصية أو سرية داخل أدوات الذكاء الاصطناعي دون التفكير في مصيرها.</li>
+    <li>تصديق أي إجابة لمجرد أنها مكتوبة بصياغة منظمة ومقنعة.</li>
+    <li>نشر معلومات غير مؤكدة، وما أسهل انتشار المعلومة الخاطئة.</li>
+    <li>استخدام الأدوات لإنجاز الواجبات بدل التعلم، فيخسر الطالب المهارة والدرجة معاً.</li>
+    <li>عدم معرفة أي الأدوات موثوقة وأيها يطلب أذونات لا يحتاجها.</li>
+  </ul>
+  <p>
+    المحتوى العربي المبسط الذي يعالج هذه النقاط في مكان واحد قليل، وهذا ما يحاول الموقع تقديمه.
+  </p>
+</section>
+
+<!-- ============ 3 ============ -->
+<section>
+  <h2><span class="num">3</span> هدف المشروع</h2>
+  <ul>
+    <li>نشر وعي عملي حول الاستخدام الآمن للذكاء الاصطناعي بلغة عربية بسيطة.</li>
+    <li>تعليم المستخدم كيف يحمي بياناته وخصوصيته خطوة بخطوة.</li>
+    <li>تعليمه كيف يتحقق من المعلومة قبل أن يصدّقها أو ينشرها.</li>
+    <li>توضيح الفرق بين الاستخدام الذي يدعم التعلم والاستخدام الذي يضرّ به.</li>
+    <li>تطبيق ما درسناه في مقرر تصميم الويب على مشروع كامل ومتكامل.</li>
+  </ul>
+</section>
+
+<!-- ============ 4 ============ -->
+<section>
+  <h2><span class="num">4</span> الفئة المستهدفة</h2>
+  <ul>
+    <li><strong>طلاب الجامعات والمدارس</strong>: وهم الفئة الأساسية.</li>
+    <li><strong>المعلمون وأولياء الأمور</strong>: لمعرفة كيف يوجّهون أبناءهم.</li>
+    <li><strong>المستخدم العادي</strong>: أي شخص بدأ يستخدم هذه الأدوات ويريد قواعد واضحة.</li>
+  </ul>
+  <p>
+    ولأن أغلب هؤلاء يتصفحون من الجوال، صُمم الموقع ليكون واضحاً ومريحاً على الشاشات الصغيرة أولاً.
+  </p>
+</section>
+
+<!-- ============ 5 ============ -->
+<section>
+  <h2><span class="num">5</span> فكرة الموقع</h2>
+  <p>
+    فكرة الموقع أن يكون <strong>دليلاً توعوياً مختصراً</strong> لا موسوعة طويلة. لذلك قُسّم المحتوى إلى
+    بطاقات قصيرة وأقسام واضحة، مع رسومات كرتونية تجعل القراءة ممتعة وغير مملة.
+  </p>
+  <p>القاعدة التي يقوم عليها الموقع كله تتلخص في ثلاث كلمات:</p>
+  <div class="box box-mint">
+    <p><strong>فكّر</strong> قبل أن تكتب &nbsp;•&nbsp; <strong>تحقق</strong> قبل أن تصدّق &nbsp;•&nbsp; <strong>استخدم</strong> بعد أن تفهم</p>
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section>
+  <h2><span class="num">6</span> خريطة صفحات الموقع</h2>
+  <table>
+    <caption>الموقع يتكون من ست صفحات مترابطة</caption>
+    <thead>
+      <tr><th>#</th><th>الصفحة</th><th>الملف</th><th>الفكرة الأساسية</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>الرئيسية</td><td>index.html</td><td>واجهة الموقع وملخص كل الأقسام</td></tr>
+      <tr><td>2</td><td>النصائح</td><td>html/tips.html</td><td>12 نصيحة عملية + الأخلاقيات</td></tr>
+      <tr><td>3</td><td>حماية البيانات</td><td>html/privacy.html</td><td>أنواع البيانات وجدول الحساسية</td></tr>
+      <tr><td>4</td><td>المقالات</td><td>html/articles.html</td><td>3 مقالات تعليمية</td></tr>
+      <tr><td>5</td><td>الحساب</td><td>html/account.html</td><td>تسجيل دخول وإنشاء حساب مع التحقق</td></tr>
+      <tr><td>6</td><td>تواصل معنا</td><td>html/contact.html</td><td>وسائل التواصل ونموذج المراسلة</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ============ 7 ============ -->
+<section>
+  <h2><span class="num">7</span> شرح الصفحة الرئيسية</h2>
+  <p>الصفحة الرئيسية هي واجهة الموقع، وتتكون من الأجزاء التالية بالترتيب:</p>
+  <ol>
+    <li><strong>الهيدر</strong>: الشعار والقائمة وأزرار الحساب، ويتحول إلى قائمة جانبية على الجوال.</li>
+    <li><strong>قسم الهيرو</strong>: العنوان الرئيسي وزرّا "ابدأ الآن" و"اكتشف المزيد"، مع رسمة كرتونية وبطاقات صغيرة حولها.</li>
+    <li><strong>الأرقام السريعة</strong>: 6 محاور، 12 نصيحة، 3 مقالات — وهي أرقام حقيقية تطابق محتوى الموقع فعلاً.</li>
+    <li><strong>شريط الصور المتحرك</strong> (WOWSlider) بثلاث شرائح توعوية.</li>
+    <li><strong>أقسام الموقع</strong>: ست بطاقات تنقل الزائر إلى الموضوع الذي يهمه.</li>
+    <li><strong>الملخصات السريعة</strong>: زران يفتحان نافذتين منبثقتين يُحمَّل محتواهما عبر Ajax.</li>
+    <li><strong>أحدث المقالات + اختيار الموضوع</strong>: قائمة المقالات وأزرار موضوعات تُظهر إشعار Toastr.</li>
+    <li><strong>خطوات فكّر / تحقق / استخدم</strong> ثم شريط التواصل والفوتر.</li>
+  </ol>
+  <figure>
+    <img src="screenshots/home-desktop.png" alt="لقطة من الصفحة الرئيسية على الكمبيوتر" style="max-height:210mm">
+    <figcaption>الصفحة الرئيسية على شاشة الكمبيوتر (1440 بكسل)</figcaption>
+  </figure>
+</section>
+
+<div class="page-break"></div>
+
+<section>
+  <figure>
+    <img class="shot-mobile" src="screenshots/home-mobile.png" alt="لقطة من الصفحة الرئيسية على الجوال" style="max-height:215mm">
+    <figcaption>الصفحة نفسها على الجوال (390 بكسل) — العناصر تتحول إلى عمود واحد</figcaption>
+  </figure>
+</section>
+
+<!-- ============ 8 ============ -->
+<section>
+  <h2><span class="num">8</span> شرح صفحة النصائح</h2>
+  <p>
+    تعرض هذه الصفحة <strong>12 نصيحة</strong> على شكل بطاقات مرتبة بشبكة Grid، كل بطاقة تحتوي على رقم النصيحة
+    وأيقونة وعنوان وجملة شرح قصيرة، مع تأثير حركي بسيط عند مرور الماوس.
+  </p>
+  <p>أمثلة على النصائح: لا تشارك كلمات المرور، تحقق من المعلومات المهمة، احترم حقوق الملكية الفكرية،
+     استخدمه لدعم تعلمك وليس للغش.</p>
+  <p>
+    وفي أسفل الصفحة قسم <strong>الأخلاقيات</strong> يشرح خمس قواعد للاستخدام المسؤول،
+    وثلاثة أسئلة يسألها المستخدم لنفسه قبل نشر أي محتوى.
+  </p>
+</section>
+
+<!-- ============ 9 ============ -->
+<section>
+  <h2><span class="num">9</span> شرح صفحة حماية البيانات</h2>
+  <p>تتكون الصفحة من ثلاثة أجزاء:</p>
+  <ul>
+    <li><strong>ثمانية أنواع من البيانات</strong>: المعلومات الشخصية، كلمات المرور، الملفات الخاصة، الصور،
+        البيانات الدراسية، المعلومات المالية، الأذونات، وسياسات الخصوصية.</li>
+    <li><strong>شرح عملي</strong> مقسم إلى: قبل الكتابة، أثناء الاستخدام، بعد الاستخدام، مع عمود جانبي لعلامات الخطر.</li>
+    <li><strong>جدول مرجعي</strong> يوضح نوع البيانات ودرجة حساسيتها والتصرف الصحيح تجاهها،
+        وهو جدول HTML حقيقي يمكن تمريره أفقياً على الجوال.</li>
+  </ul>
+  <figure>
+    <img src="screenshots/privacy-desktop.png" alt="لقطة من صفحة حماية البيانات" style="max-height:190mm">
+    <figcaption>صفحة حماية البيانات: البطاقات ثم الشرح ثم الجدول</figcaption>
+  </figure>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ============ 10 ============ -->
+<section>
+  <h2><span class="num">10</span> شرح صفحة المقالات</h2>
+  <p>تحتوي على ثلاثة مقالات مكتوبة خصيصاً لهذا المشروع (غير منسوخة من أي موقع):</p>
+  <ol>
+    <li><strong>كيف تحمي بياناتك عند استخدام أدوات الذكاء الاصطناعي</strong>: ماذا يحدث لبياناتك، وثلاث عادات تحميك،
+        وماذا تفعل لو شاركت شيئاً بالخطأ.</li>
+    <li><strong>متى تثق بإجابة الذكاء الاصطناعي ومتى يجب أن تتحقق</strong>: لماذا تخطئ هذه الأدوات،
+        ومتى تكون الثقة معقولة، وطريقة تحقق من أربع خطوات.</li>
+    <li><strong>استخدام الذكاء الاصطناعي في الدراسة بطريقة مسؤولة</strong>: الفرق بين الاستخدام المفيد والضار،
+        وقاعدة عملية بسيطة للطالب.</li>
+  </ol>
+  <p>
+    كل مقال داخل وسم <code>&lt;article&gt;</code> ويحتوي على صورة داخل <code>&lt;figure&gt;</code> مع تعليق،
+    ويوجد فهرس جانبي (<code>&lt;aside&gt;</code>) للتنقل بين المقالات.
+  </p>
+</section>
+
+<!-- ============ 11 ============ -->
+<section>
+  <h2><span class="num">11</span> شرح تسجيل الدخول وإنشاء الحساب</h2>
+  <p>
+    صفحة واحدة فيها تبويبان: <strong>تسجيل الدخول</strong> و<strong>إنشاء حساب</strong>، والتبديل بينهما يتم بـ jQuery.
+  </p>
+  <ul>
+    <li>نموذج تسجيل الدخول: البريد الإلكتروني وكلمة المرور.</li>
+    <li>نموذج إنشاء الحساب: الاسم الكامل، البريد الإلكتروني، رقم الهاتف، كلمة المرور، تأكيد كلمة المرور.</li>
+  </ul>
+  <div class="box box-peach">
+    <p>
+      <strong>تنبيه مهم:</strong> هذه الصفحة نموذج <strong>واجهة أمامية (Front-End)</strong> للعرض الدراسي فقط.
+      لا يوجد نظام حسابات حقيقي، ولا يتم إرسال البيانات إلى أي خادم،
+      ولا يتم تخزين كلمات المرور في LocalStorage ولا في أي مكان آخر.
+      بعد نجاح التحقق تظهر رسالة تأكيد فقط.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 12 ============ -->
+<section>
+  <h2><span class="num">12</span> شرح صفحة تواصل معنا</h2>
+  <p>تحتوي الصفحة على:</p>
+  <ul>
+    <li>ثلاث بطاقات: الاتصال الهاتفي، واتساب، ونموذج المراسلة — بأيقونات Font Awesome.</li>
+    <li>رابط اتصال حقيقي: <code>tel:+967778672726</code> ورابط واتساب: <code>https://wa.me/967778672726</code></li>
+    <li>نموذج تواصل: الاسم الكامل، رقم الهاتف، الموضوع، الرسالة — مع تحقق من البيانات.</li>
+    <li>قسم أسئلة شائعة باستخدام Accordion من Bootstrap.</li>
+  </ul>
+  <p>
+    ولأن المشروع Front-End فقط، فالرسالة <strong>لا تُرسل إلى خادم حقيقي</strong>، وهذا موضّح داخل الصفحة نفسها للزائر.
+    ولم يتم اختراع بريد إلكتروني أو عنوان أو حسابات تواصل اجتماعي.
+  </p>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ============ 13 ============ -->
+<section>
+  <h2><span class="num">13</span> شرح WOWSlider (شريط الصور المتحرك)</h2>
+  <p>
+    شريط الصور المتحرك يعرض ثلاث شرائح تتبدل تلقائياً، ويستطيع الزائر التنقل بينها بالأزرار أو النقاط أو بالسحب على الجوال.
+    الشرائح الثلاث هي:
+  </p>
+  <ol>
+    <li>الذكاء الاصطناعي أداة قوية — استخدمها بوعي ليكون مستقبلك أفضل.</li>
+    <li>خصوصيتك أولاً — لا تشارك بيانات حساسة مع أدوات الذكاء الاصطناعي.</li>
+    <li>فكّر ثم تحقق ثم استخدم — ثلاث خطوات تحميك من المعلومات المضللة.</li>
+  </ol>
+  <p>الملفات الخاصة به موجودة في مجلد <code>wowslider/engine1</code> وطريقة استدعائه:</p>
+  <div class="box">
+    <p><code>jQuery("#wowslider-container1").wowSlider({ effect:"fade", delay:5500, bullets:true, controls:true });</code></p>
+  </div>
+  <div class="box box-peach">
+    <p>
+      <strong>ملاحظة صريحة:</strong> بيئة تنفيذ المشروع لا تسمح بالوصول إلى موقع <code>wowslider.com</code>
+      لتنزيل النسخة الرسمية من البرنامج، لذلك كُتبت ملفات المحرك محلياً <strong>بنفس بنية WOWSlider الرسمية</strong>
+      (نفس أسماء الملفات والأصناف <code>ws_images</code> و <code>ws_bullets</code> و <code>ws_caption</code>
+      ونفس طريقة الاستدعاء). لم تُستخدم مكتبة بديلة مثل Swiper أو Bootstrap Carousel.
+      خطوات استبدال الملفات بمخرجات البرنامج الرسمي مذكورة في <code>wowslider/README.txt</code>.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 14 ============ -->
+<section>
+  <h2><span class="num">14</span> شرح Grid و Flexbox</h2>
+  <p>
+    <strong>Grid</strong> و<strong>Flexbox</strong> طريقتان في CSS لترتيب العناصر داخل الصفحة.
+    Grid يقسّم المساحة إلى صفوف وأعمدة (مناسب للبطاقات)، وFlexbox يرتب العناصر في خط واحد
+    ويوزع المسافات بينها (مناسب للهيدر والأزرار).
+  </p>
+  <table>
+    <caption>أمثلة فعلية من ملف css/style.css</caption>
+    <thead><tr><th>الصنف</th><th>التقنية</th><th>الاستخدام</th></tr></thead>
+    <tbody>
+      <tr><td>.hero-grid</td><td>Grid</td><td>تقسيم قسم الهيرو إلى نص ورسمة</td></tr>
+      <tr><td>.cards-grid</td><td>Grid</td><td>بطاقات أقسام الموقع (3 أعمدة)</td></tr>
+      <tr><td>.tips-grid</td><td>Grid</td><td>بطاقات النصائح الاثنتي عشرة</td></tr>
+      <tr><td>.split-grid</td><td>Grid</td><td>تقسيم الصفحة إلى محتوى وعمود جانبي</td></tr>
+      <tr><td>.footer-grid</td><td>Grid</td><td>أعمدة الفوتر الثلاثة</td></tr>
+      <tr><td>.header-inner</td><td>Flexbox</td><td>توزيع الشعار والقائمة والأزرار</td></tr>
+      <tr><td>.contact-band</td><td>Flexbox</td><td>محاذاة النص مع زر الهاتف</td></tr>
+      <tr><td>.article-card</td><td>Flexbox</td><td>ترتيب الصورة مع نص المقال</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 15 ============ -->
+<section>
+  <h2><span class="num">15</span> شرح Responsive Design</h2>
+  <p>
+    التصميم المتجاوب يعني أن الموقع <strong>يتكيف مع حجم الشاشة</strong>:
+    على الكمبيوتر تظهر البطاقات في ثلاثة أعمدة، وعلى اللوحي في عمودين، وعلى الجوال في عمود واحد،
+    وتتحول القائمة العلوية إلى قائمة جانبية بزر.
+  </p>
+  <p>تم اختبار الموقع فعلياً على 19 عرضاً مختلفاً من 320 إلى 1920 بكسل، ولا يوجد تمرير أفقي في أي حالة.</p>
+</section>
+
+<!-- ============ 16 ============ -->
+<section>
+  <h2><span class="num">16</span> شرح Media Queries</h2>
+  <p>
+    Media Query هي قاعدة في CSS تقول للمتصفح: «إذا كان عرض الشاشة أقل من كذا، طبّق هذه التنسيقات».
+    جميع هذه القواعد مجمّعة في ملف <code>css/responsive.css</code>:
+  </p>
+  <table>
+    <thead><tr><th>النقطة</th><th>الجهاز</th><th>أهم التغييرات</th></tr></thead>
+    <tbody>
+      <tr><td>max-width: 1200px</td><td>شاشات كبيرة</td><td>تصغير الخط والمسافات قليلاً</td></tr>
+      <tr><td>max-width: 992px</td><td>لوحي</td><td>إخفاء القائمة الأفقية وإظهار زر القائمة، البطاقات عمودان</td></tr>
+      <tr><td>max-width: 768px</td><td>جوال كبير</td><td>كل الشبكات عمود واحد، الأرقام تحت بعضها</td></tr>
+      <tr><td>max-width: 576px</td><td>جوال</td><td>أزرار بعرض كامل، تبويبات عمودية، خط أصغر قليلاً</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ============ 17 ============ -->
+<section>
+  <h2><span class="num">17</span> شرح Bootstrap</h2>
+  <p>
+    Bootstrap مكتبة CSS و JavaScript جاهزة توفّر مكوّنات مبنية مسبقاً.
+    استُخدمت في المشروع <strong>النسخة 5.3.3 بصيغة RTL</strong> (نسخة مستقرة وليست تجريبية)، وتظهر في:
+  </p>
+  <ul>
+    <li><strong>Offcanvas</strong>: قائمة التنقل الجانبية على الجوال.</li>
+    <li><strong>Modal</strong>: النافذتان المنبثقتان.</li>
+    <li><strong>Accordion</strong>: الأسئلة الشائعة في صفحة التواصل.</li>
+    <li><strong>Utilities</strong>: أصناف المسافات والإخفاء مثل <code>mb-3</code> و <code>visually-hidden</code>.</li>
+  </ul>
+  <p>وقد أُعيد تعريف ألوان Bootstrap الافتراضية (الأزرق) بألوان هوية الموقع الخضراء والبرتقالية.</p>
+</section>
+
+<!-- ============ 18 ============ -->
+<section>
+  <h2><span class="num">18</span> شرح jQuery</h2>
+  <p>
+    jQuery مكتبة JavaScript تختصر التعامل مع عناصر الصفحة والأحداث وطلبات Ajax.
+    استُخدمت <strong>النسخة 3.7.1</strong> في:
+  </p>
+  <ul>
+    <li>تحميل محتوى النوافذ المنبثقة عبر <code>$.ajax()</code>.</li>
+    <li>التبديل بين تبويبي تسجيل الدخول وإنشاء الحساب.</li>
+    <li>أزرار اختيار الموضوع وزر العودة إلى الأعلى وتمييز رابط الصفحة الحالية.</li>
+    <li>تشغيل شريط الصور المتحرك (المحرك نفسه مكتوب كإضافة jQuery).</li>
+  </ul>
+</section>
+
+<!-- ============ 19 ============ -->
+<section>
+  <h2><span class="num">19</span> شرح jQuery Validation</h2>
+  <p>
+    إضافة تتحقق من صحة البيانات قبل إرسال النموذج، وتمنع الإرسال إذا كان هناك خطأ وتعرض رسالة بجانب الحقل.
+    كُتبت جميع الرسائل بالعربية في ملف <code>js/validation.js</code>:
+  </p>
+  <table>
+    <thead><tr><th>الحالة</th><th>الرسالة الظاهرة</th></tr></thead>
+    <tbody>
+      <tr><td>حقل الاسم فارغ</td><td>يرجى إدخال الاسم</td></tr>
+      <tr><td>بريد غير صحيح</td><td>يرجى إدخال بريد إلكتروني صحيح</td></tr>
+      <tr><td>كلمة مرور قصيرة</td><td>كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل</td></tr>
+      <tr><td>كلمتا المرور مختلفتان</td><td>كلمتا المرور غير متطابقتين</td></tr>
+      <tr><td>رقم هاتف غير صحيح</td><td>يرجى إدخال رقم هاتف صحيح مثل 778672726</td></tr>
+    </tbody>
+  </table>
+  <p>كما أُضيفت قاعدة تحقق خاصة برقم الهاتف باستخدام <code>$.validator.addMethod</code>.</p>
+</section>
+
+<!-- ============ 20 ============ -->
+<section>
+  <h2><span class="num">20</span> شرح Toastr Notification</h2>
+  <p>
+    Toastr مكتبة تعرض <strong>إشعاراً صغيراً</strong> في زاوية الشاشة يختفي تلقائياً.
+    استُخدمت في أربعة مواضع:
+  </p>
+  <ol>
+    <li>نجاح تسجيل الدخول: «تم التحقق من البيانات بنجاح».</li>
+    <li>نجاح إنشاء الحساب: «تم إنشاء النموذج بنجاح».</li>
+    <li>نجاح نموذج التواصل: «تم إرسال رسالتك بنجاح».</li>
+    <li>اختيار موضوع في الصفحة الرئيسية: «تم حفظ اختيارك: ...».</li>
+  </ol>
+  <p>وضُبطت إعداداتها لتناسب الاتجاه العربي (<code>rtl: true</code>) وبألوان الهوية بدل الألوان الافتراضية.</p>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ============ 21 ============ -->
+<section>
+  <h2><span class="num">21</span> شرح Ajax</h2>
+  <p>
+    Ajax تقنية تسمح بجلب محتوى من ملف خارجي <strong>وعرضه داخل الصفحة دون إعادة تحميلها بالكامل</strong>.
+    في هذا المشروع، عند الضغط على زر «اقرأ التفاصيل» يُرسل طلب لجلب ملف من مجلد <code>ajax</code>،
+    ثم يُوضع المحتوى داخل النافذة المنبثقة.
+  </p>
+  <div class="box">
+    <p><code>$.ajax({ url: "ajax/privacy-details.html", type: "GET", dataType: "html" })<br>
+      &nbsp;&nbsp;.done(function (data) { $body.html(data); })</code></p>
+  </div>
+  <p>الملفان المستخدمان: <code>ajax/privacy-details.html</code> و <code>ajax/verification-details.html</code>،
+     وقد تم التأكد أثناء الاختبار من أن الطلب حقيقي (XHR) وليس محتوى مخفياً داخل الصفحة.</p>
+  <div class="box box-peach">
+    <p><strong>مهم:</strong> Ajax لا يعمل عند فتح الملف مباشرة بصيغة <code>file://</code>،
+       ويجب تشغيل الموقع عبر خادم محلي مثل <code>python -m http.server 8000</code>.</p>
+  </div>
+</section>
+
+<!-- ============ 22 ============ -->
+<section>
+  <h2><span class="num">22</span> شرح Bootstrap Modal</h2>
+  <p>
+    Modal نافذة تظهر فوق الصفحة مع تعتيم الخلفية. في المشروع نافذتان:
+  </p>
+  <ul>
+    <li><strong>حماية بياناتك</strong>: ملخص أهم قواعد حماية البيانات.</li>
+    <li><strong>التحقق من المعلومات</strong>: قائمة تحقق من أربع خطوات وعلامات تحتاج مراجعة.</li>
+  </ul>
+  <p>
+    كل نافذة تبدأ برسالة «جارٍ التحميل...» ثم يُستبدل المحتوى بما جاء من الملف الخارجي،
+    وفي حال فشل التحميل تظهر رسالة خطأ واضحة تشرح سبب المشكلة.
+  </p>
+</section>
+
+<!-- ============ 23 ============ -->
+<section>
+  <h2><span class="num">23</span> شرح Font Awesome</h2>
+  <p>
+    مكتبة أيقونات تُستدعى بكتابة وسم <code>&lt;i&gt;</code> مع اسم الأيقونة، مثل:
+    <code>&lt;i class="fa-solid fa-phone"&gt;&lt;/i&gt;</code>
+  </p>
+  <p>
+    استُخدمت النسخة المجانية 6.5.2 في أيقونات الهاتف وواتساب والمستخدم والرسالة والقفل والمصباح والدرع وغيرها،
+    وأُضيفت <code>aria-hidden="true"</code> لكل أيقونة زخرفية حتى لا تُقرأ في برامج قارئ الشاشة.
+  </p>
+</section>
+
+<!-- ============ 24 ============ -->
+<section>
+  <h2><span class="num">24</span> شرح Semantic HTML</h2>
+  <p>
+    Semantic HTML يعني استخدام الوسم المناسب لكل جزء بدل استخدام <code>&lt;div&gt;</code> لكل شيء،
+    وهذا يساعد محركات البحث وبرامج قارئ الشاشة على فهم الصفحة.
+  </p>
+  <table>
+    <thead><tr><th>الوسم</th><th>استخدامه في المشروع</th></tr></thead>
+    <tbody>
+      <tr><td>&lt;header&gt;</td><td>الشريط العلوي في كل صفحة</td></tr>
+      <tr><td>&lt;nav&gt;</td><td>قوائم التنقل (الرئيسية والجوال والفوتر)</td></tr>
+      <tr><td>&lt;main&gt;</td><td>المحتوى الرئيسي لكل صفحة</td></tr>
+      <tr><td>&lt;section&gt;</td><td>أقسام الصفحة المختلفة</td></tr>
+      <tr><td>&lt;article&gt;</td><td>المقالات والبطاقات المستقلة</td></tr>
+      <tr><td>&lt;aside&gt;</td><td>الأعمدة الجانبية والملاحظات</td></tr>
+      <tr><td>&lt;figure&gt; و &lt;figcaption&gt;</td><td>صور المقالات مع تعليقاتها</td></tr>
+      <tr><td>&lt;table&gt;</td><td>جدول حساسية البيانات</td></tr>
+      <tr><td>&lt;footer&gt;</td><td>ذيل الصفحة</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ============ 25 ============ -->
+<section>
+  <h2><span class="num">25</span> شرح هيكل المشروع</h2>
+  <table>
+    <thead><tr><th>المجلد / الملف</th><th>المحتوى</th></tr></thead>
+    <tbody>
+      <tr><td>index.html</td><td>الصفحة الرئيسية</td></tr>
+      <tr><td>html/</td><td>باقي الصفحات الخمس</td></tr>
+      <tr><td>css/</td><td>style.css للتنسيق العام و responsive.css للتجاوب</td></tr>
+      <tr><td>js/</td><td>main.js و validation.js و ajax-modals.js</td></tr>
+      <tr><td>images/</td><td>رسومات SVG: illustrations و slider</td></tr>
+      <tr><td>videos/</td><td>مجلد الفيديوهات ضمن هيكل المقرر</td></tr>
+      <tr><td>ajax/</td><td>الملفان اللذان يُحمَّلان عبر Ajax</td></tr>
+      <tr><td>wowslider/</td><td>محرك شريط الصور وتنسيقه</td></tr>
+      <tr><td>vendor/</td><td>Bootstrap و jQuery و Toastr و Validation و Font Awesome (نسخ محلية)</td></tr>
+      <tr><td>fonts/</td><td>خط Tajawal بملفات محلية</td></tr>
+      <tr><td>report/</td><td>التقرير النهائي وصور الشاشة</td></tr>
+    </tbody>
+  </table>
+  <p>
+    كل الرسومات من نوع <strong>SVG</strong> ومصنوعة خصيصاً للمشروع، فلا توجد صور محمية أو عليها علامات مائية،
+    ولا يعتمد الموقع على الإنترنت لأن جميع المكتبات والخطوط محفوظة محلياً.
+  </p>
+</section>
+
+<!-- ============ 26 ============ -->
+<section>
+  <h2><span class="num">26</span> شرح كيفية تشغيل الموقع</h2>
+  <ol>
+    <li>فك ضغط ملف المشروع ثم افتح مجلد <code>ai-safe-use</code>.</li>
+    <li>افتح الطرفية داخل المجلد ونفّذ الأمر: <code>python -m http.server 8000</code></li>
+    <li>افتح المتصفح على العنوان: <code>http://localhost:8000</code></li>
+  </ol>
+  <p>
+    يمكن أيضاً استخدام إضافة <strong>Live Server</strong> في VS Code.
+    ولا يُنصح بفتح الملف مباشرة (بالنقر المزدوج) لأن Ajax لن يعمل مع <code>file://</code>.
+  </p>
+</section>
+
+<!-- ============ 27 ============ -->
+<section>
+  <h2><span class="num">27</span> جدول متطلبات المقرر الـ14</h2>
+  <table>
+    <thead><tr><th>#</th><th>المتطلب</th><th>مكان التنفيذ</th><th>الحالة</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>مجلدات منفصلة html/css/js/images/videos</td><td>هيكل المشروع</td><td>تم</td></tr>
+      <tr><td>2</td><td>تقسيم الصفحة بـ HTML Layout</td><td>جميع الصفحات</td><td>تم</td></tr>
+      <tr><td>3</td><td>عناصر HTML الأساسية</td><td>عناوين، فقرات، قوائم، جدول، نماذج</td><td>تم</td></tr>
+      <tr><td>4</td><td>5 صفحات على الأقل + تواصل معنا بأيقونات</td><td>6 صفحات</td><td>تم</td></tr>
+      <tr><td>5</td><td>إنشاء حساب وتسجيل دخول مع Validation</td><td>account.html</td><td>تم</td></tr>
+      <tr><td>6</td><td>شريط صور متحرك WowSlider</td><td>index.html + wowslider/</td><td>تم (مع ملاحظة القسم 13)</td></tr>
+      <tr><td>7</td><td>Grid أو Flexbox</td><td>الصفحات الست</td><td>تم</td></tr>
+      <tr><td>8</td><td>Responsive بـ Media Queries</td><td>responsive.css</td><td>تم</td></tr>
+      <tr><td>9</td><td>Toastr Notification</td><td>4 استخدامات</td><td>تم</td></tr>
+      <tr><td>10</td><td>Modal عبر Ajax (نافذتان)</td><td>ajax-modals.js</td><td>تم</td></tr>
+      <tr><td>11</td><td>Bootstrap</td><td>Offcanvas و Modal و Accordion</td><td>تم</td></tr>
+      <tr><td>12</td><td>jQuery</td><td>Ajax والأحداث والتبويبات</td><td>تم</td></tr>
+      <tr><td>13</td><td>رفع الموقع على GitHub</td><td>README القسم 7</td><td>تم الرفع على فرع المشروع</td></tr>
+      <tr><td>14</td><td>شهادة كورس Cursa</td><td>خارج الموقع</td><td>على الطالب إكمالها</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ============ 28 ============ -->
+<section>
+  <h2><span class="num">28</span> نتائج الاختبارات</h2>
+  <p>
+    قبل التسليم تم تشغيل الموقع على خادم محلي واختباره في متصفح Chromium باستخدام اختبارات آلية
+    (36 اختباراً وظيفياً) إضافة إلى مراجعة بصرية لكل صفحة.
+  </p>
+  <table>
+    <thead><tr><th>الفحص</th><th>النتيجة</th></tr></thead>
+    <tbody>
+      <tr><td>عدد الصفحات المختبرة</td><td>6 صفحات</td></tr>
+      <tr><td>أخطاء JavaScript في الـ Console</td><td>0</td></tr>
+      <tr><td>ملفات ناقصة أو أخطاء 404</td><td>0</td></tr>
+      <tr><td>روابط مكسورة (من 276 رابطاً)</td><td>0</td></tr>
+      <tr><td>التمرير الأفقي (19 عرضاً × 6 صفحات)</td><td>لا يوجد</td></tr>
+      <tr><td>شريط الصور WOWSlider</td><td>يعمل: أزرار ونقاط وتشغيل تلقائي</td></tr>
+      <tr><td>النوافذ المنبثقة عبر Ajax</td><td>2 من 2 تعمل</td></tr>
+      <tr><td>التحقق من النماذج</td><td>يعمل برسائل عربية</td></tr>
+      <tr><td>إشعارات Toastr</td><td>4 استخدامات تعمل</td></tr>
+      <tr><td>قائمة الجوال</td><td>تفتح وتُغلق بشكل صحيح</td></tr>
+      <tr><td>سهولة الوصول</td><td>كل الصور لها alt، وكل الحقول مرتبطة بـ label</td></tr>
+    </tbody>
+  </table>
+  <p>التفاصيل الكاملة، مع قائمة المشكلات التي ظهرت أثناء الاختبار وكيف تم إصلاحها، موجودة في ملف <code>QA-REPORT.md</code>.</p>
+</section>
+
+<!-- ============ 29 ============ -->
+<section>
+  <h2><span class="num">29</span> GitHub</h2>
+  <p>
+    المشروع منظم ومهيأ للرفع على GitHub، ويحتوي على ملف <code>.gitignore</code> يمنع رفع الملفات المؤقتة.
+    الأوامر المطلوبة لربط المشروع بمستودع الطالب:
+  </p>
+  <div class="box">
+    <p><code>git init</code><br>
+       <code>git add .</code><br>
+       <code>git commit -m "Initial complete AI Safe Use website"</code><br>
+       <code>git remote add origin &lt;رابط المستودع&gt;</code><br>
+       <code>git branch -M main</code><br>
+       <code>git push -u origin main</code></p>
+  </div>
+  <p>لم يوضع رابط مستودع في هذا التقرير لأن الرابط يخص حساب الطالب ويُضاف بعد إنشاء المستودع.</p>
+</section>
+
+<!-- ============ 30 ============ -->
+<section>
+  <h2><span class="num">30</span> شهادة Cursa</h2>
+  <div class="box box-mint">
+    <p>
+      الحصول على شهادة كورس <strong>Build a responsive website with HTML and CSS – Kevin Powell</strong>
+      من منصة <strong>Cursa</strong> هو <strong>متطلب خارجي</strong> يقوم الطالب بإكماله بنفسه
+      وإرفاق الشهادة مع المشروع عند التسليم. لم تُنشأ أي شهادة ولم يُدَّع الحصول عليها.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 31 ============ -->
+<section>
+  <h2><span class="num">31</span> الخاتمة</h2>
+  <p>
+    قدّم هذا المشروع موقعاً عربياً توعوياً كاملاً عن الاستخدام الآمن للذكاء الاصطناعي،
+    وطبّق عملياً كل ما درسناه في مقرر تصميم الويب: بناء الصفحات بـ HTML بطريقة صحيحة،
+    وتنسيقها بـ CSS باستخدام Grid و Flexbox، وجعلها متجاوبة عبر Media Queries،
+    وإضافة التفاعل بـ JavaScript و jQuery، والاستفادة من مكتبات جاهزة مثل Bootstrap و Toastr و Font Awesome.
+  </p>
+  <p>
+    أهم ما تعلمته من هذا المشروع أن بناء الواجهة ليس مجرد ألوان وصور، بل ترتيب وتنظيم واختبار.
+    فكثير من المشكلات لا تظهر إلا عند تجربة الموقع فعلياً على أحجام شاشات مختلفة،
+    ولهذا كانت مرحلة الاختبار والإصلاح لا تقل أهمية عن مرحلة البناء.
+  </p>
+  <p>
+    ويمكن تطوير المشروع مستقبلاً بإضافة خلفية (Backend) لحفظ الرسائل والحسابات فعلياً،
+    وإضافة محتوى جديد مثل فيديوهات قصيرة أو اختبارات تفاعلية تقيس وعي المستخدم.
+  </p>
+</section>
+
+</div>
+</body>
+</html>

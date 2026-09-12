@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 240" width="420" height="240" role="img" aria-label="حاسوب محمول عليه قفل يرمز لحماية البيانات">
+  <rect width="420" height="240" fill="#DDF3E7"/>
+  <circle cx="120" cy="52" r="46" fill="#CBEBDB"/>
+  <circle cx="360" cy="200" r="58" fill="#CBEBDB"/>
+  <g>
+    <rect x="126" y="70" width="168" height="106" rx="14" fill="#153E35"/>
+    <rect x="136" y="80" width="148" height="86" rx="8" fill="#FFFDF9"/>
+    <rect x="100" y="176" width="220" height="16" rx="8" fill="#24735C"/>
+    <rect x="186" y="180" width="48" height="6" rx="3" fill="#153E35" opacity=".5"/>
+  </g>
+  <g transform="translate(178,96)">
+    <rect x="0" y="26" width="64" height="48" rx="12" fill="#F2663D"/>
+    <path d="M14 26v-10a18 18 0 0 1 36 0v10" fill="none" stroke="#F2663D" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="32" cy="46" r="7" fill="#FFFDF9"/>
+    <rect x="28" y="50" width="8" height="14" rx="4" fill="#FFFDF9"/>
+  </g>
+  <g fill="#44A47A"><circle cx="56" cy="150" r="10"/><circle cx="76" cy="184" r="7"/><circle cx="356" cy="56" r="9"/></g>
+</svg>

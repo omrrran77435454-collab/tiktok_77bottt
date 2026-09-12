@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI SAFE | الاستخدام الآمن للذكاء الاصطناعي</title>
+  <meta name="description" content="موقع توعوي عربي يشرح كيف تستخدم أدوات الذكاء الاصطناعي بطريقة آمنة ومسؤولة: حماية الخصوصية، التحقق من المعلومات، والاستخدام الدراسي الصحيح.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- مكتبات خارجية (نسخ محلية) -->
+  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="vendor/toastr/toastr.min.css">
+  <link rel="stylesheet" href="wowslider/engine1/style.css">
+
+  <!-- تنسيقات الموقع -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body data-base="">
+
+  <a class="skip-link" href="#main-content">تخطي إلى المحتوى الرئيسي</a>
+
+  <!-- ===================== الهيدر ===================== -->
+  <header class="site-header">
+    <div class="container-page header-inner">
+
+      <a href="index.html" class="brand" aria-label="الصفحة الرئيسية لموقع AI SAFE">
+        <img src="images/illustrations/logo.svg" alt="شعار الموقع على شكل درع حماية" class="brand-logo" width="46" height="46">
+        <span>
+          <span class="brand-name">AI SAFE</span>
+          <span class="brand-tag">الاستخدام الآمن للذكاء الاصطناعي</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="القائمة الرئيسية">
+        <a class="nav-item-link active" href="index.html">الرئيسية</a>
+        <a class="nav-item-link" href="html/tips.html">النصائح</a>
+        <a class="nav-item-link" href="html/privacy.html">حماية البيانات</a>
+        <a class="nav-item-link" href="html/articles.html">المقالات</a>
+        <a class="nav-item-link" href="html/contact.html">تواصل معنا</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn-app btn-secondary-app btn-sm-app" href="html/account.html#register">
+          <i class="fa-solid fa-user-plus" aria-hidden="true"></i> إنشاء حساب
+        </a>
+        <a class="btn-app btn-primary-app btn-sm-app" href="html/account.html#login">
+          <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> تسجيل الدخول
+        </a>
+        <button class="menu-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"
+                aria-controls="mobileMenu" aria-label="فتح قائمة التنقل">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- قائمة الجوال (Bootstrap Offcanvas) -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title h5" id="mobileMenuLabel">قائمة الموقع</h2>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="إغلاق القائمة"></button>
+    </div>
+    <div class="offcanvas-body">
+      <nav aria-label="قائمة التنقل للجوال">
+        <a class="mobile-nav-link active" href="index.html"><i class="fa-solid fa-house" aria-hidden="true"></i> الرئيسية</a>
+        <a class="mobile-nav-link" href="html/tips.html"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> النصائح</a>
+        <a class="mobile-nav-link" href="html/privacy.html"><i class="fa-solid fa-lock" aria-hidden="true"></i> حماية البيانات</a>
+        <a class="mobile-nav-link" href="html/articles.html"><i class="fa-solid fa-book-open" aria-hidden="true"></i> المقالات</a>
+        <a class="mobile-nav-link" href="html/contact.html"><i class="fa-solid fa-headset" aria-hidden="true"></i> تواصل معنا</a>
+      </nav>
+      <hr>
+      <a class="btn-app btn-primary-app btn-block-app mb-2" href="html/account.html#login">
+        <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> تسجيل الدخول
+      </a>
+      <a class="btn-app btn-secondary-app btn-block-app" href="html/account.html#register">
+        <i class="fa-solid fa-user-plus" aria-hidden="true"></i> إنشاء حساب
+      </a>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- ===================== قسم الهيرو ===================== -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container-page">
+        <!-- تقسيم باستخدام CSS Grid -->
+        <div class="hero-grid">
+
+          <div class="hero-content">
+            <span class="hero-badge"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> وعي رقمي لجيل أفضل</span>
+            <h1 class="hero-title" id="hero-title">
+              الاستخدام الآمن
+              <span class="accent">للذكاء الاصطناعي</span>
+            </h1>
+            <p class="hero-text">
+              مع المعرفة والوعي .. استخدم الذكاء الاصطناعي بشكل آمن ومسؤول لصناعة مستقبل أفضل.
+              تعلّم كيف تحمي بياناتك، وكيف تتحقق من المعلومات قبل أن تصدّقها أو تنشرها.
+            </p>
+            <div class="hero-actions">
+              <a class="btn-app btn-primary-app" href="html/tips.html">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> ابدأ الآن
+              </a>
+              <a class="btn-app btn-secondary-app" href="#site-sections">
+                <i class="fa-solid fa-compass" aria-hidden="true"></i> اكتشف المزيد
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-art">
+            <img src="images/illustrations/hero-student.svg" width="620" height="520"
+                 alt="رسمة كرتونية لطالب يستخدم الحاسوب المحمول بجانب روبوت ذكاء اصطناعي ودرع حماية">
+            <span class="hero-chip chip-1"><i class="fa-solid fa-lock" aria-hidden="true"></i> حافظ على خصوصيتك</span>
+            <span class="hero-chip chip-2"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> تحقق من المعلومة</span>
+            <span class="hero-chip chip-3"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i> استخدمه بمسؤولية</span>
+            <span class="hero-chip chip-4"><i class="fa-solid fa-book-open-reader" aria-hidden="true"></i> اعتمد مصدراً موثوقاً</span>
+          </div>
+
+        </div>
+
+        <!-- أرقام حقيقية مرتبطة بمحتوى الموقع نفسه -->
+        <div class="stats-strip">
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></div>
+            <p class="stat-number">6</p>
+            <p class="stat-label">محاور توعوية في الموقع</p>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-list-check" aria-hidden="true"></i></div>
+            <p class="stat-number">12</p>
+            <p class="stat-label">نصيحة عملية قابلة للتطبيق</p>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-file-lines" aria-hidden="true"></i></div>
+            <p class="stat-number">3</p>
+            <p class="stat-label">مقالات تعليمية مكتوبة</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== شريط الصور WOWSlider ===================== -->
+    <section class="section" aria-labelledby="slider-title">
+      <div class="container-page">
+        <h2 id="slider-title" class="visually-hidden">شريط صور توعوي</h2>
+
+        <div id="wowslider-container1">
+          <div class="ws_images">
+            <ul>
+              <li>
+                <img src="images/slider/slide-1.svg" id="wows1_0"
+                     alt="روبوت ذكاء اصطناعي يحمل مصباح فكرة"
+                     title="الذكاء الاصطناعي أداة قوية|استخدمها بوعي .. ليكون مستقبلك أفضل"
+                     data-link="html/articles.html" data-link-text="اقرأ المزيد">
+              </li>
+              <li>
+                <img src="images/slider/slide-2.svg" id="wows1_1"
+                     alt="درع وقفل يحميان البيانات الشخصية"
+                     title="خصوصيتك أولاً|لا تشارك بيانات حساسة مع أدوات الذكاء الاصطناعي"
+                     data-link="html/privacy.html" data-link-text="حماية البيانات">
+              </li>
+              <li>
+                <img src="images/slider/slide-3.svg" id="wows1_2"
+                     alt="ثلاث خطوات: فكر ثم تحقق ثم استخدم"
+                     title="فكّر ثم تحقق ثم استخدم|ثلاث خطوات بسيطة تحميك من المعلومات المضللة"
+                     data-link="html/tips.html" data-link-text="شاهد النصائح">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== أقسام الموقع ===================== -->
+    <section class="section section-cream" id="site-sections" aria-labelledby="sections-title">
+      <div class="container-page">
+        <div class="section-head">
+          <span class="section-eyebrow">أقسام الموقع</span>
+          <h2 id="sections-title">اختر ما يهمّك وابدأ رحلتك</h2>
+          <p>اختر ما يهمك وابدأ رحلتك نحو استخدام آمن للذكاء الاصطناعي، كل قسم يشرح فكرة واحدة بخطوات عملية.</p>
+        </div>
+
+        <!-- ست بطاقات باستخدام CSS Grid -->
+        <div class="cards-grid">
+
+          <a class="feature-card" href="html/tips.html">
+            <div class="feature-icon ic-yellow"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i></div>
+            <h3>نصائح</h3>
+            <p>استخدم الذكاء الاصطناعي بذكاء عبر 12 نصيحة عملية قصيرة وواضحة.</p>
+            <span class="card-more">تصفح النصائح <i class="fa-solid fa-arrow-left" aria-hidden="true"></i></span>
+          </a>
+
+          <a class="feature-card" href="html/privacy.html">
+            <div class="feature-icon ic-mint"><i class="fa-solid fa-lock" aria-hidden="true"></i></div>
+            <h3>حماية البيانات</h3>
+            <p>احمِ معلوماتك وخصوصيتك، واعرف ما الذي يمكن مشاركته وما يجب تجنّبه.</p>
+            <span class="card-more">اقرأ التفاصيل <i class="fa-solid fa-arrow-left" aria-hidden="true"></i></span>
+          </a>
+
+          <a class="feature-card" href="html/articles.html#article-verify">
+            <div class="feature-icon ic-green"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></div>
+            <h3>التحقق من المعلومات</h3>
+            <p>لا تعتمد على أي إجابة دون تحقق، وتعلّم متى تثق ومتى تراجع المصدر.</p>
+            <span class="card-more">اقرأ المقال <i class="fa-solid fa-arrow-left" aria-hidden="true"></i></span>
+          </a>
+
+          <a class="feature-card" href="html/articles.html#article-study">
+            <div class="feature-icon ic-mint"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></div>
+            <h3>للطلبة</h3>
+            <p>استخدام أفضل في الدراسة: الذكاء الاصطناعي يدعم تعلّمك ولا يحل محلّه.</p>
+            <span class="card-more">اقرأ المقال <i class="fa-solid fa-arrow-left" aria-hidden="true"></i></span>
+          </a>
+
+          <a class="feature-card" href="html/tips.html#ethics">
+            <div class="feature-icon ic-peach"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i></div>
+            <h3>الأخلاقيات</h3>
+            <p>استخدم التقنية بمسؤولية: احترام الحقوق، والأمانة العلمية، وعدم الإضرار بالآخرين.</p>
+            <span class="card-more">تعرّف على القواعد <i class="fa-solid fa-arrow-left" aria-hidden="true"></i></span>
+          </a>
+
+          <a class="feature-card" href="html/contact.html">
+            <div class="feature-icon ic-peach"><i class="fa-solid fa-headset" aria-hidden="true"></i></div>
+            <h3>تواصل معنا</h3>
+            <p>نحن هنا لمساعدتك، أرسل سؤالك أو ملاحظتك وسنسعد بالرد عليك.</p>
+            <span class="card-more">راسلنا الآن <i class="fa-solid fa-arrow-left" aria-hidden="true"></i></span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ملخصات سريعة عبر Ajax + Modal ===================== -->
+    <section class="section" aria-labelledby="quick-title">
+      <div class="container-page">
+        <div class="section-head">
+          <span class="section-eyebrow">ملخصات سريعة</span>
+          <h2 id="quick-title">اقرأ الملخص دون مغادرة الصفحة</h2>
+          <p>يتم تحميل هذين الملخصين من ملفات خارجية باستخدام Ajax ثم عرضهما داخل نافذة منبثقة.</p>
+        </div>
+
+        <div class="quick-grid">
+          <article class="quick-card">
+            <div class="feature-icon ic-mint"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></div>
+            <div>
+              <h3>حماية بياناتك</h3>
+              <p>أهم القواعد التي تحافظ على معلوماتك الشخصية أثناء استخدام أدوات الذكاء الاصطناعي.</p>
+              <button type="button" class="btn-app btn-green-app btn-sm-app"
+                      data-ajax-url="ajax/privacy-details.html"
+                      data-bs-toggle="modal" data-bs-target="#privacyModal">
+                <i class="fa-solid fa-file-lines" aria-hidden="true"></i> اقرأ التفاصيل
+              </button>
+            </div>
+          </article>
+
+          <article class="quick-card">
+            <div class="feature-icon ic-peach"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></div>
+            <div>
+              <h3>التحقق من المعلومات</h3>
+              <p>خطوات عملية للتأكد من صحة أي معلومة قبل الاعتماد عليها في بحثك أو نشرها.</p>
+              <button type="button" class="btn-app btn-primary-app btn-sm-app"
+                      data-ajax-url="ajax/verification-details.html"
+                      data-bs-toggle="modal" data-bs-target="#verificationModal">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> اقرأ التفاصيل
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== أحدث المقالات + اختيار الموضوع ===================== -->
+    <section class="section section-cream" aria-labelledby="latest-title">
+      <div class="container-page">
+        <!-- تقسيم باستخدام CSS Grid -->
+        <div class="split-grid">
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2 id="latest-title">أحدث المقالات</h2>
+              <a class="btn-app btn-secondary-app btn-sm-app" href="html/articles.html">
+                عرض جميع المقالات <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+              </a>
+            </div>
+
+            <!-- قائمة المقالات باستخدام CSS Grid -->
+            <div class="article-list">
+              <a class="article-card" href="html/articles.html#article-privacy">
+                <div class="article-thumb"><img src="images/illustrations/article-1.svg" width="420" height="240" alt="حاسوب محمول عليه قفل"></div>
+                <div class="article-body">
+                  <h3>كيف تحمي بياناتك عند استخدام أدوات الذكاء الاصطناعي</h3>
+                  <p class="article-meta"><i class="fa-solid fa-clock" aria-hidden="true"></i> قراءة في 4 دقائق</p>
+                </div>
+              </a>
+
+              <a class="article-card" href="html/articles.html#article-verify">
+                <div class="article-thumb"><img src="images/illustrations/article-2.svg" width="420" height="240" alt="عدسة تحقق أمام فقاعة محادثة"></div>
+                <div class="article-body">
+                  <h3>متى تثق بإجابة الذكاء الاصطناعي ومتى يجب أن تتحقق</h3>
+                  <p class="article-meta"><i class="fa-solid fa-clock" aria-hidden="true"></i> قراءة في 5 دقائق</p>
+                </div>
+              </a>
+
+              <a class="article-card" href="html/articles.html#article-study">
+                <div class="article-thumb"><img src="images/illustrations/article-3.svg" width="420" height="240" alt="دفتر دراسة وروبوت مساعد"></div>
+                <div class="article-body">
+                  <h3>استخدام الذكاء الاصطناعي في الدراسة بطريقة مسؤولة</h3>
+                  <p class="article-meta"><i class="fa-solid fa-clock" aria-hidden="true"></i> قراءة في 5 دقائق</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <aside class="panel panel-mint" aria-labelledby="topics-title">
+            <div class="panel-head">
+              <h2 id="topics-title">ماذا تريد أن تتعلّم اليوم؟</h2>
+              <i class="fa-solid fa-lightbulb fa-2x" style="color:#F2663D" aria-hidden="true"></i>
+            </div>
+            <p>اختر الموضوع المناسب لك وسنحفظ اختيارك لهذه الجلسة.</p>
+
+            <!-- أزرار الاختيار: كل زر يعرض إشعار Toastr -->
+            <div class="topic-chips">
+              <button type="button" class="topic-chip" data-topic="الخصوصية">الخصوصية</button>
+              <button type="button" class="topic-chip" data-topic="الأخلاقيات">الأخلاقيات</button>
+              <button type="button" class="topic-chip" data-topic="المخاطر">المخاطر</button>
+              <button type="button" class="topic-chip" data-topic="الاستخدام الدراسي">الاستخدام الدراسي</button>
+              <button type="button" class="topic-chip" data-topic="التحقق من المعلومات">التحقق من المعلومات</button>
+              <button type="button" class="topic-chip" data-topic="أدوات موثوقة">أدوات موثوقة</button>
+            </div>
+
+            <p class="quote-box">
+              <i class="fa-solid fa-quote-right" aria-hidden="true"></i>
+              المعرفة اليوم .. حماية غداً
+            </p>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ثلاث خطوات ===================== -->
+    <section class="section" aria-labelledby="steps-title">
+      <div class="container-page">
+        <div class="section-head">
+          <span class="section-eyebrow">قاعدة بسيطة</span>
+          <h2 id="steps-title">فكّر .. تحقق .. استخدم</h2>
+          <p>ثلاث خطوات تكررها قبل الاعتماد على أي إجابة تصلك من أداة ذكاء اصطناعي.</p>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card">
+            <div class="step-badge">1</div>
+            <h3>فكّر</h3>
+            <p>اسأل نفسك: ما الذي أريده بالضبط؟ وهل المعلومة التي أطلبها حساسة أو شخصية؟</p>
+          </article>
+          <article class="step-card">
+            <div class="step-badge">2</div>
+            <h3>تحقق</h3>
+            <p>قارن الإجابة بمصدر موثوق: كتاب دراسي، موقع رسمي، أو رأي مختص.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-badge">3</div>
+            <h3>استخدم</h3>
+            <p>استخدم المعلومة بعد فهمها، وأعد صياغتها بأسلوبك مع ذكر أنك استعنت بأداة ذكاء اصطناعي.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== شريط التواصل ===================== -->
+    <section class="section" aria-labelledby="cta-title">
+      <div class="container-page">
+        <div class="contact-band">
+          <div>
+            <h2 id="cta-title"><i class="fa-solid fa-paper-plane" aria-hidden="true" style="color:#F2663D"></i> لديك سؤال أو استفسار؟</h2>
+            <p>تواصل معنا وسنكون سعداء بمساعدتك.</p>
+          </div>
+          <a class="phone-pill" href="tel:+967778672726" aria-label="اتصل بنا على الرقم 967778672726+">
+            <i class="fa-solid fa-phone" aria-hidden="true"></i> +967 778 672 726
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== الفوتر ===================== -->
+  <footer class="site-footer">
+    <div class="container-page">
+      <div class="footer-grid">
+
+        <div>
+          <div class="footer-brand">
+            <img src="images/illustrations/logo.svg" alt="شعار AI SAFE" width="46" height="46" class="brand-logo">
+            <span>
+              <span class="brand-name">AI SAFE</span>
+              <span class="brand-tag">الاستخدام الآمن للذكاء الاصطناعي</span>
+            </span>
+          </div>
+          <p>معاً لاستخدام أكثر أماناً ومسؤولية للذكاء الاصطناعي.</p>
+        </div>
+
+        <nav aria-labelledby="footer-links-title">
+          <h3 id="footer-links-title">روابط الموقع</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="html/tips.html">النصائح</a></li>
+            <li><a href="html/privacy.html">حماية البيانات</a></li>
+            <li><a href="html/articles.html">المقالات</a></li>
+            <li><a href="html/contact.html">تواصل معنا</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer-contact">
+          <h3>للتواصل</h3>
+          <p>للاتصال أو المراسلة عبر واتساب:</p>
+          <p><a href="tel:+967778672726"><i class="fa-solid fa-phone" aria-hidden="true"></i> +967 778 672 726</a></p>
+          <p><a href="https://wa.me/967778672726" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> واتساب</a></p>
+        </div>
+
+      </div>
+
+      <p class="footer-bottom">موقع توعوي تعليمي - مشروع مقرر تصميم الويب</p>
+    </div>
+  </footer>
+
+  <!-- ===================== النافذة المنبثقة الأولى (Ajax) ===================== -->
+  <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="privacyModalLabel">حماية بياناتك</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body" id="privacyModalBody">
+          <div class="modal-loading"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><p>جارٍ التحميل...</p></div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn-app btn-green-app btn-sm-app" href="html/privacy.html">الصفحة الكاملة</a>
+          <button type="button" class="btn-app btn-secondary-app btn-sm-app" data-bs-dismiss="modal">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== النافذة المنبثقة الثانية (Ajax) ===================== -->
+  <div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="verificationModalLabel">التحقق من المعلومات</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body" id="verificationModalBody">
+          <div class="modal-loading"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><p>جارٍ التحميل...</p></div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn-app btn-green-app btn-sm-app" href="html/articles.html#article-verify">المقال الكامل</a>
+          <button type="button" class="btn-app btn-secondary-app btn-sm-app" data-bs-dismiss="modal">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- زر العودة إلى الأعلى -->
+  <button type="button" id="backToTop" class="back-to-top" aria-label="العودة إلى أعلى الصفحة">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- ===================== ملفات JavaScript ===================== -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/toastr/toastr.min.js"></script>
+  <script src="wowslider/engine1/wowslider.js"></script>
+  <script src="wowslider/engine1/script.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/ajax-modals.js"></script>
+</body>
+</html>

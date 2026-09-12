@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" width="320" height="260" role="img" aria-label="رسمة رسالة وهاتف للتواصل">
+  <circle cx="160" cy="130" r="112" fill="#FFE3D5"/>
+  <rect x="62" y="84" width="196" height="128" rx="20" fill="#FFFDF9" stroke="#E7E5DF" stroke-width="3"/>
+  <path d="M62 104l98 62 98-62" fill="none" stroke="#F2663D" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <g>
+    <rect x="196" y="36" width="70" height="70" rx="22" fill="#24735C"/>
+    <path d="M216 58c0-4 3-7 7-7h6l6 13-7 6c4 8 9 13 17 17l6-7 13 6v6c0 4-3 7-7 7-19 0-41-22-41-41z" fill="#FFFDF9"/>
+  </g>
+  <g fill="#44A47A"><circle cx="70" cy="60" r="10"/><circle cx="252" cy="216" r="10"/></g>
+</svg>

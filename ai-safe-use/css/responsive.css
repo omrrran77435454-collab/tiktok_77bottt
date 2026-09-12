@@ -1,0 +1,118 @@
+/* ==========================================================================
+   AI SAFE - ملف التجاوب (responsive.css)
+   يحتوي على Media Queries لأحجام الشاشات المختلفة
+   يجب استدعاؤه بعد style.css
+   ========================================================================== */
+
+/* ------------------ شاشات كبيرة: أقل من 1200px ------------------ */
+@media (max-width: 1200px) {
+  html { font-size: 16.5px; }
+
+  .hero-title { font-size: 2.7rem; }
+  .hero-grid { gap: 1.8rem; }
+  .main-nav .nav-item-link { padding: .5rem .65rem; font-size: .93rem; }
+  .cards-grid { gap: 1.1rem; }
+
+  /* إبقاء البطاقات العائمة داخل حدود الصفحة لمنع أي تمرير أفقي */
+  .chip-1, .chip-3 { inset-inline-end: 0; }
+  .chip-2, .chip-4 { inset-inline-start: 0; }
+}
+
+/* ------------------ أجهزة لوحية: أقل من 992px ------------------ */
+@media (max-width: 992px) {
+  html { font-size: 16px; }
+
+  /* إظهار زر القائمة وإخفاء القائمة الأفقية */
+  .main-nav { display: none; }
+  .header-actions .btn-app { display: none; }
+  .menu-toggle { display: inline-flex; }
+
+  /* الهيرو يتحول إلى عمود واحد والصورة تحت النص */
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-text { margin-inline: auto; }
+  .hero-actions { justify-content: center; }
+  .hero-art { max-width: 520px; margin-inline: auto; order: 2; }
+  .hero-title { font-size: 2.5rem; }
+
+  /* الشبكات تصبح عمودين */
+  .cards-grid,
+  .tips-grid,
+  .contact-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .split-grid { grid-template-columns: 1fr; }
+  .page-hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .page-hero-grid .page-art { max-width: 320px; margin-inline: auto; }
+  .breadcrumb-app { justify-content: center; }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+
+  h1 { font-size: 2.3rem; }
+  h2 { font-size: 1.8rem; }
+}
+
+/* ------------------ الجوال الكبير واللوحي الصغير: أقل من 768px ------------------ */
+@media (max-width: 768px) {
+  .section { padding: 2.4rem 0; }
+
+  .hero { padding: 2.2rem 0 1.6rem; }
+  .hero-title { font-size: 2.1rem; }
+  .hero-text { font-size: 1.02rem; }
+
+  /* الأرقام السريعة تصبح عموداً واحداً بثلاثة صفوف مرتبة */
+  .stats-strip { grid-template-columns: 1fr; gap: .4rem; padding: 1.1rem; }
+  .stat-item + .stat-item { border-inline-start: none; border-top: 1px solid var(--border); padding-top: .8rem; }
+
+  .cards-grid,
+  .tips-grid,
+  .contact-grid { grid-template-columns: 1fr; }
+
+  .contact-band { flex-direction: column; text-align: center; padding: 1.6rem 1.2rem; }
+  .contact-band h2 { font-size: 1.4rem; }
+  .phone-pill { font-size: 1.15rem; width: 100%; justify-content: center; }
+
+  .content-card { padding: 1.3rem; }
+  .form-card { padding: 1.3rem; }
+
+  .footer-grid { grid-template-columns: 1fr; text-align: center; }
+  .footer-brand { justify-content: center; }
+  .site-footer { text-align: center; }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+  h3 { font-size: 1.2rem; }
+}
+
+/* ------------------ الجوال: أقل من 576px ------------------ */
+@media (max-width: 576px) {
+  html { font-size: 15.5px; }
+
+  .container-page { width: calc(100% - 1.6rem); }
+
+  .brand-name { font-size: 1.1rem; }
+  .brand-tag { font-size: .66rem; }
+  .brand-logo { width: 40px; height: 40px; }
+
+  .hero-title { font-size: 1.85rem; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn-app { width: 100%; }
+
+  .section-head { margin-bottom: 1.6rem; }
+  .panel { padding: 1.2rem; }
+  .panel-head h2 { font-size: 1.25rem; }
+
+  .auth-tabs { flex-direction: column; border-radius: var(--radius); }
+  .auth-tab { border-radius: var(--radius-sm); }
+
+  .table-app { min-width: 480px; }
+  .modal-body { padding: 1.1rem; }
+
+  .topic-chip { font-size: .9rem; padding: .45rem .9rem; }
+
+  #toast-container > div { width: 92vw; }
+}
+
+/* ------------------ الطباعة (اختياري) ------------------ */
+@media print {
+  .site-header, .site-footer, .contact-band { display: none; }
+  body { background: #fff; }
+}
