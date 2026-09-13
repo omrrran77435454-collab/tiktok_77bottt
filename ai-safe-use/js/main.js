@@ -1,113 +1,151 @@
-/* ==========================================================================
-   AI SAFE - الملف الرئيسي للجافاسكربت (main.js)
-   يعتمد على مكتبة jQuery
-   يحتوي على: إعدادات Toastr، تفعيل رابط الصفحة الحالية، أزرار اختيار الموضوع،
-              زر العودة للأعلى، وتبويبات صفحة الحساب.
-   ========================================================================== */
+/* =========================================================
+   الاستخدام الآمن للذكاء الاصطناعي
+   ملف الجافاسكربت الوحيد في المشروع (jQuery)
+   ========================================================= */
 
-jQuery(function ($) {
-  "use strict";
+$(document).ready(function () {
 
-  /* ----------------------------------------------------------------------
-     1) إعدادات إشعارات Toastr بما يناسب الاتجاه من اليمين لليسار (RTL)
-     ---------------------------------------------------------------------- */
-  if (window.toastr) {
-    toastr.options = {
-      rtl: true,                        // دعم الاتجاه العربي
-      positionClass: "toast-top-left",  // مكان ظهور الإشعار
-      closeButton: true,
-      progressBar: true,
-      newestOnTop: true,
-      preventDuplicates: true,
-      timeOut: 4000,
-      extendedTimeOut: 1500
-    };
-  }
+  /* ---------- 1) إعدادات إشعارات Toastr ---------- */
+  toastr.options = {
+    rtl: true,
+    positionClass: "toast-top-left",
+    timeOut: 4000,
+    progressBar: true
+  };
 
-  /* ----------------------------------------------------------------------
-     2) تمييز رابط الصفحة الحالية في القائمة
-     ---------------------------------------------------------------------- */
-  var currentFile = window.location.pathname.split("/").pop() || "index.html";
-  $(".main-nav .nav-item-link, .mobile-nav-link").each(function () {
-    var linkFile = ($(this).attr("href") || "").split("/").pop().split("#")[0];
-    if (linkFile === currentFile) {
-      $(this).addClass("active");
-    } else {
-      $(this).removeClass("active");
+  /* ---------- 2) زر القائمة في الجوال ---------- */
+  $(".menu-btn").on("click", function () {
+    $(".nav").toggleClass("open");
+  });
+
+  /* ---------- 3) تشغيل شريط الصور المتحرك ---------- */
+  $("#wowslider-container1").wowSlider();
+
+  /* ---------- 4) النوافذ المنبثقة مع Ajax ----------
+     عند تشغيل الموقع من خادم محلي (http) يتم تحميل الملف بـ Ajax.
+     وعند فتح الموقع مباشرة من الجهاز (file) يمنع المتصفح Ajax،
+     لذلك نعرض نسخة احتياطية مكتوبة هنا حتى تعمل النافذة في الحالتين.   */
+
+  var offlineText = {
+    privacy:
+      "<h3>كيف تحمي بياناتك؟</h3>" +
+      "<ul><li>لا تكتب كلمات المرور أو رموز التحقق.</li>" +
+      "<li>لا ترفع صور الهوية أو الوثائق الرسمية.</li>" +
+      "<li>لا تشارك بيانات أشخاص آخرين بدون إذنهم.</li>" +
+      "<li>احذف المحادثات التي لم تعد تحتاجها.</li></ul>",
+    verification:
+      "<h3>كيف تتحقق من المعلومات؟</h3>" +
+      "<ol><li>اسأل عن مصدر المعلومة.</li>" +
+      "<li>افتح المصدر وتأكد أنه موجود فعلاً.</li>" +
+      "<li>قارن المعلومة بكتاب دراسي أو موقع رسمي.</li>" +
+      "<li>في المواضيع المهمة اسأل مختصاً.</li></ol>"
+  };
+
+  // إذا كانت الصفحة داخل مجلد html نحتاج الرجوع خطوة للخلف
+  var folder = location.pathname.indexOf("/html/") > -1 ? "../" : "";
+
+  $(".ajax-btn").on("click", function () {
+    var name = $(this).data("file");                       // privacy أو verification
+    var box = $($(this).data("bs-target")).find(".modal-body");
+
+    box.html("<p>جارٍ التحميل...</p>");
+
+    // الحالة الأولى: فتح الموقع مباشرة من الملفات
+    if (location.protocol === "file:") {
+      box.html(offlineText[name]);
+      return;
+    }
+
+    // الحالة الثانية: تشغيل الموقع عبر خادم (Ajax الحقيقي)
+    $.ajax({
+      url: folder + "ajax/" + name + ".html",
+      type: "GET",
+      dataType: "html"
+    })
+      .done(function (data) {
+        box.html(data);
+      })
+      .fail(function () {
+        box.html(offlineText[name]);
+      });
+  });
+
+  /* ---------- 5) تبويبات صفحة الحساب ---------- */
+  $(".tab").on("click", function () {
+    var target = $(this).data("target");                   // login أو register
+    $(".tab").removeClass("active");
+    $(this).addClass("active");
+    $(".tab-box").hide();
+    $("#" + target).show();
+  });
+
+  /* ---------- 6) التحقق من نموذج تسجيل الدخول ---------- */
+  $("#loginForm").validate({
+    rules: {
+      loginEmail: { required: true, email: true },
+      loginPassword: { required: true, minlength: 6 }
+    },
+    messages: {
+      loginEmail: {
+        required: "يرجى إدخال البريد الإلكتروني",
+        email: "يرجى إدخال بريد إلكتروني صحيح"
+      },
+      loginPassword: {
+        required: "يرجى إدخال كلمة المرور",
+        minlength: "كلمة المرور يجب ألا تقل عن 6 أحرف"
+      }
+    },
+    submitHandler: function (form) {
+      form.reset();
+      toastr.success("تم تسجيل الدخول بنجاح");
+      return false;
     }
   });
 
-  /* ----------------------------------------------------------------------
-     3) أزرار اختيار الموضوع في الصفحة الرئيسية
-        عند الضغط: يتم تمييز الزر وإظهار إشعار Toastr (الاستخدام الثالث للمكتبة)
-     ---------------------------------------------------------------------- */
-  $(".topic-chip").on("click", function () {
-    var topic = $(this).data("topic");
-
-    $(".topic-chip").removeClass("is-selected").attr("aria-pressed", "false");
-    $(this).addClass("is-selected").attr("aria-pressed", "true");
-
-    // حفظ الاختيار لهذه الجلسة فقط (لا يتم حفظ أي بيانات حساسة)
-    try { sessionStorage.setItem("aiSafeTopic", topic); } catch (e) { /* المتصفح قد يمنع التخزين */ }
-
-    if (window.toastr) {
-      toastr.success("تم حفظ اختيارك: " + topic, "تم بنجاح");
+  /* ---------- 7) التحقق من نموذج إنشاء الحساب ---------- */
+  $("#registerForm").validate({
+    rules: {
+      regName: { required: true },
+      regEmail: { required: true, email: true },
+      regPassword: { required: true, minlength: 6 }
+    },
+    messages: {
+      regName: { required: "يرجى إدخال الاسم" },
+      regEmail: {
+        required: "يرجى إدخال البريد الإلكتروني",
+        email: "يرجى إدخال بريد إلكتروني صحيح"
+      },
+      regPassword: {
+        required: "يرجى إدخال كلمة المرور",
+        minlength: "كلمة المرور يجب ألا تقل عن 6 أحرف"
+      }
+    },
+    submitHandler: function (form) {
+      form.reset();
+      toastr.success("تم إنشاء الحساب بنجاح");
+      return false;
     }
   });
 
-  // استرجاع الاختيار السابق عند إعادة تحميل الصفحة
-  try {
-    var savedTopic = sessionStorage.getItem("aiSafeTopic");
-    if (savedTopic) {
-      $('.topic-chip[data-topic="' + savedTopic + '"]').addClass("is-selected").attr("aria-pressed", "true");
-    }
-  } catch (e) { /* تجاهل */ }
-
-  /* ----------------------------------------------------------------------
-     4) تبويبات صفحة الحساب (تسجيل الدخول / إنشاء حساب)
-     ---------------------------------------------------------------------- */
-  function activateAuthTab(target) {
-    $(".auth-tab").removeClass("active").attr("aria-selected", "false");
-    $('.auth-tab[data-target="' + target + '"]').addClass("active").attr("aria-selected", "true");
-    $(".auth-panel").attr("hidden", true);
-    $("#" + target).removeAttr("hidden");
-  }
-
-  $(".auth-tab").on("click", function () {
-    activateAuthTab($(this).data("target"));
-  });
-
-  // فتح التبويب المطلوب مباشرة عند القدوم من رابط مثل account.html#register
-  if ($(".auth-tab").length) {
-    var hash = window.location.hash.replace("#", "");
-    if (hash === "register" || hash === "login") {
-      activateAuthTab(hash);
-    }
-  }
-
-  /* ----------------------------------------------------------------------
-     5) زر العودة إلى الأعلى
-     ---------------------------------------------------------------------- */
-  var $toTop = $("#backToTop");
-  if ($toTop.length) {
-    $(window).on("scroll", function () {
-      if ($(window).scrollTop() > 400) { $toTop.addClass("is-visible"); }
-      else { $toTop.removeClass("is-visible"); }
-    });
-
-    $toTop.on("click", function () {
-      $("html, body").animate({ scrollTop: 0 }, 400);
-    });
-  }
-
-  /* ----------------------------------------------------------------------
-     6) إغلاق قائمة الجوال بعد الضغط على أي رابط داخلي في نفس الصفحة
-     ---------------------------------------------------------------------- */
-  $(".offcanvas .mobile-nav-link").on("click", function () {
-    var offcanvasEl = document.getElementById("mobileMenu");
-    if (offcanvasEl && window.bootstrap) {
-      var instance = bootstrap.Offcanvas.getInstance(offcanvasEl);
-      if (instance) { instance.hide(); }
+  /* ---------- 8) التحقق من نموذج التواصل ---------- */
+  $("#contactForm").validate({
+    rules: {
+      contactName: { required: true },
+      contactPhone: { required: true },
+      contactMessage: { required: true, minlength: 10 }
+    },
+    messages: {
+      contactName: { required: "يرجى إدخال الاسم" },
+      contactPhone: { required: "يرجى إدخال رقم الهاتف" },
+      contactMessage: {
+        required: "يرجى كتابة الرسالة",
+        minlength: "الرسالة يجب ألا تقل عن 10 أحرف"
+      }
+    },
+    submitHandler: function (form) {
+      form.reset();
+      toastr.success("تم إرسال النموذج بنجاح");
+      return false;
     }
   });
 
