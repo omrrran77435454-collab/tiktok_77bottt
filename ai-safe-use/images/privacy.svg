@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" width="320" height="260" role="img" aria-label="رسمة قفل يحمي البيانات الشخصية">
+  <circle cx="160" cy="130" r="112" fill="#DDF3E7"/>
+  <rect x="96" y="118" width="128" height="100" rx="24" fill="#24735C"/>
+  <path d="M124 118v-20a36 36 0 0 1 72 0v20" fill="none" stroke="#153E35" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="160" cy="158" r="16" fill="#FFFDF9"/>
+  <rect x="153" y="166" width="14" height="28" rx="7" fill="#FFFDF9"/>
+  <g fill="#F2663D"><circle cx="70" cy="92" r="11"/><circle cx="250" cy="92" r="11"/></g>
+  <g fill="#44A47A"><rect x="54" y="164" width="34" height="10" rx="5"/><rect x="232" y="164" width="34" height="10" rx="5"/></g>
+  <g fill="#F9C74F"><circle cx="96" cy="52" r="7"/><circle cx="224" cy="52" r="7"/></g>
+</svg>

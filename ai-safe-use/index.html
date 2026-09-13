@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الاستخدام الآمن للذكاء الاصطناعي</title>
+  <link rel="icon" href="favicon.svg">
+
+  <!-- المكتبات (نسخ محلية داخل المشروع) -->
+  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="vendor/toastr/toastr.min.css">
+  <link rel="stylesheet" href="wowslider/engine1/style.css">
+
+  <!-- تصميم الموقع -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ============ الهيدر ============ -->
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="index.html">
+        <img src="images/logo.svg" alt="شعار الموقع">
+        <span>AI SAFE</span>
+      </a>
+
+      <button class="menu-btn" type="button" aria-label="القائمة">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav class="nav">
+        <a href="index.html" class="active">الرئيسية</a>
+        <a href="html/tips.html">النصائح</a>
+        <a href="html/privacy.html">حماية البيانات</a>
+        <a href="html/account.html">الحساب</a>
+        <a href="html/contact.html">تواصل معنا</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ قسم الترحيب ============ -->
+    <section class="hero">
+      <div class="container hero-row">
+        <div>
+          <h1>الاستخدام الآمن <span>للذكاء الاصطناعي</span></h1>
+          <p>تعرف على أهم الطرق التي تساعدك على استخدام الذكاء الاصطناعي بشكل آمن ومسؤول.</p>
+          <a class="btn btn-main" href="html/tips.html">ابدأ التعلم</a>
+        </div>
+        <div class="hero-img">
+          <img src="images/hero.svg" alt="رسمة طالب يستخدم الحاسوب بجانب روبوت ذكاء اصطناعي">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ شريط الصور المتحرك ============ -->
+    <section class="section">
+      <div class="container">
+        <div id="wowslider-container1">
+          <div class="ws_images">
+            <ul>
+              <li><img src="images/slide-1.svg" alt="روبوت ذكاء اصطناعي" title="استخدم الذكاء الاصطناعي بوعي"></li>
+              <li><img src="images/slide-2.svg" alt="قفل يحمي البيانات" title="احمِ بياناتك وخصوصيتك"></li>
+              <li><img src="images/slide-3.svg" alt="خطوات التحقق" title="تحقق من المعلومات قبل استخدامها"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ثلاث بطاقات ============ -->
+    <section class="section section-cream">
+      <div class="container">
+        <div class="section-title">
+          <h2>استخدام أكثر أماناً</h2>
+          <p>ثلاث قواعد بسيطة تجعل استخدامك لأدوات الذكاء الاصطناعي أفضل وأأمن.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="icon"><i class="fa-solid fa-lock"></i></div>
+            <h3>حماية الخصوصية</h3>
+            <p>لا تشارك معلوماتك الشخصية أو كلمات المرور مع أي أداة.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon icon-yellow"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <h3>التحقق من المعلومات</h3>
+            <p>تأكد من صحة أي معلومة قبل أن تعتمد عليها أو تنشرها.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon icon-orange"><i class="fa-solid fa-hand-holding-heart"></i></div>
+            <h3>الاستخدام المسؤول</h3>
+            <p>استخدم الذكاء الاصطناعي لدعم تعلمك واحترم حقوق الآخرين.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ بطاقتان تفتحان نافذة منبثقة عبر Ajax ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <h2>اقرأ المزيد</h2>
+          <p>اضغط على الزر لعرض التفاصيل داخل نافذة منبثقة دون الانتقال إلى صفحة أخرى.</p>
+        </div>
+
+        <div class="cards-2">
+          <article class="card">
+            <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>حماية بياناتك</h3>
+            <p>أهم القواعد التي تحافظ على معلوماتك أثناء استخدام أدوات الذكاء الاصطناعي.</p>
+            <button type="button" class="btn btn-green ajax-btn"
+                    data-file="privacy" data-bs-toggle="modal" data-bs-target="#privacyModal">
+              اعرف المزيد
+            </button>
+          </article>
+
+          <article class="card">
+            <div class="icon icon-orange"><i class="fa-solid fa-circle-check"></i></div>
+            <h3>التحقق من المعلومات</h3>
+            <p>خطوات بسيطة تتأكد بها من صحة المعلومة قبل استخدامها.</p>
+            <button type="button" class="btn btn-main ajax-btn"
+                    data-file="verification" data-bs-toggle="modal" data-bs-target="#verificationModal">
+              اعرف المزيد
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ الفوتر ============ -->
+  <footer class="site-footer">
+    <div class="container">
+      <nav>
+        <a href="index.html">الرئيسية</a>
+        <a href="html/tips.html">النصائح</a>
+        <a href="html/privacy.html">حماية البيانات</a>
+        <a href="html/account.html">الحساب</a>
+        <a href="html/contact.html">تواصل معنا</a>
+      </nav>
+      <p>للتواصل: <a href="tel:+967778672726">+967 778 672 726</a></p>
+      <p>موقع توعوي تعليمي - مشروع مقرر تصميم الويب</p>
+    </div>
+  </footer>
+
+  <!-- ============ النافذة المنبثقة الأولى ============ -->
+  <div class="modal fade" id="privacyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5">حماية بياناتك</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ النافذة المنبثقة الثانية ============ -->
+  <div class="modal fade" id="verificationModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5">التحقق من المعلومات</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ملفات الجافاسكربت ============ -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/toastr/toastr.min.js"></script>
+  <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+  <script src="wowslider/engine1/wowslider.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

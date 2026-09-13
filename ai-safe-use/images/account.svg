@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" width="320" height="260" role="img" aria-label="رسمة بطاقة تسجيل دخول آمنة">
+  <circle cx="160" cy="130" r="112" fill="#DDF3E7"/>
+  <rect x="58" y="70" width="204" height="130" rx="22" fill="#FFFDF9" stroke="#E7E5DF" stroke-width="3"/>
+  <circle cx="108" cy="112" r="20" fill="#44A47A"/>
+  <path d="M84 152c4-14 12-21 24-21s20 7 24 21z" fill="#44A47A"/>
+  <g stroke="#E7E5DF" stroke-width="10" stroke-linecap="round">
+    <path d="M152 108h74"/><path d="M152 134h74"/>
+  </g>
+  <rect x="152" y="158" width="74" height="20" rx="10" fill="#F2663D"/>
+  <g fill="#F9C74F"><circle cx="52" cy="212" r="9"/><circle cx="268" cy="60" r="9"/></g>
+</svg>

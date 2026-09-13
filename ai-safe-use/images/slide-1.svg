@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 20 560 440" role="img" aria-label="روبوت ذكاء اصطناعي يحمل مصباح فكرة">
+  <circle cx="330" cy="230" r="196" fill="#D6F0E2"/>
+  <circle cx="330" cy="230" r="196" fill="none" stroke="#BFE6D2" stroke-width="3" stroke-dasharray="12 16"/>
+  <g fill="#CDE9DA" opacity=".8">
+    <circle cx="900" cy="70" r="46"/><circle cx="1080" cy="300" r="64"/><circle cx="760" cy="400" r="30"/>
+  </g>
+  <ellipse cx="330" cy="410" rx="210" ry="26" fill="#C6E6D5"/>
+  <!-- الروبوت -->
+  <g>
+    <rect x="236" y="150" width="190" height="170" rx="46" fill="#FFFFFF" stroke="#CFE8DA" stroke-width="4"/>
+    <rect x="266" y="184" width="130" height="86" rx="28" fill="#153E35"/>
+    <circle cx="306" cy="224" r="13" fill="#44A47A"/>
+    <circle cx="356" cy="224" r="13" fill="#44A47A"/>
+    <path d="M312 250c11 10 28 10 39 0" stroke="#44A47A" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <rect x="322" y="112" width="18" height="40" rx="9" fill="#44A47A"/>
+    <circle cx="331" cy="102" r="17" fill="#F9C74F"/>
+    <path d="M240 202L208 244" stroke="#44A47A" stroke-width="28" stroke-linecap="round"/>
+    <path d="M424 192L488 148" stroke="#44A47A" stroke-width="28" stroke-linecap="round"/>
+    <rect x="268" y="318" width="42" height="26" rx="12" fill="#24735C"/>
+    <rect x="352" y="318" width="42" height="26" rx="12" fill="#24735C"/>
+    <rect x="286" y="286" width="90" height="14" rx="7" fill="#DDF3E7"/>
+  </g>
+  <!-- المصباح -->
+  <g transform="translate(452,54)">
+    <circle cx="52" cy="56" r="52" fill="#F9C74F"/>
+    <circle cx="52" cy="56" r="38" fill="#FFE08A"/>
+    <rect x="34" y="106" width="36" height="12" rx="6" fill="#24735C"/>
+    <rect x="39" y="122" width="26" height="11" rx="5" fill="#24735C"/>
+    <path d="M38 62c0-12 6-20 14-20s14 8 14 20" stroke="#FFFDF9" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <path d="M52 42V26" stroke="#FFFDF9" stroke-width="7" stroke-linecap="round"/>
+    <g stroke="#F2663D" stroke-width="8" stroke-linecap="round">
+      <path d="M-8 20l-16-12"/><path d="M112 20l16-12"/><path d="M-16 70h-20"/><path d="M120 70h20"/>
+    </g>
+  </g>
+  <!-- ورقة ملاحظات -->
+  <g transform="translate(84,58)">
+    <rect x="0" y="0" width="112" height="112" rx="14" fill="#FFE3D5" transform="rotate(-9 56 56)"/>
+    <g stroke="#F2663D" stroke-width="8" stroke-linecap="round" transform="rotate(-9 56 56)">
+      <path d="M24 38h64"/><path d="M24 60h64"/><path d="M24 82h38"/>
+    </g>
+  </g>
+  <g fill="#44A47A" opacity=".6">
+    <circle cx="560" cy="330" r="10"/><circle cx="600" cy="368" r="7"/><circle cx="150" cy="300" r="9"/>
+  </g>
+</svg>

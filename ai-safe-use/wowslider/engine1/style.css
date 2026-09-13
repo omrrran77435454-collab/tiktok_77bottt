@@ -1,0 +1,106 @@
+/* =========================================================
+   WOWSlider - تنسيق شريط الصور المتحرك
+   ========================================================= */
+
+#wowslider-container1 {
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(21, 62, 53, .08);
+  direction: rtl;
+}
+
+/* منطقة الصور */
+#wowslider-container1 .ws_images {
+  position: relative;
+  padding-top: 40%;              /* لحفظ ارتفاع ثابت للصورة */
+  background: #E6F4EC;
+}
+#wowslider-container1 .ws_images ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#wowslider-container1 .ws_images li {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+#wowslider-container1 .ws_images li.ws_active { display: block; }
+
+/* لون خلفية كل شريحة */
+#wowslider-container1 .ws_images li:nth-child(1) { background: #E9F6EF; }
+#wowslider-container1 .ws_images li:nth-child(2) { background: #FFF1E9; }
+#wowslider-container1 .ws_images li:nth-child(3) { background: #FFFBEF; }
+#wowslider-container1 .ws_images img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;           /* إظهار الرسمة كاملة */
+}
+
+/* نص الشريحة */
+#wowslider-container1 .ws_caption {
+  background: #24735C;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 14px 16px;
+  margin: 0;
+}
+
+/* أزرار التالي والسابق */
+#wowslider-container1 .ws_next,
+#wowslider-container1 .ws_prev {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: #FFFFFF;
+  color: #153E35;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(21, 62, 53, .15);
+}
+#wowslider-container1 .ws_prev { right: 12px; }
+#wowslider-container1 .ws_next { left: 12px; }
+#wowslider-container1 .ws_next:hover,
+#wowslider-container1 .ws_prev:hover { background: #F2663D; color: #FFFFFF; }
+
+/* النقاط */
+#wowslider-container1 .ws_bullets {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+#wowslider-container1 .ws_bullets button {
+  width: 11px;
+  height: 11px;
+  margin: 0 4px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(21, 62, 53, .3);
+  cursor: pointer;
+}
+#wowslider-container1 .ws_bullets button.ws_selected { background: #F2663D; }
+
+/* التجاوب */
+@media (max-width: 992px) {
+  #wowslider-container1 .ws_images { padding-top: 58%; }
+  #wowslider-container1 .ws_caption { font-size: 18px; }
+}
+@media (max-width: 480px) {
+  #wowslider-container1 .ws_images { padding-top: 78%; }
+  #wowslider-container1 .ws_caption { font-size: 16px; padding: 12px; }
+  #wowslider-container1 .ws_next,
+  #wowslider-container1 .ws_prev { width: 34px; height: 34px; font-size: 15px; }
+}

@@ -1,0 +1,20 @@
+# ملفات النظام
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ملفات المحررات
+.vscode/
+.idea/
+*.swp
+*~
+
+# ملفات مؤقتة وسجلات
+*.log
+*.tmp
+tmp/
+cache/
+
+# حزم غير مطلوبة في مشروع Front-End
+node_modules/
+package-lock.json

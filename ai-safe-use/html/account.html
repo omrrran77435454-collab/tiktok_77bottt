@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الحساب | الاستخدام الآمن للذكاء الاصطناعي</title>
+  <link rel="icon" href="../favicon.svg">
+
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="../vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="../vendor/toastr/toastr.min.css">
+  <link rel="stylesheet" href="../wowslider/engine1/style.css">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../index.html">
+        <img src="../images/logo.svg" alt="شعار الموقع">
+        <span>AI SAFE</span>
+      </a>
+
+      <button class="menu-btn" type="button" aria-label="القائمة">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav class="nav">
+        <a href="../index.html">الرئيسية</a>
+        <a href="tips.html">النصائح</a>
+        <a href="privacy.html">حماية البيانات</a>
+        <a href="account.html" class="active">الحساب</a>
+        <a href="contact.html">تواصل معنا</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-head">
+      <div class="container">
+        <img src="../images/account.svg" alt="رسمة بطاقة تسجيل دخول">
+        <h1>تسجيل الدخول وإنشاء الحساب</h1>
+        <p>نموذج تدريبي يوضح التحقق من صحة البيانات.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container two-cols">
+
+        <div class="form-box">
+          <!-- التبويبان -->
+          <div class="tabs">
+            <button type="button" class="tab active" data-target="login">تسجيل الدخول</button>
+            <button type="button" class="tab" data-target="register">إنشاء حساب</button>
+          </div>
+
+          <!-- نموذج تسجيل الدخول -->
+          <div class="tab-box" id="login">
+            <form id="loginForm">
+              <div class="field">
+                <label for="loginEmail">البريد الإلكتروني</label>
+                <input type="email" id="loginEmail" name="loginEmail" placeholder="example@mail.com">
+              </div>
+
+              <div class="field">
+                <label for="loginPassword">كلمة المرور</label>
+                <input type="password" id="loginPassword" name="loginPassword" placeholder="******">
+              </div>
+
+              <button type="submit" class="btn btn-main btn-full">تسجيل الدخول</button>
+            </form>
+          </div>
+
+          <!-- نموذج إنشاء الحساب -->
+          <div class="tab-box" id="register" style="display:none">
+            <form id="registerForm">
+              <div class="field">
+                <label for="regName">الاسم</label>
+                <input type="text" id="regName" name="regName" placeholder="اكتب اسمك">
+              </div>
+
+              <div class="field">
+                <label for="regEmail">البريد الإلكتروني</label>
+                <input type="email" id="regEmail" name="regEmail" placeholder="example@mail.com">
+              </div>
+
+              <div class="field">
+                <label for="regPassword">كلمة المرور</label>
+                <input type="password" id="regPassword" name="regPassword" placeholder="******">
+              </div>
+
+              <button type="submit" class="btn btn-green btn-full">إنشاء الحساب</button>
+            </form>
+          </div>
+        </div>
+
+        <aside class="side-box">
+          <h3><i class="fa-solid fa-circle-info"></i> ملاحظة</h3>
+          <ul>
+            <li>هذا نموذج واجهة فقط بدون خادم أو قاعدة بيانات.</li>
+            <li>لا يتم حفظ أي بيانات أو كلمات مرور.</li>
+            <li>الهدف هو عرض التحقق من البيانات وإشعار النجاح.</li>
+          </ul>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <nav>
+        <a href="../index.html">الرئيسية</a>
+        <a href="tips.html">النصائح</a>
+        <a href="privacy.html">حماية البيانات</a>
+        <a href="account.html">الحساب</a>
+        <a href="contact.html">تواصل معنا</a>
+      </nav>
+      <p>للتواصل: <a href="tel:+967778672726">+967 778 672 726</a></p>
+      <p>موقع توعوي تعليمي - مشروع مقرر تصميم الويب</p>
+    </div>
+  </footer>
+
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../vendor/toastr/toastr.min.js"></script>
+  <script src="../vendor/jquery-validation/jquery.validate.min.js"></script>
+  <script src="../wowslider/engine1/wowslider.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
