@@ -1,19 +1,13 @@
 /**
- * يُجهّز ملف ‎.dev.vars‎ لتشغيل اختبارات E2E محلياً.
+ * يُجهّز ملفات البيئة لتشغيل اختبارات E2E محلياً.
  *
- * لا يستبدل ملفاً موجوداً أبداً — إن كان لديك ‎.dev.vars‎ بالفعل،
- * تأكّد فقط أنه يحتوي القيم الثلاث المذكورة في آخر الرسالة.
- * القيم هنا وهمية بالكامل وللاختبار المحلي فقط.
+ * لا يستبدل ملفاً موجوداً أبداً. القيم هنا وهمية بالكامل وللاختبار المحلي فقط،
+ * ولا تتضمّن أي إعداد Firebase حقيقي (وضع الاختبار يتجاوز Firebase تماماً).
  */
 import { existsSync, writeFileSync } from 'node:fs';
 
-const TARGET = '.dev.vars';
-
-const CONTENT = `# ملف تطوير/اختبار محلي — قيم وهمية بالكامل، لا تستخدمها في الإنتاج.
-GOOGLE_CLIENT_ID=local-dev-google-client-id
-GOOGLE_CLIENT_SECRET=local-dev-google-client-secret
-BETTER_AUTH_SECRET=local-dev-secret-not-for-production-0123456789abcdef
-BETTER_AUTH_URL=http://localhost:5173
+const DEV_VARS = `# ملف تطوير/اختبار محلي — قيم وهمية بالكامل، لا تستخدمها في الإنتاج.
+FIREBASE_PROJECT_ID=teacher-tools-local-test
 TELEGRAM_BOT_TOKEN=000000:local-dev-mock-token
 TELEGRAM_BOT_USERNAME=teacher_tools_dev_bot
 TELEGRAM_CHANNEL_ID=-1001234567890
@@ -24,18 +18,25 @@ ADMIN_TELEGRAM_ID=5559869840
 # يوجّه طلبات Telegram إلى الخادم الوهمي بدل الخدمة الحقيقية.
 TELEGRAM_API_BASE=http://127.0.0.1:8788
 
-# وضع الاختبار: يفعّل تسجيل الدخول بالبريد لاختبارات E2E فقط.
+# وضع الاختبار: يقبل توكنات اختبار موقّعة محلياً بدل Firebase.
 E2E_TEST_MODE=true
 E2E_TEST_SECRET=local-dev-e2e-secret
 `;
 
-if (existsSync(TARGET)) {
-  console.log(`[prepare-e2e] الملف ${TARGET} موجود — لم يُعدَّل.`);
-  console.log('[prepare-e2e] تأكّد أنه يحتوي:');
-  console.log('  E2E_TEST_MODE=true');
-  console.log('  E2E_TEST_SECRET=<أي قيمة>');
-  console.log('  TELEGRAM_API_BASE=http://127.0.0.1:8788');
-} else {
-  writeFileSync(TARGET, CONTENT, 'utf8');
-  console.log(`[prepare-e2e] أُنشئ ${TARGET} بقيم اختبار وهمية.`);
+const ENV_LOCAL = `# إعدادات الواجهة لاختبارات E2E — لا Firebase حقيقي هنا.
+VITE_E2E_TEST_MODE=true
+`;
+
+for (const [path, content] of [
+  ['.dev.vars', DEV_VARS],
+  ['.env.local', ENV_LOCAL],
+]) {
+  if (existsSync(path)) {
+    console.log(`[prepare-e2e] ${path} موجود — لم يُعدَّل.`);
+  } else {
+    writeFileSync(path, content, 'utf8');
+    console.log(`[prepare-e2e] أُنشئ ${path}.`);
+  }
 }
+
+console.log('[prepare-e2e] تأكّد من وجود: E2E_TEST_MODE=true و VITE_E2E_TEST_MODE=true');

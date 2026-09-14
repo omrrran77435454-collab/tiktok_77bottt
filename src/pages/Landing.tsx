@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Alert } from '@/components/ui';
-import { signInWithGoogle } from '@/lib/auth-client';
+import { useAuth } from '@/lib/useAuth';
 import { GoogleIcon, Icon } from '@/components/Icon';
 
 const STEPS = [
@@ -47,18 +47,22 @@ const FEATURES = [
 
 export function LandingPage() {
   const [params] = useSearchParams();
+  const { status, signIn, signInError } = useAuth();
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(
-    params.get('error') ? 'تعذّر تسجيل الدخول بقوقل. حاول مرة أخرى.' : null,
-  );
+
+  const error =
+    signInError ??
+    (status === 'unconfigured'
+      ? 'خدمة تسجيل الدخول غير مُعدّة على هذا الموقع. تواصل مع مشرف المنصة.'
+      : params.get('error')
+        ? 'تعذّر تسجيل الدخول بقوقل. حاول مرة أخرى.'
+        : null);
 
   const handleSignIn = async () => {
     setBusy(true);
-    setError(null);
     try {
-      await signInWithGoogle();
-    } catch {
-      setError('تعذّر تسجيل الدخول بقوقل. حاول مرة أخرى.');
+      await signIn();
+    } finally {
       setBusy(false);
     }
   };
@@ -68,6 +72,13 @@ export function LandingPage() {
       <section className="hero">
         <div className="container hero-inner">
           <div className="hero-content">
+            <img
+              className="hero-brand-icon"
+              src="/icon-192.png"
+              alt="أدوات المعلم"
+              width={72}
+              height={72}
+            />
             <span className="eyebrow">أدوات تختصر شغل المعلم</span>
             <h1 className="title-xl hero-title">
               معلّم <span className="hero-highlight">أكثر أثراً</span> كل يوم
@@ -87,7 +98,10 @@ export function LandingPage() {
                 {busy ? <span className="spinner" aria-hidden="true" /> : <GoogleIcon />}
                 تسجيل الدخول بواسطة Google
               </button>
-              <span className="hint">مجاني للمعلمين — لا يتطلّب بطاقة ولا اشتراكاً مدفوعاً.</span>
+              <span className="hint">
+                مجاني للمعلمين — لا يتطلّب بطاقة ولا اشتراكاً مدفوعاً. بتسجيلك توافق على{' '}
+                <Link to="/terms">شروط الاستخدام</Link> و<Link to="/privacy">سياسة الخصوصية</Link>.
+              </span>
             </div>
 
             {error ? (

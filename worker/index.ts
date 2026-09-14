@@ -1,26 +1,25 @@
-import { getAuth } from './auth';
 import { isTestMode, missingEnvVars, type Env } from './env';
 import { Router, type RouteContext } from './lib/router';
 import { errors, json } from './lib/http';
-import { handleMe, handleSavePreferences, handleTools } from './routes/me';
+import { handleLogin, handleMe, handleSavePreferences, handleTools } from './routes/me';
 import { handleTrackEvent } from './routes/analytics';
 import {
   handleCreateLinkToken,
   handleTelegramWebhook,
+  handleUnlinkTelegram,
   handleVerifySubscription,
 } from './routes/telegram';
 import { handleAdminStats } from './routes/admin';
 
 const router = new Router()
-  // Better Auth يتكفّل بكل مسارات /api/auth/* بما فيها Google OAuth وحالة الـ state.
-  .mount('/api/auth', ({ request, env }) => getAuth(env).handler(request))
-
   .get('/api/me', handleMe)
+  .post('/api/me/login', handleLogin)
   .post('/api/me/preferences', handleSavePreferences)
   .get('/api/tools', handleTools)
 
   .post('/api/telegram/link-token', handleCreateLinkToken)
   .post('/api/telegram/verify', handleVerifySubscription)
+  .post('/api/telegram/unlink', handleUnlinkTelegram)
   .post('/api/telegram/webhook', handleTelegramWebhook)
 
   .post('/api/events', handleTrackEvent)

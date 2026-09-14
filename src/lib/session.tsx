@@ -1,44 +1,82 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { MeResponse } from '@shared/types';
-import { ApiRequestError, apiFetch } from './api';
+import { ApiRequestError, apiFetch, apiPost } from './api';
 import { SessionContext, type SessionState } from './session-context';
+import { useAuth } from './useAuth';
 
+type FetchState = 'idle' | 'authenticated' | 'error';
+
+/**
+ * يجلب ملف المستخدم من الخادم بعد أن تستقرّ حالة Firebase.
+ *
+ * الخادم هو مصدر الحقيقة: هو من يتحقّق من التوكن، وينشئ صفّ المستخدم،
+ * ويقرّر الدور وحالة بوابة تيليجرام. الواجهة لا تفترض شيئاً من ذلك.
+ *
+ * ملاحظة على التصميم: حالة الجلسة مشتقّة من حالة Firebase ولا تُخزَّن مرّتين،
+ * فلا حاجة لتصفير الحالة يدوياً عند تسجيل الخروج.
+ */
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const [status, setStatus] = useState<SessionState['status']>('loading');
+  const { status: authStatus } = useAuth();
+  const [fetchState, setFetchState] = useState<FetchState>('idle');
   const [data, setData] = useState<MeResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const loginRecorded = useRef(false);
 
   const refresh = useCallback(async () => {
     try {
       const response = await apiFetch<MeResponse>('/api/me');
       setData(response);
       setErrorMessage(null);
-      setStatus('authenticated');
+      setFetchState('authenticated');
+
+      // نسجّل حدث الدخول مرة واحدة لكل جلسة متصفّح.
+      if (!loginRecorded.current) {
+        loginRecorded.current = true;
+        void apiPost('/api/me/login').catch(() => undefined);
+      }
     } catch (error) {
       if (error instanceof ApiRequestError && error.status === 401) {
         setData(null);
         setErrorMessage(null);
-        setStatus('anonymous');
+        setFetchState('idle');
         return;
       }
       setData(null);
       setErrorMessage(
         error instanceof ApiRequestError ? error.message : 'تعذّر تحميل بيانات الحساب.',
       );
-      setStatus('error');
+      setFetchState('error');
     }
   }, []);
 
   useEffect(() => {
-    // جلب بيانات الجلسة عند الإقلاع. التحديث يحدث بعد انتهاء الطلب
-    // (داخل Promise) وليس بشكل متزامن، لذا لا توجد دورة إعادة رسم متتالية.
+    if (authStatus !== 'signed-in') {
+      loginRecorded.current = false;
+      return;
+    }
+    // جلب بيانات الحساب عند استقرار حالة الدخول. تحديث الحالة يقع بعد
+    // انتهاء الطلب (داخل Promise) وليس بشكل متزامن، فلا دورة إعادة رسم متتالية.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void refresh();
-  }, [refresh]);
+  }, [authStatus, refresh]);
+
+  const status = useMemo<SessionState['status']>(() => {
+    if (authStatus === 'loading') return 'loading';
+    if (authStatus !== 'signed-in') return 'anonymous';
+    if (fetchState === 'authenticated') return 'authenticated';
+    if (fetchState === 'error') return 'error';
+    return 'loading';
+  }, [authStatus, fetchState]);
 
   const value = useMemo<SessionState>(
-    () => ({ status, data, errorMessage, refresh, setData }),
+    () => ({
+      status,
+      data: status === 'authenticated' ? data : null,
+      errorMessage,
+      refresh,
+      setData,
+    }),
     [status, data, errorMessage, refresh],
   );
 

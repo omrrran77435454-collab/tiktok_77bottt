@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useSession } from '@/lib/useSession';
 import { Icon } from '@/components/Icon';
-import { signOut } from '@/lib/auth-client';
+import { useAuth } from '@/lib/useAuth';
 
 const NAV_ITEMS = [
   { to: '/dashboard', label: 'الرئيسية', icon: 'home' as const },
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { data, status } = useSession();
+  const { signOut } = useAuth();
   const location = useLocation();
   // نربط حالة القائمة بالمسار الحالي، فتُغلق تلقائياً عند الانتقال
   // بدون الحاجة إلى تأثير جانبي يعيد الرسم.
@@ -32,9 +33,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="app-header no-print">
         <div className="container app-header-inner">
           <Link className="brand" to={authenticated ? '/dashboard' : '/'}>
-            <span className="brand-mark" aria-hidden="true">
-              <Icon name="book" size={20} />
-            </span>
+            {/* اسم المنصّة مكتوب بجانبها، لذلك الأيقونة زخرفية لقارئ الشاشة. */}
+            <img className="brand-mark" src="/icon-192.png" alt="" width={38} height={38} />
             <span className="brand-text">
               <span className="brand-name">أدوات المعلم</span>
               <span className="brand-tag">أدوات تختصر شغل المعلم</span>
@@ -131,6 +131,11 @@ export function AppShell({ children }: { children: ReactNode }) {
       <footer className="app-footer no-print">
         <div className="container app-footer-inner">
           <span className="muted small">أدوات المعلم — أدوات تختصر شغل المعلم</span>
+          <nav className="footer-links" aria-label="روابط قانونية">
+            <Link to="/privacy">سياسة الخصوصية</Link>
+            <Link to="/terms">شروط الاستخدام</Link>
+            <Link to="/help">المساعدة</Link>
+          </nav>
           <span className="muted small">بيانات طلابك تبقى على جهازك</span>
         </div>
       </footer>

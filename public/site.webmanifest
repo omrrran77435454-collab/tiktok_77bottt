@@ -1,0 +1,20 @@
+{
+  "name": "أدوات المعلم",
+  "short_name": "أدوات المعلم",
+  "description": "أدوات عربية تساعد المعلم على تنظيم المتابعة وتحويل البيانات إلى قرارات ومستندات جاهزة للطباعة.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FDFBF6",
+  "theme_color": "#0D5B58",
+  "icons": [
+    { "src": "/favicon-48x48.png", "sizes": "48x48", "type": "image/png" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/maskable-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/maskable-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

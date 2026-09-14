@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from '@/lib/auth';
 import { SessionProvider } from '@/lib/session';
 import { AppShell } from './AppShell';
 import { RedirectIfAuthenticated, RequireAdmin, RequireAuth, RequireTools } from './guards';
@@ -12,12 +13,15 @@ import { HelpPage } from '@/pages/Help';
 import { AdminPage } from '@/pages/Admin';
 import { UnauthorizedPage } from '@/pages/Unauthorized';
 import { NotFoundPage } from '@/pages/NotFound';
+import { PrivacyPage } from '@/pages/Privacy';
+import { TermsPage } from '@/pages/Terms';
 
 export function App() {
   return (
     <BrowserRouter>
-      <SessionProvider>
-        <AppShell>
+      <AuthProvider>
+        <SessionProvider>
+          <AppShell>
           <Routes>
             <Route
               path="/"
@@ -84,11 +88,14 @@ export function App() {
               }
             />
             <Route path="/help" element={<HelpPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </AppShell>
-      </SessionProvider>
+          </AppShell>
+        </SessionProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

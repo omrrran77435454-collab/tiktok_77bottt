@@ -18,7 +18,7 @@ export default function globalSetup(): void {
     try {
       execFileSync(
         'npx',
-        ['wrangler', 'd1', 'execute', 'teacher_tools_db', '--local', '--command', sql],
+        ['wrangler', 'd1', 'execute', 'teacher-tools-db', '--local', '--command', sql],
         { stdio: 'ignore' },
       );
     } catch {

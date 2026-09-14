@@ -129,3 +129,67 @@ export function buildPlan(data: AbsencePlanData): AbsencePlan {
 export function createEmptyItem(): AbsenceItem {
   return { title: '', type: 'lesson', skill: '', status: 'missed', priority: 'high', minutes: '' };
 }
+
+/* ------------------------------ التحقّق من المدخلات ------------------------------ */
+
+export interface FieldIssue {
+  field: string;
+  message: string;
+}
+
+function parseNumber(value: string): number | null {
+  const normalized = String(value ?? '')
+    .replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))
+    .trim();
+  if (normalized === '') return null;
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+export function validateAbsencePlan(data: AbsencePlanData): FieldIssue[] {
+  const issues: FieldIssue[] = [];
+
+  const days = parseNumber(data.absenceDays);
+  if (data.absenceDays.trim() !== '' && (days === null || days < 0)) {
+    issues.push({ field: 'absenceDays', message: 'عدد أيام الغياب لا يمكن أن يكون سالباً.' });
+  }
+  if (days !== null && days > 365) {
+    issues.push({ field: 'absenceDays', message: 'عدد أيام الغياب يبدو غير منطقي (أكثر من سنة).' });
+  }
+
+  const available = parseNumber(data.availableMinutes);
+  if (data.availableMinutes.trim() !== '' && (available === null || available < 0)) {
+    issues.push({
+      field: 'availableMinutes',
+      message: 'الوقت المتاح لا يمكن أن يكون سالباً.',
+    });
+  }
+
+  // موعد التحقّق يجب ألا يسبق بداية الغياب المُقدَّرة.
+  if (data.followUpDate && days !== null && days >= 0) {
+    const followUp = Date.parse(data.followUpDate);
+    if (!Number.isNaN(followUp)) {
+      const absenceStart = Date.now() - days * 24 * 60 * 60 * 1000;
+      if (followUp < absenceStart) {
+        issues.push({
+          field: 'followUpDate',
+          message: 'موعد التحقق يسبق بداية فترة الغياب — راجع التاريخ.',
+        });
+      }
+    }
+  }
+
+  data.items.forEach((item, index) => {
+    const raw = item.minutes.trim();
+    if (raw === '') return;
+    const minutes = parseNumber(raw);
+    if (minutes === null || minutes < 0) {
+      issues.push({
+        field: `items.${index}.minutes`,
+        message: 'الوقت التقديري يجب أن يكون رقماً موجباً.',
+      });
+    }
+  });
+
+  return issues;
+}

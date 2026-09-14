@@ -12,6 +12,7 @@ import {
   summarize,
   type FollowupData,
   type StudentCategory,
+  validateFollowup,
 } from './compute';
 
 const CATEGORY_TONE: Record<StudentCategory, CellTone> = {
@@ -186,4 +187,5 @@ export const studentFollowupTool = defineTool<FollowupData>({
   createSampleData,
   Form,
   buildDocument,
+  validate: validateFollowup,
 });

@@ -55,6 +55,7 @@ export interface LinkTokenResponse {
 export type UsageEventType =
   | 'login'
   | 'telegram_linked'
+  | 'telegram_unlinked'
   | 'subscription_verified'
   | 'subscription_failed'
   | 'tool_opened'

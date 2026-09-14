@@ -33,19 +33,112 @@ function newId(): string {
 
 /* ------------------------------- المستخدمون ------------------------------- */
 
+export interface UserRow {
+  id: string;
+  firebase_uid: string;
+  email: string;
+  name: string;
+  photo_url: string | null;
+  role: UserRole;
+}
+
+/** كل كم من الوقت نحدّث last_seen_at — نتجنّب كتابة في D1 مع كل طلب. */
+const LAST_SEEN_REFRESH_MS = 15 * 60 * 1000;
+
+/**
+ * يجلب المستخدم بمعرّف Firebase، وينشئه إن لم يكن موجوداً (Upsert).
+ *
+ * الهوية كلها (uid / email / name / photo) تأتي من توكن تحقّقنا من توقيعه،
+ * ولا يمكن للعميل التأثير عليها. حقل role لا يُكتب هنا إطلاقاً — ترقيته
+ * تحدث فقط في مسار Webhook تيليجرام.
+ */
+export async function upsertUserFromIdentity(
+  db: D1Database,
+  identity: { uid: string; email: string; name: string; picture: string | null },
+): Promise<{ user: UserRow; created: boolean }> {
+  const existing = await db
+    .prepare(
+      `SELECT id, firebase_uid, email, name, photo_url, role, last_seen_at
+       FROM users WHERE firebase_uid = ?1`,
+    )
+    .bind(identity.uid)
+    .first<UserRow & { last_seen_at: string | null }>();
+
+  const now = nowIso();
+
+  if (existing) {
+    const lastSeen = existing.last_seen_at ? Date.parse(existing.last_seen_at) : 0;
+    const profileChanged =
+      existing.email !== identity.email ||
+      existing.name !== identity.name ||
+      (existing.photo_url ?? null) !== identity.picture;
+
+    if (profileChanged || !lastSeen || Date.now() - lastSeen > LAST_SEEN_REFRESH_MS) {
+      await db
+        .prepare(
+          `UPDATE users SET email = ?1, name = ?2, photo_url = ?3, last_seen_at = ?4
+           WHERE id = ?5`,
+        )
+        .bind(identity.email, identity.name, identity.picture, now, existing.id)
+        .run();
+    }
+
+    return {
+      user: {
+        id: existing.id,
+        firebase_uid: existing.firebase_uid,
+        email: identity.email,
+        name: identity.name,
+        photo_url: identity.picture,
+        role: existing.role === 'admin' ? 'admin' : 'user',
+      },
+      created: false,
+    };
+  }
+
+  const id = newId();
+  await db
+    .prepare(
+      `INSERT INTO users
+         (id, firebase_uid, email, name, photo_url, role, created_at, last_login_at, last_seen_at)
+       VALUES (?1, ?2, ?3, ?4, ?5, 'user', ?6, ?6, ?6)
+       ON CONFLICT (firebase_uid) DO NOTHING`,
+    )
+    .bind(id, identity.uid, identity.email, identity.name, identity.picture, now)
+    .run();
+
+  // ON CONFLICT يحمي من سباق طلبين متزامنين لأول تسجيل دخول.
+  const row = await db
+    .prepare(
+      `SELECT id, firebase_uid, email, name, photo_url, role
+       FROM users WHERE firebase_uid = ?1`,
+    )
+    .bind(identity.uid)
+    .first<UserRow>();
+
+  if (!row) throw new Error('تعذّر إنشاء المستخدم.');
+  return { user: { ...row, role: row.role === 'admin' ? 'admin' : 'user' }, created: row.id === id };
+}
+
+/** يسجّل لحظة تسجيل دخول صريحة (يُستدعى مرة عند بداية الجلسة). */
+export async function markLogin(db: D1Database, userId: string): Promise<void> {
+  const now = nowIso();
+  await db
+    .prepare('UPDATE users SET last_login_at = ?1, last_seen_at = ?1 WHERE id = ?2')
+    .bind(now, userId)
+    .run();
+}
+
 export async function getUserRole(db: D1Database, userId: string): Promise<UserRole> {
   const row = await db
-    .prepare('SELECT "role" FROM "user" WHERE "id" = ?1')
+    .prepare('SELECT role FROM users WHERE id = ?1')
     .bind(userId)
     .first<{ role: string | null }>();
   return row?.role === 'admin' ? 'admin' : 'user';
 }
 
 export async function setUserRole(db: D1Database, userId: string, role: UserRole): Promise<void> {
-  await db
-    .prepare('UPDATE "user" SET "role" = ?1, "updatedAt" = ?2 WHERE "id" = ?3')
-    .bind(role, nowIso(), userId)
-    .run();
+  await db.prepare('UPDATE users SET role = ?1 WHERE id = ?2').bind(role, userId).run();
 }
 
 /* ------------------------------ ربط تيليجرام ------------------------------ */
@@ -171,6 +264,41 @@ export async function consumeLinkToken(db: D1Database, tokenId: string): Promise
   const result = await db
     .prepare('UPDATE telegram_link_tokens SET used_at = ?1 WHERE id = ?2 AND used_at IS NULL')
     .bind(nowIso(), tokenId)
+    .run();
+  return (result.meta?.changes ?? 0) > 0;
+}
+
+/**
+ * يحجز "طلب تحقّق يدوي" إن سمح الحدّ الزمني.
+ *
+ * العملية ذرّية: شرط الوقت داخل جملة UPDATE نفسها، فلا يمرّ طلبان متزامنان
+ * ولا نعتمد على ذاكرة الـ Worker التي قد تُمسح في أي لحظة.
+ * يُرجع true إذا سُمح بالطلب.
+ */
+export async function claimVerifyRequest(
+  db: D1Database,
+  userId: string,
+  cooldownMs: number,
+): Promise<boolean> {
+  const now = nowIso();
+  const cutoff = new Date(Date.now() - cooldownMs).toISOString();
+  const result = await db
+    .prepare(
+      `UPDATE telegram_connections
+         SET last_verify_request_at = ?1
+       WHERE user_id = ?2
+         AND (last_verify_request_at IS NULL OR last_verify_request_at < ?3)`,
+    )
+    .bind(now, userId, cutoff)
+    .run();
+  return (result.meta?.changes ?? 0) > 0;
+}
+
+/** يفكّ ربط تيليجرام عن المستخدم. لا يمسّ حساب Google إطلاقاً. */
+export async function deleteTelegramConnection(db: D1Database, userId: string): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM telegram_connections WHERE user_id = ?1')
+    .bind(userId)
     .run();
   return (result.meta?.changes ?? 0) > 0;
 }

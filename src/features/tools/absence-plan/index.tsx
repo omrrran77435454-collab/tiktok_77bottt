@@ -9,6 +9,7 @@ import {
   createEmptyItem,
   type AbsenceItem,
   type AbsencePlanData,
+  validateAbsencePlan,
 } from './compute';
 
 function createEmptyData(): AbsencePlanData {
@@ -180,4 +181,5 @@ export const absencePlanTool = defineTool<AbsencePlanData>({
   createSampleData,
   Form,
   buildDocument,
+  validate: validateAbsencePlan,
 });

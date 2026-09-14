@@ -23,14 +23,14 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "teacher_tools_db",
-      // استبدل هذه القيمة بالمعرّف الناتج من: wrangler d1 create teacher_tools_db
+      "database_name": "teacher-tools-db",
+      // يُملأ آلياً أثناء النشر من سكربت scripts/deploy.mjs
       "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID",
       "migrations_dir": "migrations"
     }
   ],
 
-  // متغيرات غير سرية فقط. القيم السرية عبر wrangler secret put
+  // متغيّرات غير سرّية فقط. القيم السرّية عبر wrangler secret put
   "vars": {
     "E2E_TEST_MODE": "false"
   },

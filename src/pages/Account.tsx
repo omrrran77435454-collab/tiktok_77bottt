@@ -10,10 +10,11 @@ import { saveLocal } from '@/lib/storage';
 import { TOOLS } from '@/features/tools/registry';
 import { clearToolData } from '@/lib/storage';
 import { formatDateTime } from '@/lib/format';
-import { signOut } from '@/lib/auth-client';
+import { useAuth } from '@/lib/useAuth';
 
 export function AccountPage() {
-  const { data, setData } = useSession();
+  const { data, setData, refresh } = useSession();
+  const { signOut } = useAuth();
   const [templateId, setTemplateId] = useState(
     data?.preferences?.defaultTemplateId ?? DEFAULT_TEMPLATE_ID,
   );
@@ -31,6 +32,7 @@ export function AccountPage() {
       ) ?? { ...DEFAULT_PALETTE },
   );
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [unlinkState, setUnlinkState] = useState<'idle' | 'busy' | 'error'>('idle');
 
   const save = async () => {
     setStatus('saving');
@@ -49,6 +51,22 @@ export function AccountPage() {
       setStatus('saved');
     } catch {
       setStatus('error');
+    }
+  };
+
+  const unlinkTelegram = async () => {
+    const confirmed = window.confirm(
+      'سيتم فكّ ربط حساب تيليجرام. لن يُحذف حسابك ولا بياناتك، لكن ستحتاج إلى الربط من جديد لفتح الأدوات. هل تريد المتابعة؟',
+    );
+    if (!confirmed) return;
+
+    setUnlinkState('busy');
+    try {
+      await apiPost('/api/telegram/unlink');
+      await refresh();
+      setUnlinkState('idle');
+    } catch {
+      setUnlinkState('error');
     }
   };
 
@@ -113,7 +131,8 @@ export function AccountPage() {
             </div>
             <div className="kv">
               <dt>اسم المستخدم</dt>
-              <dd className="muted small">
+              {/* اسم المستخدم لاتيني يبدأ بـ @ — نعزله حتى لا ينقلب داخل نص عربي. */}
+              <dd className="muted small" dir="ltr">
                 {data.telegram.telegramUsername ? `@${data.telegram.telegramUsername}` : '—'}
               </dd>
             </div>
@@ -122,6 +141,26 @@ export function AccountPage() {
               <dd className="muted small">{formatDateTime(data.telegram.lastCheckedAt)}</dd>
             </div>
           </dl>
+
+          {data.telegram.linked ? (
+            <>
+              <div style={{ marginBlockStart: 'var(--sp-4)' }}>
+                <button
+                  type="button"
+                  className="btn btn-danger btn-sm"
+                  onClick={() => void unlinkTelegram()}
+                  disabled={unlinkState === 'busy'}
+                >
+                  {unlinkState === 'busy' ? 'جارٍ فكّ الربط…' : 'فكّ ربط Telegram'}
+                </button>
+              </div>
+              {unlinkState === 'error' ? (
+                <div style={{ marginBlockStart: 'var(--sp-3)' }}>
+                  <Alert tone="error">تعذّر فكّ الربط. حاول مرة أخرى.</Alert>
+                </div>
+              ) : null}
+            </>
+          ) : null}
 
           <hr className="divider" />
 

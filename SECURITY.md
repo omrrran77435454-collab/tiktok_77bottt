@@ -9,7 +9,7 @@
 
 | البيئة | المكان | مرفوع إلى Git؟ |
 |---|---|---|
-| التطوير المحلي | ملف `.dev.vars` في جذر المشروع | ❌ مُستثنى في `.gitignore` |
+| التطوير المحلي | `.dev.vars` (أسرار الـ Worker) و `.env` (إعداد Firebase) | ❌ مُستثنيان في `.gitignore` |
 | الإنتاج | Cloudflare Secrets (`wrangler secret put`) | ❌ لا تُخزَّن في المستودع |
 | قالب مرجعي | `.dev.vars.example` و `.env.example` | ✅ لكن بقيم Placeholder فقط |
 
@@ -19,8 +19,12 @@
 - `wrangler.jsonc` — يحتوي فقط `E2E_TEST_MODE: "false"` وهو ليس سرّاً.
 - أي ملف داخل حزمة النشر النهائية.
 
-الأسرار الحسّاسة: `GOOGLE_CLIENT_SECRET`, `BETTER_AUTH_SECRET`,
-`TELEGRAM_BOT_TOKEN`, `TELEGRAM_WEBHOOK_SECRET`.
+الأسرار الحسّاسة: `TELEGRAM_BOT_TOKEN` و `TELEGRAM_WEBHOOK_SECRET`.
+
+**ملاحظة على إعدادات Firebase:** قيم `VITE_FIREBASE_*` ليست أسراراً — Firebase
+يصمّمها لتكون علنية داخل حزمة المتصفّح، وهي مذكورة صراحةً في توثيقه.
+الحماية تأتي من: (1) التحقّق من توقيع ID Token في الـ Worker،
+(2) قائمة النطاقات المصرّح بها في Firebase Console.
 
 ---
 
@@ -100,14 +104,27 @@ id, user_id, tool_id, event_type, template_id, primary_color, created_at
 
 ## 4) المصادقة والجلسات
 
-- **Google OAuth عبر Better Auth** — تبادل الرمز وقيمة `state` يتمّان في الخادم بالكامل.
-- `GOOGLE_CLIENT_SECRET` لا يصل إلى المتصفّح إطلاقاً.
-- كوكي الجلسة:
-  - `HttpOnly` — غير قابل للقراءة من JavaScript.
-  - `SameSite=Lax` — حماية من CSRF عبر التنقّل.
-  - `Secure` — مفعّل تلقائياً عندما يكون `BETTER_AUTH_URL` على HTTPS.
-  - `Path=/`
-- مدة الجلسة 30 يوماً مع تجديد كل 24 ساعة، وكاش قصير (5 دقائق) لتقليل قراءات D1.
+- **Firebase Authentication** مع مزوّد Google. تبادل الرموز يتم داخل Firebase SDK.
+- كل طلب إلى `/api/*` يحمل `Authorization: Bearer <Firebase ID Token>`.
+- **لا تُستخدم كوكيز جلسة إطلاقاً** — وهذا يُلغي سطح هجوم CSRF من الأساس
+  (لا يوجد ما يُرسَل تلقائياً مع طلب عابر للمواقع).
+- الـ Worker يتحقّق من كل توكن قبل أي عملية:
+
+| الفحص | القيمة |
+|---|---|
+| الخوارزمية | `RS256` فقط |
+| التوقيع | مقابل JWKS من `googleapis.com` (تخزين مؤقّت 6 ساعات) |
+| `iss` | `https://securetoken.google.com/<PROJECT_ID>` |
+| `aud` | `<PROJECT_ID>` |
+| `exp` | في المستقبل (تسامح 60 ثانية) |
+| `auth_time` | في الماضي |
+| `sub` | غير فارغ |
+
+- **لا نستخدم Firebase Admin SDK**: لا يعمل على Workers ويتطلّب مفتاح حساب خدمة
+  (سرّ عالي الخطورة). التحقّق المباشر من التوقيع يعطي نفس الضمان بلا ذلك المفتاح.
+- التوكن قصير العمر (ساعة) ويجدّده Firebase SDK تلقائياً.
+- هوية المستخدم (`uid`, `email`, `name`, `photo`) تُستخرج **من التوكن فقط**،
+  ولا يُقبل أي منها من جسم الطلب — مُغطّى باختبارات تكامل.
 
 ---
 
@@ -133,15 +150,18 @@ id, user_id, tool_id, event_type, template_id, primary_color, created_at
 
 ## 6) صلاحيات الإدارة
 
-- الأدوار: `user` و `admin` في عمود `user.role`.
+- الأدوار: `user` و `admin` في عمود `users.role`.
 - الترقية إلى `admin` تحدث **فقط** داخل معالج الـ Webhook، وفقط عندما يطابق
   `telegram_user_id` القادم من تيليجرام قيمة `ADMIN_TELEGRAM_ID`.
-- حقل `role` مُعرَّف في Better Auth بـ `input: false`، أي أن العميل **لا يستطيع**
-  إرساله عند التسجيل أو التحديث (مُغطّى باختبار تكامل).
+- دالة إنشاء المستخدم (`upsertUserFromIdentity`) **لا تكتب حقل `role` إطلاقاً**،
+  فحتى لو وضع مهاجم `role: "admin"` داخل توكن مزوّر أو في جسم الطلب، لا أثر له
+  (مُغطّى باختبار تكامل صريح).
 - كل نقطة API إدارية تفحص الدور من **قاعدة البيانات** في كل طلب
   (`requireAdmin` في `worker/lib/gate.ts`) — إخفاء الزر في الواجهة ليس حماية.
 - `/admin` لمستخدم عادي: صفحة 403 في الواجهة، و`403` من الـ API.
-- **الإدمن لا يتجاوز بوابة الاشتراك**: يخضع لنفس شروط `canUseTools` تماماً.
+- **الأدوات**: الإدمن يخضع لنفس بوابة الاشتراك تماماً (`canUseTools`).
+- **لوحة الإدارة**: مفتوحة للإدمن حتى لو كان اشتراكه في القناة غير مؤكَّد،
+  لأنه مالك المنصّة لا مستخدم عادي. هذا استثناء مقصود ومُختبَر.
 
 ---
 
@@ -162,10 +182,30 @@ id, user_id, tool_id, event_type, template_id, primary_color, created_at
 
 ---
 
-## 8) وضع الاختبار (E2E)
+## 8) ترويسات الأمان
 
-لتشغيل اختبارات E2E دون Google وتيليجرام حقيقيين، يوجد وضع اختبار يفعّل
-تسجيل الدخول بالبريد **فقط**.
+تُطبَّق على كل الأصول عبر `public/_headers`:
+
+| الترويسة | القيمة |
+|---|---|
+| `Content-Security-Policy` | `script-src 'self'` فقط — **بلا `unsafe-eval` وبلا `unsafe-inline`** للسكربتات |
+| `frame-ancestors` | `'none'` — يمنع تضمين الموقع داخل إطار |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | تعطيل الكاميرا والميكروفون والموقع والدفع |
+| `Cross-Origin-Opener-Policy` | `same-origin-allow-popups` — لازم لنافذة تسجيل دخول Google |
+| `Strict-Transport-Security` | سنة كاملة |
+
+`connect-src` يسمح فقط بنطاقات Firebase Auth اللازمة، و`img-src` يسمح بصور
+الحسابات من `googleusercontent.com`. `style-src` يسمح بـ `'unsafe-inline'`
+لأن المستند يستخدم متغيّرات CSS مضمّنة لتلوين القوالب (لا يشمل السكربتات).
+
+---
+
+## 9) وضع الاختبار (E2E)
+
+لتشغيل اختبارات E2E دون Firebase وتيليجرام حقيقيين، يوجد وضع اختبار يقبل
+توكنات موقّعة محلياً **فقط**.
 
 شروط تفعيله (يجب توفّرهما معاً):
 
@@ -173,6 +213,9 @@ id, user_id, tool_id, event_type, template_id, primary_color, created_at
 E2E_TEST_MODE=true
 E2E_TEST_SECRET=<قيمة غير فارغة>
 ```
+
+حتى مع تفعيله، يُقبل توكن الاختبار فقط إذا بدأ بالبادئة `test.` **و** كان توقيعه
+(SHA-256 بالسرّ) صحيحاً بمقارنة ثابتة الزمن. أي توكن آخر يمرّ على مسار Firebase العادي.
 
 في الإنتاج:
 
@@ -182,11 +225,12 @@ E2E_TEST_SECRET=<قيمة غير فارغة>
 
 ---
 
-## 9) قائمة فحص أمني قبل كل نشر
+## 10) قائمة فحص أمني قبل كل نشر
 
 - [ ] `git status` نظيف ولا يحتوي `.dev.vars`.
 - [ ] `grep -rn "AAH\|AAE\|bot[0-9]\{8,\}:" src worker shared` لا يُرجع شيئاً.
 - [ ] `npx wrangler secret list` يعرض كل الأسرار المطلوبة.
+- [ ] نطاق الإنتاج مضاف في Firebase → Authorized domains.
 - [ ] `curl <URL>/api/health` يُرجع `ok:true` و `testMode:false`.
 - [ ] `/admin` بحساب عادي يعطي 403.
 - [ ] `getWebhookInfo` يعرض الرابط الصحيح بلا أخطاء.
@@ -194,7 +238,7 @@ E2E_TEST_SECRET=<قيمة غير فارغة>
 
 ---
 
-## 10) الإبلاغ عن ثغرة
+## 11) الإبلاغ عن ثغرة
 
 إن اكتشفت ثغرة، لا تفتح Issue عامة. راسل مالك المشروع مباشرة عبر قناة المنصة
 على تيليجرام مع وصف الخطوات، وأمهِله وقتاً معقولاً للإصلاح قبل أي إفصاح.

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { RouteContext } from '../lib/router';
 import { errors, json, readJson } from '../lib/http';
-import { evaluateGate } from '../lib/gate';
+import { authenticate } from '../lib/gate';
 import { countRecentEvents, insertUsageEvent } from '../lib/repo';
 
 /** الحد الأقصى لعدد الأحداث المقبولة من مستخدم واحد خلال دقيقة. */
@@ -11,6 +11,7 @@ const eventSchema = z.object({
   eventType: z.enum([
     'login',
     'telegram_linked',
+    'telegram_unlinked',
     'subscription_verified',
     'subscription_failed',
     'tool_opened',
@@ -34,20 +35,21 @@ const eventSchema = z.object({
  * التحقق من النوع عبر Zod يمنع تخزين أي قيمة خارج القائمة المعروفة.
  */
 export async function handleTrackEvent({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
-  if (gate instanceof Response) return gate;
+  // نكتفي بالمصادقة: بعض الأحداث (مثل ربط تيليجرام) تقع قبل اجتياز البوابة.
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
 
   const parsed = eventSchema.safeParse(await readJson(request));
   if (!parsed.success) return errors.badRequest('نوع الحدث غير معروف.');
 
   const sinceIso = new Date(Date.now() - 60_000).toISOString();
-  const recent = await countRecentEvents(env.DB, gate.user.id, sinceIso);
+  const recent = await countRecentEvents(env.DB, auth.user.id, sinceIso);
   if (recent >= RATE_LIMIT_PER_MINUTE) {
     return errors.tooManyRequests();
   }
 
   await insertUsageEvent(env.DB, {
-    userId: gate.user.id,
+    userId: auth.user.id,
     eventType: parsed.data.eventType,
     toolId: parsed.data.toolId ?? null,
     templateId: parsed.data.templateId ?? null,

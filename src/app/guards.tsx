@@ -38,6 +38,11 @@ export function RequireTools({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+/**
+ * لوحة الإدارة لمالك المنصّة.
+ * لا تمرّ عبر RequireTools عن قصد: الإدمن يدخل لوحته حتى لو كانت حالة
+ * اشتراكه في القناة غير مؤكَّدة، لأنه مالك المنصّة لا مستخدم عادي.
+ */
 export function RequireAdmin({ children }: { children: ReactNode }) {
   const { data, status } = useSession();
   if (status === 'loading') return <LoadingScreen />;

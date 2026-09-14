@@ -11,6 +11,7 @@ import type { AdminStatsResponse, UsageEventType } from '@shared/types';
 const EVENT_LABELS: Record<UsageEventType, string> = {
   login: 'تسجيل دخول',
   telegram_linked: 'ربط تيليجرام',
+  telegram_unlinked: 'فكّ ربط تيليجرام',
   subscription_verified: 'تأكيد اشتراك',
   subscription_failed: 'فشل تحقّق',
   tool_opened: 'فتح أداة',

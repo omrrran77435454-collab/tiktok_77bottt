@@ -171,3 +171,73 @@ export function nextLessonDecisions(data: ErrorMapData): string[] {
 export function createEmptyQuestion(index: number): QuestionRow {
   return { label: `السؤال ${index}`, skill: '', wrongCount: '' };
 }
+
+/* ------------------------------ التحقّق من المدخلات ------------------------------ */
+
+export interface FieldIssue {
+  field: string;
+  message: string;
+}
+
+function parseCount(value: string): number | null {
+  const normalized = String(value ?? '')
+    .replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))
+    .trim();
+  if (normalized === '') return null;
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+/**
+ * يمنع الحالات المستحيلة منطقياً بدل قصّ النسبة عند 100% وإخفاء الخطأ.
+ */
+export function validateErrorMap(data: ErrorMapData): FieldIssue[] {
+  const issues: FieldIssue[] = [];
+  const total = parseCount(data.totalStudents);
+
+  if (data.totalStudents.trim() !== '' && (total === null || total <= 0)) {
+    issues.push({
+      field: 'totalStudents',
+      message: 'عدد طلاب الصف يجب أن يكون رقماً أكبر من صفر.',
+    });
+  }
+
+  const { reteach, practice } = data.thresholds;
+  if (!Number.isFinite(reteach) || reteach < 0 || reteach > 100) {
+    issues.push({ field: 'thresholds.reteach', message: 'حدّ إعادة الشرح يجب أن يكون بين 0 و100.' });
+  }
+  if (!Number.isFinite(practice) || practice < 0 || practice > 100) {
+    issues.push({
+      field: 'thresholds.practice',
+      message: 'حدّ التدريب القصير يجب أن يكون بين 0 و100.',
+    });
+  }
+  if (Number.isFinite(reteach) && Number.isFinite(practice) && practice >= reteach) {
+    issues.push({
+      field: 'thresholds',
+      message: 'حدّ التدريب القصير يجب أن يكون أقل من حدّ إعادة الشرح حتى لا تتداخل القرارات.',
+    });
+  }
+
+  data.questions.forEach((question, index) => {
+    const raw = question.wrongCount.trim();
+    if (raw === '') return;
+
+    const wrong = parseCount(raw);
+    if (wrong === null || wrong < 0) {
+      issues.push({
+        field: `questions.${index}.wrongCount`,
+        message: 'عدد من أخطأ يجب أن يكون رقماً موجباً.',
+      });
+      return;
+    }
+    if (total !== null && total > 0 && wrong > total) {
+      issues.push({
+        field: `questions.${index}.wrongCount`,
+        message: `عدد الطلاب الذين أخطأوا لا يمكن أن يتجاوز عدد طلاب الصف (${data.totalStudents}).`,
+      });
+    }
+  });
+
+  return issues;
+}

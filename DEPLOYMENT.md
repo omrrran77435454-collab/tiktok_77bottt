@@ -1,244 +1,152 @@
 # دليل النشر — أدوات المعلم
 
-خطوات النشر على Cloudflare Workers من الصفر. اتبعها بالترتيب.
+النشر **آلي بالكامل** عبر GitHub Actions. لا تحتاج تشغيل أي أمر يدوياً.
 
 ---
 
-## 0) قبل أن تبدأ
+## الطريقة الموصى بها: النشر الآلي من GitHub
 
-تأكد أن الاختبارات تمرّ محلياً:
+### ما تحتاج إضافته مرة واحدة (GitHub → Settings → Secrets and variables → Actions)
 
-```bash
-npm install
-npm run lint
-npm run typecheck
-npm test
-npm run build
-```
+| السرّ | من أين تحصل عليه |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens → Create Token → قالب **Edit Cloudflare Workers** + صلاحية `D1:Edit` |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → Workers & Pages → العمود الجانبي |
+| `VITE_FIREBASE_API_KEY` | Firebase Console → Project settings → Web app |
+| `VITE_FIREBASE_AUTH_DOMAIN` | `<PROJECT_ID>.firebaseapp.com` |
+| `VITE_FIREBASE_PROJECT_ID` | معرّف مشروع Firebase |
+| `VITE_FIREBASE_APP_ID` | من نفس الصفحة |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | من نفس الصفحة |
+| `TELEGRAM_BOT_TOKEN` | BotFather |
+| `TELEGRAM_BOT_USERNAME` | اسم البوت بدون `@` |
+| `TELEGRAM_CHANNEL_ID` | مثل `-1001234567890` |
+| `TELEGRAM_CHANNEL_JOIN_URL` | رابط دعوة القناة |
+| `TELEGRAM_WEBHOOK_SECRET` | `openssl rand -hex 32` |
+| `ADMIN_TELEGRAM_ID` | `5559869840` |
 
----
+### ثم شغّل النشر
 
-## 1) تسجيل الدخول إلى Cloudflare
+من تبويب **Actions** → **Deploy** → **Run workflow**.
 
-```bash
-npx wrangler login
-npx wrangler whoami      # للتأكد من الحساب الصحيح
-```
+### ماذا يفعل الـ workflow
 
----
+1. `npm ci`
+2. `npm run lint`
+3. `npm run typecheck`
+4. `npm test` (وحدات + تكامل)
+5. `npm run build`
+6. `npx playwright test` (E2E على سطح المكتب والجوال)
+7. `node scripts/deploy.mjs` — وهو الذي:
+   - ينشئ قاعدة D1 باسم `teacher-tools-db` إن لم تكن موجودة،
+   - يكتب `database_id` في `wrangler.jsonc`،
+   - يطبّق الـ migrations على القاعدة البعيدة،
+   - ينشر الـ Worker ويستخرج رابط الإنتاج،
+   - يرفع الأسرار عبر `wrangler secret put` (بلا طباعة أي قيمة)،
+   - يضبط Telegram Webhook ويتحقّق منه عبر `getWebhookInfo`،
+   - يشغّل فحص صحّة على النسخة المنشورة.
 
-## 2) إنشاء قاعدة D1
+رابط الإنتاج يظهر في **ملخّص التشغيل (Summary)** أعلى صفحة الـ workflow.
 
-```bash
-npx wrangler d1 create teacher_tools_db
-```
-
-المخرجات تحتوي `database_id`. افتح `wrangler.jsonc` واستبدل:
-
-```jsonc
-"database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
-```
-
-بالمعرّف الحقيقي.
-
----
-
-## 3) تطبيق الـ migrations على قاعدة الإنتاج
-
-```bash
-npm run db:migrate:remote
-```
-
-للتأكد:
-
-```bash
-npx wrangler d1 execute teacher_tools_db --remote \
-  --command "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
-```
-
-يجب أن ترى: `account`, `session`, `telegram_connections`, `telegram_link_tokens`,
-`tools`, `usage_events`, `user`, `user_preferences`, `verification`.
+> إن فشل أي من بوابات الجودة، **لا يحدث نشر إطلاقاً** وتُرفع تقارير الاختبار
+> كـ artifact لمراجعتها.
 
 ---
 
-## 4) النشر الأول (للحصول على النطاق)
+## بعد أول نشر: خطوتان في لوحات التحكّم
 
-```bash
-npm run build
-npx wrangler deploy
-```
+### 1) Firebase — إضافة نطاق الإنتاج
 
-ستحصل على رابط مثل:
+**Authentication → Settings → Authorized domains → Add domain**:
 
 ```
-https://teacher-tools.<اسم-حسابك>.workers.dev
+<WORKER_NAME>.<ACCOUNT_SUBDOMAIN>.workers.dev
 ```
 
-**احفظ هذا الرابط** — سنسمّيه `<PRODUCTION_URL>` في بقية الخطوات.
+بدونها يظهر `auth/unauthorized-domain` عند تسجيل الدخول.
 
-> في هذه المرحلة الموقع سيفتح لكن تسجيل الدخول لن يعمل بعد،
-> لأن الأسرار لم تُضَف. هذا متوقّع.
+### 2) Telegram — إضافة البوت مشرفاً في القناة
+
+`getChatMember` لا يُرجع نتيجة موثوقة لقناة إلا إذا كان البوت **Admin** فيها.
+القناة → Administrators → Add Administrator → اختر البوت.
+
+> ضبط الـ Webhook نفسه يتم آلياً داخل `scripts/deploy.mjs` — لا تحتاج تشغيل
+> `setWebhook` يدوياً.
 
 ---
 
-## 5) إعداد Google OAuth على النطاق الحقيقي
+## النشر اليدوي (بديل)
 
-في [Google Cloud Console](https://console.cloud.google.com/) → **Credentials** →
-عميل OAuth الخاص بك:
+إن أردت النشر من جهازك مباشرة:
 
-- **Authorized JavaScript origins:**
-  `<PRODUCTION_URL>`
+```bash
+npx wrangler login                       # موافقة في المتصفّح
 
-- **Authorized redirect URIs:**
-  `<PRODUCTION_URL>/api/auth/callback/google`
+export FIREBASE_PROJECT_ID=...
+export TELEGRAM_BOT_TOKEN=...
+export TELEGRAM_BOT_USERNAME=...
+export TELEGRAM_CHANNEL_ID=...
+export TELEGRAM_CHANNEL_JOIN_URL=...
+export TELEGRAM_WEBHOOK_SECRET=...
+export ADMIN_TELEGRAM_ID=5559869840
 
-> مثال كامل:
-> `https://teacher-tools.example.workers.dev/api/auth/callback/google`
->
-> قد يستغرق تفعيل التغيير في Google بضع دقائق.
+npm ci && npm run build
+node scripts/deploy.mjs
+```
+
+السكربت نفسه يقوم بكل شيء: D1، migrations، النشر، الأسرار، الـ Webhook، فحص الصحّة.
 
 ---
 
-## 6) إضافة الأسرار
-
-```bash
-npx wrangler secret put GOOGLE_CLIENT_ID
-npx wrangler secret put GOOGLE_CLIENT_SECRET
-npx wrangler secret put BETTER_AUTH_SECRET        # openssl rand -base64 32
-npx wrangler secret put BETTER_AUTH_URL           # <PRODUCTION_URL> بلا شرطة في النهاية
-npx wrangler secret put TELEGRAM_BOT_TOKEN
-npx wrangler secret put TELEGRAM_BOT_USERNAME
-npx wrangler secret put TELEGRAM_CHANNEL_ID
-npx wrangler secret put TELEGRAM_CHANNEL_JOIN_URL
-npx wrangler secret put TELEGRAM_WEBHOOK_SECRET   # openssl rand -hex 32
-npx wrangler secret put ADMIN_TELEGRAM_ID
-```
-
-للتأكد من أسماء الأسرار المضافة (بدون كشف قيمها):
-
-```bash
-npx wrangler secret list
-```
-
-> تأكّد أن `E2E_TEST_MODE` في `wrangler.jsonc` يساوي `"false"` في الإنتاج،
-> وألا يوجد سرّ باسم `E2E_TEST_SECRET`.
-
----
-
-## 7) إعادة النشر بعد إضافة الأسرار
-
-```bash
-npx wrangler deploy
-```
-
-ثم افحص:
-
-```bash
-curl <PRODUCTION_URL>/api/health
-```
-
-النتيجة المتوقّعة:
-
-```json
-{"ok":true,"missingConfig":[],"testMode":false}
-```
-
-إن ظهرت أسماء في `missingConfig` فهي الأسرار الناقصة (القيم لا تُكشف أبداً).
-
----
-
-## 8) إعداد بوت تيليجرام
-
-1. تأكّد أن البوت **Admin** في القناة.
-2. سجّل الـ Webhook:
-
-```bash
-curl -X POST "https://api.telegram.org/bot<TOKEN>/setWebhook" \
-  -H 'content-type: application/json' \
-  -d '{
-    "url": "<PRODUCTION_URL>/api/telegram/webhook",
-    "secret_token": "<TELEGRAM_WEBHOOK_SECRET>",
-    "allowed_updates": ["message"]
-  }'
-```
-
-3. تأكّد:
-
-```bash
-curl "https://api.telegram.org/bot<TOKEN>/getWebhookInfo"
-```
-
-يجب أن ترى `"url"` صحيحاً و `"last_error_message"` فارغاً،
-و `"pending_update_count": 0`.
-
----
-
-## 9) اختبار قبول نهائي على الإنتاج
+## اختبار قبول على الإنتاج
 
 | # | الخطوة | النتيجة المتوقّعة |
 |---|---|---|
-| 1 | افتح `<PRODUCTION_URL>` | تظهر صفحة الهبوط بالعربية RTL |
-| 2 | اضغط «تسجيل الدخول بواسطة Google» | يعمل بلا `redirect_uri_mismatch` |
-| 3 | بعد الدخول | تُحوَّل إلى `/connect` |
-| 4 | اضغط «ربط Telegram» | يفتح البوت برابط فيه توكن |
-| 5 | اضغط Start في البوت | يصلك ردّ تأكيد |
-| 6 | ارجع واضغط «تحقق من الاشتراك» (بدون اشتراك) | رسالة «لا يزال الاشتراك غير مؤكّد» |
-| 7 | اشترك في القناة ثم أعد التحقق | تُفتح اللوحة |
+| 1 | افتح رابط الإنتاج | صفحة الهبوط بالعربية RTL مع الأيقونة الرسمية |
+| 2 | `/api/health` | `{"ok":true,"missingConfig":[],"testMode":false}` |
+| 3 | اضغط «تسجيل الدخول بواسطة Google» | نافذة Google تفتح وتنجح |
+| 4 | بعد الدخول | تُحوَّل إلى `/connect` |
+| 5 | اضغط «ربط Telegram» ثم Start في البوت | يصلك ردّ تأكيد |
+| 6 | «تحقق من الاشتراك» بدون اشتراك | «لا يزال الاشتراك غير مؤكّد» |
+| 7 | اشترك ثم أعد التحقّق | تُفتح اللوحة |
 | 8 | افتح أداة وأدخل بيانات | المعاينة تتحدّث فوراً |
-| 9 | غيّر القالب واللون | المستند يتغيّر فوراً |
-| 10 | صدّر PDF ثم PNG ثم اطبع | ملفات صحيحة بعربية سليمة بلا أزرار |
-| 11 | افتح `/admin` بحساب عادي | صفحة «ليس لديك صلاحية» (403) |
-| 12 | اربط حساب `ADMIN_TELEGRAM_ID` | `/admin` يعمل ويعرض الإحصاءات |
+| 9 | أدخل درجة أكبر من الدرجة الكلية | رسالة خطأ ويُمنع التصدير |
+| 10 | صدّر PDF ثم PNG ثم اطبع | ملفات بعربية سليمة بلا أزرار |
+| 11 | `/admin` بحساب عادي | صفحة «ليس لديك صلاحية» (403) |
+| 12 | اربط حساب `ADMIN_TELEGRAM_ID` ثم `/admin` | لوحة الإحصاءات تعمل |
+| 13 | `/privacy` و `/terms` | تفتحان للزائر بلا تسجيل دخول |
+| 14 | `/favicon.ico` و `/icon-192.png` و `/site.webmanifest` | `200 OK` والأيقونة الجديدة |
 
 ---
 
-## 10) ربط نطاق مخصّص (اختياري)
-
-1. أضف النطاق إلى Cloudflare.
-2. من لوحة Workers → **Settings → Domains & Routes → Add Custom Domain**.
-3. حدّث:
-   - `BETTER_AUTH_URL` (عبر `wrangler secret put`).
-   - روابط Google OAuth (Origins + Redirect URI).
-   - رابط الـ Webhook في تيليجرام.
-4. أعد النشر: `npx wrangler deploy`.
-
----
-
-## 11) المتابعة بعد النشر
+## المتابعة بعد النشر
 
 ```bash
-npx wrangler tail                      # سجلات حيّة
-npx wrangler d1 info teacher_tools_db  # حجم القاعدة والاستهلاك
+npx wrangler tail                         # سجلات حيّة
+npx wrangler d1 info teacher-tools-db     # حجم القاعدة والاستهلاك
+npx wrangler secret list                  # أسماء الأسرار (بلا قيم)
+npx wrangler deployments list             # سجل النشرات
+npx wrangler rollback <deployment-id>     # تراجع
 ```
 
-### ملاحظات على الخطة المجانية
+### البقاء داخل الحدود المجانية
 
-المشروع مصمّم ليبقى داخل الحدود المجانية:
-
-- **الأصول الثابتة لا تستدعي الـ Worker** — `run_worker_first` مضبوط على `/api/*` فقط،
-  فتصفّح الصفحات لا يستهلك استدعاءات.
-- **لا كتابة عند كل ضغطة مفتاح** — الأحداث محدودة ومُجمَّعة، مع منع التكرار في الواجهة
-  (30 ثانية) وحدّ 60 حدثاً/دقيقة لكل مستخدم على الخادم.
-- **التحقق من تيليجرام مرة كل 24 ساعة** لكل مستخدم، لا عند كل طلب.
-- **كاش الجلسة في الكوكي (5 دقائق)** يقلّل قراءات D1 كثيراً.
-- **فهارس مناسبة** على `created_at` و `user_id` و `tool_id` و `event_type`،
-  وكل استعلامات لوحة الإدارة تجميعية بلا `SELECT *`.
-
-### التراجع عن نشرة
-
-```bash
-npx wrangler deployments list
-npx wrangler rollback <deployment-id>
-```
+- **الأصول الثابتة لا تستدعي الـ Worker** — `run_worker_first` مضبوط على `/api/*` فقط.
+- **لا كتابة عند كل ضغطة مفتاح** — أحداث محدودة، منع تكرار 30 ثانية في الواجهة،
+  وحدّ 60 حدثاً/دقيقة لكل مستخدم على الخادم.
+- **التحقّق من تيليجرام مرة كل 24 ساعة** لكل مستخدم، لا عند كل طلب.
+- **`last_seen_at` يُحدَّث كل 15 دقيقة كحد أقصى** بدل كل طلب.
+- **مفاتيح Firebase العامة مخزّنة مؤقّتاً 6 ساعات** داخل الـ isolate.
+- **فهارس مناسبة** وكل استعلامات لوحة الإدارة تجميعية بلا `SELECT *`.
 
 ---
 
-## 12) مشاكل شائعة عند النشر
+## مشاكل شائعة
 
 | المشكلة | الحل |
 |---|---|
-| `D1_ERROR: no such table` | لم تُطبَّق الـ migrations على القاعدة البعيدة: `npm run db:migrate:remote` |
-| `Couldn't find a D1 DB with id ...` | `database_id` في `wrangler.jsonc` خاطئ |
-| تسجيل الدخول يفشل بصمت | `BETTER_AUTH_URL` لا يطابق النطاق الفعلي تماماً |
-| الـ Webhook يظهر خطأ 401 في `getWebhookInfo` | `secret_token` لا يطابق `TELEGRAM_WEBHOOK_SECRET` |
-| الصفحات ترجع 404 عند التحديث | تأكّد أن `not_found_handling` في `wrangler.jsonc` = `single-page-application` |
+| `Authentication error [code: 10000]` | `CLOUDFLARE_API_TOKEN` ناقص الصلاحيات (يحتاج Workers Scripts:Edit + D1:Edit) |
+| `D1_ERROR: no such table` | الـ migrations لم تُطبَّق: `npm run db:migrate:remote` |
+| `auth/unauthorized-domain` | أضف نطاق الإنتاج في Firebase → Authorized domains |
+| الـ Webhook يظهر خطأ في `getWebhookInfo` | `TELEGRAM_WEBHOOK_SECRET` في Cloudflare لا يطابق ما أُرسل في `setWebhook` |
+| الصفحات ترجع 404 عند التحديث | تأكّد أن `not_found_handling` = `single-page-application` |
+| `/api/health` يعرض `missingConfig` | الأسرار المذكورة لم تُرفع — أعد تشغيل الـ workflow |

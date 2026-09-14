@@ -13,6 +13,7 @@ import {
   summarizeErrorMap,
   type ErrorMapData,
   type QuestionDecision,
+  validateErrorMap,
 } from './compute';
 
 const DECISION_TONE: Record<QuestionDecision, CellTone> = {
@@ -172,4 +173,5 @@ export const errorMapTool = defineTool<ErrorMapData>({
   createSampleData,
   Form,
   buildDocument,
+  validate: validateErrorMap,
 });

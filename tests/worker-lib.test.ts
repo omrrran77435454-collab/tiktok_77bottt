@@ -88,10 +88,7 @@ describe('crypto helpers', () => {
 
 describe('env helpers', () => {
   const base = {
-    GOOGLE_CLIENT_ID: 'a',
-    GOOGLE_CLIENT_SECRET: 'b',
-    BETTER_AUTH_SECRET: 'c',
-    BETTER_AUTH_URL: 'http://localhost',
+    FIREBASE_PROJECT_ID: 'teacher-tools',
     TELEGRAM_BOT_TOKEN: 'd',
     TELEGRAM_BOT_USERNAME: 'e',
     TELEGRAM_CHANNEL_ID: 'f',
@@ -105,8 +102,12 @@ describe('env helpers', () => {
   });
 
   it('يكشف القيم الفارغة أو قوالب Placeholder', () => {
-    const broken = { ...base, GOOGLE_CLIENT_ID: '', TELEGRAM_BOT_TOKEN: '[ضع التوكن هنا]' } as Env;
-    expect(missingEnvVars(broken)).toEqual(['GOOGLE_CLIENT_ID', 'TELEGRAM_BOT_TOKEN']);
+    const broken = {
+      ...base,
+      FIREBASE_PROJECT_ID: '',
+      TELEGRAM_BOT_TOKEN: '[ضع التوكن هنا]',
+    } as Env;
+    expect(missingEnvVars(broken)).toEqual(['FIREBASE_PROJECT_ID', 'TELEGRAM_BOT_TOKEN']);
   });
 
   it('وضع الاختبار يتطلّب العلم والسرّ معاً', () => {

@@ -1,0 +1,94 @@
+# نشر "أدوات المعلم" على Cloudflare Workers.
+#
+# يعمل يدوياً (workflow_dispatch) أو عند الدفع إلى الفرع الرئيسي.
+# كل بوابات الجودة تعمل أولاً؛ لا نشر إن فشل أي منها.
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: بوابات الجودة ثم النشر
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: تثبيت الاعتماديات
+        run: npm ci
+
+      - name: فحص الأسلوب (lint)
+        run: npm run lint
+
+      - name: فحص الأنواع (typecheck)
+        run: npm run typecheck
+
+      - name: اختبارات الوحدات والتكامل
+        run: npm test
+
+      - name: بناء الإنتاج
+        run: npm run build
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+
+      - name: تثبيت متصفّح Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: اختبارات E2E
+        run: |
+          node scripts/prepare-e2e.mjs
+          npx wrangler d1 migrations apply teacher-tools-db --local
+          npx playwright test
+        env:
+          CI: 'true'
+
+      - name: النشر على Cloudflare
+        run: node scripts/deploy.mjs
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_BOT_USERNAME: ${{ secrets.TELEGRAM_BOT_USERNAME }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          TELEGRAM_CHANNEL_JOIN_URL: ${{ secrets.TELEGRAM_CHANNEL_JOIN_URL }}
+          TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
+          ADMIN_TELEGRAM_ID: ${{ secrets.ADMIN_TELEGRAM_ID }}
+
+      - name: عرض رابط الإنتاج في الملخّص
+        if: always()
+        run: |
+          if [ -f deploy-url.txt ]; then
+            {
+              echo "## ✅ تم النشر"
+              echo ""
+              echo "**رابط الإنتاج:** $(cat deploy-url.txt)"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: رفع تقارير الاختبار عند الفشل
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

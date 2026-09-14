@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import type { RouteContext } from '../lib/router';
 import { errors, json, readJson } from '../lib/http';
-import { evaluateGate } from '../lib/gate';
-import { getPreferences, listEnabledTools, savePreferences } from '../lib/repo';
+import { authenticate, evaluateGate } from '../lib/gate';
+import { getPreferences, insertUsageEvent, listEnabledTools, markLogin, savePreferences } from '../lib/repo';
 import type { MeResponse, ToolMeta } from '@shared/types';
 
 const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
@@ -26,7 +26,7 @@ export async function handleMe({ request, env }: RouteContext): Promise<Response
       id: gate.user.id,
       name: gate.user.name,
       email: gate.user.email,
-      image: gate.user.image,
+      image: gate.user.photo_url,
       role: gate.role,
     },
     telegram: gate.state,
@@ -34,6 +34,25 @@ export async function handleMe({ request, env }: RouteContext): Promise<Response
     preferences,
   };
   return json(body);
+}
+
+/**
+ * POST /api/me/login — يُستدعى مرة واحدة بعد تسجيل الدخول بنجاح.
+ * يسجّل حدث login ويحدّث last_login_at؛ لا يقبل أي بيانات من العميل.
+ */
+export async function handleLogin({ request, env }: RouteContext): Promise<Response> {
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
+
+  await markLogin(env.DB, auth.user.id);
+  await insertUsageEvent(env.DB, {
+    userId: auth.user.id,
+    eventType: 'login',
+    toolId: null,
+    templateId: null,
+    primaryColor: null,
+  });
+  return json({ ok: true });
 }
 
 /** GET /api/tools — قائمة الأدوات المفعّلة (تتطلّب اجتياز البوابة). */

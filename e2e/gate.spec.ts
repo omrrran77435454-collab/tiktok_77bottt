@@ -1,11 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-  BASE,
-  linkTelegramAccount,
-  setMemberStatus,
-  signUpTestUser,
-  uniqueTelegramId,
-} from './helpers';
+import { BASE, linkTelegramAccount, setMemberStatus, signInAs, uniqueTelegramId } from './helpers';
 
 test.describe('بوابة الدخول والاشتراك', () => {
   test('الزائر يرى صفحة الهبوط وزر Google', async ({ page }) => {
@@ -22,7 +16,7 @@ test.describe('بوابة الدخول والاشتراك', () => {
   });
 
   test('المسجّل غير المربوط يُحوَّل إلى صفحة الربط', async ({ context, page }) => {
-    await signUpTestUser(context);
+    await signInAs(context);
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/connect$/);
     await expect(page.getByRole('button', { name: 'ربط Telegram' })).toBeVisible();
@@ -30,9 +24,9 @@ test.describe('بوابة الدخول والاشتراك', () => {
 
   test('المربوط غير المشترك يبقى على البوابة ويرى رسالة واضحة', async ({ context, page }) => {
     const telegramId = uniqueTelegramId();
-    await signUpTestUser(context);
+    const token = await signInAs(context);
     await setMemberStatus(context, telegramId, 'left');
-    await linkTelegramAccount(context, telegramId);
+    await linkTelegramAccount(context, token, telegramId);
 
     await page.goto('/connect');
     await expect(page.getByRole('link', { name: 'الانضمام للقناة' })).toBeVisible();
@@ -44,9 +38,9 @@ test.describe('بوابة الدخول والاشتراك', () => {
 
   test('بعد الاشتراك يفتح التحقق الأدوات', async ({ context, page }) => {
     const telegramId = uniqueTelegramId();
-    await signUpTestUser(context);
+    const token = await signInAs(context);
     await setMemberStatus(context, telegramId, 'left');
-    await linkTelegramAccount(context, telegramId);
+    await linkTelegramAccount(context, token, telegramId);
 
     await page.goto('/connect');
     await setMemberStatus(context, telegramId, 'member');
@@ -58,9 +52,9 @@ test.describe('بوابة الدخول والاشتراك', () => {
 
   test('لا يُطلب الربط مرة أخرى بعد نجاحه', async ({ context, page }) => {
     const telegramId = uniqueTelegramId();
-    await signUpTestUser(context);
+    const token = await signInAs(context);
     await setMemberStatus(context, telegramId, 'member');
-    await linkTelegramAccount(context, telegramId);
+    await linkTelegramAccount(context, token, telegramId);
 
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/dashboard$/);
@@ -71,5 +65,26 @@ test.describe('بوابة الدخول والاشتراك', () => {
   test('صفحة غير موجودة تعرض 404 بالعربية', async ({ page }) => {
     await page.goto('/route-that-does-not-exist');
     await expect(page.getByText('الصفحة غير موجودة')).toBeVisible();
+  });
+});
+
+test.describe('فكّ ربط تيليجرام من الواجهة', () => {
+  test('يفكّ الربط ويعيد المستخدم إلى بوابة الربط', async ({ context, page }) => {
+    const telegramId = uniqueTelegramId();
+    const token = await signInAs(context);
+    await setMemberStatus(context, telegramId, 'member');
+    await linkTelegramAccount(context, token, telegramId);
+
+    await page.goto('/account');
+    await expect(page.getByText('مربوط')).toBeVisible();
+
+    page.once('dialog', (dialog) => dialog.accept());
+    await page.getByRole('button', { name: 'فكّ ربط Telegram' }).click();
+
+    await expect(page.getByText('غير مربوط')).toBeVisible({ timeout: 15_000 });
+
+    // الأدوات صارت مغلقة مجدداً.
+    await page.goto('/tools');
+    await expect(page).toHaveURL(/\/connect$/);
   });
 });

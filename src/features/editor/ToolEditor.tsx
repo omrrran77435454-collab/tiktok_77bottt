@@ -87,6 +87,8 @@ export function ToolEditor({ tool }: { tool: AnyToolDefinition }) {
   }, [templateId, palette]);
 
   const model = useMemo(() => tool.buildDocument(data as never), [tool, data]);
+  // أخطاء الإدخال تُحسب مع كل تغيير وتُعرض فوراً بدل انتظار محاولة التصدير.
+  const issues = useMemo(() => tool.validate(data as never), [tool, data]);
   const fileName = useMemo(() => buildFileName(model.title), [model.title]);
 
   const handleTemplateChange = (nextId: string) => {
@@ -99,6 +101,14 @@ export function ToolEditor({ tool }: { tool: AnyToolDefinition }) {
   ): Promise<void> => {
     const container = documentRef.current;
     if (!container) return;
+
+    if (issues.length > 0) {
+      setExportState({
+        kind: 'error',
+        message: 'راجع المدخلات المُعلَّمة بالأحمر أولاً، ثم أعد المحاولة.',
+      });
+      return;
+    }
 
     const labels = { pdf: 'جارٍ إنشاء ملف PDF…', png: 'جارٍ إنشاء صورة PNG…', print: 'جارٍ التجهيز للطباعة…' };
     setExportState({ kind: 'busy', label: labels[kind] });
@@ -158,6 +168,21 @@ export function ToolEditor({ tool }: { tool: AnyToolDefinition }) {
             </button>
           </div>
         </div>
+
+        {issues.length > 0 ? (
+          <div style={{ marginBlockEnd: 'var(--sp-4) ' }}>
+            <Alert tone="error" title={`راجع ${issues.length} من المدخلات`}>
+              <ul className="issue-list">
+                {issues.slice(0, 6).map((issue) => (
+                  <li key={`${issue.field}-${issue.message}`}>{issue.message}</li>
+                ))}
+              </ul>
+              {issues.length > 6 ? (
+                <span className="small">…و{issues.length - 6} تنبيهات أخرى.</span>
+              ) : null}
+            </Alert>
+          </div>
+        ) : null}
 
         <Alert tone="info" title="بياناتك تبقى على جهازك">
           {storageAvailable

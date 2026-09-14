@@ -44,10 +44,10 @@ export async function handleAdminStats({ request, env }: RouteContext): Promise<
   const chartWindow = isoDaysAgo(13);
 
   const counters = await db.batch<{ c: number }>([
-    db.prepare('SELECT COUNT(*) AS c FROM "user"'),
-    db.prepare('SELECT COUNT(*) AS c FROM "user" WHERE "createdAt" >= ?1').bind(todayIso),
-    db.prepare('SELECT COUNT(*) AS c FROM "user" WHERE "createdAt" >= ?1').bind(week),
-    db.prepare('SELECT COUNT(*) AS c FROM "user" WHERE "createdAt" >= ?1').bind(month),
+    db.prepare('SELECT COUNT(*) AS c FROM users'),
+    db.prepare('SELECT COUNT(*) AS c FROM users WHERE created_at >= ?1').bind(todayIso),
+    db.prepare('SELECT COUNT(*) AS c FROM users WHERE created_at >= ?1').bind(week),
+    db.prepare('SELECT COUNT(*) AS c FROM users WHERE created_at >= ?1').bind(month),
     db
       .prepare('SELECT COUNT(DISTINCT user_id) AS c FROM usage_events WHERE created_at >= ?1')
       .bind(todayIso),
@@ -59,7 +59,9 @@ export async function handleAdminStats({ request, env }: RouteContext): Promise<
       .bind(month),
     db.prepare('SELECT COUNT(*) AS c FROM telegram_connections'),
     db.prepare('SELECT COUNT(*) AS c FROM telegram_connections WHERE is_member = 1'),
-    db.prepare('SELECT COUNT(*) AS c FROM telegram_connections WHERE is_member = 0'),
+    db.prepare(
+      `SELECT COUNT(*) AS c FROM usage_events WHERE event_type = 'subscription_failed'`,
+    ),
   ]);
 
   const value = (index: number) => counters[index]?.results?.[0]?.c ?? 0;
@@ -98,11 +100,11 @@ export async function handleAdminStats({ request, env }: RouteContext): Promise<
         .all<{ primary_color: string; c: number }>(),
       db
         .prepare(
-          `SELECT u."id" AS id, u."name" AS name, u."email" AS email, u."createdAt" AS created_at,
+          `SELECT u.id AS id, u.name AS name, u.email AS email, u.created_at AS created_at,
                   tc.telegram_user_id AS tg, tc.is_member AS is_member
-           FROM "user" u
-           LEFT JOIN telegram_connections tc ON tc.user_id = u."id"
-           ORDER BY u."createdAt" DESC LIMIT 10`,
+           FROM users u
+           LEFT JOIN telegram_connections tc ON tc.user_id = u.id
+           ORDER BY u.created_at DESC LIMIT 10`,
         )
         .all<{
           id: string;

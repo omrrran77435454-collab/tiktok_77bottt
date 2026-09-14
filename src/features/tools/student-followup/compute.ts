@@ -157,3 +157,62 @@ export function createEmptyStudent(): StudentRow {
     notes: '',
   };
 }
+
+/* ------------------------------ التحقّق من المدخلات ------------------------------ */
+
+export interface FieldIssue {
+  /** مسار الحقل: 'maxScore' أو 'students.3.score' أو 'thresholds'. */
+  field: string;
+  message: string;
+}
+
+/**
+ * يتحقّق من منطقية المدخلات ويُرجع أخطاءً برسائل عربية جاهزة للعرض.
+ *
+ * لا نقصّ القيم الخاطئة بصمت (مثل تحويل 15/10 إلى 100%) لأن ذلك يُخفي
+ * خطأ إدخال حقيقي عن المعلم؛ نُظهره له بوضوح بدل تجميله.
+ */
+export function validateFollowup(data: FollowupData): FieldIssue[] {
+  const issues: FieldIssue[] = [];
+  const max = parseScore(data.maxScore);
+
+  if (data.maxScore.trim() !== '' && (max === null || max <= 0)) {
+    issues.push({ field: 'maxScore', message: 'الدرجة الكلية يجب أن تكون رقماً أكبر من صفر.' });
+  }
+
+  const { excellent, good } = data.thresholds;
+  if (!Number.isFinite(excellent) || excellent < 0 || excellent > 100) {
+    issues.push({ field: 'thresholds.excellent', message: 'حدّ «ممتاز» يجب أن يكون بين 0 و100.' });
+  }
+  if (!Number.isFinite(good) || good < 0 || good > 100) {
+    issues.push({ field: 'thresholds.good', message: 'حدّ «جيد» يجب أن يكون بين 0 و100.' });
+  }
+  if (Number.isFinite(excellent) && Number.isFinite(good) && good >= excellent) {
+    issues.push({
+      field: 'thresholds',
+      message: 'حدّ «جيد» يجب أن يكون أقل من حدّ «ممتاز» حتى لا تتداخل المستويات.',
+    });
+  }
+
+  data.students.forEach((student, index) => {
+    const raw = student.score.trim();
+    if (raw === '') return;
+
+    const value = parseScore(raw);
+    if (value === null) {
+      issues.push({
+        field: `students.${index}.score`,
+        message: 'الدرجة يجب أن تكون رقماً موجباً.',
+      });
+      return;
+    }
+    if (max !== null && max > 0 && value > max) {
+      issues.push({
+        field: `students.${index}.score`,
+        message: `درجة الطالب لا يمكن أن تتجاوز الدرجة الكلية (${data.maxScore}).`,
+      });
+    }
+  });
+
+  return issues;
+}

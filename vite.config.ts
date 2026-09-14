@@ -11,6 +11,12 @@ export default defineConfig({
       '@shared': fileURLToPath(new URL('./shared', import.meta.url)),
     },
   },
+  optimizeDeps: {
+    // مكتبات التصدير تُحمَّل ديناميكياً عند أول تصدير. بدون تضمينها هنا،
+    // يكتشفها Vite متأخّراً فيعيد تجميع الاعتماديات ويردّ 504 على أول طلب
+    // (Outdated Optimize Dep) فيفشل التصدير الأول بعد تشغيل بارد للخادم.
+    include: ['jspdf', 'html-to-image', 'firebase/app', 'firebase/auth'],
+  },
   build: {
     // مجلد الإخراج يديره إضافة Cloudflare: dist/client للأصول
     // وdist/<worker-name> للـ Worker مع ملف إعداد جاهز للنشر.

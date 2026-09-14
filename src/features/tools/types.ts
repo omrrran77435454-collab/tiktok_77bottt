@@ -24,6 +24,14 @@ export interface ToolDefinition<TData> {
   Form: ComponentType<{ data: TData; onChange: (next: TData) => void }>;
   /** تحويل البيانات إلى مستند قابل للعرض والتصدير. */
   buildDocument: (data: TData) => DocumentModel;
+  /** تحقّق منطقي من المدخلات — يُرجع رسائل عربية جاهزة للعرض. */
+  validate: (data: TData) => ToolIssue[];
+}
+
+/** خطأ إدخال واحد: مسار الحقل + رسالة عربية. */
+export interface ToolIssue {
+  field: string;
+  message: string;
 }
 
 /**
@@ -41,6 +49,7 @@ export interface AnyToolDefinition {
   createSampleData: () => unknown;
   Form: ComponentType<{ data: never; onChange: (next: never) => void }>;
   buildDocument: (data: never) => DocumentModel;
+  validate: (data: never) => ToolIssue[];
 }
 
 export function defineTool<TData>(definition: ToolDefinition<TData>): AnyToolDefinition {

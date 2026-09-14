@@ -204,3 +204,49 @@ test.describe('محرّر الأدوات', () => {
     expect(await horizontalOverflow(page)).toBeLessThanOrEqual(1);
   });
 });
+
+test.describe('التحقّق من المدخلات', () => {
+  test.beforeEach(async ({ context }) => {
+    await signInFullyVerified(context);
+  });
+
+  test('درجة أعلى من الدرجة الكلية تمنع التصدير وتُظهر رسالة', async ({ page }) => {
+    await page.goto('/tools/student-followup');
+    await page.getByLabel('الدرجة الكلية').fill('10');
+    await page.getByRole('button', { name: /إضافة طالب/ }).click();
+    await page.getByLabel('الدرجة').last().fill('15');
+
+    await expect(page.getByText(/درجة الطالب لا يمكن أن تتجاوز الدرجة الكلية/)).toBeVisible();
+
+    await openPreviewTab(page);
+    await page.getByRole('button', { name: 'PDF', exact: true }).click();
+    await expect(page.getByText(/راجع المدخلات/)).toBeVisible();
+  });
+
+  test('عدد المخطئين أكبر من عدد الطلاب يُرفض', async ({ page }) => {
+    await page.goto('/tools/error-map');
+    await page.getByLabel('عدد طلاب الصف').fill('20');
+    await page.getByLabel('عدد من أخطأ').first().fill('30');
+
+    await expect(
+      page.getByText(/عدد الطلاب الذين أخطأوا لا يمكن أن يتجاوز عدد طلاب الصف/),
+    ).toBeVisible();
+  });
+
+  test('أيام غياب سالبة تُرفض', async ({ page }) => {
+    await page.goto('/tools/absence-plan');
+    await page.getByLabel('عدد أيام الغياب').fill('-3');
+    await expect(page.getByText(/عدد أيام الغياب لا يمكن أن يكون سالباً/)).toBeVisible();
+  });
+
+  test('تصحيح الخطأ يُخفي التنبيه ويسمح بالتصدير', async ({ page }) => {
+    await page.goto('/tools/student-followup');
+    await page.getByLabel('الدرجة الكلية').fill('10');
+    await page.getByRole('button', { name: /إضافة طالب/ }).click();
+    await page.getByLabel('الدرجة').last().fill('15');
+    await expect(page.getByText(/لا يمكن أن تتجاوز/)).toBeVisible();
+
+    await page.getByLabel('الدرجة').last().fill('8');
+    await expect(page.getByText(/لا يمكن أن تتجاوز/)).toBeHidden();
+  });
+});

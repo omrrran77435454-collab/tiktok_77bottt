@@ -1,7 +1,6 @@
 import type { RouteContext } from '../lib/router';
 import { errors, json, readJson } from '../lib/http';
-import { getSessionUser } from '../auth';
-import { evaluateGate } from '../lib/gate';
+import { authenticate, evaluateGate } from '../lib/gate';
 import { generateSecureToken, sha256Hex, timingSafeEqual } from '../lib/crypto';
 import {
   checkChannelMembership,
@@ -10,8 +9,10 @@ import {
   type TelegramUpdate,
 } from '../lib/telegram';
 import {
+  claimVerifyRequest,
   consumeLinkToken,
   createLinkToken,
+  deleteTelegramConnection,
   findLinkTokenByHash,
   getTelegramConnectionByTelegramId,
   getTelegramConnectionByUser,
@@ -25,9 +26,7 @@ import type { LinkTokenResponse } from '@shared/types';
 /** صلاحية توكن الربط: 10 دقائق. */
 const LINK_TOKEN_TTL_MS = 10 * 60 * 1000;
 /** أقل فاصل زمني بين طلبَي تحقّق يدوي من نفس المستخدم. */
-const VERIFY_COOLDOWN_MS = 8_000;
-
-const verifyCooldown = new Map<string, number>();
+const VERIFY_COOLDOWN_MS = 10_000;
 
 /**
  * POST /api/telegram/link-token
@@ -35,8 +34,9 @@ const verifyCooldown = new Map<string, number>();
  * التوكن نفسه لا يُخزَّن — نخزّن بصمة SHA-256 فقط.
  */
 export async function handleCreateLinkToken({ request, env }: RouteContext): Promise<Response> {
-  const user = await getSessionUser(request, env);
-  if (!user) return errors.unauthorized();
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
+  const user = auth.user;
 
   if (!env.TELEGRAM_BOT_USERNAME) return errors.notConfigured();
 
@@ -63,18 +63,20 @@ export async function handleCreateLinkToken({ request, env }: RouteContext): Pro
  * إعادة تحقّق فورية من الاشتراك بطلب صريح من المستخدم.
  */
 export async function handleVerifySubscription({ request, env }: RouteContext): Promise<Response> {
-  const user = await getSessionUser(request, env);
-  if (!user) return errors.unauthorized();
-
-  const last = verifyCooldown.get(user.id) ?? 0;
-  if (Date.now() - last < VERIFY_COOLDOWN_MS) {
-    return errors.tooManyRequests('انتظر ثوانٍ قليلة ثم أعد المحاولة.');
-  }
-  verifyCooldown.set(user.id, Date.now());
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
+  const user = auth.user;
 
   const connection = await getTelegramConnectionByUser(env.DB, user.id);
   if (!connection) {
     return errors.badRequest('لم تربط حساب تيليجرام بعد.');
+  }
+
+  // الحدّ الزمني مبني على قاعدة البيانات لا على ذاكرة الـ Worker:
+  // ذاكرة الـ isolate قد تُمسح في أي لحظة فلا تصلح لتقييد المعدّل.
+  const allowed = await claimVerifyRequest(env.DB, user.id, VERIFY_COOLDOWN_MS);
+  if (!allowed) {
+    return errors.tooManyRequests('انتظر ثوانٍ قليلة ثم أعد المحاولة.');
   }
 
   const outcome = await checkChannelMembership(env, connection.telegram_user_id);
@@ -204,4 +206,30 @@ export async function handleTelegramWebhook({ request, env }: RouteContext): Pro
   await purgeExpiredLinkTokens(env.DB);
 
   return ok();
+}
+
+/**
+ * POST /api/telegram/unlink
+ * يفكّ ربط تيليجرام فقط — لا يمسّ حساب Google ولا يحذف المستخدم.
+ * بعدها يستطيع المستخدم ربط حساب تيليجرام آخر، ويصبح الحساب القديم
+ * متاحاً للربط بحساب منصّة آخر.
+ */
+export async function handleUnlinkTelegram({ request, env }: RouteContext): Promise<Response> {
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
+
+  const removed = await deleteTelegramConnection(env.DB, auth.user.id);
+  if (!removed) {
+    return errors.badRequest('لا يوجد حساب تيليجرام مرتبط بحسابك.');
+  }
+
+  await insertUsageEvent(env.DB, {
+    userId: auth.user.id,
+    eventType: 'telegram_unlinked',
+    toolId: null,
+    templateId: null,
+    primaryColor: null,
+  });
+
+  return json({ ok: true });
 }

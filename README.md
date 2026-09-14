@@ -60,7 +60,7 @@
 | الخادم | Cloudflare Workers (بلا Backend منفصل) |
 | الأصول الثابتة | Cloudflare Workers Static Assets |
 | قاعدة البيانات | Cloudflare D1 (SQLite) |
-| المصادقة | Better Auth 1.7 + Google OAuth |
+| المصادقة | Firebase Authentication (Google) + تحقّق RS256 في الخادم عبر `jose` |
 | التحقق من المدخلات | Zod 4 |
 | التصدير | `html-to-image` (PNG عالي الدقة) + `jsPDF` (تجميع A4) |
 | الاختبارات | Vitest (وحدات + تكامل) + Playwright (E2E) |
@@ -89,9 +89,10 @@
 # 1) تثبيت الاعتماديات
 npm install
 
-# 2) إنشاء ملف المتغيّرات المحلية
-cp .dev.vars.example .dev.vars
-#    ثم افتح .dev.vars واملأ القيم (انظر قسم "المتغيّرات والأسرار")
+# 2) إنشاء ملفَّي المتغيّرات المحلية
+cp .env.example .env            # إعدادات Firebase للواجهة
+cp .dev.vars.example .dev.vars  # أسرار الـ Worker
+#    ثم املأ القيم (انظر قسم "المتغيّرات والأسرار")
 
 # 3) إنشاء قاعدة D1 المحلية وتطبيق الـ migrations
 npm run db:migrate:local
@@ -136,7 +137,7 @@ curl -X POST http://127.0.0.1:8788/__control/member \
 npx wrangler login
 
 # إنشاء قاعدة البيانات
-npx wrangler d1 create teacher_tools_db
+npx wrangler d1 create teacher-tools-db
 ```
 
 انسخ `database_id` الناتج وضعه في `wrangler.jsonc` مكان
@@ -153,54 +154,83 @@ npm run db:migrate:remote    # القاعدة على Cloudflare (للإنتاج)
 
 | الملف | المحتوى |
 |---|---|
-| `0001_better_auth.sql` | جداول Better Auth (`user`, `session`, `account`, `verification`) |
-| `0002_app_tables.sql` | جداول التطبيق + الفهارس |
-| `0003_seed_tools.sql` | بيانات الأدوات الأولية |
-
-> ملف `0001` **مُولَّد من Better Auth نفسه** عبر `npm run auth:migration`.
-> إذا غيّرت إعدادات Better Auth، أعد التوليد وأضف migration جديدة بدل تعديل القديمة.
+| `0001_core_schema.sql` | كل الجداول (`users`, `telegram_connections`, `telegram_link_tokens`, `usage_events`, `user_preferences`, `tools`) والفهارس |
+| `0002_seed_tools.sql` | بيانات الأدوات الأولية |
 
 ---
 
-## إعداد Google OAuth
+## إعداد Firebase Authentication
 
-1. افتح [Google Cloud Console](https://console.cloud.google.com/) وأنشئ مشروعاً (أو اختر موجوداً).
-2. من القائمة: **APIs & Services → OAuth consent screen**
-   - نوع المستخدم: **External**
-   - املأ اسم التطبيق (`أدوات المعلم`) والبريد وروابط السياسة.
-   - أضف النطاقات (scopes): `openid`, `email`, `profile` — لا تحتاج أكثر.
-   - أثناء التطوير أضف حسابك في **Test users**.
-3. من القائمة: **APIs & Services → Credentials → Create Credentials → OAuth client ID**
-   - **Application type:** `Web application`
-   - **Name:** `Teacher Tools Web`
+المشروع يستخدم **Firebase Authentication** (خطة Spark المجانية — بلا بطاقة دفع)
+لتسجيل الدخول بحساب Google. لا نستخدم Firestore ولا Firebase Hosting ولا Cloud Functions.
 
-4. **Authorized JavaScript origins** — أضف:
+### 1) إنشاء المشروع
 
-   | البيئة | القيمة |
-   |---|---|
-   | التطوير | `http://localhost:5173` |
-   | الإنتاج | `https://<your-domain>` |
+1. افتح [Firebase Console](https://console.firebase.google.com/) واضغط **Add project**.
+2. الاسم: `teacher-tools` (أو أي اسم متاح).
+3. **عطّل Google Analytics** — غير مطلوب ويبسّط الإعداد.
 
-5. **Authorized redirect URIs** — أضف بالضبط:
+### 2) تفعيل تسجيل الدخول بـ Google
 
-   | البيئة | القيمة |
-   |---|---|
-   | التطوير | `http://localhost:5173/api/auth/callback/google` |
-   | الإنتاج | `https://<your-domain>/api/auth/callback/google` |
+1. من القائمة: **Build → Authentication → Get started**.
+2. تبويب **Sign-in method** → اختر **Google** → **Enable**.
+3. اختر بريد الدعم (Project support email) ثم **Save**.
 
-   > هذا المسار ليس تخميناً: Better Auth مُعدّ في هذا المشروع على
-   > `basePath: '/api/auth'` (انظر `worker/auth.ts`)، ومسار رجوع OAuth عنده هو
-   > `/callback/:providerId`. فيكون الناتج `/api/auth/callback/google`.
-   > استبدل `<your-domain>` بنطاقك الفعلي، مثل `teacher-tools.<حسابك>.workers.dev`.
+### 3) إنشاء تطبيق ويب واستخراج الإعدادات
 
-6. انسخ **Client ID** و **Client Secret** إلى المتغيّرات:
-   `GOOGLE_CLIENT_ID` و `GOOGLE_CLIENT_SECRET`.
+1. **Project settings** (⚙) → **General** → **Your apps** → أيقونة الويب `</>`.
+2. سمِّ التطبيق `أدوات المعلم` ولا تفعّل Firebase Hosting.
+3. انسخ قيم `firebaseConfig` إلى ملف `.env`:
 
-7. تأكّد أن `BETTER_AUTH_URL` يساوي أصل الموقع **بالضبط** بلا شرطة في النهاية
-   (`http://localhost:5173` محلياً، `https://<your-domain>` إنتاجاً)، لأن Better Auth
-   يبني رابط الرجوع منه.
+```env
+VITE_FIREBASE_API_KEY=...
+VITE_FIREBASE_AUTH_DOMAIN=<PROJECT_ID>.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=<PROJECT_ID>
+VITE_FIREBASE_APP_ID=...
+VITE_FIREBASE_MESSAGING_SENDER_ID=...
+```
 
----
+> **هذه القيم ليست أسراراً.** Firebase يصمّمها لتكون علنية داخل حزمة المتصفّح.
+> الحماية الحقيقية في موضعين: التحقّق من توقيع ID Token داخل الـ Worker،
+> وقائمة النطاقات المصرّح بها في الخطوة التالية.
+
+### 4) النطاقات المصرّح بها (Authorized domains)
+
+**Authentication → Settings → Authorized domains → Add domain**، وأضف نطاق الإنتاج:
+
+```
+<WORKER_NAME>.<ACCOUNT_SUBDOMAIN>.workers.dev
+```
+
+`localhost` مضاف تلقائياً للتطوير. بدون هذه الخطوة سيظهر الخطأ
+`auth/unauthorized-domain` عند محاولة تسجيل الدخول من الموقع المنشور.
+
+### 5) إعداد الخادم
+
+الـ Worker يحتاج متغيّراً واحداً فقط للتحقّق من التوكن:
+
+```
+FIREBASE_PROJECT_ID=<PROJECT_ID>
+```
+
+### كيف يتحقّق الخادم من الهوية
+
+لا نستخدم Firebase Admin SDK (لا يعمل على Workers ويحتاج مفتاح خدمة).
+بدلاً منه يتحقّق الـ Worker من التوكن مباشرةً عبر `jose`:
+
+| الفحص | القيمة المتوقّعة |
+|---|---|
+| الخوارزمية | `RS256` |
+| التوقيع | مقابل مفاتيح Google العامة (JWKS) مع تخزين مؤقّت 6 ساعات |
+| `iss` | `https://securetoken.google.com/<PROJECT_ID>` |
+| `aud` | `<PROJECT_ID>` |
+| `exp` | في المستقبل |
+| `auth_time` | في الماضي |
+| `sub` | غير فارغ — وهو الـ uid |
+
+كل طلب إلى `/api/*` يحمل `Authorization: Bearer <idToken>`.
+**لا تُستخدم كوكيز جلسة إطلاقاً**، وهذا يُلغي سطح هجوم CSRF من الأساس.
+ولا يُقبل أي `uid` أو `email` أو `role` قادم من العميل — كلها تُستخرج من توكن موثّق.
 
 ## إعداد بوت تيليجرام والقناة
 
@@ -293,30 +323,36 @@ curl "https://api.telegram.org/bot<TOKEN>/getChatMember?chat_id=<CHANNEL_ID>&use
 
 ## المتغيّرات والأسرار
 
+### متغيّرات الواجهة (ملف `.env` — تُضمَّن في حزمة المتصفّح، ليست أسراراً)
+
 | المتغيّر | الوصف |
 |---|---|
-| `GOOGLE_CLIENT_ID` | من Google Cloud Console |
-| `GOOGLE_CLIENT_SECRET` | من Google Cloud Console — **سرّي** |
-| `BETTER_AUTH_SECRET` | مفتاح توقيع الجلسات (`openssl rand -base64 32`) — **سرّي** |
-| `BETTER_AUTH_URL` | أصل الموقع، مثل `https://teacher-tools.example.workers.dev` |
+| `VITE_FIREBASE_API_KEY` | من Firebase Console |
+| `VITE_FIREBASE_AUTH_DOMAIN` | `<PROJECT_ID>.firebaseapp.com` |
+| `VITE_FIREBASE_PROJECT_ID` | معرّف مشروع Firebase |
+| `VITE_FIREBASE_APP_ID` | من Firebase Console |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | من Firebase Console |
+| `VITE_E2E_TEST_MODE` | `true` في اختبارات E2E فقط — اتركه فارغاً في الإنتاج |
+
+### أسرار الخادم (Cloudflare Secrets — لا تُرفع إلى Git أبداً)
+
+| المتغيّر | الوصف |
+|---|---|
+| `FIREBASE_PROJECT_ID` | للتحقّق من `iss` و `aud` في التوكن |
 | `TELEGRAM_BOT_TOKEN` | توكن البوت — **سرّي** |
 | `TELEGRAM_BOT_USERNAME` | اسم البوت بدون `@` |
 | `TELEGRAM_CHANNEL_ID` | معرّف القناة (مثل `-1001234567890`) |
 | `TELEGRAM_CHANNEL_JOIN_URL` | رابط الانضمام للقناة |
-| `TELEGRAM_WEBHOOK_SECRET` | سرّ التحقق من الـ Webhook — **سرّي** |
+| `TELEGRAM_WEBHOOK_SECRET` | سرّ التحقّق من الـ Webhook — **سرّي** |
 | `ADMIN_TELEGRAM_ID` | المعرّف الرقمي لحساب تيليجرام الخاص بالمدير |
 | `TELEGRAM_API_BASE` | اختياري — لتوجيه الطلبات لمحاكي أثناء الاختبار |
-| `E2E_TEST_MODE` | اختياري — `true` يفعّل تسجيل دخول بالبريد لاختبارات E2E فقط |
-| `E2E_TEST_SECRET` | اختياري — يجب أن يكون غير فارغ ليعمل وضع الاختبار |
+| `E2E_TEST_MODE` / `E2E_TEST_SECRET` | وضع اختبار E2E فقط — `false` في الإنتاج |
 
 - **محلياً:** ضعها في `.dev.vars` (الملف مُستثنى من Git).
 - **إنتاجاً:** ضعها كـ Cloudflare Secrets:
 
 ```bash
-npx wrangler secret put GOOGLE_CLIENT_ID
-npx wrangler secret put GOOGLE_CLIENT_SECRET
-npx wrangler secret put BETTER_AUTH_SECRET
-npx wrangler secret put BETTER_AUTH_URL
+npx wrangler secret put FIREBASE_PROJECT_ID
 npx wrangler secret put TELEGRAM_BOT_TOKEN
 npx wrangler secret put TELEGRAM_BOT_USERNAME
 npx wrangler secret put TELEGRAM_CHANNEL_ID
@@ -371,9 +407,11 @@ npm run test:e2e
 ```
 ├── worker/                    كود Cloudflare Worker (الـ API)
 │   ├── index.ts               نقطة الدخول والموجّه
-│   ├── auth.ts                إعداد Better Auth
 │   ├── env.ts                 أنواع المتغيّرات وفحص اكتمالها
-│   ├── lib/                   router, http, crypto, telegram, repo, gate
+│   ├── lib/
+│   │   ├── firebase-auth.ts   التحقّق من Firebase ID Token (RS256 + JWKS)
+│   │   ├── gate.ts            المصادقة والصلاحيات وبوابة الاشتراك
+│   │   └── …                  router, http, crypto, telegram, repo
 │   └── routes/                me, telegram, analytics, admin
 ├── src/                       الواجهة (React)
 │   ├── app/                   التوجيه، الهيكل العام، حرّاس المسارات
@@ -383,14 +421,16 @@ npm run test:e2e
 │   │   ├── document/          نموذج المستند، التقسيم لصفحات، القوالب السبعة
 │   │   ├── editor/            المحرّر، منتقي القوالب، لوحة الألوان، المعاينة
 │   │   └── export/            PNG / PDF / الطباعة
-│   ├── lib/                   api, session, colors, storage, analytics, format
+│   ├── lib/                   firebase, auth, api, session, colors, storage, analytics
 │   └── styles/                tokens, base, layout, document, print, fonts
 ├── shared/types.ts            عقد الـ API المشترك بين الطرفين
 ├── migrations/                ملفات D1
 ├── tests/                     اختبارات الوحدات والتكامل (Vitest)
 ├── e2e/                       اختبارات Playwright
 ├── scripts/                   أدوات مساعدة (محاكي تيليجرام، توليد migration…)
-├── public/fonts/              خطوط عربية مستضافة محلياً (OFL)
+├── public/                    الأيقونة الرسمية + favicons + manifest + خطوط
+│   └── brand/                 الأصل الرسمي للأيقونة (مصدر كل المقاسات)
+├── .github/workflows/         بوابات الجودة والنشر الآلي
 └── wrangler.jsonc             إعداد Cloudflare
 ```
 
@@ -421,8 +461,11 @@ npm run test:e2e
 
 | المشكلة | السبب والحل |
 |---|---|
-| `redirect_uri_mismatch` عند تسجيل الدخول | رابط الرجوع في Google لا يطابق `BETTER_AUTH_URL`. تأكّد أنه `<الأصل>/api/auth/callback/google` بلا شرطة زائدة. |
-| تسجيل الدخول يعيدك للصفحة الرئيسية | `BETTER_AUTH_SECRET` غير مضبوط، أو `BETTER_AUTH_URL` لا يساوي أصل الموقع فعلياً. افحص `/api/health`. |
+| `auth/unauthorized-domain` | نطاق الموقع غير مضاف في Firebase → Authentication → Settings → Authorized domains. |
+| `auth/operation-not-allowed` | مزوّد Google غير مفعّل في Firebase → Authentication → Sign-in method. |
+| «تعذّر فتح نافذة تسجيل الدخول» | المتصفّح يحظر النوافذ المنبثقة؛ النظام ينتقل تلقائياً إلى مسار Redirect، أو اسمح بالنوافذ المنبثقة. |
+| تسجيل الدخول ينجح ثم 401 من الـ API | `FIREBASE_PROJECT_ID` في أسرار الـ Worker لا يطابق مشروع Firebase. افحص `/api/health`. |
+| «خدمة تسجيل الدخول غير مُعدّة» | متغيّرات `VITE_FIREBASE_*` ناقصة وقت البناء. |
 | البوت لا يردّ عند الضغط على Start | الـ Webhook غير مسجّل أو الرابط خاطئ. افحص `getWebhookInfo`. |
 | الـ Webhook يُرجع 401 | `secret_token` في `setWebhook` لا يطابق `TELEGRAM_WEBHOOK_SECRET`. |
 | «انتهت صلاحية رابط الربط» | التوكن صالح 10 دقائق ولمرة واحدة. اطلب رابطاً جديداً. |

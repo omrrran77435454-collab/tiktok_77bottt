@@ -1,24 +1,18 @@
 # ---------------------------------------------------------------------------
-# أدوات المعلم - متغيرات بيئة التطوير المحلية
+# أدوات المعلم — أسرار الـ Worker للتطوير المحلي
+#
 # انسخ هذا الملف إلى ‎.dev.vars‎ ثم ضع القيم الحقيقية فيه.
 # ملف ‎.dev.vars‎ مُستثنى من Git ويجب ألا يُرفع أبداً.
 # في الإنتاج استخدم: wrangler secret put <NAME>
 # ---------------------------------------------------------------------------
 
-# --- Google OAuth (من Google Cloud Console) ---
-GOOGLE_CLIENT_ID=[ضع Google Client ID هنا]
-GOOGLE_CLIENT_SECRET=[ضع Google Client Secret هنا]
-
-# --- Better Auth ---
-# ولّد قيمة قوية: openssl rand -base64 32
-BETTER_AUTH_SECRET=[ضع Secret قوي هنا]
-# رابط الموقع. محلياً: http://localhost:5173  |  إنتاجاً: https://your-domain.workers.dev
-BETTER_AUTH_URL=http://localhost:5173
+# --- Firebase (للتحقّق من ID Token على الخادم) ---
+FIREBASE_PROJECT_ID=[ضع معرّف مشروع Firebase هنا]
 
 # --- Telegram ---
 TELEGRAM_BOT_TOKEN=[ضع التوكن الجديد الذي أنشأته من BotFather هنا]
 TELEGRAM_BOT_USERNAME=[اسم البوت بدون @]
-TELEGRAM_CHANNEL_ID=[ضع معرف القناة مثل -1001234567890]
+TELEGRAM_CHANNEL_ID=[ضع معرّف القناة مثل -1001234567890]
 TELEGRAM_CHANNEL_JOIN_URL=[ضع رابط الانضمام للقناة هنا]
 # ولّد قيمة عشوائية قوية: openssl rand -hex 32
 TELEGRAM_WEBHOOK_SECRET=[ضع قيمة عشوائية قوية هنا]
@@ -27,6 +21,9 @@ TELEGRAM_WEBHOOK_SECRET=[ضع قيمة عشوائية قوية هنا]
 ADMIN_TELEGRAM_ID=5559869840
 
 # --- وضع الاختبار (E2E فقط) ---
-# لا تفعّله في الإنتاج إطلاقاً. يسمح بإنشاء جلسة اختبار بدون Google/Telegram.
+# لا تفعّله في الإنتاج إطلاقاً. يقبل توكنات اختبار موقّعة محلياً بدل Firebase.
 E2E_TEST_MODE=false
 E2E_TEST_SECRET=
+
+# --- اختياري: توجيه طلبات Telegram إلى محاكي أثناء الاختبار ---
+# TELEGRAM_API_BASE=http://127.0.0.1:8788

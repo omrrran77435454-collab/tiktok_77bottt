@@ -15,20 +15,37 @@ export class ApiRequestError extends Error {
 
 const NETWORK_MESSAGE = 'تعذّر الاتصال بالخادم. تأكد من اتصالك بالإنترنت ثم حاول مرة أخرى.';
 
+type TokenProvider = () => Promise<string | null>;
+
+let getToken: TokenProvider = async () => null;
+
+/**
+ * يسجّل مصدر Firebase ID Token.
+ *
+ * كل طلب إلى ‎/api/*‎ يحمل ترويسة ‎Authorization: Bearer <idToken>‎،
+ * والخادم يتحقّق من توقيع التوكن. لا نستخدم كوكيز للجلسة إطلاقاً،
+ * وهذا يُلغي الحاجة لحماية CSRF على مستوى الكوكي.
+ */
+export function setTokenProvider(provider: TokenProvider): void {
+  getToken = provider;
+}
+
 /**
  * غلاف fetch موحّد:
- *  - يرسل الكوكيز دائماً (الجلسة HttpOnly).
+ *  - يرفق Firebase ID Token تلقائياً.
  *  - يحوّل أي خطأ إلى رسالة عربية مفهومة بدون تفاصيل تقنية.
  */
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = await getToken();
+
   let response: Response;
   try {
     response = await fetch(path, {
-      credentials: 'same-origin',
       ...init,
       headers: {
         accept: 'application/json',
         ...(init?.body ? { 'content-type': 'application/json' } : {}),
+        ...(token ? { authorization: `Bearer ${token}` } : {}),
         ...(init?.headers ?? {}),
       },
     });

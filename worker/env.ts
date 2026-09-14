@@ -1,17 +1,19 @@
 /**
  * متغيّرات البيئة التي يعتمد عليها الـ Worker.
- * جميع القيم الحسّاسة تأتي من Cloudflare Secrets (أو ملف .dev.vars محلياً)
+ *
+ * كل القيم الحسّاسة تأتي من Cloudflare Secrets (أو ملف .dev.vars محلياً)
  * ولا يوجد أي منها داخل الكود أو داخل حزمة الواجهة.
+ *
+ * ملاحظة: إعدادات Firebase الخاصة بالواجهة (VITE_FIREBASE_*) ليست أسراراً —
+ * فهي تُضمَّن في حزمة المتصفّح بحكم تصميم Firebase، والحماية الحقيقية تأتي من
+ * التحقّق من التوقيع في الخادم ومن قواعد Firebase Console.
  */
 export interface Env {
   DB: D1Database;
   ASSETS: Fetcher;
 
-  GOOGLE_CLIENT_ID: string;
-  GOOGLE_CLIENT_SECRET: string;
-
-  BETTER_AUTH_SECRET: string;
-  BETTER_AUTH_URL: string;
+  /** معرّف مشروع Firebase — يُستخدم للتحقّق من issuer و audience. */
+  FIREBASE_PROJECT_ID: string;
 
   TELEGRAM_BOT_TOKEN: string;
   TELEGRAM_BOT_USERNAME: string;
@@ -23,7 +25,7 @@ export interface Env {
 
   ADMIN_TELEGRAM_ID: string;
 
-  /** وضع الاختبار: يفعّل تسجيل دخول بالبريد لأغراض E2E فقط. */
+  /** وضع الاختبار: يقبل توكنات اختبار موقّعة محلياً بدل Firebase. */
   E2E_TEST_MODE?: string;
   E2E_TEST_SECRET?: string;
 }
@@ -35,10 +37,7 @@ export function isTestMode(env: Env): boolean {
 
 /** أسماء المتغيّرات المطلوبة لتشغيل النظام في الإنتاج. */
 const REQUIRED_VARS = [
-  'GOOGLE_CLIENT_ID',
-  'GOOGLE_CLIENT_SECRET',
-  'BETTER_AUTH_SECRET',
-  'BETTER_AUTH_URL',
+  'FIREBASE_PROJECT_ID',
   'TELEGRAM_BOT_TOKEN',
   'TELEGRAM_BOT_USERNAME',
   'TELEGRAM_CHANNEL_ID',

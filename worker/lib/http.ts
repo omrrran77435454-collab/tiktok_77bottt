@@ -23,7 +23,8 @@ export function apiError(status: number, code: string, message: string): Respons
 }
 
 export const errors = {
-  unauthorized: () => apiError(401, 'UNAUTHORIZED', 'يجب تسجيل الدخول أولاً.'),
+  unauthorized: (message = 'يجب تسجيل الدخول أولاً.') =>
+    apiError(401, 'UNAUTHORIZED', message),
   forbidden: () => apiError(403, 'FORBIDDEN', 'ليس لديك صلاحية للوصول إلى هذه الصفحة.'),
   notFound: () => apiError(404, 'NOT_FOUND', 'الصفحة أو المورد غير موجود.'),
   badRequest: (message = 'البيانات المُرسلة غير صحيحة.') => apiError(400, 'BAD_REQUEST', message),

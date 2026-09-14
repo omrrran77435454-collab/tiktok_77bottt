@@ -1,21 +1,25 @@
 import type { Env } from '../env';
-import { getSessionUser, type AuthedUser } from '../auth';
 import { errors } from './http';
+import { readBearerToken, verifyIdToken } from './firebase-auth';
 import { checkChannelMembership } from './telegram';
 import {
   getTelegramConnectionByUser,
-  getUserRole,
   updateMembership,
+  upsertUserFromIdentity,
   type TelegramConnectionRow,
+  type UserRow,
 } from './repo';
 import type { TelegramGateState, UserRole } from '@shared/types';
 
-/** مدة صلاحية نتيجة التحقق من الاشتراك قبل إعادة السؤال (24 ساعة). */
+/** مدة صلاحية نتيجة التحقّق من الاشتراك قبل إعادة السؤال (24 ساعة). */
 export const MEMBERSHIP_TTL_MS = 24 * 60 * 60 * 1000;
 
-export interface GateResult {
-  user: AuthedUser;
+export interface AuthedContext {
+  user: UserRow;
   role: UserRole;
+}
+
+export interface GateResult extends AuthedContext {
   connection: TelegramConnectionRow | null;
   state: TelegramGateState;
   canUseTools: boolean;
@@ -33,9 +37,34 @@ function buildState(env: Env, connection: TelegramConnectionRow | null): Telegra
 }
 
 /**
+ * يتحقّق من Firebase ID Token ويضمن وجود صفّ للمستخدم في D1.
+ *
+ * هذه هي النقطة الوحيدة التي تُشتقّ منها هوية المستخدم في النظام كله.
+ */
+export async function authenticate(
+  request: Request,
+  env: Env,
+): Promise<AuthedContext | Response> {
+  const result = await verifyIdToken(readBearerToken(request), env);
+
+  if (!result.ok) {
+    if (result.reason === 'unavailable') {
+      return errors.serviceUnavailable('تعذّر التحقق من هويتك حالياً. حاول بعد قليل.');
+    }
+    if (result.reason === 'expired') {
+      return errors.unauthorized('انتهت صلاحية جلستك. سجّل الدخول مرة أخرى.');
+    }
+    return errors.unauthorized();
+  }
+
+  const { user } = await upsertUserFromIdentity(env.DB, result.identity);
+  return { user, role: user.role };
+}
+
+/**
  * يحسب حالة البوابة للمستخدم الحالي.
  *
- * سياسة التحقق: لا نستدعي Telegram في كل طلب. نعيد التحقق فقط عندما تمضي
+ * سياسة التحقّق: لا نستدعي Telegram في كل طلب. نعيد التحقّق فقط عندما تمضي
  * أكثر من 24 ساعة على آخر فحص (أو عند طلب صريح من المستخدم).
  * إذا فشل Telegram نُبقي آخر حالة معروفة ولا نحدّث last_checked_at
  * حتى نعيد المحاولة لاحقاً بدل حرمان المستخدم بسبب عطل مؤقت.
@@ -45,11 +74,10 @@ export async function evaluateGate(
   env: Env,
   options: { forceCheck?: boolean } = {},
 ): Promise<GateResult | Response> {
-  const user = await getSessionUser(request, env);
-  if (!user) return errors.unauthorized();
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
 
-  const role = await getUserRole(env.DB, user.id);
-  let connection = await getTelegramConnectionByUser(env.DB, user.id);
+  let connection = await getTelegramConnectionByUser(env.DB, auth.user.id);
 
   if (connection) {
     const lastChecked = connection.last_checked_at ? Date.parse(connection.last_checked_at) : 0;
@@ -58,7 +86,7 @@ export async function evaluateGate(
     if (options.forceCheck || isStale) {
       const outcome = await checkChannelMembership(env, connection.telegram_user_id);
       if (outcome.ok) {
-        await updateMembership(env.DB, user.id, outcome.isMember);
+        await updateMembership(env.DB, auth.user.id, outcome.isMember);
         connection = {
           ...connection,
           is_member: outcome.isMember ? 1 : 0,
@@ -70,23 +98,25 @@ export async function evaluateGate(
 
   const state = buildState(env, connection);
   return {
-    user,
-    role,
+    ...auth,
     connection,
     state,
-    // الإدمن يخضع لنفس البوابة تماماً — لا استثناء غير آمن.
+    // الإدمن يخضع لنفس البوابة عند استخدام الأدوات — الاستثناء للوحة الإدارة فقط.
     canUseTools: state.linked && state.isMember,
   };
 }
 
-/** يتحقق أن المستخدم إدمن فعلاً حسب قاعدة البيانات (وليس حسب ما يرسله العميل). */
+/**
+ * يتحقق أن المستخدم إدمن فعلاً حسب قاعدة البيانات (وليس حسب ما يرسله العميل).
+ *
+ * الإدمن مالك المنصّة، فلا تمنعه بوابة الاشتراك من دخول لوحة الإدارة.
+ */
 export async function requireAdmin(
   request: Request,
   env: Env,
-): Promise<{ user: AuthedUser } | Response> {
-  const user = await getSessionUser(request, env);
-  if (!user) return errors.unauthorized();
-  const role = await getUserRole(env.DB, user.id);
-  if (role !== 'admin') return errors.forbidden();
-  return { user };
+): Promise<AuthedContext | Response> {
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
+  if (auth.role !== 'admin') return errors.forbidden();
+  return auth;
 }
