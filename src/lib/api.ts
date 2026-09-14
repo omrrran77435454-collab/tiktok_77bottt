@@ -1,4 +1,5 @@
 import type { ApiError } from '@shared/types';
+import { getIdToken } from './auth-token';
 
 /** خطأ API برسالة عربية جاهزة للعرض للمستخدم. */
 export class ApiRequestError extends Error {
@@ -15,28 +16,15 @@ export class ApiRequestError extends Error {
 
 const NETWORK_MESSAGE = 'تعذّر الاتصال بالخادم. تأكد من اتصالك بالإنترنت ثم حاول مرة أخرى.';
 
-type TokenProvider = () => Promise<string | null>;
-
-let getToken: TokenProvider = async () => null;
-
-/**
- * يسجّل مصدر Firebase ID Token.
- *
- * كل طلب إلى ‎/api/*‎ يحمل ترويسة ‎Authorization: Bearer <idToken>‎،
- * والخادم يتحقّق من توقيع التوكن. لا نستخدم كوكيز للجلسة إطلاقاً،
- * وهذا يُلغي الحاجة لحماية CSRF على مستوى الكوكي.
- */
-export function setTokenProvider(provider: TokenProvider): void {
-  getToken = provider;
-}
-
 /**
  * غلاف fetch موحّد:
  *  - يرفق Firebase ID Token تلقائياً.
  *  - يحوّل أي خطأ إلى رسالة عربية مفهومة بدون تفاصيل تقنية.
  */
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const token = await getToken();
+  // كل طلب إلى ‎/api/*‎ يحمل ‎Authorization: Bearer <idToken>‎ والخادم يتحقّق
+  // من توقيعه. لا نستخدم كوكيز جلسة إطلاقاً، فينتفي سطح هجوم CSRF.
+  const token = await getIdToken();
 
   let response: Response;
   try {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
   onIdTokenChanged,
@@ -15,7 +15,6 @@ import {
   isE2ETestMode,
   isFirebaseConfigured,
 } from './firebase';
-import { setTokenProvider } from './api';
 import { AuthContext, type AuthState, type AuthStatus } from './auth-context';
 
 /** يقرأ توكن الاختبار من التخزين المحلي (وضع E2E فقط). */
@@ -54,36 +53,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   });
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const [signInError, setSignInError] = useState<string | null>(null);
-  const tokenRef = useRef<string | null>(null);
-
-  // يمنح طبقة الـ API وسيلة للحصول على توكن حديث قبل كل طلب.
-  useEffect(() => {
-    setTokenProvider(async () => {
-      if (isE2ETestMode) {
-        try {
-          const stored = localStorage.getItem(E2E_TOKEN_KEY);
-          if (stored) return stored;
-        } catch {
-          /* تخزين محظور — نتابع بالمسار العادي */
-        }
-      }
-      const auth = getFirebaseAuth();
-      const current = auth?.currentUser;
-      if (!current) return tokenRef.current;
-      try {
-        // Firebase يجدّد التوكن تلقائياً عند اقتراب انتهائه.
-        return await current.getIdToken();
-      } catch {
-        return tokenRef.current;
-      }
-    });
-  }, []);
 
   useEffect(() => {
-    if (isE2ETestMode) {
-      tokenRef.current = readE2EToken();
-      return;
-    }
+    if (isE2ETestMode) return;
 
     const auth = getFirebaseAuth();
     if (!auth) return;
@@ -93,17 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return onIdTokenChanged(auth, (user) => {
       setFirebaseUser(user);
-      if (!user) {
-        tokenRef.current = null;
-        setStatus('signed-out');
-        return;
-      }
-      void user
-        .getIdToken()
-        .then((token) => {
-          tokenRef.current = token;
-        })
-        .finally(() => setStatus('signed-in'));
+      setStatus(user ? 'signed-in' : 'signed-out');
     });
   }, []);
 
@@ -143,14 +105,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch {
         /* تجاهل */
       }
-      tokenRef.current = null;
       setStatus('signed-out');
       window.location.assign('/');
       return;
     }
     const auth = getFirebaseAuth();
     if (auth) await firebaseSignOut(auth);
-    tokenRef.current = null;
     window.location.assign('/');
   }, []);
 
