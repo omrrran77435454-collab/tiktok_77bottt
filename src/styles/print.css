@@ -1,0 +1,95 @@
+/* =============================================================
+   تنسيقات الطباعة.
+   الهدف: ورقة A4 نظيفة تحتوي المستند فقط — بلا رأس الصفحة،
+   ولا أزرار، ولا لوحة ألوان، ولا أي عنصر تحكّم.
+   ============================================================= */
+
+@media print {
+  @page {
+    size: A4 portrait;
+    /* الهوامش جزء من تصميم المستند نفسه، لذلك هوامش الطابعة صفر. */
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /*
+   * نُخفي كل عنصر لا يحتوي المستند ولا هو جزء منه.
+   * استخدمنا display:none وليس visibility:hidden لأن العنصر المخفي بـ
+   * visibility يظل يشغل مساحته، فتخرج صفحات بيضاء إضافية عند الطباعة.
+   * قاعدة واحدة بـ :has() تكفي: أسلاف المستند تبقى ظاهرة لأنها "تحتويه".
+   */
+  body :not(:has(.doc-root)):not(.doc-root):not(.doc-root *) {
+    display: none !important;
+  }
+
+  /* حاوية القياس المخفية (Portal في body) يجب ألا تُطبع إطلاقاً. */
+  .doc-measure {
+    display: none !important;
+  }
+
+  .doc-root {
+    position: static !important;
+    display: block !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+
+  /*
+   * نُصفّر تنسيق كل أسلاف المستند (الحاويات، الشبكات، منطقة المعاينة،
+   * وتحويل التكبير) حتى يبدأ المستند من أصل الصفحة تماماً.
+   * مهم: نُبقيه في التدفق العادي (position: static) لأن العناصر
+   * ذات الوضع المطلق لا تتجزّأ على صفحات متعدّدة عند الطباعة،
+   * فيُطبع أوّل صفحة فقط ويضيع الباقي.
+   */
+  body :has(.doc-root) {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .doc-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    break-after: page;
+    page-break-after: always;
+    /* نمنع أي انكماش قد يغيّر مقاس الصفحة عند الطباعة. */
+    width: 210mm !important;
+    min-height: 297mm !important;
+  }
+
+  .doc-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  /* لا نسمح بقطع أي صف أو بطاقة بين صفحتين. */
+  .doc-flow-item,
+  .doc-row,
+  .doc-card-row,
+  .doc-stat {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

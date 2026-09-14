@@ -1,0 +1,565 @@
+/* =============================================================
+   تنسيقات المستند (A4) والقوالب السبعة.
+
+   ملاحظات مهمة:
+   - كل الأبعاد هنا بالبكسل الثابت لأن الصفحة يجب أن تبقى A4 تماماً
+     (794×1123 بكسل عند 96dpi) بغضّ النظر عن حجم الشاشة أو التكبير.
+   - الألوان كلها عبر متغيّرات ‎--doc-*‎ التي تُحسب من ألوان المستخدم،
+     مع تصحيح تلقائي لألوان النصوص لضمان القراءة.
+   ============================================================= */
+
+.doc-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.doc-page {
+  position: relative;
+  box-sizing: border-box;
+  background: var(--doc-bg);
+  color: var(--doc-text);
+  font-family: var(--doc-font);
+  font-size: 12.5px;
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 6px 28px rgba(16, 40, 37, 0.14);
+}
+
+.doc-page-content {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.doc-measure {
+  position: absolute;
+  inset-inline-start: -100000px;
+  top: 0;
+  visibility: hidden;
+  pointer-events: none;
+  font-family: var(--doc-font);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--doc-text);
+  background: var(--doc-bg);
+}
+
+.doc-flow-item { padding-block-end: var(--doc-gap); }
+.doc-flow-item.doc-flow-table { padding-block-end: 0; }
+
+/* كل النصوص داخل المستند تلتزم بالتفاف آمن حتى مع الأسماء الطويلة جداً. */
+.doc-page *,
+.doc-measure * {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* ------------------------------- الترويسة ------------------------------- */
+
+.doc-title {
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--doc-text);
+  margin: 0;
+}
+
+.doc-subtitle {
+  font-size: 13px;
+  color: var(--doc-muted);
+  margin: 4px 0 0;
+}
+
+.doc-brand {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--doc-primary);
+  letter-spacing: 0.01em;
+}
+
+/* Banner (رسمي) */
+.doc-header-banner .doc-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--doc-primary);
+  color: var(--doc-on-primary);
+  padding: 9px 16px;
+  border-radius: 6px 6px 0 0;
+}
+.doc-header-banner .doc-brand,
+.doc-header-banner .doc-header-bar-note { color: var(--doc-on-primary); font-size: 11px; }
+.doc-header-banner .doc-header-bar-note { opacity: 0.85; font-weight: 500; }
+.doc-header-banner .doc-header-body {
+  border: 1px solid var(--doc-border);
+  border-block-start: none;
+  border-radius: 0 0 6px 6px;
+  padding: 16px;
+  background: var(--doc-surface);
+}
+
+/* Minimal (عاجي بسيط) */
+.doc-header-minimal { display: flex; flex-direction: column; gap: 6px; }
+.doc-header-minimal .doc-title { font-size: 27px; font-weight: 600; letter-spacing: -0.02em; }
+.doc-header-minimal .doc-header-rule {
+  display: block;
+  height: 2px;
+  width: 52px;
+  background: var(--doc-primary);
+  margin-block-start: 10px;
+}
+
+/* Hero (بطاقات) */
+.doc-header-hero .doc-hero-box {
+  background: linear-gradient(135deg, var(--doc-primary-soft), var(--doc-secondary-soft));
+  border: 1px solid var(--doc-border);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.doc-header-hero .doc-hero-eyebrow {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--doc-primary);
+  background: var(--doc-bg);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-block-end: 8px;
+}
+.doc-header-hero .doc-title { font-size: 25px; }
+
+/* Academic (أكاديمي) */
+.doc-header-academic { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.doc-header-academic .doc-academic-brand {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--doc-primary);
+  letter-spacing: 0.08em;
+}
+.doc-header-academic .doc-academic-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--doc-text);
+  margin-block: 10px;
+}
+.doc-header-academic .doc-academic-line-thin { height: 1px; background: var(--doc-border-strong); }
+.doc-header-academic .doc-title { font-size: 26px; }
+.doc-header-academic .doc-subtitle { font-size: 13.5px; }
+
+/* Sidebar (أخضر طبيعي) */
+.doc-header-sidebar { display: flex; gap: 14px; align-items: stretch; }
+.doc-header-sidebar .doc-sidebar-strip {
+  flex: 0 0 7px;
+  border-radius: 999px;
+  background: linear-gradient(var(--doc-primary), var(--doc-secondary));
+}
+.doc-header-sidebar .doc-sidebar-body {
+  background: var(--doc-primary-tint);
+  border-radius: 10px;
+  padding: 16px 18px;
+  flex: 1 1 auto;
+}
+
+/* Plain (أبيض وأسود) */
+.doc-header-plain { border-block-end: 2px solid var(--doc-text); padding-block-end: 10px; }
+.doc-header-plain .doc-plain-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  margin-block-end: 6px;
+}
+.doc-header-plain .doc-brand { color: var(--doc-text); }
+.doc-header-plain .doc-plain-note { color: var(--doc-muted); }
+.doc-header-plain .doc-title { font-size: 21px; }
+
+/* Premium (فاخر) */
+.doc-header-premium .doc-premium-band {
+  background: linear-gradient(90deg, var(--doc-primary), var(--doc-secondary));
+  border-radius: 10px 10px 0 0;
+  padding: 8px 18px;
+}
+.doc-header-premium .doc-premium-brand {
+  color: var(--doc-on-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.doc-header-premium .doc-premium-body {
+  border: 1px solid var(--doc-border);
+  border-block-start: none;
+  border-radius: 0 0 10px 10px;
+  padding: 18px 20px 20px;
+  background: var(--doc-surface);
+}
+.doc-header-premium .doc-title { font-size: 28px; letter-spacing: -0.02em; }
+.doc-header-premium .doc-premium-underline {
+  display: block;
+  height: 3px;
+  width: 68px;
+  border-radius: 999px;
+  background: var(--doc-accent);
+  margin-block-start: 12px;
+}
+
+/* --------------------------- الترويسة والتذييل --------------------------- */
+
+.doc-running-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--doc-muted);
+  border-block-end: 1px solid var(--doc-border);
+  padding-block-end: 8px;
+  margin-block-end: 14px;
+}
+.doc-running-brand { color: var(--doc-primary); font-weight: 700; }
+
+.doc-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--doc-muted);
+  border-block-start: 1px solid var(--doc-border);
+  padding-block-start: 8px;
+  margin-block-start: 12px;
+}
+
+/* ------------------------------- بيانات الترويسة ------------------------- */
+
+.doc-meta-label { font-size: 10px; color: var(--doc-muted); font-weight: 600; }
+.doc-meta-value { font-size: 12px; color: var(--doc-text); font-weight: 600; }
+
+.doc-meta-inline { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11.5px; }
+
+.doc-meta-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.doc-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  border: 1px solid var(--doc-border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: var(--doc-surface);
+}
+.doc-chip-label { font-size: 10px; color: var(--doc-muted); }
+.doc-chip-value { font-size: 11.5px; font-weight: 600; }
+
+.doc-meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.doc-meta-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--doc-surface-alt);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.doc-meta-boxed { border: 1px solid var(--doc-text); padding: 10px 14px; }
+.doc-meta-boxed-row { display: flex; align-items: baseline; gap: 8px; }
+.doc-meta-boxed-row + .doc-meta-boxed-row { margin-block-start: 4px; }
+.doc-meta-dots {
+  flex: 1 1 auto;
+  border-block-end: 1px dotted var(--doc-border-strong);
+  transform: translateY(-3px);
+}
+
+.doc-meta-stacked { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 16px; }
+.doc-meta-stack-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-block-end: 1px solid var(--doc-border);
+  padding-block-end: 4px;
+}
+
+.doc-meta-table { display: flex; border: 1px solid var(--doc-border); border-radius: 6px; overflow: hidden; }
+.doc-meta-table-cell {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-inline-start: 1px solid var(--doc-border);
+}
+.doc-meta-table-cell:first-child { border-inline-start: none; }
+
+.doc-meta-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.doc-pill {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--doc-primary-tint);
+  border-radius: 10px;
+  padding: 6px 14px;
+  border-inline-start: 3px solid var(--doc-primary);
+}
+.doc-pill-label { font-size: 9.5px; color: var(--doc-muted); font-weight: 600; }
+.doc-pill-value { font-size: 12px; font-weight: 700; }
+
+/* --------------------------------- الأرقام ------------------------------- */
+
+.doc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.doc-stats[data-count='1'] { grid-template-columns: 1fr; }
+.doc-stats[data-count='2'] { grid-template-columns: repeat(2, 1fr); }
+.doc-stats[data-count='3'] { grid-template-columns: repeat(3, 1fr); }
+.doc-stats[data-count='5'],
+.doc-stats[data-count='6'] { grid-template-columns: repeat(3, 1fr); }
+
+.doc-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--doc-surface-alt);
+  border: 1px solid var(--doc-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.doc-stat-value { font-size: 19px; font-weight: 700; line-height: 1.2; color: var(--doc-primary); }
+.doc-stat-label { font-size: 10.5px; color: var(--doc-muted); font-weight: 600; }
+.doc-stat-hint { font-size: 9.5px; color: var(--doc-faint); }
+
+.doc-stat.doc-tone-good .doc-stat-value { color: var(--doc-good); }
+.doc-stat.doc-tone-warn .doc-stat-value { color: var(--doc-warn); }
+.doc-stat.doc-tone-bad .doc-stat-value { color: var(--doc-bad); }
+.doc-stat.doc-tone-accent .doc-stat-value { color: var(--doc-accent); }
+
+/* --------------------------------- الجداول ------------------------------- */
+
+.doc-table-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--doc-text);
+  margin-block-end: 6px;
+}
+.doc-table-cont { font-size: 10.5px; font-weight: 500; color: var(--doc-muted); }
+
+.doc-row { display: flex; align-items: stretch; }
+
+.doc-cell {
+  padding: 6px 8px;
+  font-size: 11.5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  min-width: 0;
+}
+
+.doc-cell-head {
+  font-size: 10.5px;
+  font-weight: 700;
+  justify-content: center;
+}
+
+.doc-cell-hint { font-size: 9.5px; color: var(--doc-muted); }
+
+.doc-row-empty {
+  padding: 14px;
+  text-align: center;
+  color: var(--doc-muted);
+  font-size: 11.5px;
+  border: 1px dashed var(--doc-border-strong);
+  border-radius: 8px;
+}
+
+.doc-tone-good .doc-cell-text,
+.doc-cell.doc-tone-good { color: var(--doc-good); font-weight: 600; }
+.doc-cell.doc-tone-warn { color: var(--doc-warn); font-weight: 600; }
+.doc-cell.doc-tone-bad { color: var(--doc-bad); font-weight: 600; }
+.doc-cell.doc-tone-muted { color: var(--doc-muted); }
+.doc-cell.doc-tone-accent { color: var(--doc-accent); font-weight: 600; }
+
+/* بطاقات (قالب Modern Cards) */
+.doc-card-row {
+  display: flex;
+  gap: 10px;
+  border: 1px solid var(--doc-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--doc-surface);
+  margin-block-end: 8px;
+}
+.doc-card-index {
+  flex: 0 0 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: var(--doc-primary);
+  color: var(--doc-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+.doc-card-fields {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px 12px;
+  min-width: 0;
+}
+.doc-card-field { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.doc-card-label { font-size: 9.5px; color: var(--doc-muted); font-weight: 600; }
+.doc-card-value { font-size: 11.5px; font-weight: 600; }
+.doc-card-hint { font-size: 9.5px; color: var(--doc-faint); }
+.doc-card-field.doc-tone-good .doc-card-value { color: var(--doc-good); }
+.doc-card-field.doc-tone-warn .doc-card-value { color: var(--doc-warn); }
+.doc-card-field.doc-tone-bad .doc-card-value { color: var(--doc-bad); }
+.doc-card-field.doc-tone-accent .doc-card-value { color: var(--doc-accent); }
+
+/* --------------------------------- الأقسام ------------------------------- */
+
+.doc-section-title { display: flex; align-items: baseline; gap: 8px; }
+.doc-section-heading { font-size: 14.5px; font-weight: 700; color: var(--doc-text); display: block; }
+.doc-section-sub { font-size: 10.5px; color: var(--doc-muted); display: block; }
+.doc-section-number { font-size: 14px; font-weight: 700; color: var(--doc-primary); }
+
+/* --------------------------- القوائم وأزواج القيم ------------------------ */
+
+.doc-block-title { font-size: 12.5px; font-weight: 700; margin-block-end: 5px; }
+
+.doc-list { margin: 0; padding-inline-start: 18px; font-size: 11.5px; }
+.doc-list-item { margin-block-end: 3px; }
+.doc-list-item::marker { color: var(--doc-primary); }
+
+.doc-kv-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 14px; }
+.doc-kv-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11.5px;
+  border-block-end: 1px dotted var(--doc-border-strong);
+  padding-block-end: 3px;
+}
+.doc-kv-label { color: var(--doc-muted); font-weight: 600; }
+.doc-kv-value { font-weight: 600; text-align: end; }
+
+.doc-note {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 11.5px;
+  border-inline-start: 3px solid var(--doc-primary);
+  background: var(--doc-primary-tint);
+}
+.doc-note-accent { border-inline-start-color: var(--doc-accent); background: var(--doc-accent-soft); }
+.doc-note-plain { border: 1px solid var(--doc-border); border-inline-start: 3px solid var(--doc-border-strong); background: transparent; }
+.doc-note-title { display: block; font-weight: 700; margin-block-end: 2px; }
+
+/* =========================================================================
+   تخصيص القوالب — هنا تختلف الجداول والأقسام والمسافات فعلياً
+   ========================================================================= */
+
+/* 1) رسمي نظيف — جدول بشبكة كاملة وترويسة معبّأة. */
+.tpl-formal .doc-row-head {
+  background: var(--doc-primary);
+  color: var(--doc-on-primary);
+  border-radius: 6px 6px 0 0;
+}
+.tpl-formal .doc-row-body { border: 1px solid var(--doc-border); border-block-start: none; }
+.tpl-formal .doc-cell { border-inline-start: 1px solid var(--doc-border); }
+.tpl-formal .doc-cell:first-child { border-inline-start: none; }
+.tpl-formal .doc-cell-head { border-inline-start-color: rgba(255, 255, 255, 0.28); }
+.tpl-formal .doc-row-odd { background: var(--doc-surface-alt); }
+.tpl-formal .doc-section-title {
+  border-inline-start: 4px solid var(--doc-primary);
+  padding-inline-start: 10px;
+}
+
+/* 2) عاجي بسيط — خطوط أفقية فقط ومساحات واسعة. */
+.tpl-minimal .doc-row-head { border-block-end: 2px solid var(--doc-text); }
+.tpl-minimal .doc-cell-head { color: var(--doc-muted); text-transform: none; letter-spacing: 0.02em; }
+.tpl-minimal .doc-row-body { border-block-end: 1px solid var(--doc-border); }
+.tpl-minimal .doc-cell { padding: 9px 6px; }
+.tpl-minimal .doc-section-title { border-block-end: 1px solid var(--doc-border); padding-block-end: 6px; }
+.tpl-minimal .doc-section-heading { font-weight: 600; letter-spacing: -0.01em; }
+.tpl-minimal .doc-stat { background: transparent; border: none; border-inline-start: 2px solid var(--doc-border); border-radius: 0; }
+
+/* 3) بطاقات حديثة — لا جدول تقليدي أصلاً. */
+.tpl-cards .doc-section-title {
+  background: var(--doc-primary-soft);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.tpl-cards .doc-table-title { color: var(--doc-primary); }
+.tpl-cards .doc-note { border-radius: 12px; }
+
+/* 4) أكاديمي — جدول كلاسيكي بحدود سوداء وأقسام مرقّمة. */
+.tpl-academic .doc-row-head { background: var(--doc-surface-alt); border: 1px solid var(--doc-text); }
+.tpl-academic .doc-row-body { border: 1px solid var(--doc-text); border-block-start: none; }
+.tpl-academic .doc-cell { border-inline-start: 1px solid var(--doc-text); }
+.tpl-academic .doc-cell:first-child { border-inline-start: none; }
+.tpl-academic .doc-cell-head { font-weight: 700; }
+.tpl-academic .doc-section-title { justify-content: flex-start; }
+.tpl-academic .doc-section-heading { font-size: 15.5px; }
+.tpl-academic .doc-list-item { line-height: 1.9; }
+.tpl-academic .doc-stat { border-radius: 0; border-color: var(--doc-text); }
+
+/* 5) أخضر طبيعي — صفوف متبادلة وأقسام بخلفية خفيفة. */
+.tpl-sage .doc-row-head { background: var(--doc-secondary); color: var(--doc-on-secondary); border-radius: 8px; }
+.tpl-sage .doc-row-body { border-radius: 8px; }
+.tpl-sage .doc-row-odd { background: var(--doc-secondary-tint); }
+.tpl-sage .doc-section-title {
+  background: var(--doc-secondary-tint);
+  border-radius: 8px;
+  padding: 7px 12px;
+  border-inline-start: 4px solid var(--doc-secondary);
+}
+.tpl-sage .doc-in-section { padding-inline-start: 6px; }
+.tpl-sage .doc-stat { border-radius: 12px; background: var(--doc-primary-tint); }
+
+/* 6) أبيض وأسود — بلا تعبئة ولا ظل، حدود رفيعة، مسافات مضغوطة. */
+.tpl-bw .doc-page { box-shadow: none; }
+.tpl-bw .doc-row-head { border-block-end: 1.5px solid #000; }
+.tpl-bw .doc-row-body { border-block-end: 0.75px solid #999; }
+.tpl-bw .doc-cell { padding: 5px 6px; }
+.tpl-bw .doc-stat { background: transparent; border: 1px solid #000; border-radius: 0; }
+.tpl-bw .doc-stat-value { color: #000; }
+.tpl-bw .doc-note { background: transparent; border: 1px solid #000; border-inline-start-width: 3px; border-radius: 0; }
+.tpl-bw .doc-section-title { border-block-end: 1px solid #000; padding-block-end: 4px; }
+.tpl-bw .doc-chip, .tpl-bw .doc-meta-card { background: transparent; border: 1px solid #666; }
+
+/* القالب الاقتصادي أحادي اللون فعلاً: نُلغي الألوان الدلالية ونستبدلها
+   بتمييز بالخط والتسطير — يوفّر الحبر ولا يعتمد على اللون وحده لنقل الحالة. */
+.tpl-bw .doc-cell.doc-tone-good,
+.tpl-bw .doc-cell.doc-tone-warn,
+.tpl-bw .doc-cell.doc-tone-bad,
+.tpl-bw .doc-cell.doc-tone-accent,
+.tpl-bw .doc-card-field.doc-tone-good .doc-card-value,
+.tpl-bw .doc-card-field.doc-tone-warn .doc-card-value,
+.tpl-bw .doc-card-field.doc-tone-bad .doc-card-value,
+.tpl-bw .doc-stat.doc-tone-good .doc-stat-value,
+.tpl-bw .doc-stat.doc-tone-warn .doc-stat-value,
+.tpl-bw .doc-stat.doc-tone-bad .doc-stat-value,
+.tpl-bw .doc-stat.doc-tone-accent .doc-stat-value {
+  color: #000;
+}
+.tpl-bw .doc-cell.doc-tone-bad { text-decoration: underline; text-underline-offset: 2px; }
+.tpl-bw .doc-cell.doc-tone-muted { color: #666; }
+
+/* 7) فاخر حديث — بطاقات مرتفعة وحواف ناعمة وتمييز كهرماني. */
+.tpl-premium .doc-table-head { padding-block-end: 2px; }
+.tpl-premium .doc-row-head {
+  background: var(--doc-primary-soft);
+  color: var(--doc-text);
+  border-radius: 10px 10px 0 0;
+  border: 1px solid var(--doc-border);
+  border-block-end: none;
+}
+.tpl-premium .doc-row-body {
+  border-inline: 1px solid var(--doc-border);
+  border-block-end: 1px solid var(--doc-border);
+  background: var(--doc-surface);
+}
+.tpl-premium .doc-row-odd { background: var(--doc-surface-alt); }
+.tpl-premium .doc-section-title {
+  padding-inline-start: 12px;
+  border-inline-start: 4px solid var(--doc-accent);
+}
+.tpl-premium .doc-stat { border-radius: 14px; border-color: var(--doc-primary-soft); }
+.tpl-premium .doc-kv-row { border-block-end-style: solid; border-block-end-color: var(--doc-border); }
