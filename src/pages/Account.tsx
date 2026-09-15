@@ -12,6 +12,8 @@ import { clearToolData } from '@/lib/storage';
 import { formatDateTime } from '@/lib/format';
 import { useAuth } from '@/lib/useAuth';
 import { ProfileCard } from '@/components/ProfileCard';
+import { Link } from 'react-router-dom';
+import { Icon } from '@/components/Icon';
 
 export function AccountPage() {
   const { data, setData, refresh } = useSession();
@@ -103,10 +105,25 @@ export function AccountPage() {
               <p className="strong">{data.user.name}</p>
               <p className="muted small">{data.user.email}</p>
               <div className="row" style={{ marginBlockStart: 'var(--sp-2)' }}>
-                <Badge tone={data.user.role === 'admin' ? 'brand' : 'neutral'}>
-                  {data.user.role === 'admin' ? 'مدير المنصة' : 'معلّم'}
+                {/*
+                  شارتان مستقلّتان: صلاحية النظام شيء، ودور التجربة شيء آخر.
+                  «مدير المنصة» تظهر للمدير وحده ولا تحلّ محل «معلّم» أو «طالب».
+                */}
+                {data.user.role === 'admin' ? <Badge tone="brand">مدير المنصة</Badge> : null}
+                <Badge tone="neutral">
+                  {data.profile.role === 'student' ? 'طالب' : 'معلّم'}
                 </Badge>
               </div>
+
+              {data.user.role === 'admin' ? (
+                <Link
+                  className="btn btn-secondary btn-sm"
+                  to="/admin"
+                  style={{ marginBlockStart: 'var(--sp-3)' }}
+                >
+                  <Icon name="settings" size={16} /> فتح لوحة الإدارة
+                </Link>
+              ) : null}
             </div>
           </div>
 

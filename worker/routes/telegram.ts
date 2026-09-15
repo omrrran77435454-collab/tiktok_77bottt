@@ -19,7 +19,6 @@ import {
   getTelegramConnectionByUser,
   insertUsageEvent,
   purgeExpiredLinkTokens,
-  setUserRole,
   upsertTelegramConnection,
 } from '../lib/repo';
 import { buildMeResponse } from './me';
@@ -196,10 +195,12 @@ export async function handleTelegramWebhook({ request, env }: RouteContext): Pro
     lastCheckedAt: membership.ok ? new Date().toISOString() : null,
   });
 
-  // ترقية الإدمن تتم هنا فقط، اعتماداً على المعرّف الرقمي القادم من تيليجرام.
-  if (env.ADMIN_TELEGRAM_ID && telegramUserId === String(env.ADMIN_TELEGRAM_ID).trim()) {
-    await setUserRole(env.DB, row.user_id, 'admin');
-  }
+  /*
+   * لا ترقية إدارية هنا.
+   * كانت الصلاحية تُمنح سابقاً لمن يطابق معرّف تيليجرام، وهذا مسار أضعف:
+   * معرّف تيليجرام لا يثبت ملكية حساب المنصّة. الصلاحية الآن تُشتقّ في كل
+   * طلب من بريد مؤكَّد في توكن Firebase مطابق لـ ADMIN_EMAIL، ولا شيء غيره.
+   */
 
   await insertUsageEvent(env.DB, {
     userId: row.user_id,

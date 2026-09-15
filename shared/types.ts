@@ -3,14 +3,24 @@
  * هذه هي "عقد الـ API" — أي تغيير هنا يجب أن ينعكس على الطرفين.
  */
 
-export type UserRole = 'user' | 'admin';
+/**
+ * صلاحية النظام: من يدخل لوحة الإدارة. يحدّدها الخادم وحده من التوكن.
+ * منفصلة تماماً عن ProfileRole (تجربة الاستخدام: معلم أو طالب).
+ */
+export type AccessRole = 'user' | 'admin';
+
+/** @deprecated استخدم AccessRole — يبقى للتوافق أثناء الانتقال. */
+export type UserRole = AccessRole;
 
 export interface SessionUser {
   id: string;
   name: string;
   email: string;
   image: string | null;
-  role: UserRole;
+  /** صلاحية النظام (user | admin) — لا علاقة لها بكون المستخدم معلماً أو طالباً. */
+  role: AccessRole;
+  /** هل أكّد المزوّد ملكية البريد؟ للعرض فقط. */
+  emailVerified: boolean;
 }
 
 /** حالة بوابة تيليجرام لمستخدم مسجّل الدخول. */

@@ -41,6 +41,11 @@ export interface VerifiedIdentity {
   /** Firebase uid (claim: sub). */
   uid: string;
   email: string;
+  /**
+   * هل أكّد المزوّد ملكية البريد؟ (claim: email_verified)
+   * حاسم لتحديد المدير: بريد غير مؤكَّد لا يمنح أي صلاحية.
+   */
+  emailVerified: boolean;
   name: string;
   picture: string | null;
 }
@@ -63,8 +68,10 @@ function identityFromClaims(payload: JWTPayload): VerifiedIdentity | null {
   const email = typeof payload.email === 'string' ? payload.email : '';
   const name = typeof payload.name === 'string' ? payload.name : '';
   const picture = typeof payload.picture === 'string' ? payload.picture : null;
+  // لا نقبل إلا القيمة المنطقية true صراحةً — أي شيء آخر يعني «غير مؤكَّد».
+  const emailVerified = payload.email_verified === true;
 
-  return { uid, email, name: name || email.split('@')[0] || 'معلّم', picture };
+  return { uid, email, emailVerified, name: name || email.split('@')[0] || 'معلّم', picture };
 }
 
 /**

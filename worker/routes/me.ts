@@ -35,6 +35,7 @@ export async function buildMeResponse(env: Env, gate: GateResult): Promise<MeRes
       email: gate.user.email,
       image: gate.user.photo_url,
       role: gate.role,
+      emailVerified: gate.emailVerified,
     },
     telegram: gate.state,
     canUseTools: gate.canUseTools,

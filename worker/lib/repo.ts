@@ -1,4 +1,4 @@
-import type { UsageEventType, UserPreferences, UserRole } from '@shared/types';
+import type { AccessRole, UsageEventType, UserPreferences, UserRole } from '@shared/types';
 
 /**
  * طبقة الوصول للبيانات.
@@ -39,7 +39,10 @@ export interface UserRow {
   email: string;
   name: string;
   photo_url: string | null;
+  /** @deprecated العمود القديم — يُزامَن مع access_role أثناء الانتقال. */
   role: UserRole;
+  /** صلاحية النظام المخزَّنة. أثر للمراجعة؛ القرار يقع في كل طلب من التوكن. */
+  access_role: AccessRole;
 }
 
 /** كل كم من الوقت نحدّث last_seen_at — نتجنّب كتابة في D1 مع كل طلب. */
@@ -58,7 +61,7 @@ export async function upsertUserFromIdentity(
 ): Promise<{ user: UserRow; created: boolean }> {
   const existing = await db
     .prepare(
-      `SELECT id, firebase_uid, email, name, photo_url, role, last_seen_at
+      `SELECT id, firebase_uid, email, name, photo_url, role, access_role, last_seen_at
        FROM users WHERE firebase_uid = ?1`,
     )
     .bind(identity.uid)
@@ -91,6 +94,7 @@ export async function upsertUserFromIdentity(
         name: identity.name,
         photo_url: identity.picture,
         role: existing.role === 'admin' ? 'admin' : 'user',
+        access_role: existing.access_role === 'admin' ? 'admin' : 'user',
       },
       created: false,
     };
@@ -110,14 +114,21 @@ export async function upsertUserFromIdentity(
   // ON CONFLICT يحمي من سباق طلبين متزامنين لأول تسجيل دخول.
   const row = await db
     .prepare(
-      `SELECT id, firebase_uid, email, name, photo_url, role
+      `SELECT id, firebase_uid, email, name, photo_url, role, access_role
        FROM users WHERE firebase_uid = ?1`,
     )
     .bind(identity.uid)
     .first<UserRow>();
 
   if (!row) throw new Error('تعذّر إنشاء المستخدم.');
-  return { user: { ...row, role: row.role === 'admin' ? 'admin' : 'user' }, created: row.id === id };
+  return {
+    user: {
+      ...row,
+      role: row.role === 'admin' ? 'admin' : 'user',
+      access_role: row.access_role === 'admin' ? 'admin' : 'user',
+    },
+    created: row.id === id,
+  };
 }
 
 /** يسجّل لحظة تسجيل دخول صريحة (يُستدعى مرة عند بداية الجلسة). */
@@ -135,6 +146,30 @@ export async function getUserRole(db: D1Database, userId: string): Promise<UserR
     .bind(userId)
     .first<{ role: string | null }>();
   return row?.role === 'admin' ? 'admin' : 'user';
+}
+
+/**
+ * يزامن العمود المخزَّن مع الصلاحية المحسوبة من التوكن.
+ *
+ * العمود ليس مصدر حقيقة — القرار يقع في كل طلب — لكن إبقاءه صحيحاً يجعل
+ * الإحصاءات والمراجعة دقيقة. نحدّث العمود القديم معه أثناء الانتقال.
+ */
+export async function syncAccessRole(
+  db: D1Database,
+  userId: string,
+  role: AccessRole,
+): Promise<void> {
+  await db
+    .prepare(
+      `UPDATE users SET access_role = ?1, role = ?1,
+         admin_verified_at = CASE
+           WHEN ?1 = 'admin' AND admin_verified_at IS NULL THEN ?2
+           ELSE admin_verified_at
+         END
+       WHERE id = ?3`,
+    )
+    .bind(role, nowIso(), userId)
+    .run();
 }
 
 export async function setUserRole(db: D1Database, userId: string, role: UserRole): Promise<void> {

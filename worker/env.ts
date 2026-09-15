@@ -25,6 +25,12 @@ export interface Env {
 
   ADMIN_TELEGRAM_ID: string;
 
+  /**
+   * بريد مدير المنصّة. ليس سرّاً تشفيرياً، لكنه إعداد خادم: العميل لا يقرأه
+   * ولا يقرّر بناءً عليه. المقارنة تقع في الـ Worker مع بريد مؤكَّد من التوكن.
+   */
+  ADMIN_EMAIL: string;
+
   /** وضع الاختبار: يقبل توكنات اختبار موقّعة محلياً بدل Firebase. */
   E2E_TEST_MODE?: string;
   E2E_TEST_SECRET?: string;
@@ -44,6 +50,7 @@ const REQUIRED_VARS = [
   'TELEGRAM_CHANNEL_JOIN_URL',
   'TELEGRAM_WEBHOOK_SECRET',
   'ADMIN_TELEGRAM_ID',
+  'ADMIN_EMAIL',
 ] as const;
 
 /** يُرجع قائمة المتغيّرات الناقصة (للتشخيص، لا يطبع أي قيمة). */

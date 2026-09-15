@@ -18,6 +18,7 @@ const root = join(here, '..');
 const TELEGRAM_BASE = 'https://telegram.test';
 const WEBHOOK_SECRET = 'webhook-secret-for-tests-only';
 const ADMIN_TELEGRAM_ID = '5559869840';
+const ADMIN_EMAIL = 'owner@example.com';
 const TEST_SECRET = 'e2e-secret-for-tests-only';
 const ORIGIN = 'http://localhost:5173';
 
@@ -95,6 +96,7 @@ beforeAll(async () => {
     TELEGRAM_WEBHOOK_SECRET: WEBHOOK_SECRET,
     TELEGRAM_API_BASE: TELEGRAM_BASE,
     ADMIN_TELEGRAM_ID,
+    ADMIN_EMAIL,
     E2E_TEST_MODE: 'true',
     E2E_TEST_SECRET: TEST_SECRET,
   };
@@ -467,25 +469,14 @@ describe('الجدول الأسبوعي', () => {
 
 describe('صلاحيات الإدارة', () => {
   /**
-   * توكن الإدمن يُنشأ مرة واحدة ويُعاد استخدامه.
-   * الترقية تحدث عبر ربط حساب تيليجرام الإدمن، وحساب تيليجرام واحد لا يُربط
-   * بأكثر من مستخدم — فإنشاء إدمن جديد لكل اختبار يفشل بحكم التصميم.
+   * توكن الإدمن: بريد مؤكَّد يطابق ADMIN_EMAIL.
+   * الصلاحية تُشتقّ من التوكن في كل طلب، فلا حاجة لأي ربط تيليجرام.
    */
-  let cachedAdminToken: string | null = null;
-
-  async function adminToken(): Promise<string> {
-    if (cachedAdminToken) {
-      memberStatuses.set(ADMIN_TELEGRAM_ID, 'member');
-      return cachedAdminToken;
-    }
-    const token = newUserToken();
-    await call('/api/me', {}, token);
-    memberStatuses.set(ADMIN_TELEGRAM_ID, 'member');
-    const response = await post('/api/telegram/link-token', undefined, token);
-    const { deepLink } = (await response.json()) as { deepLink: string };
-    await webhook(deepLink.split('start=')[1], Number(ADMIN_TELEGRAM_ID));
-    cachedAdminToken = token;
-    return token;
+  function adminToken(): string {
+    return identityToken(
+      { uid: 'platform-owner', email: ADMIN_EMAIL, emailVerified: true, name: 'مالك المنصّة' },
+      TEST_SECRET,
+    );
   }
 
   it('يمنع غير الإدمن من كل نقاط الإدارة', async () => {
@@ -512,7 +503,7 @@ describe('صلاحيات الإدارة', () => {
   });
 
   it('الإدمن ينشئ أداة ويغيّر حالتها ويُسجَّل ذلك في سجل الإدارة', async () => {
-    const token = await adminToken();
+    const token = adminToken();
 
     const created = await post(
       '/api/admin/tools',
@@ -558,7 +549,7 @@ describe('صلاحيات الإدارة', () => {
   });
 
   it('الإدمن يعطّل مادة فتختفي من الكتالوج العام', async () => {
-    const token = await adminToken();
+    const token = adminToken();
 
     await post(
       '/api/admin/reference/toggle',
@@ -573,7 +564,7 @@ describe('صلاحيات الإدارة', () => {
   });
 
   it('يرفض مدخلات إدارية غير صحيحة', async () => {
-    const token = await adminToken();
+    const token = adminToken();
 
     // معرّف بأحرف غير مسموحة.
     expect(

@@ -62,7 +62,8 @@ export function ProfileCard() {
 
   return (
     <section className="card card-lg">
-      <h2 className="title-md">ملفي الدراسي</h2>
+      {/* العنوان يتبع دور التجربة لا صلاحية النظام. */}
+      <h2 className="title-md">{role === 'student' ? 'ملفي الدراسي' : 'ملفي كمعلم'}</h2>
       <p className="muted small" style={{ marginBlockStart: 'var(--sp-2)' }}>
         نستخدم هذه البيانات لعرض الأدوات المناسبة لك. يمكنك تغييرها في أي وقت.
       </p>

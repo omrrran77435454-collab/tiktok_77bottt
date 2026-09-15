@@ -98,9 +98,33 @@ describe('verifyIdToken', () => {
       expect(result.identity).toEqual({
         uid: 'firebase-uid-1',
         email: 'teacher@example.com',
+        // غائب في التوكن ⇒ غير مؤكَّد. لا نفترض التأكيد أبداً.
+        emailVerified: false,
         name: 'معلّم الاختبار',
         picture: 'https://example.com/a.png',
       });
+    }
+  });
+
+  it('يستخرج email_verified كما هو من التوكن', async () => {
+    const verified = await verifyIdToken(await makeToken({ extra: { email_verified: true } }), env);
+    expect(verified.ok && verified.identity.emailVerified).toBe(true);
+
+    const notVerified = await verifyIdToken(
+      await makeToken({ extra: { email_verified: false } }),
+      env,
+    );
+    expect(notVerified.ok && notVerified.identity.emailVerified).toBe(false);
+  });
+
+  it('لا يقبل إلا القيمة المنطقية true — لا "true" ولا 1', async () => {
+    // قيمة نصّية أو رقمية في claim حسّاس يجب ألّا تُقرأ كتأكيد.
+    for (const value of ['true', 1, 'yes', {}]) {
+      const result = await verifyIdToken(
+        await makeToken({ extra: { email_verified: value } }),
+        env,
+      );
+      expect(result.ok && result.identity.emailVerified, String(value)).toBe(false);
     }
   });
 

@@ -5,12 +5,14 @@ import { checkChannelMembership } from './telegram';
 import { channelUrl } from './telegram-messages';
 import {
   getTelegramConnectionByUser,
+  syncAccessRole,
   updateMembership,
   upsertUserFromIdentity,
   type TelegramConnectionRow,
   type UserRow,
 } from './repo';
-import type { TelegramGateState, UserRole } from '@shared/types';
+import { resolveAccessRole } from './access';
+import type { AccessRole, TelegramGateState } from '@shared/types';
 
 /**
  * مدة صلاحية نتيجة التحقّق **الإيجابية** قبل إعادة السؤال (24 ساعة).
@@ -31,7 +33,10 @@ export const NOT_MEMBER_TTL_MS = 60 * 1000;
 
 export interface AuthedContext {
   user: UserRow;
-  role: UserRole;
+  /** صلاحية النظام المشتقّة من التوكن في هذا الطلب — لا من جسم الطلب. */
+  role: AccessRole;
+  /** هوية موثوقة مستخرَجة من التوكن (للبريد وحالة تأكيده). */
+  emailVerified: boolean;
 }
 
 export interface GateResult extends AuthedContext {
@@ -74,7 +79,22 @@ export async function authenticate(
   }
 
   const { user } = await upsertUserFromIdentity(env.DB, result.identity);
-  return { user, role: user.role };
+
+  /*
+   * الصلاحية تُحسب هنا في كل طلب من التوكن الموقَّع + ADMIN_EMAIL، لا من
+   * العمود المخزَّن ولا من أي شيء يرسله العميل. العمود يُزامَن بعدها ليبقى
+   * أثراً صحيحاً للمراجعة والإحصاءات.
+   */
+  const role = resolveAccessRole(result.identity, env, user.access_role);
+  if (user.access_role !== role) {
+    await syncAccessRole(env.DB, user.id, role);
+  }
+
+  return {
+    user: { ...user, access_role: role, role },
+    role,
+    emailVerified: result.identity.emailVerified,
+  };
 }
 
 /** هل حان وقت إعادة سؤال Telegram عن هذا الاشتراك؟ */

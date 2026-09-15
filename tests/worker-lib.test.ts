@@ -95,6 +95,7 @@ describe('env helpers', () => {
     TELEGRAM_CHANNEL_JOIN_URL: 'g',
     TELEGRAM_WEBHOOK_SECRET: 'h',
     ADMIN_TELEGRAM_ID: '1',
+    ADMIN_EMAIL: 'owner@example.com',
   } as unknown as Env;
 
   it('لا ينقص شيء عند اكتمال الإعداد', () => {
@@ -106,8 +107,13 @@ describe('env helpers', () => {
       ...base,
       FIREBASE_PROJECT_ID: '',
       TELEGRAM_BOT_TOKEN: '[ضع التوكن هنا]',
+      ADMIN_EMAIL: '',
     } as Env;
-    expect(missingEnvVars(broken)).toEqual(['FIREBASE_PROJECT_ID', 'TELEGRAM_BOT_TOKEN']);
+    expect(missingEnvVars(broken)).toEqual([
+      'FIREBASE_PROJECT_ID',
+      'TELEGRAM_BOT_TOKEN',
+      'ADMIN_EMAIL',
+    ]);
   });
 
   it('وضع الاختبار يتطلّب العلم والسرّ معاً', () => {

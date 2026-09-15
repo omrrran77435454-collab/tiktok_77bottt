@@ -18,6 +18,8 @@ export function identityToken(
   options: {
     uid: string;
     email?: string;
+    /** يطابق claim اسمه email_verified في توكن Firebase. */
+    emailVerified?: boolean;
     name?: string;
     picture?: string | null;
     expiresInSeconds?: number;
@@ -29,6 +31,9 @@ export function identityToken(
     {
       sub: options.uid,
       email: options.email ?? `${options.uid}@example.com`,
+      // الافتراضي مؤكَّد، لأن Google تُرجعه مؤكَّداً؛ الاختبارات التي تهمّها
+      // الحالة غير المؤكَّدة تمرّره صراحةً.
+      email_verified: options.emailVerified ?? true,
       name: options.name ?? 'معلّم الاختبار',
       picture: options.picture ?? null,
       iat: now,

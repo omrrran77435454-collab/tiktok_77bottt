@@ -203,6 +203,7 @@ export function filterToolsForProfile(
 interface ProfileRow {
   user_id: string;
   role: string;
+  persona: string;
   stage_id: string | null;
   grade_id: string | null;
   track_id: string | null;
@@ -224,7 +225,8 @@ export const DEFAULT_PROFILE: UserProfile = {
 export async function getProfile(db: D1Database, userId: string): Promise<UserProfile> {
   const row = await db
     .prepare(
-      `SELECT user_id, role, stage_id, grade_id, track_id, onboarding_completed, completed_at
+      `SELECT user_id, role, persona, stage_id, grade_id, track_id,
+              onboarding_completed, completed_at
        FROM profiles WHERE user_id = ?1`,
     )
     .bind(userId)
@@ -233,8 +235,10 @@ export async function getProfile(db: D1Database, userId: string): Promise<UserPr
   if (!row) return DEFAULT_PROFILE;
 
   const subjects = await listUserSubjects(db, userId);
+  // persona هو المصدر الجديد؛ role يبقى احتياطاً أثناء الانتقال.
+  const persona = row.persona === 'student' || row.role === 'student' ? 'student' : 'teacher';
   return {
-    role: row.role === 'student' ? 'student' : 'teacher',
+    role: persona,
     stageId: row.stage_id,
     gradeId: row.grade_id,
     trackId: row.track_id,
@@ -277,11 +281,12 @@ export async function saveProfile(
   await db
     .prepare(
       `INSERT INTO profiles
-         (user_id, role, stage_id, grade_id, track_id, onboarding_completed, completed_at,
-          created_at, updated_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?8)
+         (user_id, role, persona, stage_id, grade_id, track_id, onboarding_completed,
+          completed_at, created_at, updated_at)
+       VALUES (?1, ?2, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?8)
        ON CONFLICT (user_id) DO UPDATE SET
          role = excluded.role,
+         persona = excluded.persona,
          stage_id = excluded.stage_id,
          grade_id = excluded.grade_id,
          track_id = excluded.track_id,

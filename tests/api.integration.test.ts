@@ -19,6 +19,7 @@ const root = join(here, '..');
 const TELEGRAM_BASE = 'https://telegram.test';
 const WEBHOOK_SECRET = 'webhook-secret-for-tests-only';
 const ADMIN_TELEGRAM_ID = '5559869840';
+const ADMIN_EMAIL = 'owner@example.com';
 const TEST_SECRET = 'e2e-secret-for-tests-only';
 const PROJECT_ID = 'teacher-tools-test';
 const ORIGIN = 'http://localhost:5173';
@@ -106,6 +107,7 @@ beforeAll(async () => {
     TELEGRAM_WEBHOOK_SECRET: WEBHOOK_SECRET,
     TELEGRAM_API_BASE: TELEGRAM_BASE,
     ADMIN_TELEGRAM_ID,
+    ADMIN_EMAIL,
     E2E_TEST_MODE: 'true',
     E2E_TEST_SECRET: TEST_SECRET,
   };
@@ -450,10 +452,24 @@ describe('صلاحيات الإدمن', () => {
     expect(response.status).toBe(401);
   });
 
-  it('صاحب معرّف تيليجرام الإدمن يُرقّى عبر Webhook فقط', async () => {
+  it('معرّف تيليجرام وحده لم يعد يمنح صلاحية الإدارة', async () => {
+    // كانت الصلاحية تُمنح لمن يطابق ADMIN_TELEGRAM_ID عبر الـ Webhook.
+    // هذا مسار أضعف: معرّف تيليجرام لا يثبت ملكية حساب المنصّة. الصلاحية
+    // الآن من بريد مؤكَّد في توكن Firebase يطابق ADMIN_EMAIL، ولا شيء غيره.
     const token = newUserToken();
     await call('/api/me', {}, token);
     await linkTelegram(token, Number(ADMIN_TELEGRAM_ID), 'member');
+
+    const me = (await (await call('/api/me', {}, token)).json()) as { user: { role: string } };
+    expect(me.user.role).toBe('user');
+    expect((await call('/api/admin/stats', {}, token)).status).toBe(403);
+  });
+
+  it('صاحب البريد المؤكَّد المطابق يُرقّى ويرى الإحصاءات', async () => {
+    const token = identityToken(
+      { uid: 'api-owner', email: ADMIN_EMAIL, emailVerified: true, name: 'مالك المنصّة' },
+      TEST_SECRET,
+    );
 
     const me = (await (await call('/api/me', {}, token)).json()) as { user: { role: string } };
     expect(me.user.role).toBe('admin');
@@ -465,21 +481,17 @@ describe('صلاحيات الإدمن', () => {
   });
 
   it('الإدمن يدخل لوحته حتى لو لم يُؤكَّد اشتراكه في القناة', async () => {
-    // نفكّ الربط ثم نعيده بحالة "غير مشترك"
-    await shim
-      .prepare('DELETE FROM telegram_connections WHERE telegram_user_id = ?1')
-      .bind(ADMIN_TELEGRAM_ID)
-      .run();
-
-    const token = newUserToken();
-    await call('/api/me', {}, token);
-    await linkTelegram(token, Number(ADMIN_TELEGRAM_ID), 'left');
+    const token = identityToken(
+      { uid: 'api-owner-gate', email: ADMIN_EMAIL, emailVerified: true, name: 'مالك المنصّة' },
+      TEST_SECRET,
+    );
 
     const me = (await (await call('/api/me', {}, token)).json()) as {
       user: { role: string };
       canUseTools: boolean;
     };
     expect(me.user.role).toBe('admin');
+    // لم يربط تيليجرام ⇒ الأدوات مغلقة عليه كأي مستخدم.
     expect(me.canUseTools).toBe(false);
 
     // ومع ذلك لوحة الإدارة مفتوحة له.
