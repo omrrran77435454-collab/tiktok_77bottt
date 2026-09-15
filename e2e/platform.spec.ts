@@ -134,7 +134,8 @@ test.describe('الجدول الأسبوعي', () => {
 
   test('لا تمرير أفقي على الجوال', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile', 'يخصّ الجوال');
-    expect(await horizontalOverflow(page)).toBe(false);
+    // الدالة تُرجع فرق البكسل لا قيمة منطقية؛ بكسل واحد مسموح للتقريب.
+    expect(await horizontalOverflow(page)).toBeLessThanOrEqual(1);
   });
 });
 

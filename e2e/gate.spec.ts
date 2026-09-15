@@ -1,5 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { BASE, linkTelegramAccount, setMemberStatus, signInAs, uniqueTelegramId } from './helpers';
+import {
+  BASE,
+  completeOnboarding,
+  linkTelegramAccount,
+  setMemberStatus,
+  signInAs,
+  uniqueTelegramId,
+} from './helpers';
 
 test.describe('بوابة الدخول والاشتراك', () => {
   test('الزائر يرى صفحة الهبوط وزر Google', async ({ page }) => {
@@ -29,7 +36,7 @@ test.describe('بوابة الدخول والاشتراك', () => {
     await linkTelegramAccount(context, token, telegramId);
 
     await page.goto('/connect');
-    await expect(page.getByRole('link', { name: 'الانضمام للقناة' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'اشترك في القناة' })).toBeVisible();
 
     await page.getByRole('button', { name: 'تحقق من الاشتراك' }).click();
     await expect(page.getByText('لا يزال الاشتراك غير مؤكّد')).toBeVisible();
@@ -41,13 +48,15 @@ test.describe('بوابة الدخول والاشتراك', () => {
     const token = await signInAs(context);
     await setMemberStatus(context, telegramId, 'left');
     await linkTelegramAccount(context, token, telegramId);
+    // حساب مُهيّأ: نختبر البوابة هنا لا معالج التهيئة.
+    await completeOnboarding(context, token);
 
     await page.goto('/connect');
     await setMemberStatus(context, telegramId, 'member');
     await page.getByRole('button', { name: 'تحقق من الاشتراك' }).click();
 
     await expect(page).toHaveURL(/\/dashboard$/, { timeout: 15_000 });
-    await expect(page.getByRole('heading', { name: /مرحباً/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /الخير|مرحباً/ })).toBeVisible();
   });
 
   test('لا يُطلب الربط مرة أخرى بعد نجاحه', async ({ context, page }) => {
@@ -55,6 +64,7 @@ test.describe('بوابة الدخول والاشتراك', () => {
     const token = await signInAs(context);
     await setMemberStatus(context, telegramId, 'member');
     await linkTelegramAccount(context, token, telegramId);
+    await completeOnboarding(context, token);
 
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/dashboard$/);
