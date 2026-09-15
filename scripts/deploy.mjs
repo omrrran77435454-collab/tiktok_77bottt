@@ -11,9 +11,13 @@
  *   7) يضبط Webhook تيليجرام ويتحقّق منه.
  *   8) يشغّل فحص صحّة على النسخة المنشورة.
  *
+ * مبدأ التشخيص: كل ما يكتبه wrangler على stdout و stderr يُعرض كاملاً وفوراً
+ * في سجل GitHub Actions — أثناء التنفيذ وعند الفشل. لا يُبتلع أي سطر ولا
+ * يُقتطع أي مخرَج. الاستثناء الوحيد هو قيم الأسرار نفسها (تُستبدل بـ ***).
+ *
  * التشغيل: node scripts/deploy.mjs
  */
-import { execFileSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const DB_NAME = 'teacher-tools-db';
@@ -30,21 +34,145 @@ const SECRET_NAMES = [
   'ADMIN_TELEGRAM_ID',
 ];
 
-function run(command, args, options = {}) {
-  return execFileSync(command, args, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], ...options });
-}
+/**
+ * القيم التي تُحجب من كل مخرَج قبل طباعته.
+ *
+ * نعرض كل رسائل wrangler كاملة للتشخيص، وسجلّ Actions قد يكون علنياً،
+ * فنحجب قيم الأسرار الحقيقية فقط — لا رسائل الخطأ.
+ */
+const REDACTED_VALUES = [
+  process.env.CLOUDFLARE_API_TOKEN,
+  process.env.TELEGRAM_BOT_TOKEN,
+  process.env.TELEGRAM_WEBHOOK_SECRET,
+].filter((value) => typeof value === 'string' && value.length >= 8);
 
-function wrangler(args, options = {}) {
-  return run('npx', ['wrangler', ...args], options);
+function redact(text) {
+  let output = String(text ?? '');
+  for (const value of REDACTED_VALUES) output = output.split(value).join('***');
+  return output;
 }
 
 function step(message) {
   console.log(`\n▸ ${message}`);
 }
 
-function fail(message) {
-  console.error(`\n✖ ${message}`);
-  process.exit(1);
+/** خطأ تنفيذ أمر خارجي، يحمل المخرجات كاملة ورمز الخروج الحقيقي. */
+class CommandError extends Error {
+  constructor(commandLine, code, signal, stdout, stderr) {
+    super(`فشل الأمر (رمز الخروج ${code ?? signal}): ${commandLine}`);
+    this.name = 'CommandError';
+    this.commandLine = commandLine;
+    this.code = code;
+    this.signal = signal;
+    this.stdout = stdout;
+    this.stderr = stderr;
+  }
+}
+
+/**
+ * ينفّذ أمراً خارجياً مع بثّ مخرجاته حيّة إلى سجلّ Actions، ومع الاحتفاظ بها.
+ *
+ * لماذا spawn وليس execFileSync؟ لأن execFileSync إمّا أن يلتقط المخرجات
+ * (فلا تظهر شيئاً أثناء التنفيذ) أو يمرّرها (فلا نستطيع تحليلها). هنا نمرّر
+ * ونلتقط معاً: السجل يعرض كل شيء أولاً بأول، والسكربت يحتفظ بالنص
+ * لاستخراج رابط الإنتاج أو قراءة JSON.
+ */
+function exec(command, args, options = {}) {
+  const { input, env, label } = options;
+  const commandLine = label ?? `${command} ${args.join(' ')}`;
+
+  return new Promise((resolve, reject) => {
+    console.log(`\n$ ${redact(commandLine)}`);
+
+    const child = spawn(command, args, {
+      env: env ?? process.env,
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+
+    let stdout = '';
+    let stderr = '';
+
+    child.stdout.setEncoding('utf8');
+    child.stderr.setEncoding('utf8');
+
+    // تمرير + التقاط: يظهر في السجل فوراً ويبقى متاحاً للتحليل.
+    child.stdout.on('data', (chunk) => {
+      stdout += chunk;
+      process.stdout.write(redact(chunk));
+    });
+    child.stderr.on('data', (chunk) => {
+      stderr += chunk;
+      process.stderr.write(redact(chunk));
+    });
+
+    child.on('error', (error) => reject(error));
+
+    child.on('close', (code, signal) => {
+      if (code === 0) {
+        resolve({ stdout, stderr });
+        return;
+      }
+      reject(new CommandError(commandLine, code, signal, stdout, stderr));
+    });
+
+    if (input !== undefined) child.stdin.write(input);
+    child.stdin.end();
+  });
+}
+
+function wrangler(args, options = {}) {
+  return exec('npx', ['wrangler', ...args], {
+    ...options,
+    env: {
+      ...process.env,
+      CI: 'true',
+      WRANGLER_SEND_METRICS: 'false',
+      ...(options.env ?? {}),
+    },
+  });
+}
+
+/**
+ * ينهي التنفيذ بعد طباعة سبب الفشل كاملاً.
+ * عندما يكون السبب فشل أمر خارجي نعيد طباعة stdout و stderr صراحةً
+ * (رغم بثّهما مسبقاً) حتى يكون السبب ظاهراً في آخر السجل ولا يضيع وسط الضجيج.
+ */
+function fail(message, error) {
+  console.error(`\n${'='.repeat(72)}`);
+  console.error(`✖ ${message}`);
+
+  if (error instanceof CommandError) {
+    console.error(`  الأمر     : ${redact(error.commandLine)}`);
+    console.error(`  رمز الخروج: ${error.code ?? `إشارة ${error.signal}`}`);
+
+    const stdout = redact(error.stdout).trim();
+    const stderr = redact(error.stderr).trim();
+
+    console.error(`\n--- stdout (${stdout ? `${stdout.length} حرفاً` : 'فارغ'}) ---`);
+    if (stdout) console.error(stdout);
+
+    console.error(`\n--- stderr (${stderr ? `${stderr.length} حرفاً` : 'فارغ'}) ---`);
+    if (stderr) console.error(stderr);
+
+    if (!stdout && !stderr) {
+      console.error('لم يكتب الأمر أي مخرَج. جرّب WRANGLER_LOG=debug لمزيد من التفاصيل.');
+    }
+  } else if (error) {
+    console.error(`\n${redact(error.stack ?? error.message ?? String(error))}`);
+  }
+
+  console.error(`${'='.repeat(72)}\n`);
+  process.exit(typeof error?.code === 'number' && error.code !== 0 ? error.code : 1);
+}
+
+/* ------------------------------ 0) معلومات البيئة ------------------------------ */
+step('معلومات البيئة');
+console.log(`  Node: ${process.version}`);
+try {
+  const { stdout } = await wrangler(['--version']);
+  console.log(`  Wrangler: ${stdout.trim().split('\n').pop()}`);
+} catch (error) {
+  fail('تعذّر تشغيل wrangler.', error);
 }
 
 /* ------------------------------ 1) المصادقة ------------------------------ */
@@ -53,32 +181,59 @@ if (!process.env.CLOUDFLARE_API_TOKEN) {
   fail('المتغيّر CLOUDFLARE_API_TOKEN غير مضبوط.');
 }
 try {
-  const who = wrangler(['whoami']);
-  const account = /│\s*(.+?)\s*│\s*([0-9a-f]{32})\s*│/.exec(who);
-  console.log(account ? `  الحساب: ${account[1]}` : '  المصادقة سليمة.');
+  const { stdout } = await wrangler(['whoami']);
+  const account = /│\s*(.+?)\s*│\s*([0-9a-f]{32})\s*│/.exec(stdout);
+  if (account) console.log(`\n  الحساب: ${account[1]}`);
 } catch (error) {
-  fail(`تعذّر التحقّق من الحساب:\n${error.stdout ?? error.message}`);
+  fail('تعذّر التحقّق من الحساب. تأكّد أن CLOUDFLARE_API_TOKEN صالح وبالصلاحيات المطلوبة.', error);
 }
 
 /* ------------------------------ 2) قاعدة D1 ------------------------------ */
 step(`تجهيز قاعدة D1 «${DB_NAME}»`);
-let databaseId = '';
-try {
-  const list = JSON.parse(wrangler(['d1', 'list', '--json']));
-  databaseId = list.find((entry) => entry.name === DB_NAME)?.uuid ?? '';
-} catch {
-  databaseId = '';
+
+/** يقرأ قائمة قواعد D1. يُرجع null إذا فشل الأمر (مع إظهار السبب). */
+async function listDatabases() {
+  try {
+    const { stdout } = await wrangler(['d1', 'list', '--json']);
+    const start = stdout.indexOf('[');
+    if (start === -1) {
+      console.warn('  ⚠ لم يُرجع الأمر JSON صالحاً.');
+      return null;
+    }
+    return JSON.parse(stdout.slice(start));
+  } catch (error) {
+    if (error instanceof CommandError) {
+      console.warn(`  ⚠ تعذّر سرد قواعد D1 (رمز ${error.code}). التفاصيل أعلاه.`);
+      return null;
+    }
+    throw error;
+  }
+}
+
+let databases = await listDatabases();
+if (databases === null) {
+  fail('تعذّر سرد قواعد D1. غالباً تحتاج صلاحية D1:Edit في الـ API Token.');
+}
+
+let databaseId = databases.find((entry) => entry.name === DB_NAME)?.uuid ?? '';
+
+if (!databaseId) {
+  console.log(`\n  القاعدة «${DB_NAME}» غير موجودة — سيتم إنشاؤها.`);
+  try {
+    await wrangler(['d1', 'create', DB_NAME]);
+  } catch (error) {
+    fail(`تعذّر إنشاء قاعدة D1 «${DB_NAME}».`, error);
+  }
+
+  databases = await listDatabases();
+  if (databases === null) fail('تعذّر سرد قواعد D1 بعد الإنشاء.');
+  databaseId = databases.find((entry) => entry.name === DB_NAME)?.uuid ?? '';
 }
 
 if (!databaseId) {
-  console.log('  القاعدة غير موجودة — سيتم إنشاؤها.');
-  wrangler(['d1', 'create', DB_NAME]);
-  const list = JSON.parse(wrangler(['d1', 'list', '--json']));
-  databaseId = list.find((entry) => entry.name === DB_NAME)?.uuid ?? '';
+  fail(`تعذّر الحصول على معرّف قاعدة D1 «${DB_NAME}» رغم نجاح السرد.`);
 }
-
-if (!databaseId) fail('تعذّر الحصول على معرّف قاعدة D1.');
-console.log(`  معرّف القاعدة جاهز (${databaseId.slice(0, 8)}…).`);
+console.log(`\n  معرّف القاعدة جاهز (${databaseId.slice(0, 8)}…).`);
 
 /* --------------------------- 3) تحديث الإعدادات --------------------------- */
 step('كتابة معرّف القاعدة في wrangler.jsonc');
@@ -96,29 +251,26 @@ console.log('  تم.');
 /* ------------------------------ 4) Migrations ----------------------------- */
 step('تطبيق الـ migrations على قاعدة الإنتاج');
 try {
-  const output = wrangler(['d1', 'migrations', 'apply', DB_NAME, '--remote'], {
-    input: 'y\n',
-    env: { ...process.env, CI: 'true', WRANGLER_SEND_METRICS: 'false' },
-  });
-  console.log(output.split('\n').filter((line) => line.includes('✅') || line.includes('No migrations')).join('\n') || '  تم.');
+  await wrangler(['d1', 'migrations', 'apply', DB_NAME, '--remote'], { input: 'y\n' });
 } catch (error) {
-  fail(`فشل تطبيق الـ migrations:\n${error.stdout ?? error.message}`);
+  fail('فشل تطبيق الـ migrations على قاعدة الإنتاج.', error);
 }
 
 /* -------------------------------- 5) النشر -------------------------------- */
 step('نشر الـ Worker');
-let productionUrl = '';
+let deployOutput = '';
 try {
-  const output = wrangler(['deploy'], {
-    env: { ...process.env, CI: 'true', WRANGLER_SEND_METRICS: 'false' },
-  });
-  console.log(output.trim().split('\n').slice(-12).join('\n'));
-  productionUrl = (/https:\/\/[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev/i.exec(output) ?? [''])[0];
+  const result = await wrangler(['deploy']);
+  // نضمّ stdout و stderr معاً: wrangler قد يكتب الرابط على أيٍّ منهما.
+  deployOutput = `${result.stdout}\n${result.stderr}`;
 } catch (error) {
-  fail(`فشل النشر:\n${error.stdout ?? error.message}`);
+  fail('فشل نشر الـ Worker. الرسالة الكاملة من wrangler أعلاه.', error);
 }
 
-if (!productionUrl) fail('تعذّر استخراج رابط الإنتاج من مخرجات النشر.');
+const productionUrl = (/https:\/\/[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev/i.exec(deployOutput) ?? [''])[0];
+if (!productionUrl) {
+  fail('نجح أمر النشر لكن تعذّر استخراج رابط الإنتاج من مخرجاته (انظر المخرَج الكامل أعلاه).');
+}
 console.log(`\n  رابط الإنتاج: ${productionUrl}`);
 
 /* ------------------------------- 6) الأسرار ------------------------------- */
@@ -129,11 +281,16 @@ for (const name of SECRET_NAMES) {
     console.log(`  ⚠ ${name}: غير مضبوط في البيئة — تخطّي.`);
     continue;
   }
-  wrangler(['secret', 'put', name], {
-    input: `${value}\n`,
-    env: { ...process.env, CI: 'true', WRANGLER_SEND_METRICS: 'false' },
-  });
-  console.log(`  ✓ ${name}`); // الاسم فقط — لا تُطبع أي قيمة أبداً.
+  try {
+    // الاسم فقط في السجل — القيمة تمرّ عبر stdin ولا تُطبع إطلاقاً.
+    await wrangler(['secret', 'put', name], {
+      input: `${value}\n`,
+      label: `npx wrangler secret put ${name}`,
+    });
+    console.log(`  ✓ ${name}`);
+  } catch (error) {
+    fail(`تعذّر رفع السرّ ${name}.`, error);
+  }
 }
 
 /* ---------------------------- 7) Webhook تيليجرام --------------------------- */
@@ -142,26 +299,31 @@ const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
 
 if (botToken && webhookSecret) {
-  const webhookUrl = `${productionUrl}/api/telegram/webhook`;
-  const setResponse = await fetch(`https://api.telegram.org/bot${botToken}/setWebhook`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      url: webhookUrl,
-      secret_token: webhookSecret,
-      allowed_updates: ['message'],
-      drop_pending_updates: true,
-    }),
-  });
-  const setResult = await setResponse.json();
-  console.log(`  setWebhook: ${setResult.ok ? 'نجح' : `فشل — ${setResult.description}`}`);
+  try {
+    const webhookUrl = `${productionUrl}/api/telegram/webhook`;
+    const setResponse = await fetch(`https://api.telegram.org/bot${botToken}/setWebhook`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        url: webhookUrl,
+        secret_token: webhookSecret,
+        allowed_updates: ['message'],
+        drop_pending_updates: true,
+      }),
+    });
+    const setResult = await setResponse.json();
+    console.log(`  setWebhook: ${setResult.ok ? 'نجح' : `فشل — ${redact(setResult.description)}`}`);
 
-  const infoResponse = await fetch(`https://api.telegram.org/bot${botToken}/getWebhookInfo`);
-  const info = await infoResponse.json();
-  if (info.ok) {
-    console.log(`  عنوان الـ Webhook: ${info.result.url}`);
-    console.log(`  تحديثات معلّقة: ${info.result.pending_update_count ?? 0}`);
-    console.log(`  آخر خطأ: ${info.result.last_error_message ?? 'لا يوجد'}`);
+    const infoResponse = await fetch(`https://api.telegram.org/bot${botToken}/getWebhookInfo`);
+    const info = await infoResponse.json();
+    if (info.ok) {
+      console.log(`  عنوان الـ Webhook: ${info.result.url}`);
+      console.log(`  تحديثات معلّقة: ${info.result.pending_update_count ?? 0}`);
+      console.log(`  آخر خطأ: ${info.result.last_error_message ?? 'لا يوجد'}`);
+    }
+  } catch (error) {
+    // فشل تيليجرام لا يُبطل نشراً ناجحاً — نُبلّغ ونكمل.
+    console.error(`  ⚠ تعذّر ضبط الـ Webhook: ${redact(error.message)}`);
   }
 } else {
   console.log('  ⚠ متغيّرات تيليجرام ناقصة — تخطّي ضبط الـ Webhook.');
@@ -171,15 +333,19 @@ if (botToken && webhookSecret) {
 step('فحص صحّة النسخة المنشورة');
 await new Promise((resolve) => setTimeout(resolve, 4000));
 
-const health = await fetch(`${productionUrl}/api/health`).then((response) => response.json());
-console.log(`  ok=${health.ok}  testMode=${health.testMode}`);
-if (health.missingConfig?.length) {
-  console.log(`  ⚠ إعدادات ناقصة: ${health.missingConfig.join(', ')}`);
-}
+try {
+  const health = await fetch(`${productionUrl}/api/health`).then((response) => response.json());
+  console.log(`  ok=${health.ok}  testMode=${health.testMode}`);
+  if (health.missingConfig?.length) {
+    console.log(`  ⚠ إعدادات ناقصة: ${health.missingConfig.join(', ')}`);
+  }
 
-for (const path of ['/', '/privacy', '/terms', '/favicon.ico', '/icon-192.png', '/site.webmanifest']) {
-  const response = await fetch(`${productionUrl}${path}`);
-  console.log(`  ${path} → ${response.status}`);
+  for (const path of ['/', '/privacy', '/terms', '/favicon.ico', '/icon-192.png', '/site.webmanifest']) {
+    const response = await fetch(`${productionUrl}${path}`);
+    console.log(`  ${path} → ${response.status}`);
+  }
+} catch (error) {
+  console.error(`  ⚠ تعذّر إكمال فحص الصحّة: ${redact(error.message)}`);
 }
 
 console.log(`\n✅ اكتمل النشر: ${productionUrl}`);
