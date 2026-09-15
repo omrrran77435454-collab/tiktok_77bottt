@@ -7,6 +7,7 @@ import { BarChart, RankBars } from '@/components/MiniChart';
 import { formatDate, formatDateTime, formatNumber } from '@/lib/format';
 import { DOC_TEMPLATES } from '@/features/document/templates';
 import type { AdminStatsResponse, UsageEventType } from '@shared/types';
+import { AdminContent } from './AdminContent';
 
 const EVENT_LABELS: Record<UsageEventType, string> = {
   login: 'تسجيل دخول',
@@ -44,6 +45,7 @@ function StatCard({
 export function AdminPage() {
   const [stats, setStats] = useState<AdminStatsResponse | null>(null);
   const [state, setState] = useState<'loading' | 'ready' | 'forbidden' | 'error'>('loading');
+  const [tab, setTab] = useState<'stats' | 'content'>('stats');
 
   const load = () => {
     setState('loading');
@@ -89,10 +91,26 @@ export function AdminPage() {
             جميع الأرقام هنا بيانات استخدام عامة فقط — لا تحتوي أي بيانات طلاب أو محتوى مستندات.
           </p>
         </div>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={load}>
-          تحديث
-        </button>
+        <div className="row">
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={() => setTab((current) => (current === 'stats' ? 'content' : 'stats'))}
+          >
+            {tab === 'stats' ? 'إدارة المحتوى' : 'الإحصاءات'}
+          </button>
+          <button type="button" className="btn btn-secondary btn-sm" onClick={load}>
+            تحديث
+          </button>
+        </div>
       </header>
+
+      {tab === 'content' ? (
+        <div style={{ marginBlockStart: 'var(--sp-6)' }}>
+          <AdminContent />
+        </div>
+      ) : (
+      <>
 
       <section style={{ marginBlockStart: 'var(--sp-8)' }}>
         <h2 className="title-md">المستخدمون</h2>
@@ -268,6 +286,8 @@ export function AdminPage() {
           </div>
         </div>
       </section>
+      </>
+      )}
     </div>
   );
 }

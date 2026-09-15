@@ -4,43 +4,44 @@ import { Alert, Spinner } from '@/components/ui';
 import { Icon } from '@/components/Icon';
 import { ApiRequestError, apiPost } from '@/lib/api';
 import { useSession } from '@/lib/useSession';
+import { telegramView, type TelegramActivity } from '@/lib/telegram-state';
 import type { LinkTokenResponse, MeResponse } from '@shared/types';
-
-type Phase = 'idle' | 'creating' | 'waiting' | 'verifying';
 
 /**
  * صفحة ربط تيليجرام والتحقق من الاشتراك.
  *
- * الربط لا يعتمد إطلاقاً على كتابة اسم المستخدم يدوياً: نُنشئ توكناً
- * لمرة واحدة على الخادم، ونفتح رابط البوت العميق، والربط الفعلي يحدث
- * داخل الـ Webhook عندما يضغط المستخدم Start.
+ * التسلسل مقصود: ربط ← اشتراك ← تحقّق. لا يظهر زر «تحقق من الاشتراك» أبداً
+ * قبل أن يكون زر «اشترك في القناة» أمام المستخدم — وإلا طلبنا منه أن يتحقّق
+ * من شيء لم نعطه طريقاً إليه.
+ *
+ * الربط نفسه يحدث في الـ Webhook على الخادم بتوكن لمرة واحدة، فلا يكتب
+ * المستخدم أي معرّف يدوياً ولا يستطيع العميل ادّعاء هوية تيليجرام.
  */
 export function TelegramGatePage() {
   const { data, refresh } = useSession();
   const navigate = useNavigate();
-  const [phase, setPhase] = useState<Phase>('idle');
+
+  const [activity, setActivity] = useState<TelegramActivity>('idle');
   const [error, setError] = useState<string | null>(null);
-  const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [notMember, setNotMember] = useState(false);
+  const [expiresAt, setExpiresAt] = useState<string | null>(null);
 
   const telegram = data?.telegram;
-  const linked = telegram?.linked ?? false;
-  const isMember = telegram?.isMember ?? false;
+  const view = telegramView(telegram, activity, error);
 
   useEffect(() => {
     if (data?.canUseTools) navigate('/dashboard', { replace: true });
   }, [data?.canUseTools, navigate]);
 
   const startLinking = async () => {
-    setPhase('creating');
+    setActivity('linking');
     setError(null);
     try {
       const response = await apiPost<LinkTokenResponse>('/api/telegram/link-token');
       setExpiresAt(response.expiresAt);
-      setPhase('waiting');
       window.open(response.deepLink, '_blank', 'noopener,noreferrer');
     } catch (requestError) {
-      setPhase('idle');
+      setActivity('idle');
       setError(
         requestError instanceof ApiRequestError
           ? requestError.message
@@ -49,15 +50,14 @@ export function TelegramGatePage() {
     }
   };
 
-  const checkLink = async () => {
-    setPhase('verifying');
+  const refreshStatus = async () => {
     setError(null);
     await refresh();
-    setPhase('idle');
+    setActivity('idle');
   };
 
   const verifySubscription = async () => {
-    setPhase('verifying');
+    setActivity('checking');
     setError(null);
     setNotMember(false);
     try {
@@ -73,15 +73,18 @@ export function TelegramGatePage() {
           : 'تعذّر التحقق حالياً، حاول بعد قليل.',
       );
     } finally {
-      setPhase('idle');
+      setActivity('idle');
     }
   };
+
+  const linked = telegram?.linked ?? false;
+  const isMember = telegram?.isMember ?? false;
 
   return (
     <div className="container page-section">
       <div className="gate-wrap">
         <div className="gate-steps" aria-label="خطوات التفعيل">
-          <span className={`gate-step is-done`}>
+          <span className="gate-step is-done">
             <Icon name="check" size={16} /> تسجيل الدخول
           </span>
           <span className={`gate-step${linked ? ' is-done' : ' is-active'}`}>
@@ -94,17 +97,15 @@ export function TelegramGatePage() {
         </div>
 
         <div className="card card-lg">
-          <h1 className="title-lg">بقيت خطوة واحدة لفتح الأدوات</h1>
+          <h1 className="title-lg">{view.title}</h1>
           <p className="muted" style={{ marginBlockStart: 'var(--sp-2)' }}>
-            {linked
-              ? 'حسابك مربوط بتيليجرام. تأكّد من اشتراكك في القناة ثم اضغط «تحقق من الاشتراك».'
-              : 'اربط حساب تيليجرام بضغطة واحدة — لا تحتاج كتابة أي معلومات يدوياً.'}
+            {view.description}
           </p>
 
-          {error ? (
+          {view.phase === 'LINKING' && expiresAt ? (
             <div style={{ marginBlockStart: 'var(--sp-5)' }}>
-              <Alert tone="error" title="تعذّر إتمام العملية">
-                {error}
+              <Alert tone="info" title="افتح تيليجرام واضغط Start">
+                بعد الضغط على <strong>Start</strong> هناك، ارجع واضغط «حدّث الحالة» بالأسفل.
               </Alert>
             </div>
           ) : null}
@@ -119,66 +120,69 @@ export function TelegramGatePage() {
 
           <hr className="divider" />
 
-          {!linked ? (
-            <div className="stack">
+          <div className="stack">
+            {view.showLinkButton ? (
               <button
                 type="button"
                 className="btn btn-primary btn-lg btn-block"
                 onClick={() => void startLinking()}
-                disabled={phase === 'creating'}
+                disabled={activity !== 'idle'}
               >
-                <Icon name="link" size={18} />
-                {phase === 'creating' ? 'جارٍ التجهيز…' : 'ربط Telegram'}
+                <Icon name="link" size={18} /> ربط Telegram
               </button>
+            ) : null}
 
-              {phase === 'waiting' ? (
-                <>
-                  <Alert tone="info" title="افتح تيليجرام واضغط Start">
-                    فتحنا لك محادثة البوت في نافذة جديدة. اضغط زر <strong>Start</strong> هناك، ثم
-                    ارجع واضغط الزر بالأسفل.
-                    {expiresAt ? (
-                      <>
-                        {' '}
-                        صلاحية الرابط تنتهي خلال <strong>10 دقائق</strong>.
-                      </>
-                    ) : null}
-                  </Alert>
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-block"
-                    onClick={() => void checkLink()}
-                    disabled={phase !== 'waiting'}
-                  >
-                    تحقّقت من الربط — حدّث الحالة
-                  </button>
-                </>
-              ) : null}
-            </div>
-          ) : (
-            <div className="stack">
-              {telegram?.channelJoinUrl ? (
+            {view.phase === 'LINKING' ? (
+              <button
+                type="button"
+                className="btn btn-secondary btn-block"
+                onClick={() => void refreshStatus()}
+              >
+                تحقّقت من الربط — حدّث الحالة
+              </button>
+            ) : null}
+
+            {view.showJoinButton ? (
+              telegram?.channelJoinUrl ? (
                 <a
                   className="btn btn-soft btn-lg btn-block"
                   href={telegram.channelJoinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  الانضمام للقناة
+                  <Icon name="link" size={18} /> اشترك في القناة
                 </a>
               ) : (
                 <Alert tone="warn">رابط القناة غير مُعدّ على الخادم. تواصل مع المشرف.</Alert>
-              )}
+              )
+            ) : null}
 
+            {view.showVerifyButton ? (
               <button
                 type="button"
                 className="btn btn-primary btn-lg btn-block"
                 onClick={() => void verifySubscription()}
-                disabled={phase === 'verifying'}
+                disabled={activity !== 'idle'}
               >
-                {phase === 'verifying' ? <Spinner label="جارٍ التحقق…" /> : 'تحقق من الاشتراك'}
+                تحقق من الاشتراك
               </button>
-            </div>
-          )}
+            ) : null}
+
+            {view.phase === 'CHECKING_SUBSCRIPTION' ? (
+              <Spinner label="جارٍ التحقق…" />
+            ) : null}
+
+            {view.showBotButton && telegram?.botUsername ? (
+              <a
+                className="btn btn-ghost btn-sm"
+                href={`https://t.me/${telegram.botUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                فتح البوت
+              </a>
+            ) : null}
+          </div>
 
           <hr className="divider" />
           <p className="hint">

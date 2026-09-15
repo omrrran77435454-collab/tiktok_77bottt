@@ -1257,3 +1257,17 @@
   .onboarding-progress-fill,
   .bottom-nav-dot { animation: none; transition: none; }
 }
+
+/* --------------------------- صفوف الإدارة --------------------------- */
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
