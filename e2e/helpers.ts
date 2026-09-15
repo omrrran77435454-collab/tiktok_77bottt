@@ -106,15 +106,56 @@ export async function linkTelegramAccount(
   });
 }
 
-/** مستخدم جاهز تماماً: مسجّل + مربوط + مشترك. */
-export async function signInFullyVerified(context: BrowserContext): Promise<{
-  token: string;
-  telegramId: number;
-}> {
+/** يُكمل تهيئة الحساب عبر الـ API — يوفّر المرور بالمعالج في كل اختبار. */
+export async function completeOnboarding(
+  context: BrowserContext,
+  token: string,
+  overrides: Partial<{
+    role: 'teacher' | 'student';
+    stageId: string;
+    gradeId: string;
+    trackId: string | null;
+    subjects: string[];
+  }> = {},
+) {
+  await context.request.post(`${BASE}/api/me/profile`, {
+    headers: authHeaders(token),
+    data: {
+      role: overrides.role ?? 'teacher',
+      stageId: overrides.stageId ?? 'primary',
+      gradeId: overrides.gradeId ?? 'p5',
+      trackId: overrides.trackId ?? null,
+      subjects: overrides.subjects ?? ['arabic'],
+      onboardingCompleted: true,
+    },
+  });
+}
+
+/**
+ * مستخدم جاهز تماماً: مسجّل + مربوط + مشترك + مُهيّأ.
+ * التهيئة مُكمَلة افتراضياً حتى تختبر بقيّة المواصفات ما تقصده فعلاً؛
+ * مرّر skipOnboarding لاختبار معالج التهيئة نفسه.
+ */
+export async function signInFullyVerified(
+  context: BrowserContext,
+  options: {
+    skipOnboarding?: boolean;
+    role?: 'teacher' | 'student';
+    subjects?: string[];
+  } = {},
+): Promise<{ token: string; telegramId: number }> {
   const token = await signInAs(context);
   const telegramId = uniqueTelegramId();
   await setMemberStatus(context, telegramId, 'member');
   await linkTelegramAccount(context, token, telegramId);
+
+  if (!options.skipOnboarding) {
+    await completeOnboarding(context, token, {
+      role: options.role,
+      ...(options.subjects ? { subjects: options.subjects } : {}),
+    });
+  }
+
   return { token, telegramId };
 }
 
