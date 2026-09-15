@@ -12,6 +12,9 @@ import type {
   StageRef,
   SubjectRef,
   ToolCatalogItem,
+  TeacherAssignment,
+  TeacherAssignmentInput,
+  TeacherScope,
   ToolCategoryRef,
   TrackRef,
   UserProfile,
@@ -177,23 +180,61 @@ export async function listAllTools(db: D1Database): Promise<ToolCatalogItem[]> {
 }
 
 /**
+ * نطاق المستخدم التعليمي كقوائم — يوحّد النموذجين المختلفين:
+ *   الطالب: مرحلة واحدة وصف واحد ⇒ قائمة من عنصر واحد.
+ *   المعلم: عدة مراحل وصفوف من نصابه ⇒ قائمة بكل ما يدرّسه.
+ * هكذا يبقى الترشيح منطقاً واحداً بلا تفرّع.
+ */
+export function educationScope(profile: {
+  role: ProfileRole;
+  stageId: string | null;
+  gradeId: string | null;
+  subjects: string[];
+  assignments?: TeacherAssignment[];
+}): TeacherScope {
+  if (profile.role === 'teacher' && profile.assignments?.length) {
+    const scope = scopeFromAssignments(profile.assignments);
+    return {
+      stages: scope.stages,
+      grades: scope.grades,
+      // مواد النصاب + أي مواد مختارة صراحةً.
+      subjects: [...new Set([...scope.subjects, ...profile.subjects])],
+    };
+  }
+
+  return {
+    stages: profile.stageId ? [profile.stageId] : [],
+    grades: profile.gradeId ? [profile.gradeId] : [],
+    subjects: profile.subjects,
+  };
+}
+
+/**
  * يرشّح الأدوات حسب ملف المستخدم.
  *
- * القاعدة: قائمة فارغة تعني «بلا قيد». نطبّق القيد فقط عندما تكون القائمة
- * غير فارغة وقيمة المستخدم معروفة — فلا يختفي شيء بسبب ملف ناقص.
+ * القاعدة: قائمة فارغة تعني «بلا قيد». نطبّق القيد فقط عندما تكون قائمة
+ * الأداة غير فارغة ونطاق المستخدم معروفاً — فلا يختفي شيء بسبب ملف ناقص.
+ * ويكفي تقاطع عنصر واحد: معلّم يدرّس ثلاث مراحل يرى أداة تخصّ إحداها.
  */
 export function filterToolsForProfile(
   tools: ToolCatalogItem[],
-  profile: { role: ProfileRole; stageId: string | null; gradeId: string | null; subjects: string[] },
+  profile: {
+    role: ProfileRole;
+    stageId: string | null;
+    gradeId: string | null;
+    subjects: string[];
+    assignments?: TeacherAssignment[];
+  },
 ): ToolCatalogItem[] {
+  const scope = educationScope(profile);
+  const overlaps = (toolValues: string[], userValues: string[]) =>
+    !toolValues.length || !userValues.length || toolValues.some((v) => userValues.includes(v));
+
   return tools.filter((tool) => {
     if (tool.audience !== 'both' && tool.audience !== profile.role) return false;
-    if (tool.stages.length && profile.stageId && !tool.stages.includes(profile.stageId)) return false;
-    if (tool.grades.length && profile.gradeId && !tool.grades.includes(profile.gradeId)) return false;
-    if (tool.subjects.length && profile.subjects.length) {
-      const overlap = tool.subjects.some((subject) => profile.subjects.includes(subject));
-      if (!overlap) return false;
-    }
+    if (!overlaps(tool.stages, scope.stages)) return false;
+    if (!overlaps(tool.grades, scope.grades)) return false;
+    if (!overlaps(tool.subjects, scope.subjects)) return false;
     return true;
   });
 }
@@ -220,6 +261,7 @@ export const DEFAULT_PROFILE: UserProfile = {
   subjects: [],
   onboardingCompleted: false,
   completedAt: null,
+  assignments: [],
 };
 
 export async function getProfile(db: D1Database, userId: string): Promise<UserProfile> {
@@ -234,10 +276,14 @@ export async function getProfile(db: D1Database, userId: string): Promise<UserPr
 
   if (!row) return DEFAULT_PROFILE;
 
-  const subjects = await listUserSubjects(db, userId);
+  const [subjects, assignments] = await Promise.all([
+    listUserSubjects(db, userId),
+    listAssignments(db, userId),
+  ]);
   // persona هو المصدر الجديد؛ role يبقى احتياطاً أثناء الانتقال.
   const persona = row.persona === 'student' || row.role === 'student' ? 'student' : 'teacher';
   return {
+    assignments: persona === 'teacher' ? assignments : [],
     role: persona,
     stageId: row.stage_id,
     gradeId: row.grade_id,
@@ -350,4 +396,95 @@ export async function loadCatalog(db: D1Database): Promise<CatalogResponse> {
     listCategories(db),
   ]);
   return { stages, grades, tracks, subjects, categories };
+}
+
+/* ----------------------------- نصاب المعلم ----------------------------- */
+
+interface AssignmentRow {
+  id: string;
+  stage_id: string;
+  grade_id: string;
+  subject_id: string;
+  class_name: string | null;
+  section: string | null;
+  is_active: number;
+}
+
+/**
+ * تكليفات المعلم.
+ * مقيَّدة بـ user_id دائماً، فلا يقرأ مستخدم نصاب غيره ولا يعدّله.
+ */
+export async function listAssignments(
+  db: D1Database,
+  userId: string,
+): Promise<TeacherAssignment[]> {
+  const result = await db
+    .prepare(
+      `SELECT id, stage_id, grade_id, subject_id, class_name, section, is_active
+       FROM teacher_assignments
+       WHERE user_id = ?1 AND is_active = 1
+       ORDER BY stage_id ASC, grade_id ASC, subject_id ASC`,
+    )
+    .bind(userId)
+    .all<AssignmentRow>();
+
+  return (result.results ?? []).map((row) => ({
+    id: row.id,
+    stageId: row.stage_id,
+    gradeId: row.grade_id,
+    subjectId: row.subject_id,
+    className: row.class_name,
+    section: row.section,
+    isActive: row.is_active === 1,
+  }));
+}
+
+/**
+ * يستبدل نصاب المعلم كاملاً بالقائمة المعطاة.
+ *
+ * الاستبدال الكامل أبسط وأصحّ من المزامنة الجزئية: الواجهة تعرض النصاب كله
+ * وتحفظه كله، فلا تنشأ حالة وسطى بين ما يراه المستخدم وما في القاعدة.
+ */
+export async function replaceAssignments(
+  db: D1Database,
+  userId: string,
+  assignments: TeacherAssignmentInput[],
+): Promise<TeacherAssignment[]> {
+  const now = nowIso();
+
+  await db.prepare(`DELETE FROM teacher_assignments WHERE user_id = ?1`).bind(userId).run();
+
+  if (assignments.length) {
+    const statements = assignments.map((entry) =>
+      db
+        .prepare(
+          `INSERT OR IGNORE INTO teacher_assignments
+             (id, user_id, stage_id, grade_id, subject_id, class_name, section,
+              is_active, created_at, updated_at)
+           VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, 1, ?8, ?8)`,
+        )
+        .bind(
+          crypto.randomUUID(),
+          userId,
+          entry.stageId,
+          entry.gradeId,
+          entry.subjectId,
+          entry.className ?? null,
+          entry.section ?? null,
+          now,
+        ),
+    );
+    await db.batch(statements);
+  }
+
+  return listAssignments(db, userId);
+}
+
+/** ملخّص النصاب — يُشتقّ من التكليفات ويُستخدم لترشيح الأدوات. */
+export function scopeFromAssignments(assignments: TeacherAssignment[]): TeacherScope {
+  return {
+    stages: [...new Set(assignments.map((entry) => entry.stageId))],
+    grades: [...new Set(assignments.map((entry) => entry.gradeId))],
+    subjects: [...new Set(assignments.map((entry) => entry.subjectId))],
+  };
 }

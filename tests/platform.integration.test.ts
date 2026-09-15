@@ -184,7 +184,7 @@ describe('تهيئة الحساب', () => {
     expect(me.profile.onboardingCompleted).toBe(false);
   });
 
-  it('يحفظ ملف المعلّم ولا يطلب التهيئة مرة أخرى', async () => {
+  it('يحفظ ملف المعلّم بنصابه ولا يطلب التهيئة مرة أخرى', async () => {
     const token = newUserToken();
     await call('/api/me', {}, token);
 
@@ -192,10 +192,14 @@ describe('تهيئة الحساب', () => {
       '/api/me/profile',
       {
         role: 'teacher',
-        stageId: 'intermediate',
-        gradeId: 'm2',
+        stageId: null,
+        gradeId: null,
         trackId: null,
         subjects: ['math', 'science'],
+        assignments: [
+          { stageId: 'intermediate', gradeId: 'm2', subjectId: 'math', className: 'أ' },
+          { stageId: 'primary', gradeId: 'p5', subjectId: 'science', className: 'ب' },
+        ],
         onboardingCompleted: true,
       },
       token,
@@ -205,19 +209,19 @@ describe('تهيئة الحساب', () => {
     const me = (await (await call('/api/me', {}, token)).json()) as {
       profile: {
         role: string;
-        stageId: string;
-        gradeId: string;
+        stageId: string | null;
+        gradeId: string | null;
         subjects: string[];
         onboardingCompleted: boolean;
+        assignments: { stageId: string; gradeId: string; subjectId: string }[];
       };
     };
 
-    expect(me.profile).toMatchObject({
-      role: 'teacher',
-      stageId: 'intermediate',
-      gradeId: 'm2',
-      onboardingCompleted: true,
-    });
+    expect(me.profile).toMatchObject({ role: 'teacher', onboardingCompleted: true });
+    // المعلم لا يُحفظ له صف أو مرحلة مفردة — نصابه هو المصدر.
+    expect(me.profile.stageId).toBeNull();
+    expect(me.profile.gradeId).toBeNull();
+    expect(me.profile.assignments).toHaveLength(2);
     expect(me.profile.subjects.sort()).toEqual(['math', 'science']);
   });
 

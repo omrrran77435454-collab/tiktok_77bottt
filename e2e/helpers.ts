@@ -118,16 +118,38 @@ export async function completeOnboarding(
     subjects: string[];
   }> = {},
 ) {
+  const role = overrides.role ?? 'teacher';
+  // نموذجان مختلفان: المعلم بنصاب متعدّد، والطالب بمرحلة وصف مفردين.
+  const data =
+    role === 'teacher'
+      ? {
+          role,
+          stageId: null,
+          gradeId: null,
+          trackId: null,
+          subjects: [],
+          assignments: [
+            {
+              stageId: overrides.stageId ?? 'primary',
+              gradeId: overrides.gradeId ?? 'p5',
+              subjectId: (overrides.subjects ?? ['arabic'])[0],
+              className: 'أ',
+            },
+          ],
+          onboardingCompleted: true,
+        }
+      : {
+          role,
+          stageId: overrides.stageId ?? 'primary',
+          gradeId: overrides.gradeId ?? 'p5',
+          trackId: overrides.trackId ?? null,
+          subjects: overrides.subjects ?? ['arabic'],
+          onboardingCompleted: true,
+        };
+
   await context.request.post(`${BASE}/api/me/profile`, {
     headers: authHeaders(token),
-    data: {
-      role: overrides.role ?? 'teacher',
-      stageId: overrides.stageId ?? 'primary',
-      gradeId: overrides.gradeId ?? 'p5',
-      trackId: overrides.trackId ?? null,
-      subjects: overrides.subjects ?? ['arabic'],
-      onboardingCompleted: true,
-    },
+    data,
   });
 }
 

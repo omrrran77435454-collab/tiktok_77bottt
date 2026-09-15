@@ -14,7 +14,11 @@ import { D1SqliteShim } from '../scripts/d1-sqlite-shim.mjs';
 import { identityToken } from './helpers/test-token';
 import { isPlatformAdmin, normalizeEmail, resolveAccessRole } from '../worker/lib/access';
 
-const ADMIN_EMAIL = 'omrrran77435454@gmail.com';
+/*
+ * بريد وهمي للاختبار. البريد الحقيقي يبقى في سرّ ADMIN_EMAIL وحده ولا يُكتب
+ * في المستودع: المنطق واحد أياً كانت القيمة، ولا داعي لنشر بريد شخصي في Git.
+ */
+const ADMIN_EMAIL = 'platform.owner@example.com';
 
 /* ------------------------------ منطق القرار ------------------------------ */
 
@@ -35,17 +39,18 @@ describe('resolveAccessRole', () => {
 
   it('يتجاهل فروق حالة الأحرف والمسافات', () => {
     expect(
-      resolveAccessRole({ email: '  OMRRRAN77435454@Gmail.COM ', emailVerified: true }, env),
+      resolveAccessRole({ email: '  Platform.Owner@EXAMPLE.com ', emailVerified: true }, env),
     ).toBe('admin');
   });
 
   it('لا يقبل بريداً يشبه بريد المدير دون أن يطابقه', () => {
     const lookalikes = [
-      'omrrran77435454@gmail.com.attacker.com',
-      'omrrran77435454+admin@gmail.com',
-      'omrrran7743545@gmail.com',
-      'xomrrran77435454@gmail.com',
-      'omrrran77435454@googlemail.com',
+      'platform.owner@example.com.attacker.com',
+      'platform.owner+admin@example.com',
+      'platform.owne@example.com',
+      'xplatform.owner@example.com',
+      'platform.owner@example.org',
+      'platform-owner@example.com',
     ];
     for (const email of lookalikes) {
       expect(resolveAccessRole({ email, emailVerified: true }, env), email).toBe('user');

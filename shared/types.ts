@@ -223,13 +223,19 @@ export interface CatalogResponse {
 }
 
 export interface UserProfile {
+  /** دور التجربة (teacher | student) — لا علاقة له بصلاحية النظام. */
   role: ProfileRole;
+  /** للطالب: مرحلته الواحدة. للمعلم: تبقى null — نصابه في assignments. */
   stageId: string | null;
+  /** للطالب: صفّه الواحد. */
   gradeId: string | null;
+  /** للطالب: مساره إن كان صفّه يتطلّبه. */
   trackId: string | null;
   subjects: string[];
   onboardingCompleted: boolean;
   completedAt: string | null;
+  /** تكليفات المعلم (فارغة للطالب). */
+  assignments: TeacherAssignment[];
 }
 
 export interface ProfileInputBody {
@@ -337,4 +343,35 @@ export interface AdminToolInput {
   isFeatured: boolean;
   isNew: boolean;
   sortOrder: number;
+}
+
+/* --------------------------- نصاب المعلم --------------------------- */
+
+/**
+ * تكليف واحد للمعلم: مرحلة + صف + مادة (+ شعبة اختيارية).
+ * المعلم يملك عدة تكليفات؛ الطالب لا يملك أياً منها.
+ */
+export interface TeacherAssignment {
+  id: string;
+  stageId: string;
+  gradeId: string;
+  subjectId: string;
+  className: string | null;
+  section: string | null;
+  isActive: boolean;
+}
+
+export interface TeacherAssignmentInput {
+  stageId: string;
+  gradeId: string;
+  subjectId: string;
+  className?: string | null;
+  section?: string | null;
+}
+
+/** ملخّص نصاب المعلم — يُشتقّ من التكليفات لا يُخزَّن. */
+export interface TeacherScope {
+  stages: string[];
+  grades: string[];
+  subjects: string[];
 }

@@ -4,7 +4,8 @@ import { ApiRequestError, apiPost } from '@/lib/api';
 import { useCatalog } from '@/lib/useCatalog';
 import { useSession } from '@/lib/useSession';
 import { gradeRequiresTrack, gradesForStage, subjectsForStage } from '@/lib/education';
-import type { UserProfile } from '@shared/types';
+import { AssignmentsEditor } from '@/components/AssignmentsEditor';
+import type { TeacherAssignmentInput, UserProfile } from '@shared/types';
 
 /**
  * تعديل ملف الاستخدام من صفحة «حسابي».
@@ -22,9 +23,19 @@ export function ProfileCard() {
   const [gradeId, setGradeId] = useState(profile?.gradeId ?? '');
   const [trackId, setTrackId] = useState(profile?.trackId ?? '');
   const [subjects, setSubjects] = useState<string[]>(profile?.subjects ?? []);
+  const [assignments, setAssignments] = useState<TeacherAssignmentInput[]>(
+    (profile?.assignments ?? []).map((entry) => ({
+      stageId: entry.stageId,
+      gradeId: entry.gradeId,
+      subjectId: entry.subjectId,
+      className: entry.className,
+      section: entry.section,
+    })),
+  );
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
 
+  const isTeacher = role === 'teacher';
   const grades = gradesForStage(catalog.data, stageId || null);
   const needsTrack = gradeRequiresTrack(catalog.data, gradeId || null);
   const available = subjectsForStage(catalog.data, stageId || null);
@@ -42,10 +53,11 @@ export function ProfileCard() {
     try {
       await apiPost<{ profile: UserProfile }>('/api/me/profile', {
         role,
-        stageId: stageId || null,
-        gradeId: gradeId || null,
-        trackId: needsTrack ? trackId || null : null,
-        subjects,
+        stageId: isTeacher ? null : stageId || null,
+        gradeId: isTeacher ? null : gradeId || null,
+        trackId: isTeacher ? null : needsTrack ? trackId || null : null,
+        subjects: isTeacher ? [] : subjects,
+        assignments: isTeacher ? assignments : [],
         onboardingCompleted: true,
       });
       await refresh();
@@ -95,6 +107,25 @@ export function ProfileCard() {
             setStatus('idle');
           }}
         />
+      </div>
+
+      {isTeacher ? (
+        <div style={{ marginBlockStart: 'var(--sp-5)' }}>
+          <h3 className="title-sm">المراحل والصفوف والمواد التي أدرّسها</h3>
+          <p className="muted small" style={{ marginBlock: 'var(--sp-2) var(--sp-4)' }}>
+            أضف كل صف تدرّسه. الشعبة اختيارية.
+          </p>
+          <AssignmentsEditor
+            catalog={catalog.data}
+            assignments={assignments}
+            onChange={(next) => {
+              setAssignments(next);
+              setStatus('idle');
+            }}
+          />
+        </div>
+      ) : (
+      <div className="grid grid-2" style={{ marginBlockStart: 'var(--sp-4)' }}>
         <SelectField
           label="المرحلة"
           value={stageId}
@@ -137,12 +168,11 @@ export function ProfileCard() {
           />
         ) : null}
       </div>
+      )}
 
-      {available.length > 0 ? (
+      {!isTeacher && available.length > 0 ? (
         <div style={{ marginBlockStart: 'var(--sp-5)' }}>
-          <h3 className="title-sm">
-            {role === 'teacher' ? 'المواد التي تدرّسها' : 'المواد التي تتابعها'}
-          </h3>
+          <h3 className="title-sm">المواد التي تتابعها</h3>
           <div className="chip-grid" style={{ marginBlockStart: 'var(--sp-3)' }}>
             {available.map((subject) => (
               <button

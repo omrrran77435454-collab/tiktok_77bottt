@@ -26,19 +26,21 @@ test.describe('تهيئة الحساب', () => {
     await page.getByRole('button', { name: /^معلم/ }).click();
     await page.getByRole('button', { name: 'التالي' }).click();
 
-    // 2) المرحلة
-    await expect(page.getByRole('heading', { name: 'ما المرحلة؟' })).toBeVisible();
-    await page.getByRole('button', { name: 'ابتدائي' }).click();
-    await page.getByRole('button', { name: 'التالي' }).click();
+    // 2) النصاب: المعلم يضيف صفوفه (عدة مراحل وصفوف ومواد).
+    await expect(page.getByRole('heading', { name: 'ماذا تدرّس؟' })).toBeVisible();
 
-    // 3) الصف
-    await expect(page.getByRole('heading', { name: 'ما الصف؟' })).toBeVisible();
-    await page.getByRole('button', { name: 'الخامس الابتدائي' }).click();
-    await page.getByRole('button', { name: 'التالي' }).click();
+    await page.getByLabel('المرحلة').selectOption('primary');
+    await page.getByLabel('الصف').selectOption('p5');
+    await page.getByLabel('المادة').selectOption('arabic');
+    await page.getByLabel('الشعبة (اختياري)').fill('أ');
+    await page.getByRole('button', { name: 'إضافة صف' }).click();
 
-    // 4) المواد
-    await expect(page.getByRole('heading', { name: 'ما المواد؟' })).toBeVisible();
-    await page.getByRole('button', { name: 'الرياضيات' }).first().click();
+    // صف ثانٍ في مرحلة مختلفة — ما لم يكن ممكناً في النموذج القديم.
+    await page.getByLabel('المرحلة').selectOption('intermediate');
+    await page.getByLabel('الصف').selectOption('m1');
+    await page.getByLabel('المادة').selectOption('islamic');
+    await page.getByRole('button', { name: 'إضافة صف' }).click();
+
     await page.getByRole('button', { name: 'ابدأ استخدام أدوات المعلم' }).click();
 
     await expect(page).toHaveURL(/\/dashboard$/, { timeout: 15_000 });
@@ -49,15 +51,34 @@ test.describe('تهيئة الحساب', () => {
     await expect(page.getByRole('heading', { name: 'من أنت؟' })).toHaveCount(0);
   });
 
-  test('زر التالي معطّل قبل الاختيار', async ({ context, page }) => {
+  test('لا يمكن إنهاء تهيئة المعلم بلا نصاب', async ({ context, page }) => {
     await signInFullyVerified(context, { skipOnboarding: true });
     await page.goto('/welcome');
 
     await page.getByRole('button', { name: /^معلم/ }).click();
     await page.getByRole('button', { name: 'التالي' }).click();
 
-    // خطوة المرحلة: لا اختيار بعد ⇒ التالي معطّل.
+    // خطوة النصاب (الأخيرة للمعلم): بلا صف واحد لا يُسمح بالإنهاء.
+    await expect(page.getByRole('heading', { name: 'ماذا تدرّس؟' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'ابدأ استخدام أدوات المعلم' })).toBeDisabled();
+    // ولا يُضاف صف قبل اكتمال المرحلة والصف والمادة.
+    await expect(page.getByRole('button', { name: 'إضافة صف' })).toBeDisabled();
+  });
+
+  test('الطالب يختار مرحلة واحدة وصفاً واحداً — لا نصاب', async ({ context, page }) => {
+    await signInFullyVerified(context, { skipOnboarding: true });
+    await page.goto('/welcome');
+
+    await page.getByRole('button', { name: /^طالب/ }).click();
+    await page.getByRole('button', { name: 'التالي' }).click();
+
+    // مسار الطالب يمرّ بالمرحلة ثم الصف — لا شاشة نصاب إطلاقاً.
+    await expect(page.getByRole('heading', { name: 'ما المرحلة؟' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'التالي' })).toBeDisabled();
+
+    await page.getByRole('button', { name: 'متوسط' }).click();
+    await page.getByRole('button', { name: 'التالي' }).click();
+    await expect(page.getByRole('heading', { name: 'ما الصف؟' })).toBeVisible();
   });
 });
 

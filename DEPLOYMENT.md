@@ -74,6 +74,64 @@
 
 ---
 
+## تغيير نطاق workers.dev (إخفاء المعرّف الشخصي من الرابط)
+
+رابط الإنتاج يتكوّن من: `<اسم الـ Worker>.<نطاق الحساب>.workers.dev`
+
+اسم الـ Worker من `wrangler.jsonc` (وهو `teacher-tools`)، أمّا **نطاق الحساب**
+فإعداد على مستوى حساب Cloudflare كلّه ولا يُضبط من المستودع ولا من Wrangler.
+لذلك تغييره **خطوة يدوية في لوحة تحكّم Cloudflare** لا يستطيع أي كود هنا
+تنفيذها.
+
+### الخطوة اليدوية بالضبط
+
+1. افتح https://dash.cloudflare.com
+2. من الشريط الجانبي: **Compute (Workers)** ← **Workers & Pages**
+3. من الشريط الجانبي داخل القسم: **Subdomain** (أو في بعض الحسابات:
+   Workers & Pages → نافذة النظرة العامة → بطاقة `your-subdomain.workers.dev`
+   ← زر **Change**)
+4. أدخل النطاق الجديد، مثلاً: `adawat-almuallim`
+5. احفظ. يصبح الرابط:
+   `https://teacher-tools.adawat-almuallim.workers.dev`
+
+> ⚠️ النطاق على مستوى الحساب: كل Workers في هذا الحساب تتغيّر روابطها معه،
+> والرابط القديم يتوقّف. غيّره مرة واحدة قبل توزيع الرابط على المستخدمين.
+
+### ما الذي يحتاج تحديثاً في المشروع بعد التغيير؟
+
+**لا شيء.** فُحص المستودع بالكامل: لا يوجد أي موضع يكتب رابط الإنتاج بشكل
+ثابت. السبب:
+
+| الموضع | كيف يحصل على الرابط |
+|---|---|
+| `scripts/deploy.mjs` | يستخرجه من مخرَج `wrangler deploy` في كل نشر |
+| Webhook تيليجرام | يُبنى من الرابط المستخرَج ويُعاد تسجيله آلياً |
+| CSP في `public/_headers` | `'self'` — لا نطاق مكتوب |
+| `site.webmanifest` | `start_url: "/"` — نسبي |
+| اختبارات E2E | `baseURL` محلي (localhost:5173) |
+| README / DEPLOYMENT | عناصر نائبة `<WORKER_NAME>.<ACCOUNT_SUBDOMAIN>` |
+
+فيكفي إعادة تشغيل النشر بعد تغيير النطاق: السكربت يلتقط الرابط الجديد ويعيد
+تسجيل الـ Webhook عليه تلقائياً.
+
+### ثم Firebase (خطوة يدوية ثانية)
+
+**Firebase Console → Authentication → Settings → Authorized domains → Add domain**
+
+```
+teacher-tools.adawat-almuallim.workers.dev
+```
+
+بدون `https://` وبدون مسار.
+
+> لا تحذف النطاق القديم قبل نجاح تسجيل الدخول بـ Google على الجديد. بعد
+> نجاحه يمكن حذفه إن لم يعد مستخدَماً.
+
+> **لا تغيّر `VITE_FIREBASE_AUTH_DOMAIN`.** هو نطاق Firebase نفسه
+> (`<PROJECT_ID>.firebaseapp.com`) ولا علاقة له برابط Cloudflare.
+
+---
+
 ## النشر اليدوي (بديل)
 
 إن أردت النشر من جهازك مباشرة:

@@ -10,7 +10,13 @@ import {
   gradesForStage,
   subjectsForStage,
 } from '@/lib/education';
-import type { CatalogResponse, ProfileRole, UserProfile } from '@shared/types';
+import { AssignmentsEditor } from '@/components/AssignmentsEditor';
+import type {
+  CatalogResponse,
+  ProfileRole,
+  TeacherAssignmentInput,
+  UserProfile,
+} from '@shared/types';
 
 /**
  * تهيئة الحساب — تظهر مرّة واحدة فقط عند أول دخول.
@@ -19,13 +25,23 @@ import type { CatalogResponse, ProfileRole, UserProfile } from '@shared/types';
  * تعديل كل هذه الاختيارات لاحقاً من صفحة «حسابي».
  */
 
-type StepId = 'role' | 'stage' | 'grade' | 'subjects';
+type StepId = 'role' | 'stage' | 'grade' | 'subjects' | 'assignments';
 
-const STEPS: { id: StepId; title: string }[] = [
+/**
+ * مساران مختلفان بعد اختيار الدور:
+ *   الطالب — مرحلة واحدة ثم صف واحد ثم مواد.
+ *   المعلم — نصاب متعدّد في خطوة واحدة (مراحل وصفوف ومواد وشُعب).
+ */
+const STUDENT_STEPS: { id: StepId; title: string }[] = [
   { id: 'role', title: 'من أنت؟' },
   { id: 'stage', title: 'ما المرحلة؟' },
   { id: 'grade', title: 'ما الصف؟' },
   { id: 'subjects', title: 'ما المواد؟' },
+];
+
+const TEACHER_STEPS: { id: StepId; title: string }[] = [
+  { id: 'role', title: 'من أنت؟' },
+  { id: 'assignments', title: 'ماذا تدرّس؟' },
 ];
 
 export function OnboardingPage() {
@@ -43,6 +59,7 @@ export function OnboardingPage() {
   const [gradeId, setGradeId] = useState<string | null>(null);
   const [trackId, setTrackId] = useState<string | null>(null);
   const [subjects, setSubjects] = useState<string[]>([]);
+  const [assignments, setAssignments] = useState<TeacherAssignmentInput[]>([]);
 
   useEffect(() => {
     let active = true;
@@ -70,14 +87,18 @@ export function OnboardingPage() {
   const needsTrack = useMemo(() => gradeRequiresTrack(catalog, gradeId), [catalog, gradeId]);
   const availableSubjects = useMemo(() => subjectsForStage(catalog, stageId), [catalog, stageId]);
 
-  const step = STEPS[stepIndex];
-  const isLast = stepIndex === STEPS.length - 1;
+  const steps = role === 'teacher' ? TEACHER_STEPS : STUDENT_STEPS;
+  // تبديل الدور قد يقصّر المسار، فنحمي المؤشّر من تجاوز النهاية.
+  const safeIndex = Math.min(stepIndex, steps.length - 1);
+  const step = steps[safeIndex];
+  const isLast = safeIndex === steps.length - 1;
 
   const canAdvance =
     (step.id === 'role' && !!role) ||
     (step.id === 'stage' && !!stageId) ||
     (step.id === 'grade' && !!gradeId && (!needsTrack || !!trackId)) ||
-    (step.id === 'subjects' && subjects.length > 0);
+    (step.id === 'subjects' && subjects.length > 0) ||
+    (step.id === 'assignments' && assignments.length > 0);
 
   const toggleSubject = (subjectId: string) => {
     setSubjects((current) =>
@@ -101,10 +122,12 @@ export function OnboardingPage() {
     try {
       await apiPost<{ profile: UserProfile }>('/api/me/profile', {
         role,
-        stageId,
-        gradeId,
-        trackId: needsTrack ? trackId : null,
-        subjects,
+        // المعلم: نصابه هو المصدر ولا يُحفظ له صف مفرد.
+        stageId: role === 'teacher' ? null : stageId,
+        gradeId: role === 'teacher' ? null : gradeId,
+        trackId: role === 'teacher' ? null : needsTrack ? trackId : null,
+        subjects: role === 'teacher' ? [] : subjects,
+        assignments: role === 'teacher' ? assignments : [],
         onboardingCompleted: true,
       });
       await refresh();
@@ -134,7 +157,7 @@ export function OnboardingPage() {
       <div className="onboarding-card">
         <div className="onboarding-head">
           <span className="eyebrow">
-            <Icon name="check" size={14} /> خطوة {stepIndex + 1} من {STEPS.length}
+            <Icon name="check" size={14} /> خطوة {safeIndex + 1} من {steps.length}
           </span>
           <h1 className="title-lg">{step.title}</h1>
           <p className="muted small">
@@ -144,14 +167,14 @@ export function OnboardingPage() {
           <div
             className="onboarding-progress"
             role="progressbar"
-            aria-valuenow={stepIndex + 1}
+            aria-valuenow={safeIndex + 1}
             aria-valuemin={1}
-            aria-valuemax={STEPS.length}
-            aria-label={`خطوة ${stepIndex + 1} من ${STEPS.length}`}
+            aria-valuemax={steps.length}
+            aria-label={`خطوة ${safeIndex + 1} من ${steps.length}`}
           >
             <span
               className="onboarding-progress-fill"
-              style={{ inlineSize: `${((stepIndex + 1) / STEPS.length) * 100}%` }}
+              style={{ inlineSize: `${((safeIndex + 1) / steps.length) * 100}%` }}
             />
           </div>
         </div>
@@ -170,16 +193,35 @@ export function OnboardingPage() {
                 icon="clipboard"
                 title="معلم"
                 text="جدولك وتحضيرك ومتابعة طلابك ومستنداتك."
-                onSelect={() => setRole('teacher')}
+                onSelect={() => {
+                  setRole('teacher');
+                  setStepIndex(0);
+                }}
               />
               <ChoiceCard
                 selected={role === 'student'}
                 icon="book"
                 title="طالب"
                 text="جدولك وخطة مذاكرتك وواجباتك واختباراتك."
-                onSelect={() => setRole('student')}
+                onSelect={() => {
+                  setRole('student');
+                  setStepIndex(0);
+                }}
               />
             </div>
+          ) : null}
+
+          {step.id === 'assignments' ? (
+            <>
+              <p className="muted small" style={{ marginBlockEnd: 'var(--sp-4)' }}>
+                أضف كل صف تدرّسه. تستطيع إضافة عدة مراحل وصفوف ومواد وشُعب.
+              </p>
+              <AssignmentsEditor
+                catalog={catalog}
+                assignments={assignments}
+                onChange={setAssignments}
+              />
+            </>
           ) : null}
 
           {step.id === 'stage' ? (
@@ -264,8 +306,8 @@ export function OnboardingPage() {
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={() => setStepIndex((index) => Math.max(0, index - 1))}
-            disabled={stepIndex === 0 || saving}
+            onClick={() => setStepIndex(Math.max(0, safeIndex - 1))}
+            disabled={safeIndex === 0 || saving}
           >
             رجوع
           </button>
@@ -283,7 +325,7 @@ export function OnboardingPage() {
             <button
               type="button"
               className="btn btn-primary btn-lg"
-              onClick={() => setStepIndex((index) => Math.min(STEPS.length - 1, index + 1))}
+              onClick={() => setStepIndex(Math.min(steps.length - 1, safeIndex + 1))}
               disabled={!canAdvance}
             >
               التالي
