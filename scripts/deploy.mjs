@@ -4,9 +4,9 @@
  * ما يفعله بالترتيب:
  *   1) يتأكّد من المصادقة (CLOUDFLARE_API_TOKEN).
  *   2) ينشئ قاعدة D1 إن لم تكن موجودة، ويأخذ معرّفها.
- *   3) يكتب المعرّف في wrangler.jsonc.
+ *   3) يكتب المعرّف في wrangler.jsonc وفي إعداد Wrangler المولَّد داخل dist.
  *   4) يطبّق الـ migrations على القاعدة البعيدة.
- *   5) ينشر الـ Worker ويستخرج رابط الإنتاج.
+ *   5) يتحقّق من المعرّف ثم ينشر الـ Worker ويستخرج رابط الإنتاج.
  *   6) يضبط الأسرار من متغيّرات البيئة (بلا طباعة أي قيمة).
  *   7) يضبط Webhook تيليجرام ويتحقّق منه.
  *   8) يشغّل فحص صحّة على النسخة المنشورة.
@@ -19,8 +19,17 @@
  */
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
+import {
+  isDatabaseId,
+  readDatabaseIdFromGeneratedConfig,
+  resolveGeneratedConfigPath,
+  setDatabaseIdInGeneratedConfig,
+  setDatabaseIdInSourceConfig,
+  shortId,
+} from './wrangler-config.mjs';
 
 const DB_NAME = 'teacher-tools-db';
+const DB_BINDING = 'DB';
 const CONFIG = 'wrangler.jsonc';
 
 /** الأسرار التي تُرفع إلى Cloudflare. القيم تأتي من البيئة ولا تُطبع أبداً. */
@@ -236,17 +245,41 @@ if (!databaseId) {
 console.log(`\n  معرّف القاعدة جاهز (${databaseId.slice(0, 8)}…).`);
 
 /* --------------------------- 3) تحديث الإعدادات --------------------------- */
-step('كتابة معرّف القاعدة في wrangler.jsonc');
-const config = readFileSync(CONFIG, 'utf8');
-const updated = config.replace(
-  /("database_id"\s*:\s*")[^"]*(")/,
-  (_match, prefix, suffix) => `${prefix}${databaseId}${suffix}`,
-);
-if (updated === config && !config.includes(databaseId)) {
-  fail('لم يُعثر على حقل database_id في ملف الإعدادات.');
+step('كتابة معرّف القاعدة في إعدادات Wrangler');
+
+// أ) الملف الأصلي — يستخدمه wrangler d1 migrations وأي أمر لا يمرّ بالتحويل.
+const sourceConfig = readFileSync(CONFIG, 'utf8');
+const sourceResult = setDatabaseIdInSourceConfig(sourceConfig, databaseId);
+if (!sourceResult.changed) {
+  fail(`لم يُعثر على حقل database_id في ${CONFIG}.`);
 }
-writeFileSync(CONFIG, updated, 'utf8');
-console.log('  تم.');
+writeFileSync(CONFIG, sourceResult.text, 'utf8');
+console.log(`  ${CONFIG}: تم.`);
+
+// ب) الإعداد المولَّد داخل dist — هو ما يقرأه wrangler deploy فعلياً.
+const D1_TARGET = { binding: DB_BINDING, databaseName: DB_NAME };
+let generatedConfigPath;
+try {
+  generatedConfigPath = resolveGeneratedConfigPath();
+} catch (error) {
+  fail(`تعذّر تحديد الإعداد المولَّد الذي سيستخدمه Wrangler: ${error.message}`);
+}
+if (!generatedConfigPath) {
+  fail(
+    `لم يُعثر على ${'.wrangler/deploy/config.json'} — لم يُنفَّذ npm run build قبل النشر.\n` +
+      '  إضافة @cloudflare/vite-plugin تولّد إعداد Wrangler أثناء البناء، و wrangler deploy يقرأ ذلك الإعداد.\n' +
+      '  بدونه سيُنشر الـ Worker بقيمة database_id النائبة ويفشل. أوقفنا النشر.',
+  );
+}
+
+try {
+  const generated = readFileSync(generatedConfigPath, 'utf8');
+  const generatedResult = setDatabaseIdInGeneratedConfig(generated, databaseId, D1_TARGET);
+  writeFileSync(generatedConfigPath, generatedResult.text, 'utf8');
+  console.log(`  ${generatedConfigPath}: تم (${generatedResult.updated} binding).`);
+} catch (error) {
+  fail(`تعذّر تحديث D1 binding داخل الإعداد المولَّد: ${error.message}`);
+}
 
 /* ------------------------------ 4) Migrations ----------------------------- */
 step('تطبيق الـ migrations على قاعدة الإنتاج');
@@ -257,6 +290,26 @@ try {
 }
 
 /* -------------------------------- 5) النشر -------------------------------- */
+// تحقّق صريح قبل النشر: نقرأ من القرص الملف الذي سيقرأه Wrangler نفسه،
+// ونؤكّد أن database_id معرّف حقيقي — لا فارغ ولا القيمة النائبة.
+step('التحقّق من إعداد Wrangler قبل النشر');
+try {
+  const effective = readDatabaseIdFromGeneratedConfig(
+    readFileSync(generatedConfigPath, 'utf8'),
+    D1_TARGET,
+  );
+  if (!isDatabaseId(effective)) {
+    fail(
+      `الـ binding «${DB_BINDING}» في الإعداد الذي سيستخدمه Wrangler لا يحمل معرّفاً صالحاً (${shortId(effective)}).\n` +
+        '  النشر سيفشل حتماً بـ: Binding DB of type d1 must have a valid database_id specified. أوقفنا النشر.',
+    );
+  }
+  console.log(`  الملف: ${generatedConfigPath}`);
+  console.log(`  ${DB_BINDING}.database_id = ${shortId(effective)} ✓`);
+} catch (error) {
+  fail(`تعذّر التحقّق من الإعداد المولَّد قبل النشر: ${error.message}`);
+}
+
 step('نشر الـ Worker');
 let deployOutput = '';
 try {
