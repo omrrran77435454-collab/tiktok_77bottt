@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import type { RouteContext } from '../lib/router';
 import { errors, json, readJson } from '../lib/http';
-import { authenticate, evaluateGate } from '../lib/gate';
+import type { Env } from '../env';
+import { authenticate, evaluateGate, type GateResult } from '../lib/gate';
 import { getPreferences, insertUsageEvent, markLogin, savePreferences } from '../lib/repo';
 import { filterToolsForProfile, getProfile, listPublishedTools } from '../lib/catalog-repo';
 import type { MeResponse } from '@shared/types';
@@ -16,16 +17,18 @@ const preferencesSchema = z.object({
   backgroundColor: z.string().regex(HEX_COLOR),
 });
 
-/** GET /api/me — حالة المستخدم والبوابة والتفضيلات في طلب واحد. */
-export async function handleMe({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
-  if (gate instanceof Response) return gate;
-
+/**
+ * يبني جسم /api/me من نتيجة البوابة.
+ *
+ * مصدر واحد للحقيقة: كل مسار يُرجع حالة الجلسة (me, telegram/status,
+ * telegram/verify) يمرّ من هنا، فلا تتعارض الردود ولا تتفرّع الحسابات.
+ */
+export async function buildMeResponse(env: Env, gate: GateResult): Promise<MeResponse> {
   const [preferences, profile] = await Promise.all([
     getPreferences(env.DB, gate.user.id),
     getProfile(env.DB, gate.user.id),
   ]);
-  const body: MeResponse = {
+  return {
     user: {
       id: gate.user.id,
       name: gate.user.name,
@@ -38,7 +41,14 @@ export async function handleMe({ request, env }: RouteContext): Promise<Response
     preferences,
     profile,
   };
-  return json(body);
+}
+
+/** GET /api/me — حالة المستخدم والبوابة والتفضيلات في طلب واحد. */
+export async function handleMe({ request, env }: RouteContext): Promise<Response> {
+  const gate = await evaluateGate(request, env);
+  if (gate instanceof Response) return gate;
+
+  return json(await buildMeResponse(env, gate));
 }
 
 /**

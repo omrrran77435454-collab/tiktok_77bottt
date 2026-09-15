@@ -22,6 +22,7 @@ import {
   setUserRole,
   upsertTelegramConnection,
 } from '../lib/repo';
+import { buildMeResponse } from './me';
 import type { LinkTokenResponse } from '@shared/types';
 
 /** صلاحية توكن الربط: 10 دقائق. */
@@ -57,6 +58,23 @@ export async function handleCreateLinkToken({ request, env }: RouteContext): Pro
     expiresAt,
   };
   return json(body);
+}
+
+/**
+ * POST /api/telegram/status
+ *
+ * «حدّث الحالة»: يقرأ الحقيقة من D1 ويسأل Telegram مباشرةً بلا أي مهلة،
+ * ثم يُرجع حالة الجلسة كاملة — فيعرف العميل فوراً إن اكتمل الربط والاشتراك
+ * بلا أن يُجبَر المستخدم على تحديث الصفحة يدوياً.
+ *
+ * منفصل عن /verify: هذا لا يسجّل حدث تحقّق ولا يخضع لمهلة الضغط المتكرّر،
+ * لأنه مجرّد مزامنة حالة لا محاولة تحقّق يبدأها المستخدم.
+ */
+export async function handleTelegramStatus({ request, env }: RouteContext): Promise<Response> {
+  const gate = await evaluateGate(request, env, { forceCheck: true });
+  if (gate instanceof Response) return gate;
+
+  return json(await buildMeResponse(env, gate));
 }
 
 /**
@@ -98,7 +116,9 @@ export async function handleVerifySubscription({ request, env }: RouteContext): 
     primaryColor: null,
   });
 
-  return json({ telegram: gate.state, canUseTools: gate.canUseTools });
+  // نُرجع حالة الجلسة كاملة (لا حالة تيليجرام وحدها) حتى يعرف العميل
+  // وجهته التالية مباشرةً: التهيئة أم لوحة المعلم أم لوحة الطالب.
+  return json(await buildMeResponse(env, gate));
 }
 
 /**

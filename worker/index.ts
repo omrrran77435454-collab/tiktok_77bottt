@@ -5,6 +5,7 @@ import { handleLogin, handleMe, handleSavePreferences, handleTools } from './rou
 import { handleTrackEvent } from './routes/analytics';
 import {
   handleCreateLinkToken,
+  handleTelegramStatus,
   handleTelegramWebhook,
   handleUnlinkTelegram,
   handleVerifySubscription,
@@ -47,6 +48,7 @@ const router = new Router()
   .post('/api/schedule/clear', handleClearSchedule)
 
   .post('/api/telegram/link-token', handleCreateLinkToken)
+  .post('/api/telegram/status', handleTelegramStatus)
   .post('/api/telegram/verify', handleVerifySubscription)
   .post('/api/telegram/unlink', handleUnlinkTelegram)
   .post('/api/telegram/webhook', handleTelegramWebhook)

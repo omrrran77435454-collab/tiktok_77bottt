@@ -5,6 +5,7 @@ import { Icon } from '@/components/Icon';
 import { ApiRequestError, apiPost } from '@/lib/api';
 import { useSession } from '@/lib/useSession';
 import { telegramView, type TelegramActivity } from '@/lib/telegram-state';
+import { destinationFor } from '@/lib/destination';
 import type { LinkTokenResponse, MeResponse } from '@shared/types';
 
 /**
@@ -18,7 +19,7 @@ import type { LinkTokenResponse, MeResponse } from '@shared/types';
  * المستخدم أي معرّف يدوياً ولا يستطيع العميل ادّعاء هوية تيليجرام.
  */
 export function TelegramGatePage() {
-  const { data, refresh } = useSession();
+  const { data, setData, refresh } = useSession();
   const navigate = useNavigate();
 
   const [activity, setActivity] = useState<TelegramActivity>('idle');
@@ -30,8 +31,11 @@ export function TelegramGatePage() {
   const view = telegramView(telegram, activity, error);
 
   useEffect(() => {
-    if (data?.canUseTools) navigate('/dashboard', { replace: true });
-  }, [data?.canUseTools, navigate]);
+    // بمجرّد اكتمال البوابة ننتقل إلى الوجهة الصحيحة (تهيئة أو لوحة)
+    // بلا انتظار تحديث يدوي. الحارس RedirectWhenDone يغطّي الحالة نفسها،
+    // وهذا يضمن الانتقال حتى لو وصلت الحالة بعد أول رسم.
+    if (data?.canUseTools) navigate(destinationFor(data), { replace: true });
+  }, [data, navigate]);
 
   const startLinking = async () => {
     setActivity('linking');
@@ -50,10 +54,31 @@ export function TelegramGatePage() {
     }
   };
 
+  /**
+   * «حدّث الحالة»: يسأل الخادم مباشرةً (لا الذاكرة المحلية) فيقرأ D1 ويستعلم
+   * من Telegram بلا مهلة، ثم يحدّث حالة الجلسة. الانتقال يقع تلقائياً في
+   * التأثير أعلاه بمجرّد أن يصبح canUseTools صحيحاً.
+   */
   const refreshStatus = async () => {
+    setActivity('checking');
     setError(null);
-    await refresh();
-    setActivity('idle');
+    try {
+      const session = await apiPost<MeResponse>('/api/telegram/status');
+      setData(session);
+    } catch (requestError) {
+      // إن فشل المسار الجديد لأي سبب نعود إلى إعادة الجلب العادية.
+      if (requestError instanceof ApiRequestError && requestError.status >= 500) {
+        await refresh();
+      } else {
+        setError(
+          requestError instanceof ApiRequestError
+            ? requestError.message
+            : 'تعذّر تحديث الحالة. حاول مرة أخرى.',
+        );
+      }
+    } finally {
+      setActivity('idle');
+    }
   };
 
   const verifySubscription = async () => {
@@ -61,11 +86,9 @@ export function TelegramGatePage() {
     setError(null);
     setNotMember(false);
     try {
-      const response = await apiPost<{ telegram: MeResponse['telegram']; canUseTools: boolean }>(
-        '/api/telegram/verify',
-      );
-      await refresh();
-      if (!response.canUseTools) setNotMember(true);
+      const session = await apiPost<MeResponse>('/api/telegram/verify');
+      setData(session);
+      if (!session.canUseTools) setNotMember(true);
     } catch (requestError) {
       setError(
         requestError instanceof ApiRequestError
@@ -137,8 +160,21 @@ export function TelegramGatePage() {
                 type="button"
                 className="btn btn-secondary btn-block"
                 onClick={() => void refreshStatus()}
+                disabled={activity === 'checking'}
               >
                 تحقّقت من الربط — حدّث الحالة
+              </button>
+            ) : null}
+
+            {view.phase === 'NOT_LINKED' ? (
+              // ربطتَ من جهاز أو تبويب آخر؟ زر يقرأ الحقيقة من الخادم.
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                onClick={() => void refreshStatus()}
+                disabled={activity !== 'idle'}
+              >
+                ربطتُ حسابي مسبقاً — حدّث الحالة
               </button>
             ) : null}
 

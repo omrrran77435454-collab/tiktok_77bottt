@@ -12,8 +12,22 @@ import {
 } from './repo';
 import type { TelegramGateState, UserRole } from '@shared/types';
 
-/** مدة صلاحية نتيجة التحقّق من الاشتراك قبل إعادة السؤال (24 ساعة). */
+/**
+ * مدة صلاحية نتيجة التحقّق **الإيجابية** قبل إعادة السؤال (24 ساعة).
+ * تنطبق على من تأكّد اشتراكه فقط، حتى لا نُرهق Telegram بلا فائدة.
+ */
 export const MEMBERSHIP_TTL_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * مدة صلاحية النتيجة **السلبية** (دقيقة واحدة).
+ *
+ * هذا هو جوهر إصلاح خطأ «يرجعني إلى بوابة تيليجرام بعد الاشتراك»:
+ * عند الربط نسأل Telegram فوراً، والمستخدم غالباً لم يشترك بعد، فتُخزَّن
+ * النتيجة «غير مشترك». لو طبّقنا عليها نفس مهلة الـ 24 ساعة لبقي الجواب
+ * «غير مشترك» يوماً كاملاً حتى بعد اشتراكه الفعلي، فيُعاد إلى البوابة في كل
+ * مرة. النتيجة السلبية إذن قصيرة العمر، والإيجابية طويلة.
+ */
+export const NOT_MEMBER_TTL_MS = 60 * 1000;
 
 export interface AuthedContext {
   user: UserRow;
@@ -63,11 +77,26 @@ export async function authenticate(
   return { user, role: user.role };
 }
 
+/** هل حان وقت إعادة سؤال Telegram عن هذا الاشتراك؟ */
+export function membershipIsStale(
+  connection: Pick<TelegramConnectionRow, 'is_member' | 'last_checked_at'>,
+  now = Date.now(),
+): boolean {
+  const lastChecked = connection.last_checked_at ? Date.parse(connection.last_checked_at) : 0;
+  if (!lastChecked || Number.isNaN(lastChecked)) return true;
+
+  const ttl = connection.is_member === 1 ? MEMBERSHIP_TTL_MS : NOT_MEMBER_TTL_MS;
+  return now - lastChecked > ttl;
+}
+
 /**
  * يحسب حالة البوابة للمستخدم الحالي.
  *
- * سياسة التحقّق: لا نستدعي Telegram في كل طلب. نعيد التحقّق فقط عندما تمضي
- * أكثر من 24 ساعة على آخر فحص (أو عند طلب صريح من المستخدم).
+ * سياسة التحقّق: لا نستدعي Telegram في كل طلب.
+ *   - المشترك المؤكَّد: نعيد السؤال بعد 24 ساعة.
+ *   - غير المشترك: نعيد السؤال بعد دقيقة، فيظهر اشتراكه الجديد فوراً تقريباً.
+ *   - عند طلب صريح من المستخدم (forceCheck): نسأل الآن بلا أي مهلة.
+ *
  * إذا فشل Telegram نُبقي آخر حالة معروفة ولا نحدّث last_checked_at
  * حتى نعيد المحاولة لاحقاً بدل حرمان المستخدم بسبب عطل مؤقت.
  */
@@ -82,10 +111,7 @@ export async function evaluateGate(
   let connection = await getTelegramConnectionByUser(env.DB, auth.user.id);
 
   if (connection) {
-    const lastChecked = connection.last_checked_at ? Date.parse(connection.last_checked_at) : 0;
-    const isStale = !lastChecked || Date.now() - lastChecked > MEMBERSHIP_TTL_MS;
-
-    if (options.forceCheck || isStale) {
+    if (options.forceCheck || membershipIsStale(connection)) {
       const outcome = await checkChannelMembership(env, connection.telegram_user_id);
       if (outcome.ok) {
         await updateMembership(env.DB, auth.user.id, outcome.isMember);

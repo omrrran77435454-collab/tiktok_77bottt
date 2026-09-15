@@ -118,6 +118,15 @@ const sessionData = (overrides: Record<string, unknown> = {}) =>
     },
     canUseTools: true,
     preferences: null,
+    profile: {
+      role: 'teacher',
+      stageId: null,
+      gradeId: null,
+      trackId: null,
+      subjects: [],
+      onboardingCompleted: true,
+      completedAt: null,
+    },
     ...overrides,
   }) as never;
 

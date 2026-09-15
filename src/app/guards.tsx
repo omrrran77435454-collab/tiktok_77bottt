@@ -4,6 +4,7 @@ import { useSession } from '@/lib/useSession';
 import { BootSplash } from '@/components/BootSplash';
 import { ErrorPage } from '@/pages/ErrorPage';
 import { UnauthorizedPage } from '@/pages/Unauthorized';
+import { destinationFor } from '@/lib/destination';
 
 /**
  * حراس المسارات في الواجهة.
@@ -39,6 +40,22 @@ export function RequireTools({ children }: { children: ReactNode }) {
 }
 
 /**
+ * يمنع البقاء على صفحة لم تعد وجهة المستخدم الصحيحة.
+ * يُستخدم على /connect و /welcome: بمجرّد اكتمال شرطهما ينتقل المستخدم
+ * تلقائياً إلى وجهته التالية بلا تحديث يدوي.
+ */
+export function RedirectWhenDone({ path, children }: { path: string; children: ReactNode }) {
+  const { data, status } = useSession();
+  if (status === 'loading') return <BootSplash />;
+
+  if (status === 'authenticated' && data) {
+    const destination = destinationFor(data);
+    if (destination !== path) return <Navigate to={destination} replace />;
+  }
+  return <>{children}</>;
+}
+
+/**
  * لوحة الإدارة لمالك المنصّة.
  * لا تمرّ عبر RequireTools عن قصد: الإدمن يدخل لوحته حتى لو كانت حالة
  * اشتراكه في القناة غير مؤكَّدة، لأنه مالك المنصّة لا مستخدم عادي.
@@ -55,7 +72,7 @@ export function RedirectIfAuthenticated({ children }: { children: ReactNode }) {
   const { data, status } = useSession();
   if (status === 'loading') return <BootSplash />;
   if (status === 'authenticated' && data) {
-    return <Navigate to={data.canUseTools ? '/dashboard' : '/connect'} replace />;
+    return <Navigate to={destinationFor(data)} replace />;
   }
   return <>{children}</>;
 }

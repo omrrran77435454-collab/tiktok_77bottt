@@ -2,7 +2,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '@/lib/auth';
 import { SessionProvider } from '@/lib/session';
 import { AppShell } from './AppShell';
-import { RedirectIfAuthenticated, RequireAdmin, RequireAuth, RequireTools } from './guards';
+import {
+  RedirectIfAuthenticated,
+  RedirectWhenDone,
+  RequireAdmin,
+  RequireAuth,
+  RequireTools,
+} from './guards';
 import { LandingPage } from '@/pages/Landing';
 import { TelegramGatePage } from '@/pages/TelegramGate';
 import { DashboardPage } from '@/pages/Dashboard';
@@ -38,7 +44,9 @@ export function App() {
               path="/connect"
               element={
                 <RequireAuth>
-                  <TelegramGatePage />
+                  <RedirectWhenDone path="/connect">
+                    <TelegramGatePage />
+                  </RedirectWhenDone>
                 </RequireAuth>
               }
             />
@@ -57,7 +65,9 @@ export function App() {
               element={
                 <RequireAuth>
                   <RequireTools>
-                    <OnboardingPage />
+                    <RedirectWhenDone path="/welcome">
+                      <OnboardingPage />
+                    </RedirectWhenDone>
                   </RequireTools>
                 </RequireAuth>
               }
