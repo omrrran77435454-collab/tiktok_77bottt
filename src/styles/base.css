@@ -343,6 +343,20 @@ ul, ol { margin: 0; padding-inline-start: 1.25rem; }
 
 .alert-title { font-weight: 700; display: block; margin-block-end: 2px; }
 
+/* رمز خطأ Firebase تحت رسالة فشل تسجيل الدخول — للتشخيص لا للقراءة العابرة. */
+.sign-in-error-code {
+  margin-block-start: var(--sp-2);
+  font-size: var(--fs-xs);
+  opacity: 0.85;
+}
+
+.sign-in-error-code code {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  user-select: all;
+}
+
 /* ------------------------------ الشارات ---------------------------- */
 
 .badge {

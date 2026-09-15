@@ -8,6 +8,8 @@ export interface AuthState {
   /** المستخدم كما تعرفه Firebase (للعرض فقط — الخادم يعيد التحقّق دائماً). */
   firebaseUser: User | null;
   signInError: string | null;
+  /** رمز خطأ Firebase للتشخيص (auth/…) — يُعرض للمستخدم تحت الرسالة العامة. */
+  signInErrorCode: string | null;
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
 }

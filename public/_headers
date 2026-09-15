@@ -1,5 +1,12 @@
 # ترويسات الأمان لأصول Cloudflare Workers Static Assets.
 # تُطبَّق على الاستجابات الثابتة دون استدعاء الـ Worker.
+#
+# ملاحظة على script-src: حزمة @firebase/auth تحقن وسماً
+# <script src="https://apis.google.com/js/api.js"> قبل فتح نافذة Google،
+# لأن مدير أحداث المصادقة (popup و redirect معاً) يعمل عبر gapi.iframes.
+# مع script-src 'self' وحدها يمنع المتصفّح ذلك الوسم، فيُطلق onerror وتفشل
+# العملية بـ auth/internal-error. المصدر: node_modules/@firebase/auth →
+# _setExternalJSProvider({ gapiScript: 'https://apis.google.com/js/api.js' }).
 
 /*
   X-Content-Type-Options: nosniff
@@ -8,7 +15,7 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://lh3.googleusercontent.com https://*.googleusercontent.com; font-src 'self'; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src 'self' https://accounts.google.com https://*.firebaseapp.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://apis.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://lh3.googleusercontent.com https://*.googleusercontent.com; font-src 'self'; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-src 'self' https://accounts.google.com https://*.firebaseapp.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

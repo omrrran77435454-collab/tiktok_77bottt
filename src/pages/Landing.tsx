@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Alert } from '@/components/ui';
+import { SignInErrorAlert } from '@/components/SignInErrorAlert';
 import { useAuth } from '@/lib/useAuth';
 import { GoogleIcon, Icon } from '@/components/Icon';
 
@@ -47,7 +47,7 @@ const FEATURES = [
 
 export function LandingPage() {
   const [params] = useSearchParams();
-  const { status, signIn, signInError } = useAuth();
+  const { status, signIn, signInError, signInErrorCode } = useAuth();
   const [busy, setBusy] = useState(false);
 
   const error =
@@ -106,9 +106,7 @@ export function LandingPage() {
 
             {error ? (
               <div style={{ marginBlockStart: 'var(--sp-4)', maxWidth: 460 }}>
-                <Alert tone="error" title="تعذّر تسجيل الدخول">
-                  {error}
-                </Alert>
+                <SignInErrorAlert message={error} code={signInErrorCode} />
               </div>
             ) : null}
           </div>
