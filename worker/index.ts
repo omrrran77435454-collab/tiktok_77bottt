@@ -10,12 +10,41 @@ import {
   handleVerifySubscription,
 } from './routes/telegram';
 import { handleAdminStats } from './routes/admin';
+import {
+  handleAdminCatalog,
+  handleAdminSaveCategory,
+  handleAdminSaveSubject,
+  handleAdminSaveTool,
+  handleAdminToggleReference,
+  handleAdminToolOrder,
+  handleAdminToolStatus,
+} from './routes/admin-manage';
+import { handleCatalog, handleGetProfile, handleSaveProfile } from './routes/profile';
+import {
+  handleClearSchedule,
+  handleCreateScheduleItem,
+  handleDeleteScheduleItem,
+  handleGetSchedule,
+  handleSaveScheduleSettings,
+  handleUpdateScheduleItem,
+} from './routes/schedule';
 
 const router = new Router()
   .get('/api/me', handleMe)
   .post('/api/me/login', handleLogin)
   .post('/api/me/preferences', handleSavePreferences)
   .get('/api/tools', handleTools)
+
+  .get('/api/catalog', handleCatalog)
+  .get('/api/me/profile', handleGetProfile)
+  .post('/api/me/profile', handleSaveProfile)
+
+  .get('/api/schedule', handleGetSchedule)
+  .post('/api/schedule/settings', handleSaveScheduleSettings)
+  .post('/api/schedule/items', handleCreateScheduleItem)
+  .post('/api/schedule/items/update', handleUpdateScheduleItem)
+  .post('/api/schedule/items/delete', handleDeleteScheduleItem)
+  .post('/api/schedule/clear', handleClearSchedule)
 
   .post('/api/telegram/link-token', handleCreateLinkToken)
   .post('/api/telegram/verify', handleVerifySubscription)
@@ -25,6 +54,13 @@ const router = new Router()
   .post('/api/events', handleTrackEvent)
 
   .get('/api/admin/stats', handleAdminStats)
+  .get('/api/admin/catalog', handleAdminCatalog)
+  .post('/api/admin/tools', handleAdminSaveTool)
+  .post('/api/admin/tools/status', handleAdminToolStatus)
+  .post('/api/admin/tools/order', handleAdminToolOrder)
+  .post('/api/admin/categories', handleAdminSaveCategory)
+  .post('/api/admin/subjects', handleAdminSaveSubject)
+  .post('/api/admin/reference/toggle', handleAdminToggleReference)
 
   .get('/api/health', ({ env }) => {
     const missing = missingEnvVars(env);

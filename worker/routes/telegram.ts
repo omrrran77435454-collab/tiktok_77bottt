@@ -8,6 +8,7 @@ import {
   sendTelegramMessage,
   type TelegramUpdate,
 } from '../lib/telegram';
+import { botMessages } from '../lib/telegram-messages';
 import {
   claimVerifyRequest,
   consumeLinkToken,
@@ -133,10 +134,12 @@ export async function handleTelegramWebhook({ request, env }: RouteContext): Pro
   const token = parseStartCommand(message.text);
 
   if (!token) {
+    // الحساب مربوط مسبقاً؟ لا نطلب منه الربط من جديد.
+    const linked = await getTelegramConnectionByTelegramId(env.DB, telegramUserId);
     await sendTelegramMessage(
       env,
       chatId,
-      'مرحباً بك في <b>أدوات المعلم</b> 👋\n\nلربط حسابك، افتح الموقع وسجّل الدخول ثم اضغط زر «ربط Telegram».',
+      linked ? botMessages.alreadyLinked(env) : botMessages.welcome(env),
     );
     return ok();
   }
@@ -145,28 +148,20 @@ export async function handleTelegramWebhook({ request, env }: RouteContext): Pro
   const row = await findLinkTokenByHash(env.DB, tokenHash);
 
   if (!row || row.used_at || Date.parse(row.expires_at) < Date.now()) {
-    await sendTelegramMessage(
-      env,
-      chatId,
-      '⛔ انتهت صلاحية رابط الربط أو سبق استخدامه.\n\nارجع للموقع واضغط «ربط Telegram» من جديد.',
-    );
+    await sendTelegramMessage(env, chatId, botMessages.expiredToken(env));
     return ok();
   }
 
   // حساب تيليجرام واحد = حساب موقع واحد.
   const alreadyLinked = await getTelegramConnectionByTelegramId(env.DB, telegramUserId);
   if (alreadyLinked && alreadyLinked.user_id !== row.user_id) {
-    await sendTelegramMessage(
-      env,
-      chatId,
-      '⛔ حساب تيليجرام هذا مرتبط بحساب آخر في المنصة.\n\nاستخدم نفس الحساب الذي ربطته سابقاً.',
-    );
+    await sendTelegramMessage(env, chatId, botMessages.linkedToAnotherAccount(env));
     return ok();
   }
 
   const consumed = await consumeLinkToken(env.DB, row.id);
   if (!consumed) {
-    await sendTelegramMessage(env, chatId, '⛔ تم استخدام رابط الربط مسبقاً. اطلب رابطاً جديداً.');
+    await sendTelegramMessage(env, chatId, botMessages.expiredToken(env));
     return ok();
   }
 
@@ -197,9 +192,7 @@ export async function handleTelegramWebhook({ request, env }: RouteContext): Pro
   await sendTelegramMessage(
     env,
     chatId,
-    isMember
-      ? '✅ تم ربط حسابك بنجاح، واشتراكك في القناة مؤكَّد.\n\nارجع إلى الموقع — الأدوات مفتوحة الآن.'
-      : '✅ تم ربط حسابك بنجاح.\n\nبقيت خطوة واحدة: اشترك في القناة ثم اضغط «تحقق من الاشتراك» في الموقع.',
+    isMember ? botMessages.linkedSubscribed(env) : botMessages.linkedNeedsSubscription(env),
   );
 
   // تنظيف انتهازي للتوكنات المنتهية (عملية خفيفة وغير متكرّرة).

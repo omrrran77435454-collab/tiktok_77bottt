@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useSession } from '@/lib/useSession';
-import { LoadingScreen } from '@/components/ui';
+import { BootSplash } from '@/components/BootSplash';
 import { ErrorPage } from '@/pages/ErrorPage';
 import { UnauthorizedPage } from '@/pages/Unauthorized';
 
@@ -16,7 +16,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   const { status, errorMessage, refresh } = useSession();
   const location = useLocation();
 
-  if (status === 'loading') return <LoadingScreen />;
+  if (status === 'loading') return <BootSplash />;
   if (status === 'error') {
     return (
       <ErrorPage
@@ -33,7 +33,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
 /** يتطلّب اجتياز بوابة تيليجرام (مربوط + اشتراك مؤكَّد). */
 export function RequireTools({ children }: { children: ReactNode }) {
   const { data, status } = useSession();
-  if (status === 'loading') return <LoadingScreen />;
+  if (status === 'loading') return <BootSplash />;
   if (data && !data.canUseTools) return <Navigate to="/connect" replace />;
   return <>{children}</>;
 }
@@ -45,7 +45,7 @@ export function RequireTools({ children }: { children: ReactNode }) {
  */
 export function RequireAdmin({ children }: { children: ReactNode }) {
   const { data, status } = useSession();
-  if (status === 'loading') return <LoadingScreen />;
+  if (status === 'loading') return <BootSplash />;
   if (data?.user.role !== 'admin') return <UnauthorizedPage />;
   return <>{children}</>;
 }
@@ -53,7 +53,7 @@ export function RequireAdmin({ children }: { children: ReactNode }) {
 /** يمنع المستخدم المسجَّل من رؤية صفحة الهبوط مرة أخرى. */
 export function RedirectIfAuthenticated({ children }: { children: ReactNode }) {
   const { data, status } = useSession();
-  if (status === 'loading') return <LoadingScreen />;
+  if (status === 'loading') return <BootSplash />;
   if (status === 'authenticated' && data) {
     return <Navigate to={data.canUseTools ? '/dashboard' : '/connect'} replace />;
   }

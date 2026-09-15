@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth';
 import {
   E2E_TOKEN_KEY,
+  ensureAuthPersistence,
   getFirebaseAuth,
   googleProvider,
   isE2ETestMode,
@@ -73,6 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     try {
+      // ننتظر تثبيت بقاء الجلسة قبل الدخول، وإلا قد تُكتب الجلسة في تخزين مؤقّت.
+      await ensureAuthPersistence(auth);
       await signInWithPopup(auth, googleProvider());
     } catch (error) {
       logSignInError('signInWithPopup', error);

@@ -2,6 +2,7 @@ import type { Env } from '../env';
 import { errors } from './http';
 import { readBearerToken, verifyIdToken } from './firebase-auth';
 import { checkChannelMembership } from './telegram';
+import { channelUrl } from './telegram-messages';
 import {
   getTelegramConnectionByUser,
   updateMembership,
@@ -31,7 +32,8 @@ function buildState(env: Env, connection: TelegramConnectionRow | null): Telegra
     isMember: connection ? connection.is_member === 1 : false,
     lastCheckedAt: connection?.last_checked_at ?? null,
     telegramUsername: connection?.telegram_username ?? null,
-    channelJoinUrl: env.TELEGRAM_CHANNEL_JOIN_URL ?? '',
+    // مصدر واحد للرابط: نفس ما يظهر في رسائل البوت.
+    channelJoinUrl: channelUrl(env),
     botUsername: env.TELEGRAM_BOT_USERNAME ?? '',
   };
 }

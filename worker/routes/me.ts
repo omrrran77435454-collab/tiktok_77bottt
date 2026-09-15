@@ -2,8 +2,9 @@ import { z } from 'zod';
 import type { RouteContext } from '../lib/router';
 import { errors, json, readJson } from '../lib/http';
 import { authenticate, evaluateGate } from '../lib/gate';
-import { getPreferences, insertUsageEvent, listEnabledTools, markLogin, savePreferences } from '../lib/repo';
-import type { MeResponse, ToolMeta } from '@shared/types';
+import { getPreferences, insertUsageEvent, markLogin, savePreferences } from '../lib/repo';
+import { filterToolsForProfile, getProfile, listPublishedTools } from '../lib/catalog-repo';
+import type { MeResponse } from '@shared/types';
 
 const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 
@@ -20,7 +21,10 @@ export async function handleMe({ request, env }: RouteContext): Promise<Response
   const gate = await evaluateGate(request, env);
   if (gate instanceof Response) return gate;
 
-  const preferences = await getPreferences(env.DB, gate.user.id);
+  const [preferences, profile] = await Promise.all([
+    getPreferences(env.DB, gate.user.id),
+    getProfile(env.DB, gate.user.id),
+  ]);
   const body: MeResponse = {
     user: {
       id: gate.user.id,
@@ -32,6 +36,7 @@ export async function handleMe({ request, env }: RouteContext): Promise<Response
     telegram: gate.state,
     canUseTools: gate.canUseTools,
     preferences,
+    profile,
   };
   return json(body);
 }
@@ -55,23 +60,24 @@ export async function handleLogin({ request, env }: RouteContext): Promise<Respo
   return json({ ok: true });
 }
 
-/** GET /api/tools — قائمة الأدوات المفعّلة (تتطلّب اجتياز البوابة). */
+/**
+ * GET /api/tools — الأدوات المناسبة لهذا المستخدم (تتطلّب اجتياز البوابة).
+ *
+ * الترشيح يتم في الخادم اعتماداً على الملف المحفوظ، لا على ما يرسله العميل:
+ * الدور (معلم/طالب) ثم المرحلة والصف والمواد. الأدوات غير المنفَّذة لا تظهر
+ * إطلاقاً حتى لا يضغط المستخدم زراً لا يعمل.
+ */
 export async function handleTools({ request, env }: RouteContext): Promise<Response> {
   const gate = await evaluateGate(request, env);
   if (gate instanceof Response) return gate;
   if (!gate.canUseTools) return errors.forbidden();
 
-  const rows = await listEnabledTools(env.DB);
-  const tools: ToolMeta[] = rows.map((row) => ({
-    id: row.id,
-    slug: row.slug,
-    nameAr: row.name_ar,
-    descriptionAr: row.description_ar,
-    icon: row.icon,
-    enabled: row.enabled === 1,
-    sortOrder: row.sort_order,
-  }));
-  return json({ tools });
+  const [all, profile] = await Promise.all([
+    listPublishedTools(env.DB),
+    getProfile(env.DB, gate.user.id),
+  ]);
+
+  return json({ tools: filterToolsForProfile(all, profile), profile });
 }
 
 /** POST /api/me/preferences — حفظ القالب والألوان المفضّلة (لا يحفظ أي محتوى مستند). */

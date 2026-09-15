@@ -446,3 +446,59 @@ ul, ol { margin: 0; padding-inline-start: 1.25rem; }
   text-align: center;
   padding: var(--sp-6);
 }
+
+/* --------------------------- شاشة الإقلاع --------------------------- */
+
+.boot-splash {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) var(--sp-4);
+  text-align: center;
+}
+
+.boot-splash-mark {
+  border-radius: var(--radius-lg);
+  animation: boot-pop 220ms ease-out both;
+}
+
+.boot-splash-name {
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  color: var(--teal-800);
+}
+
+.boot-splash-bar {
+  inline-size: 180px;
+  block-size: 4px;
+  border-radius: 999px;
+  background: var(--teal-100);
+  overflow: hidden;
+}
+
+.boot-splash-bar-fill {
+  display: block;
+  block-size: 100%;
+  inline-size: 40%;
+  border-radius: 999px;
+  background: var(--teal-600);
+  animation: boot-slide 1.1s ease-in-out infinite;
+}
+
+@keyframes boot-pop {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes boot-slide {
+  0% { transform: translateX(150%); }
+  100% { transform: translateX(-250%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-splash-mark { animation: none; }
+  .boot-splash-bar-fill { animation: none; inline-size: 100%; }
+}

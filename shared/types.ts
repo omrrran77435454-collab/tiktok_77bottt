@@ -35,6 +35,8 @@ export interface MeResponse {
   /** هل يُسمح للمستخدم بفتح الأدوات؟ (مسجّل دخول + مربوط + مشترك) */
   canUseTools: boolean;
   preferences: UserPreferences | null;
+  /** ملف الاستخدام (الدور والمرحلة والصف والمواد) — يُملأ في التهيئة. */
+  profile: UserProfile;
 }
 
 export interface UserPreferences {
@@ -154,4 +156,175 @@ export interface ApiError {
   error: string;
   /** رمز ثابت للتعامل البرمجي. */
   code: string;
+}
+
+/* ==========================================================================
+ * البنية التعليمية وملف المستخدم والكتالوج
+ * ========================================================================== */
+
+/** دور تجربة الاستخدام — منفصل عن صلاحية النظام (UserRole). */
+export type ProfileRole = 'teacher' | 'student';
+
+/** الجمهور المستهدف بأداة أو قسم. */
+export type ToolAudience = 'teacher' | 'student' | 'both';
+
+export type ToolStatus = 'draft' | 'published' | 'disabled';
+
+export interface StageRef {
+  id: string;
+  nameAr: string;
+}
+
+export interface GradeRef {
+  id: string;
+  stageId: string;
+  nameAr: string;
+  /** هل يحتاج هذا الصف اختيار مسار؟ */
+  requiresTrack: boolean;
+}
+
+export interface TrackRef {
+  id: string;
+  nameAr: string;
+}
+
+export interface SubjectRef {
+  id: string;
+  nameAr: string;
+  /** null = متاحة لكل المراحل. */
+  stageId: string | null;
+}
+
+export interface ToolCategoryRef {
+  id: string;
+  nameAr: string;
+  descriptionAr: string;
+  icon: string;
+  audience: ToolAudience;
+  sortOrder: number;
+}
+
+export interface CatalogResponse {
+  stages: StageRef[];
+  grades: GradeRef[];
+  tracks: TrackRef[];
+  subjects: SubjectRef[];
+  categories: ToolCategoryRef[];
+}
+
+export interface UserProfile {
+  role: ProfileRole;
+  stageId: string | null;
+  gradeId: string | null;
+  trackId: string | null;
+  subjects: string[];
+  onboardingCompleted: boolean;
+  completedAt: string | null;
+}
+
+export interface ProfileInputBody {
+  role: ProfileRole;
+  stageId: string | null;
+  gradeId: string | null;
+  trackId: string | null;
+  subjects: string[];
+  onboardingCompleted?: boolean;
+}
+
+export interface ToolCatalogItem {
+  id: string;
+  slug: string;
+  nameAr: string;
+  descriptionAr: string;
+  icon: string;
+  categoryId: string | null;
+  audience: ToolAudience;
+  status: ToolStatus;
+  stages: string[];
+  grades: string[];
+  subjects: string[];
+  keywords: string[];
+  isFeatured: boolean;
+  isNew: boolean;
+  /** هل للأداة صفحة منفَّذة فعلاً؟ لا نعرض أزراراً لا تعمل. */
+  isImplemented: boolean;
+  sortOrder: number;
+}
+
+/* ------------------------------ الجدول الأسبوعي ----------------------------- */
+
+export type ScheduleItemStatus = 'planned' | 'done' | 'cancelled';
+export type PreparationStatus = 'not_started' | 'in_progress' | 'ready';
+export type FollowupStatus = 'none' | 'pending' | 'done';
+
+export interface ScheduleSettings {
+  periodsPerDay: number;
+  startTime: string;
+  periodMinutes: number;
+}
+
+export interface ScheduleItem {
+  id: string;
+  day: number;
+  period: number;
+  startTime: string | null;
+  endTime: string | null;
+  subjectId: string | null;
+  subjectLabel: string | null;
+  gradeId: string | null;
+  className: string | null;
+  lessonTitle: string | null;
+  notes: string | null;
+  homework: string | null;
+  status: ScheduleItemStatus;
+  preparationStatus: PreparationStatus;
+  followupStatus: FollowupStatus;
+}
+
+export interface ScheduleResponse {
+  settings: ScheduleSettings;
+  items: ScheduleItem[];
+}
+
+export interface ScheduleItemInput {
+  day: number;
+  period: number;
+  subjectId?: string | null;
+  subjectLabel?: string | null;
+  gradeId?: string | null;
+  className?: string | null;
+  lessonTitle?: string | null;
+  notes?: string | null;
+  homework?: string | null;
+  status?: ScheduleItemStatus;
+  preparationStatus?: PreparationStatus;
+  followupStatus?: FollowupStatus;
+}
+
+/* --------------------------------- الإدارة --------------------------------- */
+
+export interface AdminAuditEntry {
+  id: string;
+  actorName: string;
+  action: string;
+  entityType: string;
+  entityId: string;
+  createdAt: string;
+}
+
+export interface AdminToolInput {
+  slug: string;
+  nameAr: string;
+  descriptionAr: string;
+  icon: string;
+  categoryId: string | null;
+  audience: ToolAudience;
+  status: ToolStatus;
+  stages: string[];
+  grades: string[];
+  subjects: string[];
+  keywords: string[];
+  isFeatured: boolean;
+  isNew: boolean;
+  sortOrder: number;
 }

@@ -1,5 +1,13 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, type Auth } from 'firebase/auth';
+import { applyLocalPersistence } from './auth-persistence';
+import {
+  browserLocalPersistence,
+  getAuth,
+  GoogleAuthProvider,
+  indexedDBLocalPersistence,
+  setPersistence,
+  type Auth,
+} from 'firebase/auth';
 
 /**
  * تهيئة Firebase للواجهة.
@@ -26,6 +34,23 @@ export const isFirebaseConfigured =
 
 let app: FirebaseApp | null = null;
 let authInstance: Auth | null = null;
+let persistenceReady: Promise<void> | null = null;
+
+/**
+ * يثبّت بقاء الجلسة على القرص صراحةً (IndexedDB ثم localStorage).
+ * المنطق نفسه في auth-persistence.ts وهو مُختبَر هناك بلا تحميل Firebase.
+ */
+export function ensureAuthPersistence(auth: Auth): Promise<void> {
+  persistenceReady ??= applyLocalPersistence(auth, {
+    setPersistence,
+    indexedDB: indexedDBLocalPersistence,
+    local: browserLocalPersistence,
+    onUnavailable: () => {
+      console.warn('[auth] تعذّر تثبيت بقاء الجلسة على هذا المتصفّح.');
+    },
+  }).then(() => undefined);
+  return persistenceReady;
+}
 
 export function getFirebaseAuth(): Auth | null {
   if (!isFirebaseConfigured) return null;
@@ -39,6 +64,8 @@ export function getFirebaseAuth(): Auth | null {
     });
     authInstance = getAuth(app);
     authInstance.languageCode = 'ar';
+    // نبدأ التثبيت فوراً حتى يكون جاهزاً قبل أول تسجيل دخول.
+    void ensureAuthPersistence(authInstance);
   }
   return authInstance;
 }

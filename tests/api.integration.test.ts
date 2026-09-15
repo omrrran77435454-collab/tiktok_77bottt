@@ -252,7 +252,12 @@ describe('البوابة والأدوات', () => {
     const tools = await call('/api/tools', {}, token);
     expect(tools.status).toBe(200);
     const body = (await tools.json()) as { tools: { id: string }[] };
-    expect(body.tools).toHaveLength(3);
+    // المستخدم الجديد بلا ملف شخصي ⇒ تجربة المعلم الافتراضية: أدوات المعلم فقط.
+    const ids = body.tools.map((tool) => tool.id);
+    expect(ids).toEqual(
+      expect.arrayContaining(['student-followup', 'error-map', 'absence-plan']),
+    );
+    expect(ids).not.toContain('study-plan');
   });
 
   it('يبقي الأدوات مغلقة لغير المشترك', async () => {
