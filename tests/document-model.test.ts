@@ -22,10 +22,21 @@ function allTables(blocks: DocBlock[]): Extract<DocBlock, { kind: 'table' }>[] {
 }
 
 describe('سجل الأدوات', () => {
-  it('يحتوي الأدوات الثلاث بمعرّفات فريدة', () => {
-    expect(TOOLS).toHaveLength(3);
+  it('يسجّل كل الأدوات المنفَّذة بمعرّفات فريدة', () => {
     const ids = TOOLS.map((tool) => tool.id);
-    expect(new Set(ids).size).toBe(3);
+    expect(ids).toEqual(
+      expect.arrayContaining([
+        'student-followup',
+        'error-map',
+        'absence-plan',
+        'student-schedule',
+        'study-plan',
+        'homework-organizer',
+        'exam-prep',
+      ]),
+    );
+    // لا معرّف مكرّر: التكرار يكسر التوجيه والحفظ المحلي معاً.
+    expect(new Set(ids).size).toBe(TOOLS.length);
     expect(ids).toEqual(expect.arrayContaining(['student-followup', 'error-map', 'absence-plan']));
   });
 

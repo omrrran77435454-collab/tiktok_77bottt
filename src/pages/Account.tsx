@@ -11,6 +11,7 @@ import { TOOLS } from '@/features/tools/registry';
 import { clearToolData } from '@/lib/storage';
 import { formatDateTime } from '@/lib/format';
 import { useAuth } from '@/lib/useAuth';
+import { ProfileCard } from '@/components/ProfileCard';
 
 export function AccountPage() {
   const { data, setData, refresh } = useSession();
@@ -84,6 +85,10 @@ export function AccountPage() {
   return (
     <div className="container page-section">
       <h1 className="title-lg">الحساب والإعدادات</h1>
+
+      <div style={{ marginBlockStart: 'var(--sp-6)' }}>
+        <ProfileCard />
+      </div>
 
       <div className="account-grid" style={{ marginBlockStart: 'var(--sp-6)' }}>
         <section className="card">

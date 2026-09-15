@@ -6,6 +6,9 @@ import { RedirectIfAuthenticated, RequireAdmin, RequireAuth, RequireTools } from
 import { LandingPage } from '@/pages/Landing';
 import { TelegramGatePage } from '@/pages/TelegramGate';
 import { DashboardPage } from '@/pages/Dashboard';
+import { OnboardingPage } from '@/pages/Onboarding';
+import { WeeklySchedulePage } from '@/pages/WeeklySchedule';
+import { DocumentsPage } from '@/pages/Documents';
 import { ToolsPage } from '@/pages/ToolsPage';
 import { ToolPage } from '@/pages/ToolPage';
 import { AccountPage } from '@/pages/Account';
@@ -45,6 +48,36 @@ export function App() {
                 <RequireAuth>
                   <RequireTools>
                     <DashboardPage />
+                  </RequireTools>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/welcome"
+              element={
+                <RequireAuth>
+                  <RequireTools>
+                    <OnboardingPage />
+                  </RequireTools>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/schedule"
+              element={
+                <RequireAuth>
+                  <RequireTools>
+                    <WeeklySchedulePage />
+                  </RequireTools>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/documents"
+              element={
+                <RequireAuth>
+                  <RequireTools>
+                    <DocumentsPage />
                   </RequireTools>
                 </RequireAuth>
               }

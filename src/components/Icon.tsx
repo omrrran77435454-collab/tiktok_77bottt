@@ -14,7 +14,15 @@ export type IconName =
   | 'settings'
   | 'logout'
   | 'home'
-  | 'tools';
+  | 'tools'
+  | 'calendar'
+  | 'plus'
+  | 'search'
+  | 'doc'
+  | 'star'
+  | 'clock'
+  | 'target'
+  | 'sparkle';
 
 const PATHS: Record<IconName, string> = {
   clipboard: 'M9 4h6v2H9zM7 6h2v1h6V6h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm2 6h6m-6 4h4',
@@ -31,6 +39,14 @@ const PATHS: Record<IconName, string> = {
   logout: 'M15 12H4m0 0l3-3m-3 3l3 3m5-8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-1',
   home: 'M4 11l8-7 8 7M6 10v9h12v-9',
   tools: 'M14.7 6.3a4 4 0 0 1 5 5l-3.6 3.6-5-5L14.7 6.3zM10 12l-6 6v2h2l6-6',
+  calendar: 'M7 3v3m10-3v3M4 9h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z',
+  plus: 'M12 5v14M5 12h14',
+  search: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm5.5-1.5L21 21',
+  doc: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5zm0 0v5h5M9 13h6m-6 4h4',
+  star: 'M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4z',
+  clock: 'M12 7v5l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
+  target: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zm0-4a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z',
+  sparkle: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3zM18 16l.9 2.1L21 19l-2.1.9L18 22l-.9-2.1L15 19l2.1-.9L18 16z',
 };
 
 export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {

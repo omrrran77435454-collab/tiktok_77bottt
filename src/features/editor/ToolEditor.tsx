@@ -7,6 +7,7 @@ import { ColorPanel } from './ColorPanel';
 import { PreviewCanvas } from './PreviewCanvas';
 import { DEFAULT_PALETTE, normalizePalette, type Palette } from '@/lib/colors';
 import { clearToolData, loadLocal, saveLocal, storageAvailable, toolStorageKey } from '@/lib/storage';
+import { removeSavedWork, touchSavedWork } from '@/lib/saved-work';
 import { trackEvent } from '@/lib/analytics';
 import { apiPost } from '@/lib/api';
 import { Alert } from '@/components/ui';
@@ -54,9 +55,13 @@ export function ToolEditor({ tool }: { tool: AnyToolDefinition }) {
 
   // حفظ محلي تلقائي مع تأخير بسيط حتى لا نكتب عند كل ضغطة مفتاح.
   useEffect(() => {
-    const timer = setTimeout(() => saveLocal(storageKey, data), AUTOSAVE_DELAY_MS);
+    const timer = setTimeout(() => {
+      saveLocal(storageKey, data);
+      // نسجّل الأداة في فهرس «مستنداتي» — المعرّف والوقت فقط، لا المحتوى.
+      touchSavedWork(tool.id);
+    }, AUTOSAVE_DELAY_MS);
     return () => clearTimeout(timer);
-  }, [data, storageKey]);
+  }, [data, storageKey, tool.id]);
 
   const persistPreferences = useCallback(
     (nextTemplateId: string, nextPalette: Palette) => {
@@ -145,6 +150,7 @@ export function ToolEditor({ tool }: { tool: AnyToolDefinition }) {
     );
     if (!confirmed) return;
     clearToolData(tool.id);
+    removeSavedWork(tool.id);
     setData(tool.createEmptyData());
   };
 

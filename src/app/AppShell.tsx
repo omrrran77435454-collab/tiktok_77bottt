@@ -4,10 +4,13 @@ import type { ReactNode } from 'react';
 import { useSession } from '@/lib/useSession';
 import { Icon } from '@/components/Icon';
 import { useAuth } from '@/lib/useAuth';
+import { BottomNav } from '@/components/BottomNav';
 
 const NAV_ITEMS = [
   { to: '/dashboard', label: 'الرئيسية', icon: 'home' as const },
+  { to: '/schedule', label: 'أسبوعي', icon: 'calendar' as const },
   { to: '/tools', label: 'الأدوات', icon: 'tools' as const },
+  { to: '/documents', label: 'مستنداتي', icon: 'doc' as const },
   { to: '/account', label: 'حسابي', icon: 'settings' as const },
   { to: '/help', label: 'المساعدة', icon: 'help' as const },
 ];
@@ -25,7 +28,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const authenticated = status === 'authenticated' && !!data;
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell${authenticated ? ' has-bottom-nav' : ''}`}>
       <a className="skip-link" href="#main">
         تخطَّ إلى المحتوى
       </a>
@@ -127,6 +130,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main id="main" className="app-main">
         {children}
       </main>
+
+      {authenticated ? <BottomNav /> : null}
 
       <footer className="app-footer no-print">
         <div className="container app-footer-inner">
