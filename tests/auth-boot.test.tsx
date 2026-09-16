@@ -10,7 +10,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { applyLocalPersistence } from '@/lib/auth-persistence';
 import { SessionContext, type SessionState } from '@/lib/session-context';
-import { RedirectIfAuthenticated, RequireAuth, RequireTools } from '@/app/guards';
+import { RedirectIfAuthenticated, RequireAuth } from '@/app/guards';
 
 /* -------------------------- بقاء جلسة Firebase -------------------------- */
 
@@ -107,16 +107,13 @@ function renderGuard(state: Partial<SessionState>, children: React.ReactNode, pa
 
 const sessionData = (overrides: Record<string, unknown> = {}) =>
   ({
-    user: { id: 'u1', name: 'معلم', email: 'a@b.c', image: null, role: 'user' },
+    user: { id: 'u1', name: 'معلم', email: 'a@b.c', image: null, role: 'user', emailVerified: true },
     telegram: {
-      linked: true,
-      isMember: true,
-      lastCheckedAt: null,
+      linked: false,
       telegramUsername: null,
-      channelJoinUrl: '',
+      channelUrl: 'https://t.me/PromptsArabic',
       botUsername: '',
     },
-    canUseTools: true,
     preferences: null,
     profile: {
       role: 'teacher',
@@ -203,14 +200,20 @@ describe('حالة الإقلاع (loading / authenticated / unauthenticated)', 
     expect(screen.getByText('صفحة الهبوط')).toBeInTheDocument();
   });
 
-  it('لا تفتح الأدوات قبل اكتمال بوابة تيليجرام', () => {
+  it('الأدوات مفتوحة لمستخدم مسجّل غير مربوط بتيليجرام', () => {
+    // البوابة أُزيلت: تسجيل الدخول وحده يكفي، ولا حارس إضافي على /tools.
     renderGuard(
-      { status: 'authenticated', data: sessionData({ canUseTools: false }) },
-      <RequireTools>
+      {
+        status: 'authenticated',
+        data: sessionData({
+          telegram: { linked: false, telegramUsername: null, channelUrl: '', botUsername: '' },
+        }),
+      },
+      <RequireAuth>
         <p>الأدوات</p>
-      </RequireTools>,
+      </RequireAuth>,
     );
 
-    expect(screen.queryByText('الأدوات')).not.toBeInTheDocument();
+    expect(screen.getByText('الأدوات')).toBeInTheDocument();
   });
 });

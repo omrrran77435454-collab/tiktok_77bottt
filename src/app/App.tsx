@@ -7,10 +7,8 @@ import {
   RedirectWhenDone,
   RequireAdmin,
   RequireAuth,
-  RequireTools,
 } from './guards';
 import { LandingPage } from '@/pages/Landing';
-import { TelegramGatePage } from '@/pages/TelegramGate';
 import { DashboardPage } from '@/pages/Dashboard';
 import { OnboardingPage } from '@/pages/Onboarding';
 import { WeeklySchedulePage } from '@/pages/WeeklySchedule';
@@ -41,22 +39,10 @@ export function App() {
               }
             />
             <Route
-              path="/connect"
-              element={
-                <RequireAuth>
-                  <RedirectWhenDone path="/connect">
-                    <TelegramGatePage />
-                  </RedirectWhenDone>
-                </RequireAuth>
-              }
-            />
-            <Route
               path="/dashboard"
               element={
                 <RequireAuth>
-                  <RequireTools>
-                    <DashboardPage />
-                  </RequireTools>
+                  <DashboardPage />
                 </RequireAuth>
               }
             />
@@ -64,11 +50,9 @@ export function App() {
               path="/welcome"
               element={
                 <RequireAuth>
-                  <RequireTools>
-                    <RedirectWhenDone path="/welcome">
-                      <OnboardingPage />
-                    </RedirectWhenDone>
-                  </RequireTools>
+                  <RedirectWhenDone path="/welcome">
+                    <OnboardingPage />
+                  </RedirectWhenDone>
                 </RequireAuth>
               }
             />
@@ -76,9 +60,7 @@ export function App() {
               path="/schedule"
               element={
                 <RequireAuth>
-                  <RequireTools>
-                    <WeeklySchedulePage />
-                  </RequireTools>
+                  <WeeklySchedulePage />
                 </RequireAuth>
               }
             />
@@ -86,9 +68,7 @@ export function App() {
               path="/documents"
               element={
                 <RequireAuth>
-                  <RequireTools>
-                    <DocumentsPage />
-                  </RequireTools>
+                  <DocumentsPage />
                 </RequireAuth>
               }
             />
@@ -96,9 +76,7 @@ export function App() {
               path="/tools"
               element={
                 <RequireAuth>
-                  <RequireTools>
-                    <ToolsPage />
-                  </RequireTools>
+                  <ToolsPage />
                 </RequireAuth>
               }
             />
@@ -106,9 +84,7 @@ export function App() {
               path="/tools/:slug"
               element={
                 <RequireAuth>
-                  <RequireTools>
-                    <ToolPage />
-                  </RequireTools>
+                  <ToolPage />
                 </RequireAuth>
               }
             />

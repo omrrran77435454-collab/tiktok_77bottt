@@ -9,11 +9,11 @@ import { apiPost } from '@/lib/api';
 import { saveLocal } from '@/lib/storage';
 import { TOOLS } from '@/features/tools/registry';
 import { clearToolData } from '@/lib/storage';
-import { formatDateTime } from '@/lib/format';
 import { useAuth } from '@/lib/useAuth';
 import { ProfileCard } from '@/components/ProfileCard';
 import { Link } from 'react-router-dom';
 import { Icon } from '@/components/Icon';
+import type { LinkTokenResponse } from '@shared/types';
 
 export function AccountPage() {
   const { data, setData, refresh } = useSession();
@@ -36,6 +36,7 @@ export function AccountPage() {
   );
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [unlinkState, setUnlinkState] = useState<'idle' | 'busy' | 'error'>('idle');
+  const [linkState, setLinkState] = useState<'idle' | 'busy' | 'opened' | 'error'>('idle');
 
   const save = async () => {
     setStatus('saving');
@@ -57,9 +58,24 @@ export function AccountPage() {
     }
   };
 
+  /**
+   * ربط اختياري بالكامل: يفتح البوت بتوكن لمرة واحدة. لا شيء في المنصّة
+   * يتوقّف على نتيجته، ولذلك لا ننتظرها ولا نُجبر المستخدم على تحديث حالة.
+   */
+  const linkTelegram = async () => {
+    setLinkState('busy');
+    try {
+      const response = await apiPost<LinkTokenResponse>('/api/telegram/link-token');
+      window.open(response.deepLink, '_blank', 'noopener,noreferrer');
+      setLinkState('opened');
+    } catch {
+      setLinkState('error');
+    }
+  };
+
   const unlinkTelegram = async () => {
     const confirmed = window.confirm(
-      'سيتم فكّ ربط حساب تيليجرام. لن يُحذف حسابك ولا بياناتك، لكن ستحتاج إلى الربط من جديد لفتح الأدوات. هل تريد المتابعة؟',
+      'سيتم فكّ ربط حساب تيليجرام. لن يُحذف حسابك ولا بياناتك، وستبقى كل الأدوات مفتوحة لك كما هي. هل تريد المتابعة؟',
     );
     if (!confirmed) return;
 
@@ -129,25 +145,18 @@ export function AccountPage() {
 
           <hr className="divider" />
 
-          <h3 className="title-sm">حالة Telegram</h3>
+          <h3 className="title-sm">ربط Telegram (اختياري)</h3>
+          <p className="muted small" style={{ marginBlock: 'var(--sp-2) var(--sp-3)' }}>
+            الربط ميزة إضافية فقط. المنصّة وأدواتها مفتوحة لك كاملةً سواء ربطت حسابك أم لا.
+          </p>
           <dl className="kv-list">
             <div className="kv">
-              <dt>الربط</dt>
+              <dt>الحالة</dt>
               <dd>
                 {data.telegram.linked ? (
                   <Badge tone="success">مربوط</Badge>
                 ) : (
-                  <Badge tone="warn">غير مربوط</Badge>
-                )}
-              </dd>
-            </div>
-            <div className="kv">
-              <dt>الاشتراك في القناة</dt>
-              <dd>
-                {data.telegram.isMember ? (
-                  <Badge tone="success">مؤكَّد</Badge>
-                ) : (
-                  <Badge tone="danger">غير مؤكَّد</Badge>
+                  <Badge tone="neutral">غير مربوط</Badge>
                 )}
               </dd>
             </div>
@@ -158,30 +167,46 @@ export function AccountPage() {
                 {data.telegram.telegramUsername ? `@${data.telegram.telegramUsername}` : '—'}
               </dd>
             </div>
-            <div className="kv">
-              <dt>آخر تحقّق</dt>
-              <dd className="muted small">{formatDateTime(data.telegram.lastCheckedAt)}</dd>
-            </div>
           </dl>
 
-          {data.telegram.linked ? (
-            <>
-              <div style={{ marginBlockStart: 'var(--sp-4)' }}>
-                <button
-                  type="button"
-                  className="btn btn-danger btn-sm"
-                  onClick={() => void unlinkTelegram()}
-                  disabled={unlinkState === 'busy'}
-                >
-                  {unlinkState === 'busy' ? 'جارٍ فكّ الربط…' : 'فكّ ربط Telegram'}
-                </button>
-              </div>
-              {unlinkState === 'error' ? (
-                <div style={{ marginBlockStart: 'var(--sp-3)' }}>
-                  <Alert tone="error">تعذّر فكّ الربط. حاول مرة أخرى.</Alert>
-                </div>
-              ) : null}
-            </>
+          <div style={{ marginBlockStart: 'var(--sp-4)' }}>
+            {data.telegram.linked ? (
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={() => void unlinkTelegram()}
+                disabled={unlinkState === 'busy'}
+              >
+                {unlinkState === 'busy' ? 'جارٍ فكّ الربط…' : 'فكّ ربط Telegram'}
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => void linkTelegram()}
+                disabled={linkState === 'busy'}
+              >
+                <Icon name="link" size={16} /> {linkState === 'busy' ? 'جارٍ التحضير…' : 'ربط Telegram'}
+              </button>
+            )}
+          </div>
+
+          {linkState === 'opened' ? (
+            <div style={{ marginBlockStart: 'var(--sp-3)' }}>
+              <Alert tone="info">
+                فتحنا لك محادثة البوت. اضغط <strong>Start</strong> هناك ليكتمل الربط.
+              </Alert>
+            </div>
+          ) : null}
+          {linkState === 'error' ? (
+            <div style={{ marginBlockStart: 'var(--sp-3)' }}>
+              <Alert tone="error">تعذّر تحضير رابط الربط. حاول مرة أخرى.</Alert>
+            </div>
+          ) : null}
+          {unlinkState === 'error' ? (
+            <div style={{ marginBlockStart: 'var(--sp-3)' }}>
+              <Alert tone="error">تعذّر فكّ الربط. حاول مرة أخرى.</Alert>
+            </div>
           ) : null}
 
           <hr className="divider" />

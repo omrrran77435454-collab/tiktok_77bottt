@@ -312,11 +312,10 @@ describe('حماية نقاط الإدارة في الخادم', () => {
     }
   });
 
-  it('المدير يخضع لبوابة تيليجرام في الأدوات لا في لوحته', async () => {
+  it('صلاحية المدير لا علاقة لها بتيليجرام إطلاقاً', async () => {
     const token = tokenFor({ uid: 'owner-5', email: ADMIN_EMAIL, emailVerified: true });
-    // لم يربط تيليجرام: الأدوات ممنوعة…
-    expect((await call('/api/tools', {}, token)).status).toBe(403);
-    // …ولوحة الإدارة مفتوحة، لأنه مالك المنصّة.
+    // بلا ربط ولا اشتراك: الأدوات ولوحة الإدارة كلاهما مفتوح.
+    expect((await call('/api/tools', {}, token)).status).toBe(200);
     expect((await call('/api/admin/stats', {}, token)).status).toBe(200);
   });
 });

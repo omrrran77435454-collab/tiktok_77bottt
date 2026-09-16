@@ -11,6 +11,8 @@ import { destinationFor } from '@/lib/destination';
  *
  * مهم: هذه الحراسة لتحسين التجربة فقط. الحماية الحقيقية في الخادم —
  * كل نقطة API تتحقق من الجلسة والصلاحية بنفسها، ولا تثق بأي شيء من العميل.
+ *
+ * لا يوجد هنا حارس لتيليجرام: الربط والاشتراك اختياريان ولا يمنعان أي مسار.
  */
 
 export function RequireAuth({ children }: { children: ReactNode }) {
@@ -31,18 +33,10 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
-/** يتطلّب اجتياز بوابة تيليجرام (مربوط + اشتراك مؤكَّد). */
-export function RequireTools({ children }: { children: ReactNode }) {
-  const { data, status } = useSession();
-  if (status === 'loading') return <BootSplash />;
-  if (data && !data.canUseTools) return <Navigate to="/connect" replace />;
-  return <>{children}</>;
-}
-
 /**
  * يمنع البقاء على صفحة لم تعد وجهة المستخدم الصحيحة.
- * يُستخدم على /connect و /welcome: بمجرّد اكتمال شرطهما ينتقل المستخدم
- * تلقائياً إلى وجهته التالية بلا تحديث يدوي.
+ * يُستخدم على /welcome: بمجرّد اكتمال التهيئة ينتقل المستخدم تلقائياً إلى
+ * وجهته التالية بلا تحديث يدوي.
  */
 export function RedirectWhenDone({ path, children }: { path: string; children: ReactNode }) {
   const { data, status } = useSession();
@@ -56,9 +50,7 @@ export function RedirectWhenDone({ path, children }: { path: string; children: R
 }
 
 /**
- * لوحة الإدارة لمالك المنصّة.
- * لا تمرّ عبر RequireTools عن قصد: الإدمن يدخل لوحته حتى لو كانت حالة
- * اشتراكه في القناة غير مؤكَّدة، لأنه مالك المنصّة لا مستخدم عادي.
+ * لوحة الإدارة لمالك المنصّة — تعتمد على access_role وحده.
  */
 export function RequireAdmin({ children }: { children: ReactNode }) {
   const { data, status } = useSession();

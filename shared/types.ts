@@ -23,27 +23,26 @@ export interface SessionUser {
   emailVerified: boolean;
 }
 
-/** حالة بوابة تيليجرام لمستخدم مسجّل الدخول. */
-export interface TelegramGateState {
-  /** هل ربط المستخدم حساب تيليجرام؟ */
+/**
+ * حالة تيليجرام لمستخدم مسجّل الدخول — معلومات فقط، لا بوابة.
+ *
+ * الربط اختياري بالكامل ولا يؤثّر في الوصول: لا هذه الحالة ولا الاشتراك في
+ * القناة يمنعان أي مستخدم من استخدام المنصّة.
+ */
+export interface TelegramLinkState {
+  /** هل ربط المستخدم حساب تيليجرام؟ (اختياري — للعرض في صفحة الحساب) */
   linked: boolean;
-  /** هل الاشتراك في القناة مؤكَّد حالياً؟ */
-  isMember: boolean;
-  /** آخر وقت تحقّقنا فيه من الاشتراك (ISO). */
-  lastCheckedAt: string | null;
   /** اسم مستخدم تيليجرام إن توفّر (للعرض فقط، ليس مفتاحاً). */
   telegramUsername: string | null;
-  /** رابط الانضمام للقناة (من إعدادات الخادم). */
-  channelJoinUrl: string;
+  /** رابط قناة المنصّة من إعدادات الخادم — مصدر واحد لكل الواجهة. */
+  channelUrl: string;
   /** اسم البوت لبناء رابط الربط. */
   botUsername: string;
 }
 
 export interface MeResponse {
   user: SessionUser;
-  telegram: TelegramGateState;
-  /** هل يُسمح للمستخدم بفتح الأدوات؟ (مسجّل دخول + مربوط + مشترك) */
-  canUseTools: boolean;
+  telegram: TelegramLinkState;
   preferences: UserPreferences | null;
   /** ملف الاستخدام (الدور والمرحلة والصف والمواد) — يُملأ في التهيئة. */
   profile: UserProfile;

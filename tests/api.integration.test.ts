@@ -197,11 +197,9 @@ describe('التحقّق من Firebase ID Token', () => {
 
     const body = (await response.json()) as {
       user: { name: string; role: string; id: string };
-      canUseTools: boolean;
     };
     expect(body.user.name).toBe('سارة المعلمة');
     expect(body.user.role).toBe('user');
-    expect(body.canUseTools).toBe(false);
 
     const row = await shim
       .prepare('SELECT COUNT(*) AS c FROM users WHERE id = ?1')
@@ -235,65 +233,41 @@ describe('التحقّق من Firebase ID Token', () => {
   });
 });
 
-describe('البوابة والأدوات', () => {
-  it('يمنع /api/tools قبل اجتياز البوابة', async () => {
+describe('الأدوات مفتوحة بتسجيل الدخول وحده', () => {
+  it('يفتح /api/tools لمستخدم مسجّل غير مربوط بتيليجرام', async () => {
     const token = newUserToken();
     await call('/api/me', {}, token);
-    const response = await call('/api/tools', {}, token);
-    expect(response.status).toBe(403);
-  });
-
-  it('يفتح الأدوات بعد الربط وتأكيد الاشتراك', async () => {
-    const token = newUserToken();
-    await call('/api/me', {}, token);
-    await linkTelegram(token, 200001, 'member');
-
-    const me = (await (await call('/api/me', {}, token)).json()) as { canUseTools: boolean };
-    expect(me.canUseTools).toBe(true);
 
     const tools = await call('/api/tools', {}, token);
     expect(tools.status).toBe(200);
     const body = (await tools.json()) as { tools: { id: string }[] };
     // المستخدم الجديد بلا ملف شخصي ⇒ تجربة المعلم الافتراضية: أدوات المعلم فقط.
     const ids = body.tools.map((tool) => tool.id);
-    expect(ids).toEqual(
-      expect.arrayContaining(['student-followup', 'error-map', 'absence-plan']),
-    );
+    expect(ids).toEqual(expect.arrayContaining(['student-followup', 'error-map', 'absence-plan']));
     expect(ids).not.toContain('study-plan');
   });
 
-  it('يبقي الأدوات مغلقة لغير المشترك', async () => {
+  it('يرفض /api/tools بلا توكن فقط', async () => {
+    expect((await call('/api/tools')).status).toBe(401);
+  });
+
+  it('الربط بلا اشتراك لا يغيّر شيئاً في الوصول', async () => {
     const token = newUserToken();
     await call('/api/me', {}, token);
     await linkTelegram(token, 200002, 'left');
 
     const me = (await (await call('/api/me', {}, token)).json()) as {
-      canUseTools: boolean;
-      telegram: { linked: boolean; isMember: boolean };
+      telegram: { linked: boolean };
     };
     expect(me.telegram.linked).toBe(true);
-    expect(me.telegram.isMember).toBe(false);
-    expect(me.canUseTools).toBe(false);
+    expect((await call('/api/tools', {}, token)).status).toBe(200);
   });
 
-  it('التحقّق اليدوي يفتح الأدوات بعد الاشتراك', async () => {
+  it('مسارا بوابة الاشتراك القديمان أُزيلا من الـ Router', async () => {
     const token = newUserToken();
     await call('/api/me', {}, token);
-    await linkTelegram(token, 200003, 'left');
-    memberStatuses.set('200003', 'administrator');
-
-    const verify = await post('/api/telegram/verify', undefined, token);
-    expect(verify.status).toBe(200);
-    expect(((await verify.json()) as { canUseTools: boolean }).canUseTools).toBe(true);
-  });
-
-  it('يمنع التحقّق المتكرّر السريع (حدّ معدّل مبني على قاعدة البيانات)', async () => {
-    const token = newUserToken();
-    await call('/api/me', {}, token);
-    await linkTelegram(token, 200004, 'member');
-    await post('/api/telegram/verify', undefined, token);
-    const second = await post('/api/telegram/verify', undefined, token);
-    expect(second.status).toBe(429);
+    expect((await post('/api/telegram/verify', undefined, token)).status).toBe(404);
+    expect((await post('/api/telegram/status', undefined, token)).status).toBe(404);
   });
 });
 
@@ -375,12 +349,21 @@ describe('أمان Webhook تيليجرام', () => {
   it('لا يمكن للعميل ادّعاء معرّف تيليجرام عبر أي مسار عام', async () => {
     const token = newUserToken();
     await call('/api/me', {}, token);
+
+    // المسار العام الوحيد المتبقّي لا يقبل أي معرّف من الجسم: الربط يقع في
+    // الـ Webhook وحده، والمعرّف يأتي من تيليجرام لا من المتصفّح.
     const response = await post(
-      '/api/telegram/verify',
+      '/api/telegram/link-token',
       { telegramUserId: ADMIN_TELEGRAM_ID },
       token,
     );
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(200);
+
+    const row = await shim
+      .prepare('SELECT COUNT(*) AS c FROM telegram_connections WHERE telegram_user_id = ?1')
+      .bind(ADMIN_TELEGRAM_ID)
+      .first<{ c: number }>();
+    expect(row?.c).toBe(0);
   });
 });
 
@@ -395,11 +378,11 @@ describe('فكّ ربط تيليجرام', () => {
 
     const me = (await (await call('/api/me', {}, token)).json()) as {
       telegram: { linked: boolean };
-      canUseTools: boolean;
       user: { id: string };
     };
     expect(me.telegram.linked).toBe(false);
-    expect(me.canUseTools).toBe(false);
+    // فكّ الربط لا يغلق شيئاً: الأدوات تبقى مفتوحة.
+    expect((await call('/api/tools', {}, token)).status).toBe(200);
 
     // الحساب نفسه لم يُحذف.
     const stillThere = await shim
@@ -480,7 +463,7 @@ describe('صلاحيات الإدمن', () => {
     expect(body.users.total).toBeGreaterThan(0);
   });
 
-  it('الإدمن يدخل لوحته حتى لو لم يُؤكَّد اشتراكه في القناة', async () => {
+  it('الإدمن يدخل لوحته بلا أي علاقة بتيليجرام', async () => {
     const token = identityToken(
       { uid: 'api-owner-gate', email: ADMIN_EMAIL, emailVerified: true, name: 'مالك المنصّة' },
       TEST_SECRET,
@@ -488,15 +471,14 @@ describe('صلاحيات الإدمن', () => {
 
     const me = (await (await call('/api/me', {}, token)).json()) as {
       user: { role: string };
-      canUseTools: boolean;
+      telegram: { linked: boolean };
     };
     expect(me.user.role).toBe('admin');
-    // لم يربط تيليجرام ⇒ الأدوات مغلقة عليه كأي مستخدم.
-    expect(me.canUseTools).toBe(false);
+    expect(me.telegram.linked).toBe(false);
 
-    // ومع ذلك لوحة الإدارة مفتوحة له.
-    const stats = await call('/api/admin/stats', {}, token);
-    expect(stats.status).toBe(200);
+    // لوحة الإدارة والأدوات كلاهما مفتوح له بلا ربط ولا اشتراك.
+    expect((await call('/api/admin/stats', {}, token)).status).toBe(200);
+    expect((await call('/api/tools', {}, token)).status).toBe(200);
   });
 });
 

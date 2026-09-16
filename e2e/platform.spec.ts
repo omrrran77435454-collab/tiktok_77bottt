@@ -1,12 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-  horizontalOverflow,
-  signInAs,
-  signInFullyVerified,
-  linkTelegramAccount,
-  setMemberStatus,
-  uniqueTelegramId,
-} from './helpers';
+import { BASE, authHeaders, horizontalOverflow, signInFullyVerified } from './helpers';
 
 /**
  * مسارات المنصّة الكاملة: التهيئة، لوحة المعلم، الجدول الأسبوعي،
@@ -188,29 +181,48 @@ test.describe('حساب الطالب', () => {
   });
 });
 
-test.describe('بوابة تيليجرام', () => {
-  test('لا يظهر زر التحقق قبل ظهور زر الاشتراك', async ({ context, page }) => {
-    await signInAs(context);
-    await page.goto('/connect');
+test.describe('بطاقة القناة على الصفحة الرئيسية', () => {
+  test('تظهر أعلى اللوحة بنصّها وزرّها، والزر يفتح القناة في نافذة جديدة', async ({
+    context,
+    page,
+  }) => {
+    await signInFullyVerified(context);
+    await page.goto('/dashboard');
 
-    // غير مربوط: زر الربط وحده.
-    await expect(page.getByRole('button', { name: 'ربط Telegram' })).toBeVisible({
-      timeout: 15_000,
-    });
-    await expect(page.getByRole('button', { name: 'تحقق من الاشتراك' })).toHaveCount(0);
+    await expect(page.getByText('تقدر تزور قناتنا من هنا')).toBeVisible({ timeout: 15_000 });
+
+    const visit = page.getByRole('link', { name: 'زيارة القناة' });
+    await expect(visit).toBeVisible();
+    await expect(visit).toHaveAttribute('target', '_blank');
+    // الرابط يأتي من إعداد الخادم، فيكفي التأكّد أنه رابط تيليجرام حقيقي.
+    await expect(visit).toHaveAttribute('href', /^https:\/\/t\.me\//);
   });
 
-  test('بعد الربط بلا اشتراك يظهر زر الاشتراك ومعه زر التحقق', async ({ context, page }) => {
-    const token = await signInAs(context);
-    const telegramId = uniqueTelegramId();
-    await setMemberStatus(context, telegramId, 'left');
-    await linkTelegramAccount(context, token, telegramId);
+  test('الزر اختياري: لا يغيّر حالة المستخدم ولا صلاحياته', async ({ context, page }) => {
+    const { token } = await signInFullyVerified(context);
+    await page.goto('/dashboard');
 
-    await page.goto('/connect');
+    const before = await (
+      await context.request.get(`${BASE}/api/me`, { headers: authHeaders(token) })
+    ).json();
 
-    await expect(page.getByRole('link', { name: 'اشترك في القناة' })).toBeVisible({
-      timeout: 15_000,
-    });
-    await expect(page.getByRole('button', { name: 'تحقق من الاشتراك' })).toBeVisible();
+    // نمنع فتح تبويب خارجي في الاختبار، فالمقصود هو أثر الضغط لا الوجهة.
+    const visit = page.getByRole('link', { name: 'زيارة القناة' });
+    await visit.evaluate((element) => element.removeAttribute('target'));
+    await visit.evaluate((element) =>
+      element.addEventListener('click', (event) => event.preventDefault()),
+    );
+    await visit.click();
+
+    const after = await (
+      await context.request.get(`${BASE}/api/me`, { headers: authHeaders(token) })
+    ).json();
+
+    expect(after.user.role).toBe(before.user.role);
+    expect(after.profile.role).toBe(before.profile.role);
+    expect(after.telegram.linked).toBe(before.telegram.linked);
+
+    // وما زال على لوحته لم يُنقل إلى أي بوابة.
+    await expect(page).toHaveURL(/\/dashboard$/);
   });
 });

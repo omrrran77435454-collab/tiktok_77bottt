@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { RouteContext } from '../lib/router';
 import { errors, json, readJson } from '../lib/http';
 import type { Env } from '../env';
-import { authenticate, evaluateGate, type GateResult } from '../lib/gate';
+import { authenticate, loadSession, type SessionResult } from '../lib/gate';
 import { getPreferences, insertUsageEvent, markLogin, savePreferences } from '../lib/repo';
 import { filterToolsForProfile, getProfile, listPublishedTools } from '../lib/catalog-repo';
 import type { MeResponse } from '@shared/types';
@@ -18,12 +18,12 @@ const preferencesSchema = z.object({
 });
 
 /**
- * يبني جسم /api/me من نتيجة البوابة.
+ * يبني جسم /api/me من نتيجة الجلسة.
  *
- * مصدر واحد للحقيقة: كل مسار يُرجع حالة الجلسة (me, telegram/status,
- * telegram/verify) يمرّ من هنا، فلا تتعارض الردود ولا تتفرّع الحسابات.
+ * مصدر واحد للحقيقة: كل مسار يُرجع حالة الجلسة يمرّ من هنا، فلا تتعارض
+ * الردود ولا تتفرّع الحسابات.
  */
-export async function buildMeResponse(env: Env, gate: GateResult): Promise<MeResponse> {
+export async function buildMeResponse(env: Env, gate: SessionResult): Promise<MeResponse> {
   const [preferences, profile] = await Promise.all([
     getPreferences(env.DB, gate.user.id),
     getProfile(env.DB, gate.user.id),
@@ -37,16 +37,15 @@ export async function buildMeResponse(env: Env, gate: GateResult): Promise<MeRes
       role: gate.role,
       emailVerified: gate.emailVerified,
     },
-    telegram: gate.state,
-    canUseTools: gate.canUseTools,
+    telegram: gate.telegram,
     preferences,
     profile,
   };
 }
 
-/** GET /api/me — حالة المستخدم والبوابة والتفضيلات في طلب واحد. */
+/** GET /api/me — حالة المستخدم والتفضيلات في طلب واحد. */
 export async function handleMe({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
+  const gate = await loadSession(request, env);
   if (gate instanceof Response) return gate;
 
   return json(await buildMeResponse(env, gate));
@@ -72,20 +71,20 @@ export async function handleLogin({ request, env }: RouteContext): Promise<Respo
 }
 
 /**
- * GET /api/tools — الأدوات المناسبة لهذا المستخدم (تتطلّب اجتياز البوابة).
+ * GET /api/tools — الأدوات المناسبة لهذا المستخدم.
  *
+ * تسجيل الدخول وحده كافٍ: لا ربط تيليجرام ولا اشتراك في القناة.
  * الترشيح يتم في الخادم اعتماداً على الملف المحفوظ، لا على ما يرسله العميل:
  * الدور (معلم/طالب) ثم المرحلة والصف والمواد. الأدوات غير المنفَّذة لا تظهر
  * إطلاقاً حتى لا يضغط المستخدم زراً لا يعمل.
  */
 export async function handleTools({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
-  if (gate instanceof Response) return gate;
-  if (!gate.canUseTools) return errors.forbidden();
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
 
   const [all, profile] = await Promise.all([
     listPublishedTools(env.DB),
-    getProfile(env.DB, gate.user.id),
+    getProfile(env.DB, auth.user.id),
   ]);
 
   return json({ tools: filterToolsForProfile(all, profile), profile });
@@ -93,15 +92,14 @@ export async function handleTools({ request, env }: RouteContext): Promise<Respo
 
 /** POST /api/me/preferences — حفظ القالب والألوان المفضّلة (لا يحفظ أي محتوى مستند). */
 export async function handleSavePreferences({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
-  if (gate instanceof Response) return gate;
-  if (!gate.canUseTools) return errors.forbidden();
+  const auth = await authenticate(request, env);
+  if (auth instanceof Response) return auth;
 
   const parsed = preferencesSchema.safeParse(await readJson(request));
   if (!parsed.success) {
     return errors.badRequest('قيم التفضيلات غير صالحة. تأكد من صيغة الألوان (‎#RRGGBB‎).');
   }
 
-  await savePreferences(env.DB, gate.user.id, parsed.data);
+  await savePreferences(env.DB, auth.user.id, parsed.data);
   return json({ ok: true });
 }

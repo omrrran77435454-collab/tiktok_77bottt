@@ -70,16 +70,16 @@ test.describe('صلاحيات لوحة الإدارة', () => {
   });
 });
 
-test.describe('الإدمن بلا اشتراك مؤكَّد', () => {
-  test('يدخل لوحة الإدارة حتى لو لم يُؤكَّد اشتراكه في القناة', async ({ context, page }) => {
+test.describe('الإدمن بلا تيليجرام', () => {
+  test('يدخل لوحة الإدارة وأدوات المنصّة بلا ربط ولا اشتراك', async ({ context, page }) => {
     // لا ربط ولا اشتراك إطلاقاً — الصلاحية من البريد المؤكَّد وحده.
     await signInAsAdmin(context);
 
     await page.goto('/admin');
     await expect(page.getByRole('heading', { name: 'إحصاءات المنصة' })).toBeVisible();
 
-    // ومع ذلك الأدوات تبقى مغلقة عليه كأي مستخدم.
+    // والأدوات مفتوحة له كأي مستخدم مسجّل — لا بوابة على أحد.
     await page.goto('/tools');
-    await expect(page).toHaveURL(/\/connect$/);
+    await expect(page).toHaveURL(/\/tools$/);
   });
 });

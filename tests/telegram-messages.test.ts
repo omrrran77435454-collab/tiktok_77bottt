@@ -97,15 +97,21 @@ describe('رسائل البوت', () => {
     expect(text).toContain('ربط Telegram');
   });
 
-  it('رسالة ما بعد الربط تشرح الخطوة الواحدة المتبقّية', () => {
-    const text = botMessages.linkedNeedsSubscription(envWith(CONFIGURED));
+  it('رسالة ما بعد الربط تؤكّد النجاح ولا تطلب خطوة أخرى', () => {
+    const text = botMessages.linked(envWith(CONFIGURED));
     expect(text).toContain('تم ربط حسابك بنجاح');
-    expect(text).toContain('تحقق من الاشتراك');
+    expect(text).toContain('كاملةً');
   });
 
-  it('رسالة المشترك تؤكّد أن كل شيء جاهز', () => {
-    const text = botMessages.linkedSubscribed(envWith(CONFIGURED));
-    expect(text).toContain('مؤكَّد');
+  it('لا رسالة من رسائل البوت تشترط الاشتراك في القناة', () => {
+    // القناة دعوة لا بوابة: لا نطلب اشتراكاً ولا «تحقّقاً» في أي رسالة.
+    const demanding = ['تحقق من الاشتراك', 'اشترك في القناة', 'بقيت خطوة'];
+    for (const [name, build] of Object.entries(botMessages)) {
+      const text = build(envWith(CONFIGURED));
+      for (const phrase of demanding) {
+        expect(text, `الرسالة ${name} تطلب الاشتراك`).not.toContain(phrase);
+      }
+    }
   });
 
   it('رسالة الحساب المربوط مسبقاً لا تطلب /start من جديد', () => {

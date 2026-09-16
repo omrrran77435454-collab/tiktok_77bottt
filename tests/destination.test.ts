@@ -1,29 +1,37 @@
 /**
- * قرار التوجيه بعد اجتياز بوابة تيليجرام.
+ * قرار التوجيه بعد تسجيل الدخول.
  *
- * كان موزّعاً على الحرّاس وصفحة البوابة واللوحة، فاختلفت الفروع وظهر ارتداد
- * إلى البوابة بعد نجاحها. الآن دالة واحدة، وهذه الاختبارات تثبّت قواعدها.
+ * القرار يعتمد على تسجيل الدخول وإكمال التهيئة فقط. بوابة تيليجرام أُزيلت
+ * تماماً، وهذه الاختبارات تحرس ألّا تعود: أي حالة تيليجرام — مربوط أو غير
+ * مربوط، مشترك أو غير مشترك — تُعطي نفس الوجهة.
  */
 import { describe, expect, it } from 'vitest';
 import { destinationFor, isAllowedOn } from '@/lib/destination';
 import type { MeResponse } from '@shared/types';
 
-function session(overrides: {
-  canUseTools?: boolean;
-  onboardingCompleted?: boolean;
-  role?: 'teacher' | 'student';
-}): MeResponse {
+function session(
+  overrides: {
+    linked?: boolean;
+    onboardingCompleted?: boolean;
+    role?: 'teacher' | 'student';
+    accessRole?: 'user' | 'admin';
+  } = {},
+): MeResponse {
   return {
-    user: { id: 'u1', name: 'مستخدم', email: 'a@b.c', image: null, role: 'user' },
+    user: {
+      id: 'u1',
+      name: 'مستخدم',
+      email: 'a@b.c',
+      image: null,
+      role: overrides.accessRole ?? 'user',
+      emailVerified: true,
+    },
     telegram: {
-      linked: true,
-      isMember: overrides.canUseTools ?? true,
-      lastCheckedAt: null,
+      linked: overrides.linked ?? false,
       telegramUsername: null,
-      channelJoinUrl: 'https://t.me/PromptsArabic',
+      channelUrl: 'https://t.me/PromptsArabic',
       botUsername: 'bot',
     },
-    canUseTools: overrides.canUseTools ?? true,
     preferences: null,
     profile: {
       role: overrides.role ?? 'teacher',
@@ -33,6 +41,7 @@ function session(overrides: {
       subjects: [],
       onboardingCompleted: overrides.onboardingCompleted ?? true,
       completedAt: null,
+      assignments: [],
     },
   };
 }
@@ -43,20 +52,26 @@ describe('destinationFor', () => {
     expect(destinationFor(undefined)).toBe('/');
   });
 
-  it('لم يجتز بوابة تيليجرام ← /connect', () => {
-    expect(destinationFor(session({ canUseTools: false }))).toBe('/connect');
+  it('مسجّل ولم يُكمل التهيئة ← /welcome', () => {
+    expect(destinationFor(session({ onboardingCompleted: false }))).toBe('/welcome');
   });
 
-  it('اجتاز البوابة ولم يُكمل التهيئة ← /welcome', () => {
-    expect(destinationFor(session({ canUseTools: true, onboardingCompleted: false }))).toBe(
-      '/welcome',
-    );
+  it('مسجّل وأكمل التهيئة ← /dashboard', () => {
+    expect(destinationFor(session({ onboardingCompleted: true }))).toBe('/dashboard');
   });
 
-  it('اجتاز البوابة وأكمل التهيئة ← /dashboard', () => {
-    expect(destinationFor(session({ canUseTools: true, onboardingCompleted: true }))).toBe(
-      '/dashboard',
+  it('غير المربوط بتيليجرام يذهب إلى لوحته مثل المربوط تماماً', () => {
+    expect(destinationFor(session({ linked: false }))).toBe('/dashboard');
+    expect(destinationFor(session({ linked: true }))).toBe('/dashboard');
+  });
+
+  it('لا توجد وجهة /connect إطلاقاً في أي تركيبة', () => {
+    const combinations = [true, false].flatMap((linked) =>
+      [true, false].map((onboardingCompleted) => session({ linked, onboardingCompleted })),
     );
+    for (const state of combinations) {
+      expect(destinationFor(state)).not.toBe('/connect');
+    }
   });
 
   it('الوجهة واحدة للمعلم والطالب — التفريق داخل اللوحة لا في التوجيه', () => {
@@ -64,21 +79,15 @@ describe('destinationFor', () => {
     expect(destinationFor(session({ role: 'student' }))).toBe('/dashboard');
   });
 
-  it('بوابة تيليجرام لها الأولوية على التهيئة', () => {
-    // غير مشترك ولم يُهيّأ: البوابة أولاً لا التهيئة.
-    expect(destinationFor(session({ canUseTools: false, onboardingCompleted: false }))).toBe(
-      '/connect',
+  it('صلاحية المدير لا تسلبه لوحته ولا تغيّر وجهته الافتراضية', () => {
+    expect(destinationFor(session({ accessRole: 'admin' }))).toBe('/dashboard');
+    expect(destinationFor(session({ accessRole: 'admin', onboardingCompleted: false }))).toBe(
+      '/welcome',
     );
   });
 
-  it('بعد نجاح الاشتراك لا تبقى /connect وجهةً صحيحة', () => {
-    const verified = session({ canUseTools: true, onboardingCompleted: false });
-    expect(isAllowedOn(verified, '/connect')).toBe(false);
-    expect(isAllowedOn(verified, '/welcome')).toBe(true);
-  });
-
   it('بعد إكمال التهيئة لا تبقى /welcome وجهةً صحيحة', () => {
-    const ready = session({ canUseTools: true, onboardingCompleted: true });
+    const ready = session({ onboardingCompleted: true });
     expect(isAllowedOn(ready, '/welcome')).toBe(false);
     expect(isAllowedOn(ready, '/dashboard')).toBe(true);
   });
@@ -86,11 +95,11 @@ describe('destinationFor', () => {
 
 describe('صلابة القرار', () => {
   it('لا ينهار على جلسة بلا ملف — يُعامَل كتهيئة غير مكتملة', () => {
-    const partial = { canUseTools: true } as MeResponse;
-    expect(destinationFor(partial)).toBe('/welcome');
+    expect(destinationFor({} as MeResponse)).toBe('/welcome');
   });
 
-  it('لا ينهار على جلسة بلا canUseTools', () => {
-    expect(destinationFor({} as MeResponse)).toBe('/connect');
+  it('لا ينهار على جلسة بلا حالة تيليجرام', () => {
+    const noTelegram = { profile: { onboardingCompleted: true } } as MeResponse;
+    expect(destinationFor(noTelegram)).toBe('/dashboard');
   });
 });

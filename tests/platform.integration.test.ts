@@ -347,10 +347,10 @@ describe('ترشيح الأدوات', () => {
     expect(body.tools.map((tool) => tool.id)).not.toContain('ghost-tool');
   });
 
-  it('لا يفتح الأدوات لمن لم يجتز بوابة تيليجرام', async () => {
+  it('يفتح الأدوات لمستخدم مسجّل بلا ربط تيليجرام ولا اشتراك', async () => {
     const token = newUserToken();
     await call('/api/me', {}, token);
-    expect((await call('/api/tools', {}, token)).status).toBe(403);
+    expect((await call('/api/tools', {}, token)).status).toBe(200);
   });
 });
 
@@ -462,10 +462,14 @@ describe('الجدول الأسبوعي', () => {
     ).toBe(400);
   });
 
-  it('يمنع الجدول عمّن لم يجتز بوابة تيليجرام', async () => {
+  it('يفتح الجدول لمستخدم مسجّل بلا ربط تيليجرام', async () => {
     const token = newUserToken();
     await call('/api/me', {}, token);
-    expect((await call('/api/schedule', {}, token)).status).toBe(403);
+    expect((await call('/api/schedule', {}, token)).status).toBe(200);
+  });
+
+  it('يمنع الجدول عن الزائر بلا توكن', async () => {
+    expect((await call('/api/schedule')).status).toBe(401);
   });
 });
 

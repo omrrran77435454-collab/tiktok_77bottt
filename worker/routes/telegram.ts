@@ -1,6 +1,6 @@
 import type { RouteContext } from '../lib/router';
 import { errors, json, readJson } from '../lib/http';
-import { authenticate, evaluateGate } from '../lib/gate';
+import { authenticate } from '../lib/gate';
 import { generateSecureToken, sha256Hex, timingSafeEqual } from '../lib/crypto';
 import {
   checkChannelMembership,
@@ -10,7 +10,6 @@ import {
 } from '../lib/telegram';
 import { botMessages } from '../lib/telegram-messages';
 import {
-  claimVerifyRequest,
   consumeLinkToken,
   createLinkToken,
   deleteTelegramConnection,
@@ -21,13 +20,10 @@ import {
   purgeExpiredLinkTokens,
   upsertTelegramConnection,
 } from '../lib/repo';
-import { buildMeResponse } from './me';
 import type { LinkTokenResponse } from '@shared/types';
 
 /** صلاحية توكن الربط: 10 دقائق. */
 const LINK_TOKEN_TTL_MS = 10 * 60 * 1000;
-/** أقل فاصل زمني بين طلبَي تحقّق يدوي من نفس المستخدم. */
-const VERIFY_COOLDOWN_MS = 10_000;
 
 /**
  * POST /api/telegram/link-token
@@ -57,67 +53,6 @@ export async function handleCreateLinkToken({ request, env }: RouteContext): Pro
     expiresAt,
   };
   return json(body);
-}
-
-/**
- * POST /api/telegram/status
- *
- * «حدّث الحالة»: يقرأ الحقيقة من D1 ويسأل Telegram مباشرةً بلا أي مهلة،
- * ثم يُرجع حالة الجلسة كاملة — فيعرف العميل فوراً إن اكتمل الربط والاشتراك
- * بلا أن يُجبَر المستخدم على تحديث الصفحة يدوياً.
- *
- * منفصل عن /verify: هذا لا يسجّل حدث تحقّق ولا يخضع لمهلة الضغط المتكرّر،
- * لأنه مجرّد مزامنة حالة لا محاولة تحقّق يبدأها المستخدم.
- */
-export async function handleTelegramStatus({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env, { forceCheck: true });
-  if (gate instanceof Response) return gate;
-
-  return json(await buildMeResponse(env, gate));
-}
-
-/**
- * POST /api/telegram/verify
- * إعادة تحقّق فورية من الاشتراك بطلب صريح من المستخدم.
- */
-export async function handleVerifySubscription({ request, env }: RouteContext): Promise<Response> {
-  const auth = await authenticate(request, env);
-  if (auth instanceof Response) return auth;
-  const user = auth.user;
-
-  const connection = await getTelegramConnectionByUser(env.DB, user.id);
-  if (!connection) {
-    return errors.badRequest('لم تربط حساب تيليجرام بعد.');
-  }
-
-  // الحدّ الزمني مبني على قاعدة البيانات لا على ذاكرة الـ Worker:
-  // ذاكرة الـ isolate قد تُمسح في أي لحظة فلا تصلح لتقييد المعدّل.
-  const allowed = await claimVerifyRequest(env.DB, user.id, VERIFY_COOLDOWN_MS);
-  if (!allowed) {
-    return errors.tooManyRequests('انتظر ثوانٍ قليلة ثم أعد المحاولة.');
-  }
-
-  const outcome = await checkChannelMembership(env, connection.telegram_user_id);
-  if (!outcome.ok) {
-    return outcome.reason === 'not_configured'
-      ? errors.notConfigured()
-      : errors.serviceUnavailable('تعذّر التحقق حالياً، حاول بعد قليل.');
-  }
-
-  const gate = await evaluateGate(request, env, { forceCheck: true });
-  if (gate instanceof Response) return gate;
-
-  await insertUsageEvent(env.DB, {
-    userId: user.id,
-    eventType: outcome.isMember ? 'subscription_verified' : 'subscription_failed',
-    toolId: null,
-    templateId: null,
-    primaryColor: null,
-  });
-
-  // نُرجع حالة الجلسة كاملة (لا حالة تيليجرام وحدها) حتى يعرف العميل
-  // وجهته التالية مباشرةً: التهيئة أم لوحة المعلم أم لوحة الطالب.
-  return json(await buildMeResponse(env, gate));
 }
 
 /**
@@ -184,6 +119,11 @@ export async function handleTelegramWebhook({ request, env }: RouteContext): Pro
     return ok();
   }
 
+  /*
+   * نسأل تيليجرام عن العضوية مرّة واحدة هنا لأغراض إحصاءات الإدارة فقط.
+   * لا أثر لها إطلاقاً على وصول المستخدم: فشل السؤال أو كونه غير مشترك
+   * لا يمنعه من شيء، والمسار كله خادم-إلى-خادم لا يمرّ به طلب المستخدم.
+   */
   const membership = await checkChannelMembership(env, telegramUserId);
   const isMember = membership.ok ? membership.isMember : false;
 
@@ -210,11 +150,7 @@ export async function handleTelegramWebhook({ request, env }: RouteContext): Pro
     primaryColor: null,
   });
 
-  await sendTelegramMessage(
-    env,
-    chatId,
-    isMember ? botMessages.linkedSubscribed(env) : botMessages.linkedNeedsSubscription(env),
-  );
+  await sendTelegramMessage(env, chatId, botMessages.linked(env));
 
   // تنظيف انتهازي للتوكنات المنتهية (عملية خفيفة وغير متكرّرة).
   await purgeExpiredLinkTokens(env.DB);
@@ -224,9 +160,9 @@ export async function handleTelegramWebhook({ request, env }: RouteContext): Pro
 
 /**
  * POST /api/telegram/unlink
- * يفكّ ربط تيليجرام فقط — لا يمسّ حساب Google ولا يحذف المستخدم.
- * بعدها يستطيع المستخدم ربط حساب تيليجرام آخر، ويصبح الحساب القديم
- * متاحاً للربط بحساب منصّة آخر.
+ * يفكّ ربط تيليجرام فقط — لا يمسّ حساب Google ولا يحذف المستخدم ولا يؤثّر
+ * في وصوله إلى المنصّة (الربط اختياري أصلاً). بعدها يستطيع ربط حساب تيليجرام
+ * آخر، ويصبح الحساب القديم متاحاً للربط بحساب منصّة آخر.
  */
 export async function handleUnlinkTelegram({ request, env }: RouteContext): Promise<Response> {
   const auth = await authenticate(request, env);

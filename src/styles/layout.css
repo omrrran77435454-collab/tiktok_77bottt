@@ -343,38 +343,41 @@
   .features-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
-/* ------------------------------ بوابة تيليجرام -------------------------- */
+/* --------------------------- بطاقة قناة تيليجرام ------------------------- */
 
-.gate-wrap { max-width: 620px; margin-inline: auto; }
-
-.gate-steps {
+/*
+ * دعوة اختيارية أعلى اللوحة. هادئة عمداً: لا ألوان تحذير ولا حجم كبير،
+ * لأنها ليست شرطاً ولا خطوة ناقصة — مجرّد رابط لمن يريده.
+ */
+.channel-card {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-2);
-  justify-content: center;
-  margin-block-end: var(--sp-6);
+  align-items: center;
+  gap: var(--sp-3);
+  margin-block-start: var(--sp-6);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--bg-brand-soft);
+  border: 1px solid var(--teal-100);
+  border-radius: var(--radius-lg);
 }
-.gate-step {
+.channel-card-icon {
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-2);
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  color: var(--teal-800);
+  flex: none;
+}
+.channel-card-text {
+  margin: 0;
   font-size: var(--fs-sm);
   font-weight: 600;
-  color: var(--fg-muted);
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  padding: 0.35rem 0.85rem;
+  color: var(--teal-800);
 }
-.gate-step.is-done { color: var(--success-700); border-color: #c7e3d3; background: var(--success-100); }
-.gate-step.is-active { color: var(--teal-800); border-color: var(--teal-100); background: var(--bg-brand-soft); }
-.gate-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: currentColor;
-  display: inline-block;
-}
+.channel-card-action { margin-inline-start: auto; }
 
 /* -------------------------------- اللوحة ------------------------------- */
 

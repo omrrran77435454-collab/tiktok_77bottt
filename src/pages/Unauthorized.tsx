@@ -11,8 +11,8 @@ export function UnauthorizedPage() {
         <span className="error-code numeric">403</span>
         <h1 className="title-lg">ليس لديك صلاحية</h1>
         <p className="muted">
-          هذه الصفحة مخصّصة لمدير المنصة فقط. إن كنت تعتقد أن هذا خطأ، تأكّد من تسجيل الدخول بالحساب
-          الصحيح وربط حساب تيليجرام المخوَّل.
+          هذه الصفحة مخصّصة لمدير المنصة فقط. إن كنت تعتقد أن هذا خطأ، تأكّد من تسجيل الدخول
+          بالحساب الصحيح.
         </p>
         <div className="row" style={{ justifyContent: 'center' }}>
           <Link className="btn btn-primary" to="/dashboard">

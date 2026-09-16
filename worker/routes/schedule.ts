@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { RouteContext } from '../lib/router';
 import { errors, json, readJson } from '../lib/http';
-import { evaluateGate } from '../lib/gate';
+import { authenticate } from '../lib/gate';
 import {
   clearSchedule,
   countItems,
@@ -80,9 +80,8 @@ const itemIdSchema = z.object({ id: z.string().trim().min(1).max(64) });
 
 /** GET /api/schedule — الإعدادات وكل الحصص. */
 export async function handleGetSchedule({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
+  const gate = await authenticate(request, env);
   if (gate instanceof Response) return gate;
-  if (!gate.canUseTools) return errors.forbidden();
 
   const [settings, items] = await Promise.all([
     getSettings(env.DB, gate.user.id),
@@ -97,9 +96,8 @@ export async function handleSaveScheduleSettings({
   request,
   env,
 }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
+  const gate = await authenticate(request, env);
   if (gate instanceof Response) return gate;
-  if (!gate.canUseTools) return errors.forbidden();
 
   const parsed = settingsSchema.safeParse(await readJson(request));
   if (!parsed.success) {
@@ -112,9 +110,8 @@ export async function handleSaveScheduleSettings({
 
 /** POST /api/schedule/items — إضافة حصة. */
 export async function handleCreateScheduleItem({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
+  const gate = await authenticate(request, env);
   if (gate instanceof Response) return gate;
-  if (!gate.canUseTools) return errors.forbidden();
 
   const parsed = itemSchema.safeParse(await readJson(request));
   if (!parsed.success) return errors.badRequest('بيانات الحصة غير صحيحة.');
@@ -131,9 +128,8 @@ export async function handleCreateScheduleItem({ request, env }: RouteContext): 
 
 /** POST /api/schedule/items/update — تعديل حصة (المعرّف في الجسم). */
 export async function handleUpdateScheduleItem({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
+  const gate = await authenticate(request, env);
   if (gate instanceof Response) return gate;
-  if (!gate.canUseTools) return errors.forbidden();
 
   const body = await readJson(request);
   const identified = itemIdSchema.safeParse(body);
@@ -154,9 +150,8 @@ export async function handleUpdateScheduleItem({ request, env }: RouteContext): 
 
 /** POST /api/schedule/items/delete — حذف حصة. */
 export async function handleDeleteScheduleItem({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
+  const gate = await authenticate(request, env);
   if (gate instanceof Response) return gate;
-  if (!gate.canUseTools) return errors.forbidden();
 
   const parsed = itemIdSchema.safeParse(await readJson(request));
   if (!parsed.success) return errors.badRequest('طلب الحذف غير صحيح.');
@@ -170,9 +165,8 @@ const clearSchema = z.object({ day: z.number().int().min(0).max(6).nullable() })
 
 /** POST /api/schedule/clear — مسح يوم أو الأسبوع كله. */
 export async function handleClearSchedule({ request, env }: RouteContext): Promise<Response> {
-  const gate = await evaluateGate(request, env);
+  const gate = await authenticate(request, env);
   if (gate instanceof Response) return gate;
-  if (!gate.canUseTools) return errors.forbidden();
 
   const parsed = clearSchema.safeParse(await readJson(request));
   if (!parsed.success) return errors.badRequest('طلب المسح غير صحيح.');

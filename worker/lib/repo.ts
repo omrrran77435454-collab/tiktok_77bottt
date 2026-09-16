@@ -239,22 +239,6 @@ export async function upsertTelegramConnection(
     .run();
 }
 
-export async function updateMembership(
-  db: D1Database,
-  userId: string,
-  isMember: boolean,
-): Promise<void> {
-  const now = nowIso();
-  await db
-    .prepare(
-      `UPDATE telegram_connections
-         SET is_member = ?1, last_checked_at = ?2, updated_at = ?2
-       WHERE user_id = ?3`,
-    )
-    .bind(isMember ? 1 : 0, now, userId)
-    .run();
-}
-
 /* --------------------------- توكنات الربط المؤقتة -------------------------- */
 
 export async function createLinkToken(
@@ -299,32 +283,6 @@ export async function consumeLinkToken(db: D1Database, tokenId: string): Promise
   const result = await db
     .prepare('UPDATE telegram_link_tokens SET used_at = ?1 WHERE id = ?2 AND used_at IS NULL')
     .bind(nowIso(), tokenId)
-    .run();
-  return (result.meta?.changes ?? 0) > 0;
-}
-
-/**
- * يحجز "طلب تحقّق يدوي" إن سمح الحدّ الزمني.
- *
- * العملية ذرّية: شرط الوقت داخل جملة UPDATE نفسها، فلا يمرّ طلبان متزامنان
- * ولا نعتمد على ذاكرة الـ Worker التي قد تُمسح في أي لحظة.
- * يُرجع true إذا سُمح بالطلب.
- */
-export async function claimVerifyRequest(
-  db: D1Database,
-  userId: string,
-  cooldownMs: number,
-): Promise<boolean> {
-  const now = nowIso();
-  const cutoff = new Date(Date.now() - cooldownMs).toISOString();
-  const result = await db
-    .prepare(
-      `UPDATE telegram_connections
-         SET last_verify_request_at = ?1
-       WHERE user_id = ?2
-         AND (last_verify_request_at IS NULL OR last_verify_request_at < ?3)`,
-    )
-    .bind(now, userId, cutoff)
     .run();
   return (result.meta?.changes ?? 0) > 0;
 }
