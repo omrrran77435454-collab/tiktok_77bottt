@@ -1,5 +1,4 @@
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
 import type { BrowserContext, Page } from '@playwright/test';
 
 export const BASE = 'http://localhost:5173';
@@ -8,6 +7,13 @@ export const WEBHOOK_SECRET = 'local-dev-webhook-secret-0123456789';
 export const E2E_SECRET = 'local-dev-e2e-secret';
 export const E2E_TOKEN_KEY = 'teacher-tools:e2e-id-token';
 export const ADMIN_TELEGRAM_ID = 5559869840;
+
+/**
+ * بريد مدير المنصّة في بيئة الاختبار.
+ * يجب أن يطابق ADMIN_EMAIL في `.dev.vars` (يولّده scripts/prepare-e2e.mjs).
+ * بريد محايد عمداً: لا يوجد بريد إنتاج حقيقي داخل المستودع.
+ */
+export const ADMIN_EMAIL = 'platform.owner@example.test';
 
 let sequence = 0;
 
@@ -21,12 +27,18 @@ export function uniqueTelegramId(): number {
  * يبني توكن هوية اختباري بنفس الصيغة التي يقبلها الـ Worker في وضع E2E.
  * لا علاقة له بـ Firebase الحقيقي، ولا يعمل إن كان E2E_TEST_MODE مُعطّلاً.
  */
-export function makeIdToken(uid: string, name = 'معلّم الاختبار'): string {
+export function makeIdToken(
+  uid: string,
+  options: { name?: string; email?: string; emailVerified?: boolean } = {},
+): string {
   const now = Math.floor(Date.now() / 1000);
   const payload = {
     sub: uid,
-    email: `${uid}@example.com`,
-    name,
+    email: options.email ?? `${uid}@example.com`,
+    // Google يُرجع بريداً مؤكَّداً، فهذا هو الوضع الطبيعي في الاختبارات.
+    // نمرّر false صراحةً عند اختبار رفض البريد غير المؤكَّد.
+    email_verified: options.emailVerified ?? true,
+    name: options.name ?? 'معلّم الاختبار',
     picture: null,
     iat: now,
     exp: now + 3600,
@@ -49,8 +61,12 @@ export function uniqueUid(prefix = 'e2e'): string {
  * "يسجّل الدخول" في المتصفّح: يضع توكن الاختبار في التخزين المحلي قبل تحميل
  * أي صفحة، تماماً كما يفعل Firebase SDK بتوكنه الحقيقي.
  */
-export async function signInAs(context: BrowserContext, uid = uniqueUid()): Promise<string> {
-  const token = makeIdToken(uid);
+export async function signInAs(
+  context: BrowserContext,
+  uid = uniqueUid(),
+  options: { name?: string; email?: string; emailVerified?: boolean } = {},
+): Promise<string> {
+  const token = makeIdToken(uid, options);
   await context.addInitScript(
     ([key, value]) => {
       try {
@@ -62,6 +78,24 @@ export async function signInAs(context: BrowserContext, uid = uniqueUid()): Prom
     [E2E_TOKEN_KEY, token] as const,
   );
   return token;
+}
+
+/**
+ * يسجّل الدخول بهوية مالك المنصّة.
+ *
+ * الصلاحية لا تأتي من تيليجرام ولا من قاعدة البيانات ولا من العميل: الخادم
+ * يقارن البريد المؤكَّد في التوكن مع ADMIN_EMAIL في كل طلب. لذلك يكفي هنا
+ * توكن ببريد مطابق ومؤكَّد — ومرّر emailVerified: false لاختبار الرفض.
+ */
+export async function signInAsAdmin(
+  context: BrowserContext,
+  options: { emailVerified?: boolean } = {},
+): Promise<string> {
+  return signInAs(context, uniqueUid('admin'), {
+    email: ADMIN_EMAIL,
+    emailVerified: options.emailVerified ?? true,
+    name: 'مالك المنصّة',
+  });
 }
 
 /** يطلب من الـ API مباشرة بنفس توكن المتصفّح. */
@@ -209,29 +243,4 @@ export async function openDesignPanel(page: Page): Promise<void> {
     if ((await toggle.getAttribute('aria-expanded')) !== 'true') await toggle.click();
   }
   await page.locator('.tpl-thumb').first().waitFor({ state: 'visible' });
-}
-
-/**
- * يحرّر ارتباط حساب تيليجرام الخاص بالإدمن في قاعدة D1 المحلية.
- * معرّف الإدمن ثابت، والنظام يمنع ربط حساب تيليجرام واحد بحسابَي منصّة،
- * لذلك نحتاج تحريره قبل كل اختبار يحتاج حساب إدمن جديداً.
- */
-export function releaseAdminTelegramLink(): void {
-  try {
-    execFileSync(
-      'npx',
-      [
-        'wrangler',
-        'd1',
-        'execute',
-        'teacher-tools-db',
-        '--local',
-        '--command',
-        `DELETE FROM telegram_connections WHERE telegram_user_id = '${ADMIN_TELEGRAM_ID}'`,
-      ],
-      { stdio: 'ignore' },
-    );
-  } catch {
-    console.warn('[e2e] تعذّر تحرير ارتباط الإدمن. شغّل: npm run e2e:prepare');
-  }
 }
