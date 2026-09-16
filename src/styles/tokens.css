@@ -1,0 +1,111 @@
+/* =============================================================
+   نظام التصميم — "أدوات المعلم"
+   هوية عربية تعليمية: أخضر عميق (Deep Teal) + عاجي (Ivory)
+   + أخضر مريمي (Sage) + كهرماني (Amber) للعناصر المهمة فقط.
+   ============================================================= */
+
+:root {
+  /* --- الألوان الأساسية --- */
+  --teal-900: #0a3230;
+  --teal-800: #0d4340;
+  --teal-700: #11554f;
+  --teal-600: #146b63;
+  --teal-500: #1a8078;
+  --teal-100: #d7e8e4;
+  --teal-050: #eef6f4;
+
+  --sage-700: #4f7358;
+  --sage-600: #648a6d;
+  --sage-500: #85a98c;
+  --sage-200: #cfdfd1;
+  --sage-100: #e4eee5;
+  --sage-050: #f1f7f1;
+
+  --amber-700: #9a5f12;
+  --amber-600: #b8761c;
+  --amber-500: #d79432;
+  --amber-100: #f8e9cf;
+  --amber-050: #fdf6e8;
+
+  --ivory-000: #ffffff;
+  --ivory-050: #fdfbf6;
+  --ivory-100: #f8f4ea;
+  --ivory-200: #f1ebdd;
+
+  --ink-900: #16211f;
+  --ink-700: #2c3a37;
+  --ink-500: #55645f;
+  --ink-400: #74827d;
+  --ink-300: #9aa5a1;
+
+  --line-200: #e6e0d2;
+  --line-300: #d7d0be;
+
+  --danger-700: #8f2f2a;
+  --danger-600: #b3453e;
+  --danger-100: #f7e2e0;
+  --success-700: #2c6b4f;
+  --success-100: #dcefe4;
+
+  /* --- أدوار دلالية --- */
+  --bg-page: var(--ivory-050);
+  --bg-surface: var(--ivory-000);
+  --bg-subtle: var(--ivory-100);
+  --bg-brand-soft: var(--teal-050);
+
+  --fg-strong: var(--ink-900);
+  --fg-default: var(--ink-700);
+  --fg-muted: var(--ink-500);
+  --fg-on-brand: #ffffff;
+
+  --brand: var(--teal-700);
+  --brand-strong: var(--teal-800);
+  --brand-soft: var(--teal-100);
+  --accent: var(--amber-600);
+
+  --border: var(--line-200);
+  --border-strong: var(--line-300);
+
+  /* --- الخطوط --- */
+  --font-sans: 'IBM Plex Sans Arabic', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Amiri', 'Times New Roman', serif;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-base: 0.9375rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2.25rem;
+  --fs-4xl: 2.875rem;
+
+  /* --- المسافات --- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.25rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+
+  /* --- الحواف والظلال --- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-pill: 999px;
+
+  --shadow-xs: 0 1px 2px rgba(16, 40, 37, 0.06);
+  --shadow-sm: 0 2px 8px rgba(16, 40, 37, 0.07);
+  --shadow-md: 0 8px 24px rgba(16, 40, 37, 0.09);
+  --shadow-lg: 0 18px 48px rgba(16, 40, 37, 0.12);
+
+  --header-h: 64px;
+  --content-max: 1180px;
+
+  --focus-ring: 0 0 0 3px rgba(26, 128, 120, 0.35);
+}
